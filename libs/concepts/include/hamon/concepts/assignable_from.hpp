@@ -7,28 +7,21 @@
 #ifndef HAMON_CONCEPTS_ASSIGNABLE_FROM_HPP
 #define HAMON_CONCEPTS_ASSIGNABLE_FROM_HPP
 
-#include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
 
 namespace hamon
 {
 
 // 18.4.8 Concept assignable_from	[concept.assignable]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::assignable_from;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Lhs, typename Rhs>
 HAMON_CONCEPT_OR_BOOL assignable_from =

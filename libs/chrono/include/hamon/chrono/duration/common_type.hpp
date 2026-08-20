@@ -7,15 +7,11 @@
 #ifndef HAMON_CHRONO_DURATION_COMMON_TYPE_HPP
 #define HAMON_CHRONO_DURATION_COMMON_TYPE_HPP
 
-#include <hamon/chrono/config.hpp>
-#include <hamon/type_traits/common_type.hpp>
-
-#if !(defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_CHRONO))
-
 #include <hamon/chrono/duration/duration_fwd.hpp>
 #include <hamon/ratio/ratio_gcd.hpp>
+#include <hamon/type_traits/common_type.hpp>
 
-namespace HAMON_COMMON_TYPE_NAMESPACE
+namespace hamon
 {
 
 // 29.4.3 Specializations of common_type[time.traits.specializations]
@@ -30,8 +26,6 @@ struct common_type<
 		hamon::ratio_gcd<Period1, Period2>>;
 };
 
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
-
-#endif
+}	// namespace hamon
 
 #endif // HAMON_CHRONO_DURATION_COMMON_TYPE_HPP

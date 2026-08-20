@@ -53,11 +53,6 @@ struct basic_common_reference<
 	using type = BQual<AQual<hamon_type_traits_test::common_reference_test::C>>;
 };
 
-}	// namespace hamon
-
-namespace HAMON_COMMON_TYPE_NAMESPACE
-{
-
 template <>
 struct common_type<
 	hamon_type_traits_test::common_reference_test::D,

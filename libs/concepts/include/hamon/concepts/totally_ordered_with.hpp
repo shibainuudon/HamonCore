@@ -7,15 +7,12 @@
 #ifndef HAMON_CONCEPTS_TOTALLY_ORDERED_WITH_HPP
 #define HAMON_CONCEPTS_TOTALLY_ORDERED_WITH_HPP
 
-#include <hamon/concepts/config.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/compare/detail/partially_ordered_with.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
 #include <hamon/concepts/equality_comparable_with.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
-#endif
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -23,11 +20,7 @@ namespace hamon
 
 // 18.5.5 Concept totally_ordered	[concept.totallyordered]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::totally_ordered_with;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
 HAMON_CONCEPT_OR_BOOL totally_ordered_with =

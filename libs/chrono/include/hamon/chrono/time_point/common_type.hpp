@@ -7,14 +7,10 @@
 #ifndef HAMON_CHRONO_TIME_POINT_COMMON_TYPE_HPP
 #define HAMON_CHRONO_TIME_POINT_COMMON_TYPE_HPP
 
-#include <hamon/chrono/config.hpp>
+#include <hamon/chrono/time_point/time_point_fwd.hpp>
 #include <hamon/type_traits/common_type.hpp>
 
-#if !(defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_CHRONO))
-
-#include <hamon/chrono/time_point/time_point_fwd.hpp>
-
-namespace HAMON_COMMON_TYPE_NAMESPACE
+namespace hamon
 {
 
 // 29.4.3 Specializations of common_type[time.traits.specializations]
@@ -28,8 +24,6 @@ struct common_type<
 		Clock, hamon::common_type_t<Duration1, Duration2>>;
 };
 
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
-
-#endif
+}	// namespace hamon
 
 #endif // HAMON_CHRONO_TIME_POINT_COMMON_TYPE_HPP

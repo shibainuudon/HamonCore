@@ -7,21 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_IDENTITY_HPP
 #define HAMON_FUNCTIONAL_IDENTITY_HPP
 
-#include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-#include <functional>
-
-namespace hamon
-{
-
-using std::identity;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -40,7 +25,5 @@ struct identity
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_IDENTITY_HPP

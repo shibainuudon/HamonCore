@@ -7,13 +7,10 @@
 #ifndef HAMON_CONCEPTS_CONVERTIBLE_TO_HPP
 #define HAMON_CONCEPTS_CONVERTIBLE_TO_HPP
 
-#include <hamon/concepts/config.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -21,11 +18,7 @@ namespace hamon
 
 // 18.4.4 Concept convertible_to	[concept.convertible]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::convertible_to;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename From, typename To>
 HAMON_CONCEPT_OR_BOOL convertible_to =

@@ -7,23 +7,6 @@
 #ifndef HAMON_TYPE_TRAITS_COMMON_TYPE_HPP
 #define HAMON_TYPE_TRAITS_COMMON_TYPE_HPP
 
-#include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-#include <type_traits>
-
-namespace hamon
-{
-
-#define HAMON_COMMON_TYPE_NAMESPACE std
-
-using std::common_type;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -33,8 +16,6 @@ using std::common_type;
 
 namespace hamon
 {
-
-#define HAMON_COMMON_TYPE_NAMESPACE hamon
 
 /**
  *	@brief	変換可能な共通の型を取得する。
@@ -130,13 +111,6 @@ struct common_type<T1, T2, Rest...>
 		detail::common_type_pack<Rest...>
 	>
 {};
-
-}	// namespace hamon
-
-#endif
-
-namespace hamon
-{
 
 template <typename... Types>
 using common_type_t = typename common_type<Types...>::type;

@@ -7,12 +7,9 @@
 #ifndef HAMON_CONCEPTS_SWAPPABLE_HPP
 #define HAMON_CONCEPTS_SWAPPABLE_HPP
 
-#include <hamon/concepts/config.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/swap.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -20,11 +17,7 @@ namespace hamon
 
 // 18.4.9 Concept swappable	[concept.swappable]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::swappable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL swappable =

@@ -7,27 +7,20 @@
 #ifndef HAMON_CONCEPTS_EQUALITY_COMPARABLE_WITH_HPP
 #define HAMON_CONCEPTS_EQUALITY_COMPARABLE_WITH_HPP
 
-#include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/detail/comparison_common_type_with.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
-#endif
 
 namespace hamon
 {
 
 // 18.5.4 Concept equality_comparable	[concept.equalitycomparable]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::equality_comparable_with;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
 HAMON_CONCEPT_OR_BOOL equality_comparable_with =

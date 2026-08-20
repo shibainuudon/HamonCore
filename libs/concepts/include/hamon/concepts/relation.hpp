@@ -7,10 +7,7 @@
 #ifndef HAMON_CONCEPTS_RELATION_HPP
 #define HAMON_CONCEPTS_RELATION_HPP
 
-#include <hamon/concepts/config.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/predicate.hpp>
-#endif
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -18,20 +15,12 @@ namespace hamon
 
 // 18.7.5 Concept relation	[concept.relation]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::relation;
-
-#else
-
 template <typename Rel, typename T, typename U>
 HAMON_CONCEPT_OR_BOOL relation =
 	hamon::predicate<Rel, T, T> &&
 	hamon::predicate<Rel, U, U> &&
 	hamon::predicate<Rel, T, U> &&
 	hamon::predicate<Rel, U, T>;
-
-#endif
 
 }	// namespace hamon
 

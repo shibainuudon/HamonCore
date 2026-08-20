@@ -7,14 +7,11 @@
 #ifndef HAMON_CONCEPTS_PREDICATE_HPP
 #define HAMON_CONCEPTS_PREDICATE_HPP
 
-#include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/regular_invocable.hpp>
 #include <hamon/concepts/detail/boolean_testable.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
-#endif
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -22,11 +19,7 @@ namespace hamon
 
 // 18.7.4 Concept predicate	[concept.predicate]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::predicate;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Fn, typename... Args>
 HAMON_CONCEPT_OR_BOOL predicate =

@@ -58,7 +58,7 @@ struct H {
 
 }	// namespace hamon_concepts_test
 
-namespace HAMON_COMMON_TYPE_NAMESPACE
+namespace hamon
 {
 
 template<>

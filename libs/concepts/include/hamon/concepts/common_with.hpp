@@ -7,28 +7,21 @@
 #ifndef HAMON_CONCEPTS_COMMON_WITH_HPP
 #define HAMON_CONCEPTS_COMMON_WITH_HPP
 
-#include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/common_reference.hpp>
-#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
 
 namespace hamon
 {
 
 // 18.4.6 Concept common_with	[concept.common]
 
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-using std::common_with;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
 HAMON_CONCEPT_OR_BOOL common_with =

@@ -22,7 +22,7 @@ struct Z2 {};
 }	// namespace common_reference_test
 }	// namespace hamon_pair_test
 
-namespace HAMON_COMMON_TYPE_NAMESPACE
+namespace hamon
 {
 
 template <>
@@ -41,7 +41,7 @@ struct common_type<
 	using type = hamon_pair_test::common_reference_test::Z2;
 };
 
-}
+}	// namespace hamon
 
 namespace hamon_pair_test {
 namespace common_reference_test {

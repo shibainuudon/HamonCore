@@ -7,9 +7,9 @@
 #ifndef HAMON_ITERATOR_REVERSE_ITERATOR_HPP
 #define HAMON_ITERATOR_REVERSE_ITERATOR_HPP
 
-#include <hamon/concepts/config.hpp>
+//#include <hamon/concepts/config.hpp>
 
-#if (HAMON_CXX_STANDARD >= 17) && defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_RANGES_ITERATOR)
+#if (HAMON_CXX_STANDARD >= 17) && 0/*defined(HAMON_USE_STD_CONCEPTS)*/ && defined(HAMON_USE_STD_RANGES_ITERATOR)
 #    define HAMON_USE_STD_REVERSE_ITERATOR
 #endif
 

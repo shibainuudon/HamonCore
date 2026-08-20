@@ -21,7 +21,7 @@ struct Z{};
 }	// namespace common_type_test
 }	// namespace hamon_type_traits_test
 
-namespace HAMON_COMMON_TYPE_NAMESPACE
+namespace hamon
 {
 
 template <>

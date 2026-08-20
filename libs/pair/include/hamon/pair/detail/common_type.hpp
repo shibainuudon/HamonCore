@@ -22,10 +22,6 @@ using pair_common_type_impl =
 	>;
 
 }	// namespace detail
-}	// namespace hamon
-
-namespace HAMON_COMMON_TYPE_NAMESPACE
-{
 
 // [utility.syn]
 
@@ -65,6 +61,6 @@ struct common_type<hamon::pair<T1, T2>, hamon::pair<U1, U2>>
 
 #endif
 
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
+}	// namespace hamon
 
 #endif // HAMON_PAIR_DETAIL_COMMON_TYPE_HPP

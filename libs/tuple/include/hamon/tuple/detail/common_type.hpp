@@ -50,11 +50,6 @@ struct tuple_like_common_type<TTuple, UTuple,
 
 }	// namespace detail
 
-}	// namespace hamon
-
-namespace HAMON_COMMON_TYPE_NAMESPACE
-{
-
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 // common_reference related specializations	[tuple.common.ref]
@@ -141,6 +136,6 @@ struct common_type<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>>
 
 #endif
 
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
+}	// namespace hamon
 
 #endif // HAMON_TUPLE_DETAIL_COMMON_TYPE_HPP

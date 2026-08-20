@@ -1,27 +1,11 @@
 ﻿/**
  *	@file	swap.hpp
  *
- *	@brief	swap の定義
+ *	@brief	ranges::swap の定義
  */
 
 #ifndef HAMON_CONCEPTS_SWAP_HPP
 #define HAMON_CONCEPTS_SWAP_HPP
-
-#include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::swap;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
 
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/move_constructible.hpp>
@@ -140,7 +124,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR swap_detail::swap_fn swap{};
 }	// namespace hamon
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
-#endif // defined(HAMON_USE_STD_CONCEPTS)
 
 #endif // HAMON_CONCEPTS_SWAP_HPP

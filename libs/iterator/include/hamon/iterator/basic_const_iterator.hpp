@@ -692,11 +692,6 @@ struct is_const_iterator<basic_const_iterator<I>>
 
 }	// namespace detail
 
-}	// namespace hamon
-
-namespace HAMON_COMMON_TYPE_NAMESPACE
-{
-
 // [const.iterators.iterator], class template basic_const_iterator
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -762,7 +757,7 @@ struct common_type<hamon::basic_const_iterator<T>, hamon::basic_const_iterator<U
 
 #endif
 
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
+}	// namespace hamon
 
 #endif
 

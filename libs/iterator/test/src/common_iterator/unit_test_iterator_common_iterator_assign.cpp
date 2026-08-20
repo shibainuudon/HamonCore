@@ -108,7 +108,7 @@ operator!=(T const& x, ConvertibleSentinel<U> const& y) noexcept
 }	// namespace common_iterator_test
 }	// namespace hamon_iterator_test
 
-namespace HAMON_COMMON_TYPE_NAMESPACE
+namespace hamon
 {
 
 template <typename T, typename U>
@@ -131,7 +131,7 @@ struct common_type<
 		hamon::common_type_t<T, U>>;
 };
 
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
+}	// namespace hamon
 
 namespace hamon_iterator_test {
 namespace common_iterator_test {
