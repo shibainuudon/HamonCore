@@ -6,7 +6,8 @@
 
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <gtest/gtest.h>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/void_t.hpp>
 
 namespace hamon_type_traits_test
 {
@@ -38,6 +39,32 @@ namespace hamon_type_traits_test
 
 namespace common_type_test
 {
+
+template <typename T, typename = void>
+struct has_type : hamon::false_type { };
+
+template <typename T>
+struct has_type<T, hamon::void_t<typename T::type>>: hamon::true_type { };
+
+template <typename... T>
+constexpr bool
+has_common_type()
+{
+	return has_type<hamon::common_type<T...>>::value;
+}
+
+static_assert(!has_common_type<>(), "");
+static_assert( has_common_type<int>(), "");
+static_assert( has_common_type<void>(), "");
+static_assert( has_common_type<int, char>(), "");
+static_assert(!has_common_type<int, int*>(), "");
+static_assert( has_common_type<int, int&>(), "");
+static_assert( has_common_type<X, Y>(), "");
+static_assert(!has_common_type<Y, X>(), "");
+static_assert( has_common_type<float, int, char>(), "");
+static_assert(!has_common_type<float*, int, char>(), "");
+static_assert(!has_common_type<float, int*, char>(), "");
+static_assert(!has_common_type<float, int, char*>(), "");
 
 class Base { };
 class Derived : public Base { };
