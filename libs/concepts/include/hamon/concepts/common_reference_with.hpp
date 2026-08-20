@@ -8,21 +8,18 @@
 #define HAMON_CONCEPTS_COMMON_REFERENCE_WITH_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/common_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/config.hpp>
-#if !(defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_COMMON_REFERENCE))
-#include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
 
 namespace hamon
 {
 
 // 18.4.5 Concept common_reference_with	[concept.commonref]
 
-#if defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_COMMON_REFERENCE)
+#if defined(HAMON_USE_STD_CONCEPTS) && 0//defined(HAMON_USE_STD_COMMON_REFERENCE)
 
 using std::common_reference_with;
 

@@ -8,22 +8,6 @@
 #define HAMON_TYPE_TRAITS_COMMON_REFERENCE_HPP
 
 #include <hamon/type_traits/basic_common_reference.hpp>
-#include <hamon/type_traits/config.hpp>
-
-#if defined(HAMON_USE_STD_COMMON_REFERENCE)
-
-#include <type_traits>
-
-namespace hamon
-{
-
-using std::common_reference;
-using std::common_reference_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -290,7 +274,5 @@ struct common_reference<T1, T2, Rest...>
 {};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_COMMON_REFERENCE_HPP

@@ -56,10 +56,6 @@ struct tuple_like_common_reference<TTuple, UTuple, TQual, UQual,
 };
 
 }	// namespace detail
-}	// namespace hamon
-
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
-{
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -171,6 +167,6 @@ struct basic_common_reference<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>, 
 
 #endif
 
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+}	// namespace hamon
 
 #endif // HAMON_TUPLE_DETAIL_BASIC_COMMON_REFERENCE_HPP

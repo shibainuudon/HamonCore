@@ -7,27 +7,8 @@
 #ifndef HAMON_TYPE_TRAITS_BASIC_COMMON_REFERENCE_HPP
 #define HAMON_TYPE_TRAITS_BASIC_COMMON_REFERENCE_HPP
 
-#include <hamon/type_traits/config.hpp>
-
-#if defined(HAMON_USE_STD_COMMON_REFERENCE)
-
-#include <type_traits>
-
 namespace hamon
 {
-
-#define HAMON_BASIC_COMMON_REFERENCE_NAMESPACE std
-
-using std::basic_common_reference;
-
-}	// namespace hamon
-
-#else
-
-namespace hamon
-{
-
-#define HAMON_BASIC_COMMON_REFERENCE_NAMESPACE hamon
 
 template <
 	typename T,
@@ -40,7 +21,5 @@ struct basic_common_reference
 {};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_BASIC_COMMON_REFERENCE_HPP

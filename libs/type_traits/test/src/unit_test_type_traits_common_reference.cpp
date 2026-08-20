@@ -41,7 +41,7 @@ struct F { };
 
 }	// namespace hamon_type_traits_test
 
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+namespace hamon
 {
 
 template <template <typename> class AQual, template <typename> class BQual>
@@ -53,7 +53,7 @@ struct basic_common_reference<
 	using type = BQual<AQual<hamon_type_traits_test::common_reference_test::C>>;
 };
 
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+}	// namespace hamon
 
 namespace HAMON_COMMON_TYPE_NAMESPACE
 {

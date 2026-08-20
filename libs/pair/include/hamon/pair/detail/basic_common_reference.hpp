@@ -27,10 +27,6 @@ using pair_basic_common_reference_impl =
 	>;
 
 }	// namespace detail
-}	// namespace hamon
-
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
-{
 
 // [utility.syn]
 
@@ -59,6 +55,6 @@ struct basic_common_reference<
 		T1, T2, U1, U2, TQual, UQual>;
 };
 
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+}	// namespace hamon
 
 #endif // HAMON_PAIR_DETAIL_BASIC_COMMON_REFERENCE_HPP

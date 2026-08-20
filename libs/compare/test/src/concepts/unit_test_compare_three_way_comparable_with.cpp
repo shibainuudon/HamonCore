@@ -56,7 +56,7 @@ struct S2 : B
 
 }	// namespace hamon_compare_test
 
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+namespace hamon
 {
 
 template <template <typename> class Qual1, template <typename> class Qual2>
@@ -77,7 +77,7 @@ struct basic_common_reference<
 	using type = const hamon_compare_test::three_way_comparable_with_test::B&;
 };
 
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+}	// namespace hamon
 
 namespace hamon_compare_test
 {

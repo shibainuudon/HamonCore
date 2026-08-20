@@ -22,10 +22,7 @@ using std::reference_wrapper;
 #else
 
 #include <hamon/functional/invoke.hpp>
-#include <hamon/concepts/convertible_to.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/type_traits/basic_common_reference.hpp>
-#include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
@@ -103,6 +100,19 @@ reference_wrapper(T&) -> reference_wrapper<T>;
 
 #endif
 
+}	// namespace hamon
+
+#endif
+
+#include <hamon/concepts/convertible_to.hpp>
+#include <hamon/type_traits/basic_common_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/common_reference.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/config.hpp>
+
+namespace hamon
+{
 namespace detail
 {
 
@@ -153,10 +163,6 @@ HAMON_CONCEPT_OR_BOOL ref_wrap_common_reference_exists_with =
 #endif
 
 }	// namespace detail
-}	// namespace hamon
-
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
-{
 
 template <typename R, typename T, template <typename> class RQual, template <typename> class TQual>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -194,8 +200,6 @@ struct basic_common_reference<T, R, TQual, RQual
 	using type = hamon::common_reference_t<typename R::type&, TQual<T>>;
 };
 
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
-
-#endif
+}	// namespace hamon
 
 #endif // HAMON_FUNCTIONAL_REFERENCE_WRAPPER_HPP

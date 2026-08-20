@@ -377,7 +377,7 @@ struct F { F(const G&) { } };
 
 }	// namespace hamon_concepts_test
 
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+namespace hamon
 {
 
 template <template <typename> class Qual1, template <typename> class Qual2>
@@ -398,7 +398,7 @@ struct basic_common_reference<
 	using type = Qual1<Qual2<hamon_concepts_test::common_reference_with_test::F>>;
 };
 
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
+}	// namespace hamon
 
 namespace hamon_concepts_test
 {
