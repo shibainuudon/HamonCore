@@ -7,21 +7,6 @@
 #ifndef HAMON_ANY_ANY_HPP
 #define HAMON_ANY_ANY_HPP
 
-#include <hamon/any/config.hpp>
-
-#if defined(HAMON_USE_STD_ANY)
-
-#include <any>
-
-namespace hamon
-{
-
-using std::any;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/byte.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/destroy_at.hpp>
@@ -399,7 +384,5 @@ inline void swap(any& x, any& y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ANY_ANY_HPP

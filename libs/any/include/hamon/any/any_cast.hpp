@@ -7,21 +7,6 @@
 #ifndef HAMON_ANY_ANY_CAST_HPP
 #define HAMON_ANY_ANY_CAST_HPP
 
-#include <hamon/any/config.hpp>
-
-#if defined(HAMON_USE_STD_ANY)
-
-#include <any>
-
-namespace hamon
-{
-
-using std::any_cast;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/any/any.hpp>
 #include <hamon/any/bad_any_cast.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
@@ -149,7 +134,5 @@ any_cast(any&& operand)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ANY_ANY_CAST_HPP

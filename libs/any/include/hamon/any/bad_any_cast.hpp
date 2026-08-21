@@ -7,21 +7,6 @@
 #ifndef HAMON_ANY_BAD_ANY_CAST_HPP
 #define HAMON_ANY_BAD_ANY_CAST_HPP
 
-#include <hamon/any/config.hpp>
-
-#if defined(HAMON_USE_STD_ANY)
-
-#include <any>
-
-namespace hamon
-{
-
-using std::bad_any_cast;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <typeinfo>	// bad_cast
@@ -55,7 +40,5 @@ HAMON_NORETURN inline void throw_bad_any_cast()
 }	// namespace detail
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ANY_BAD_ANY_CAST_HPP

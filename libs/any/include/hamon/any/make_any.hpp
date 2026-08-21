@@ -7,21 +7,6 @@
 #ifndef HAMON_ANY_MAKE_ANY_HPP
 #define HAMON_ANY_MAKE_ANY_HPP
 
-#include <hamon/any/config.hpp>
-
-#if defined(HAMON_USE_STD_ANY)
-
-#include <any>
-
-namespace hamon
-{
-
-using std::make_any;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/any/any.hpp>
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/forward.hpp>
@@ -47,7 +32,5 @@ make_any(std::initializer_list<U> il, Args&&... args)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ANY_MAKE_ANY_HPP
