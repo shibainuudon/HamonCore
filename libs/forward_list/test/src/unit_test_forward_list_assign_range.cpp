@@ -19,19 +19,10 @@ namespace hamon_forward_list_test
 namespace assign_range_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, template <typename> class RangeWrapper>
-FORWARD_LIST_TEST_CONSTEXPR bool test_impl()
+HAMON_CXX20_CONSTEXPR bool test_impl()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Range = RangeWrapper<T>;
@@ -71,7 +62,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test_impl()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	return
 		test_impl<T, test_input_range>() &&
@@ -90,13 +81,10 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, AssignRangeTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace assign_range_test
 

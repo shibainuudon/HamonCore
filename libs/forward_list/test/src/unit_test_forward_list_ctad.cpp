@@ -27,19 +27,10 @@ namespace hamon_forward_list_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	{
@@ -78,8 +69,6 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		VERIFY(*it++ == T{50});
 		VERIFY(it == v.end());
 	}
-#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	\
-	defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L)
 	{
 		using Range = test_input_range<T>;
 		T a[] {3,1,4,1};
@@ -108,7 +97,6 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		VERIFY(it == v.end());
 	}
 #endif
-#endif
 	return true;
 }
 
@@ -116,13 +104,10 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, CtadTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

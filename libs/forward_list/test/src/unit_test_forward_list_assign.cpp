@@ -21,19 +21,10 @@ namespace hamon_forward_list_test
 namespace assign_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, template <typename> class IteratorWrapper>
-FORWARD_LIST_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = IteratorWrapper<T>;
@@ -80,7 +71,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using SizeType = typename ForwardList::size_type;
@@ -135,7 +126,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using ForwardList = hamon::forward_list<T>;
 
@@ -194,34 +185,31 @@ FORWARD_LIST_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(ForwardListTest, AssignTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<char,  cpp17_input_iterator_wrapper>()));
-//	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<short, input_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<int,   forward_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<long,  bidirectional_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<char,  random_access_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<short, contiguous_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<int,   cpp17_input_iterator_wrapper>()));
-//	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<long,  input_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<char,  forward_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<short, bidirectional_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<int,   random_access_iterator_wrapper>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test1<long,  contiguous_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char,  cpp17_input_iterator_wrapper>()));
+//	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<short, input_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int,   forward_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<long,  bidirectional_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char,  random_access_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<short, contiguous_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int,   cpp17_input_iterator_wrapper>()));
+//	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<long,  input_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char,  forward_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<short, bidirectional_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int,   random_access_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<long,  contiguous_iterator_wrapper>()));
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test2<short>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test2<long>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test3<char>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test3<short>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test3<int>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test3<long>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test3<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float>()));
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace assign_test
 

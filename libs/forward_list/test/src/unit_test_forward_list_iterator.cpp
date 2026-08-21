@@ -18,15 +18,6 @@ namespace hamon_forward_list_test
 namespace iterator_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 template <typename T, typename U = T, typename = void>
 struct has_eq
 	: public hamon::false_type {};
@@ -88,7 +79,7 @@ struct has_compare_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using difference_type = typename ForwardList::difference_type;
@@ -178,15 +169,12 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, iteratorTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test<short>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test<long>()));
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace iterator_test
 

@@ -7,23 +7,6 @@
 #ifndef HAMON_FORWARD_LIST_ERASE_HPP
 #define HAMON_FORWARD_LIST_ERASE_HPP
 
-#include <hamon/forward_list/config.hpp>
-
-#if defined(HAMON_USE_STD_FORWARD_LIST) && \
-	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <forward_list>
-
-namespace hamon
-{
-
-using std::erase;
-
-}	// namespace hamon
-
-#else	// __cpp_lib_erase_if
-
 #include <hamon/forward_list/forward_list.hpp>
 #include <hamon/forward_list/erase_if.hpp>
 #include <hamon/config.hpp>
@@ -44,7 +27,5 @@ erase(hamon::forward_list<T, Allocator>& c, U const& value)
 }
 
 }	// namespace hamon
-
-#endif	// __cpp_lib_erase_if
 
 #endif // HAMON_FORWARD_LIST_ERASE_HPP

@@ -23,19 +23,10 @@ namespace hamon_forward_list_test
 namespace splice_after_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using ConstIterator = typename ForwardList::const_iterator;
@@ -45,9 +36,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 		ConstIterator pos;
 		ForwardList x;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, x)), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert( noexcept(v.splice_after(pos, x)), "");
-#endif
 	}
 	{
 		ForwardList v1{1,2,3,4,5};
@@ -103,7 +92,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using ConstIterator = typename ForwardList::const_iterator;
@@ -113,9 +102,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 		ConstIterator pos;
 		ForwardList x;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, hamon::move(x))), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert( noexcept(v.splice_after(pos, hamon::move(x))), "");
-#endif
 	}
 	{
 		ForwardList v1{1,2,3,4,5};
@@ -171,7 +158,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using ConstIterator = typename ForwardList::const_iterator;
@@ -182,9 +169,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test3()
 		ForwardList x;
 		ConstIterator i;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, x, i)), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert( noexcept(v.splice_after(pos, x, i)), "");
-#endif
 	}
 	{
 		ForwardList v1{1,2,3,4,5};
@@ -213,7 +198,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test3()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using ConstIterator = typename ForwardList::const_iterator;
@@ -224,9 +209,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test4()
 		ForwardList x;
 		ConstIterator i;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, hamon::move(x), i)), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert( noexcept(v.splice_after(pos, hamon::move(x), i)), "");
-#endif
 	}
 	{
 		ForwardList v1{1,2,3,4,5};
@@ -255,7 +238,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test4()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test5()
+HAMON_CXX20_CONSTEXPR bool test5()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using ConstIterator = typename ForwardList::const_iterator;
@@ -267,9 +250,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test5()
 		ConstIterator first;
 		ConstIterator last;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, x, first, last)), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert( noexcept(v.splice_after(pos, x, first, last)), "");
-#endif
 	}
 	{
 		ForwardList v1{1,2,3,4,5};
@@ -362,7 +343,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test5()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test6()
+HAMON_CXX20_CONSTEXPR bool test6()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using ConstIterator = typename ForwardList::const_iterator;
@@ -374,9 +355,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test6()
 		ConstIterator first;
 		ConstIterator last;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, hamon::move(x), first, last)), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert( noexcept(v.splice_after(pos, hamon::move(x), first, last)), "");
-#endif
 	}
 	{
 		ForwardList v1{1,2,3,4,5};
@@ -474,33 +453,30 @@ FORWARD_LIST_TEST_CONSTEXPR bool test6()
 
 GTEST_TEST(ForwardListTest, SpliceAfterTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test2<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test2<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test2<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<float>());
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test3<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test3<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test3<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<float>());
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test4<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test4<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test4<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test4<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test4<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test4<float>());
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test5<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test5<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test5<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test5<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test5<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test5<float>());
 
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test6<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test6<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test6<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test6<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test6<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test6<float>());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace splice_after_test
 

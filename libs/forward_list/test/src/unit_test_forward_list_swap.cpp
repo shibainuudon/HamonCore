@@ -22,15 +22,6 @@ namespace hamon_forward_list_test
 namespace swap_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -73,7 +64,7 @@ struct MyAllocator
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using ForwardList = hamon::forward_list<T>;
 
@@ -123,7 +114,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Allocator = MyAllocator<T>;
 	using ForwardList = hamon::forward_list<T, Allocator>;
@@ -132,10 +123,8 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 		ForwardList v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert(!noexcept(v.swap(v)), "");
 		static_assert(!noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Allocator alloc1{10};
@@ -189,17 +178,14 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(ForwardListTest, SwapTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace swap_test
 

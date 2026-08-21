@@ -8,10 +8,6 @@
 #define HAMON_FORWARD_LIST_FORWARD_LIST_HPP
 
 #include <hamon/forward_list/forward_list_fwd.hpp>
-#include <hamon/forward_list/config.hpp>
-
-#if !defined(HAMON_USE_STD_FORWARD_LIST)
-
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
@@ -838,7 +834,5 @@ swap(forward_list<T, Allocator>& x, forward_list<T, Allocator>& y)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FORWARD_LIST_FORWARD_LIST_HPP

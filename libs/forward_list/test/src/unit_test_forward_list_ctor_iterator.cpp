@@ -20,15 +20,6 @@ namespace hamon_forward_list_test
 namespace ctor_iterator_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 struct S1
 {
 	int value;
@@ -75,7 +66,7 @@ struct MyAllocator
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, template <typename> class IteratorWrapper, typename Allocator>
-FORWARD_LIST_TEST_CONSTEXPR bool test_impl2(Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl2(Allocator const& alloc)
 {
 	using ForwardList = hamon::forward_list<T, Allocator>;
 	using Iterator = IteratorWrapper<T>;
@@ -122,7 +113,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test_impl2(Allocator const& alloc)
 }
 
 template <typename T, typename Allocator>
-FORWARD_LIST_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Allocator const& alloc)
 {
 	return
 		test_impl2<T, cpp17_input_iterator_wrapper>(alloc) &&
@@ -134,7 +125,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	hamon::allocator<T> alloc;
 	VERIFY(test_impl<T>(alloc));
@@ -142,7 +133,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 }
 
 template <typename T>
-FORWARD_LIST_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	MyAllocator<T> alloc;
 	VERIFY(test_impl<T>(alloc));
@@ -153,19 +144,16 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(ForwardListTest, CtorIteratorTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<S1>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<S1>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 	EXPECT_TRUE(test2<S1>());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace ctor_iterator_test
 

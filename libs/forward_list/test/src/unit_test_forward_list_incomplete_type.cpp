@@ -14,21 +14,12 @@ namespace hamon_forward_list_test
 namespace incomplete_type_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 struct S
 {
 	hamon::forward_list<S> cont;
 };
 
-FORWARD_LIST_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	S s;
 	s.cont.push_front(S{});
@@ -37,11 +28,8 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, IncompleteTypeTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace incomplete_type_test
 

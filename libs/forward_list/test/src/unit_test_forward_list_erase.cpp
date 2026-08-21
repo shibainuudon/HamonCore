@@ -20,18 +20,9 @@ namespace hamon_forward_list_test
 namespace erase_test
 {
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define FORWARD_LIST_TEST_CONSTEXPR             /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-FORWARD_LIST_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	{
 		hamon::forward_list<int> v = {3,1,4,5,2};
@@ -68,7 +59,7 @@ operator!=(Point const& lhs, Point const& rhs)
 	return !(lhs == rhs);
 }
 
-FORWARD_LIST_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	hamon::forward_list<Point> v
 	{
@@ -94,12 +85,9 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(ForwardListTest, EraseTest)
 {
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1());
-	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 }
-
-#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace erase_test
 
