@@ -130,10 +130,8 @@ bool test2()
 		Deque v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_DEQUE)
 		static_assert(!noexcept(v.swap(v)), "");
 		static_assert(!noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Allocator alloc1{10};

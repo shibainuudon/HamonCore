@@ -73,10 +73,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 	static_assert( hamon::is_constructible<Deque, Deque&&>::value, "");
 	static_assert( hamon::is_constructible<Deque, Deque&&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_DEQUE)
 	static_assert( hamon::is_nothrow_constructible<Deque, Deque&&>::value, "");
 	static_assert( hamon::is_nothrow_constructible<Deque, Deque&&, Allocator const&>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<Deque, Deque&&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Deque, Deque&&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Deque, Deque&&>::value, "");

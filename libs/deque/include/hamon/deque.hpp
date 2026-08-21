@@ -7,7 +7,6 @@
 #ifndef HAMON_DEQUE_HPP
 #define HAMON_DEQUE_HPP
 
-#include <hamon/deque/config.hpp>
 #include <hamon/deque/deque.hpp>
 #include <hamon/deque/deque_fwd.hpp>
 #include <hamon/deque/erase.hpp>

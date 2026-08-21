@@ -7,22 +7,6 @@
 #ifndef HAMON_DEQUE_ERASE_IF_HPP
 #define HAMON_DEQUE_ERASE_IF_HPP
 
-#include <hamon/deque/config.hpp>
-
-#if defined(HAMON_USE_STD_DEQUE) && \
-	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
-
-#include <deque>
-
-namespace hamon
-{
-
-using std::erase_if;
-
-}	// namespace hamon
-
-#else	// __cpp_lib_erase_if
-
 #include <hamon/deque/deque.hpp>
 #include <hamon/algorithm/remove_if.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -46,7 +30,5 @@ erase_if(hamon::deque<T, Allocator>& c, Predicate pred)
 }
 
 }	// namespace hamon
-
-#endif	// __cpp_lib_erase_if
 
 #endif // HAMON_DEQUE_ERASE_IF_HPP

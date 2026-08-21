@@ -8,10 +8,6 @@
 #define HAMON_DEQUE_DEQUE_HPP
 
 #include <hamon/deque/deque_fwd.hpp>
-#include <hamon/deque/config.hpp>
-
-#if !defined(HAMON_USE_STD_DEQUE)
-
 #include <hamon/deque/detail/deque_impl.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
@@ -787,7 +783,5 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 }	// namespace hamon
 
 HAMON_WARNING_POP()
-
-#endif
 
 #endif // HAMON_DEQUE_DEQUE_HPP

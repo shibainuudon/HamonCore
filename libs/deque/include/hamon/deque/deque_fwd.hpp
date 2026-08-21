@@ -7,22 +7,8 @@
 #ifndef HAMON_DEQUE_DEQUE_FWD_HPP
 #define HAMON_DEQUE_DEQUE_FWD_HPP
 
-#include <hamon/deque/config.hpp>
-
-#if defined(HAMON_USE_STD_DEQUE)
-
-#include <deque>
-
-namespace hamon
-{
-
-using std::deque;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/allocator.hpp>
+#include <hamon/memory_resource/polymorphic_allocator.hpp>
 
 namespace hamon
 {
@@ -32,13 +18,6 @@ namespace hamon
 template <typename T, typename Allocator = hamon::allocator<T>>
 class deque;
 
-}	// namespace hamon
-
-#endif
-
-#include <hamon/memory_resource/polymorphic_allocator.hpp>
-
-namespace hamon {
 namespace pmr {
 
 template <typename T>
