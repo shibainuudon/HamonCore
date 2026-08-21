@@ -18,9 +18,7 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR Bitset b1;
 		HAMON_CXX11_CONSTEXPR Bitset b2 = ~Bitset{};
 
-#if !defined(HAMON_USE_STD_BITSET)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b1.hash(), b2.hash());
-#endif
 
 		using Hash = std::hash<Bitset>;
 		Hash h;
@@ -34,14 +32,12 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR Bitset b3(1);
 		HAMON_CXX11_CONSTEXPR Bitset b4 = ~Bitset{};
 
-#if !defined(HAMON_USE_STD_BITSET)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b1.hash(), b2.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b1.hash(), b3.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b1.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b3.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b3.hash(), b4.hash());
-#endif
 
 		using Hash = std::hash<Bitset>;
 		Hash h;
@@ -60,14 +56,12 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR Bitset b3(0);
 		HAMON_CXX11_CONSTEXPR Bitset b4 = ~Bitset{};
 
-#if !defined(HAMON_USE_STD_BITSET)
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b1.hash(), b2.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b1.hash(), b3.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b1.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b3.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b2.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b3.hash(), b4.hash());
-#endif
 
 		using Hash = std::hash<Bitset>;
 		Hash h;
@@ -86,14 +80,12 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR Bitset b3("0000000000000000000000000000000000000000000000000000000000000001");
 		HAMON_CXX11_CONSTEXPR Bitset b4("0000000000000000000000000000000000000000000000000000000000000000");
 
-#if !defined(HAMON_USE_STD_BITSET)
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b1.hash(), b2.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b1.hash(), b3.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b1.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b3.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b3.hash(), b4.hash());
-#endif
 
 		using Hash = std::hash<Bitset>;
 		Hash h;

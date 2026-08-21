@@ -7,21 +7,6 @@
 #ifndef HAMON_BITSET_BITSET_HPP
 #define HAMON_BITSET_BITSET_HPP
 
-#include <hamon/bitset/config.hpp>
-
-#if defined(HAMON_USE_STD_BITSET)
-
-#include <bitset>
-
-namespace hamon
-{
-
-using std::bitset;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/any_of.hpp>
 #include <hamon/algorithm/all_of.hpp>
@@ -1223,7 +1208,5 @@ struct hash<hamon::bitset<N>>
 }	// namespace std
 
 HAMON_WARNING_POP()
-
-#endif
 
 #endif // HAMON_BITSET_BITSET_HPP
