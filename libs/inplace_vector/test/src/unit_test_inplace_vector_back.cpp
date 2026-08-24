@@ -32,10 +32,8 @@ HAMON_CXX14_CONSTEXPR bool test_impl_3()
 		InplaceVector const cv;
 		static_assert(hamon::is_same<decltype( v.back()), Reference>::value, "");
 		static_assert(hamon::is_same<decltype(cv.back()), ConstReference>::value, "");
-#if !defined(HAMON_USE_STD_INPLACE_VECTOR)
 		static_assert( noexcept( v.back()), "");
 		static_assert( noexcept(cv.back()), "");
-#endif
 	}
 	{
 		InplaceVector v{10,20,30};

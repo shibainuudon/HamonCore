@@ -28,9 +28,7 @@ HAMON_CXX14_CONSTEXPR bool test_impl_3()
 	{
 		InplaceVector v;
 		static_assert(hamon::is_same<decltype(v.pop_back()), void>::value, "");
-#if !defined(HAMON_USE_STD_INPLACE_VECTOR)
 		static_assert( noexcept(v.pop_back()), "");
-#endif
 	}
 	{
 		InplaceVector v{1,2,3};

@@ -8,18 +8,15 @@
 #define HAMON_INPLACE_VECTOR_INPLACE_VECTOR_HPP
 
 #include <hamon/inplace_vector/inplace_vector_fwd.hpp>
-#include <hamon/inplace_vector/config.hpp>
-
-#if !defined(HAMON_USE_STD_INPLACE_VECTOR)
-
 #include <hamon/inplace_vector/detail/inplace_vector_iterator.hpp>
 #include <hamon/inplace_vector/detail/inplace_vector_base.hpp>
-
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/ranges/move.hpp>
 #include <hamon/algorithm/ranges/rotate.hpp>
+#include <hamon/algorithm/remove.hpp>
+#include <hamon/algorithm/remove_if.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -35,6 +32,7 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -843,10 +841,38 @@ private:
 	}
 };
 
+// 23.3.14.6 Erasure[inplace.vector.erasure]
+
+template <typename T, hamon::size_t N, typename U = T>
+HAMON_CXX14_CONSTEXPR
+typename hamon::inplace_vector<T, N>::size_type
+erase(hamon::inplace_vector<T, N>& c, U const& value)
+{
+	using size_type = typename hamon::inplace_vector<T, N>::size_type;
+
+	// [inplace.vector.erasure]/1
+	auto it = hamon::remove(c.begin(), c.end(), value);
+	auto r = hamon::distance(it, c.end());
+	c.erase(it, c.end());
+	return static_cast<size_type>(r);
+}
+
+template <typename T, hamon::size_t N, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::inplace_vector<T, N>::size_type
+erase_if(hamon::inplace_vector<T, N>& c, Predicate pred)
+{
+	using size_type = typename hamon::inplace_vector<T, N>::size_type;
+
+	// [inplace.vector.erasure]/2
+	auto it = hamon::remove_if(c.begin(), c.end(), pred);
+	auto r = hamon::distance(it, c.end());
+	c.erase(it, c.end());
+	return static_cast<size_type>(r);
+}
+
 }	// namespace hamon
 
 HAMON_WARNING_POP()
-
-#endif	// !defined(HAMON_USE_STD_INPLACE_VECTOR)
 
 #endif // HAMON_INPLACE_VECTOR_INPLACE_VECTOR_HPP

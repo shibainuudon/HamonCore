@@ -34,10 +34,8 @@ HAMON_CXX14_CONSTEXPR bool test_impl_3()
 		SizeType const n{};
 		static_assert(hamon::is_same<decltype( v[n]), Reference>::value, "");
 		static_assert(hamon::is_same<decltype(cv[n]), ConstReference>::value, "");
-#if !defined(HAMON_USE_STD_INPLACE_VECTOR)
 		static_assert( noexcept( v[n]), "");
 		static_assert( noexcept(cv[n]), "");
-#endif
 	}
 	{
 		InplaceVector v{10,20,30};
