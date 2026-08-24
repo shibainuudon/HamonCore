@@ -28,18 +28,10 @@ namespace hamon_flat_multiset_test
 namespace equal_range_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 
@@ -48,13 +40,9 @@ FLAT_SET_TEST_CONSTEXPR bool test()
 		using Iterator = typename Set::iterator;
 		using ConstIterator = typename Set::const_iterator;
 
-#if defined(HAMON_USE_STD_FLAT_SET)
-		using Result = std::pair<Iterator, Iterator>;
-		using ConstResult = std::pair<ConstIterator, ConstIterator>;
-#else
 		using Result = hamon::pair<Iterator, Iterator>;
 		using ConstResult = hamon::pair<ConstIterator, ConstIterator>;
-#endif
+
 		static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().equal_range(hamon::declval<Key const&>())), ConstResult>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<Set&>().equal_range(hamon::declval<Key const&>())), Result>::value, "");
 		static_assert(!noexcept(hamon::declval<Set const&>().equal_range(hamon::declval<Key const&>())), "");
@@ -88,13 +76,9 @@ FLAT_SET_TEST_CONSTEXPR bool test()
 		using Iterator = typename Set::iterator;
 		using ConstIterator = typename Set::const_iterator;
 
-#if defined(HAMON_USE_STD_FLAT_SET)
-		using Result = std::pair<Iterator, Iterator>;
-		using ConstResult = std::pair<ConstIterator, ConstIterator>;
-#else
 		using Result = hamon::pair<Iterator, Iterator>;
 		using ConstResult = hamon::pair<ConstIterator, ConstIterator>;
-#endif
+
 		static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().equal_range(hamon::declval<Key const&>())), ConstResult>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<Set&>().equal_range(hamon::declval<Key const&>())), Result>::value, "");
 		static_assert(!noexcept(hamon::declval<Set const&>().equal_range(hamon::declval<Key const&>())), "");
@@ -132,9 +116,9 @@ FLAT_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultisetTest, EqualRangeTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>>()));
 
 	{
 		hamon::flat_multiset<int> fs = {3, 1, 4, 1, 3};
@@ -149,9 +133,6 @@ GTEST_TEST(FlatMultisetTest, EqualRangeTest)
 		EXPECT_EQ("3, 3, ", ss.str());
 	}
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace equal_range_test
 

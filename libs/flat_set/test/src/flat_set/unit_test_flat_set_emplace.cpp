@@ -30,28 +30,16 @@ namespace hamon_flat_set_test
 namespace emplace_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using Set = hamon::flat_set<Key, Compare, KeyContainer>;
 	using ValueType = typename Set::value_type;
 	using Iterator = typename Set::iterator;
-#if defined(HAMON_USE_STD_FLAT_SET)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().emplace()), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().emplace(hamon::declval<ValueType const&>())), Result>::value, "");
@@ -175,7 +163,7 @@ struct S1
 	}
 };
 
-FLAT_SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::flat_set<S1>;
 
@@ -222,7 +210,7 @@ FLAT_SET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename KeyContainer>
-FLAT_SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Key = typename KeyContainer::value_type;
 	using Set = hamon::flat_set<Key, hamon::less<Key>, KeyContainer>;
@@ -334,15 +322,15 @@ void test_exceptions()
 
 GTEST_TEST(FlatSetTest, EmplaceTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::less<>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
 
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<MinSequenceContainer<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<MinSequenceContainer<int>>()));
 
 	test_exceptions<hamon::vector>();
 	test_exceptions<hamon::deque>();
@@ -377,9 +365,6 @@ GTEST_TEST(FlatSetTest, EmplaceTest)
 		EXPECT_EQ("AAA, BBBB, CCCCC, ", ss.str());
 	}
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace emplace_test
 

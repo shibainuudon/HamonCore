@@ -27,18 +27,10 @@ namespace hamon_flat_multimap_test
 namespace equal_range_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename MappedContainer>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -48,13 +40,9 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		using Iterator = typename Map::iterator;
 		using ConstIterator = typename Map::const_iterator;
 
-#if defined(HAMON_USE_STD_FLAT_MAP)
-		using Result = std::pair<Iterator, Iterator>;
-		using ConstResult = std::pair<ConstIterator, ConstIterator>;
-#else
 		using Result = hamon::pair<Iterator, Iterator>;
 		using ConstResult = hamon::pair<ConstIterator, ConstIterator>;
-#endif
+
 		static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().equal_range(hamon::declval<Key const&>())), ConstResult>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<Map&>().equal_range(hamon::declval<Key const&>())), Result>::value, "");
 		static_assert(!noexcept(hamon::declval<Map const&>().equal_range(hamon::declval<Key const&>())), "");
@@ -88,13 +76,9 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		using Iterator = typename Map::iterator;
 		using ConstIterator = typename Map::const_iterator;
 
-#if defined(HAMON_USE_STD_FLAT_MAP)
-		using Result = std::pair<Iterator, Iterator>;
-		using ConstResult = std::pair<ConstIterator, ConstIterator>;
-#else
 		using Result = hamon::pair<Iterator, Iterator>;
 		using ConstResult = hamon::pair<ConstIterator, ConstIterator>;
-#endif
+
 		static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().equal_range(hamon::declval<Key const&>())), ConstResult>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<Map&>().equal_range(hamon::declval<Key const&>())), Result>::value, "");
 		static_assert(!noexcept(hamon::declval<Map const&>().equal_range(hamon::declval<Key const&>())), "");
@@ -132,11 +116,11 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultimapTest, EqualRangeTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
 
 	{
 		hamon::flat_multimap<hamon::string, int> fm =
@@ -158,9 +142,6 @@ GTEST_TEST(FlatMultimapTest, EqualRangeTest)
 		EXPECT_TRUE(it == ret.second);
 	}
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace equal_range_test
 

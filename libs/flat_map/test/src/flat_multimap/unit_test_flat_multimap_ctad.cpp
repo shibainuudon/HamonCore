@@ -79,18 +79,10 @@ namespace hamon_flat_multimap_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare>
-FLAT_MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -179,7 +171,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare, template <typename> class IteratorWrapper>
-FLAT_MAP_TEST_CONSTEXPR bool test2_impl()
+HAMON_CXX20_CONSTEXPR bool test2_impl()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -225,7 +217,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test2_impl()
 }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare>
-FLAT_MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, cpp17_input_iterator_wrapper>());
 //	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, input_iterator_wrapper>());
@@ -238,7 +230,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test2()
 }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare, template <typename> class RangeWrapper>
-FLAT_MAP_TEST_CONSTEXPR bool test3_impl()
+HAMON_CXX20_CONSTEXPR bool test3_impl()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -287,7 +279,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test3_impl()
 }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare>
-FLAT_MAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_input_range>());
 	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_forward_range>());
@@ -304,7 +296,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test3()
 }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare>
-FLAT_MAP_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -375,33 +367,30 @@ FLAT_MAP_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(FlatMultimapTest, CtadTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
 
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
 
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
 
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

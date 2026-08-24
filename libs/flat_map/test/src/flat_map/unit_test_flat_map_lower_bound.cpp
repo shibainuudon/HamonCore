@@ -28,18 +28,10 @@ namespace hamon_flat_map_test
 namespace lower_bound_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename MappedContainer>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -122,11 +114,11 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMapTest, LowerBoundTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
 
 	{
 		hamon::flat_map<hamon::string, int> fm =
@@ -148,9 +140,6 @@ GTEST_TEST(FlatMapTest, LowerBoundTest)
 		EXPECT_EQ("B:1, C:4, D:5, ", ss.str());
 	}
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace lower_bound_test
 

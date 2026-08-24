@@ -78,18 +78,10 @@ namespace hamon_flat_multiset_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Key = typename KeyContainer::value_type;
 	using DefaultCompare = typename hamon::flat_multiset<Key>::key_compare;
@@ -169,7 +161,7 @@ FLAT_SET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename KeyContainer, typename Compare, template <typename> class IteratorWrapper>
-FLAT_SET_TEST_CONSTEXPR bool test2_impl()
+HAMON_CXX20_CONSTEXPR bool test2_impl()
 {
 	using Key = typename KeyContainer::value_type;
 	using ValueType = typename hamon::flat_multiset<Key>::value_type;
@@ -214,7 +206,7 @@ FLAT_SET_TEST_CONSTEXPR bool test2_impl()
 }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_impl<KeyContainer, Compare, cpp17_input_iterator_wrapper>());
 //	VERIFY(test2_impl<KeyContainer, Compare, input_iterator_wrapper>());
@@ -227,7 +219,7 @@ FLAT_SET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename KeyContainer, typename Compare, template <typename> class RangeWrapper>
-FLAT_SET_TEST_CONSTEXPR bool test3_impl()
+HAMON_CXX20_CONSTEXPR bool test3_impl()
 {
 	using Key = typename KeyContainer::value_type;
 	using ValueType = typename hamon::flat_multiset<Key>::value_type;
@@ -275,7 +267,7 @@ FLAT_SET_TEST_CONSTEXPR bool test3_impl()
 }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	VERIFY(test3_impl<KeyContainer, Compare, test_input_range>());
 	VERIFY(test3_impl<KeyContainer, Compare, test_forward_range>());
@@ -292,7 +284,7 @@ FLAT_SET_TEST_CONSTEXPR bool test3()
 }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Key = typename KeyContainer::value_type;
 
@@ -361,25 +353,22 @@ FLAT_SET_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(FlatMultisetTest, CtadTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<double>, hamon::greater<double>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<UseAllocContainer<int>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<double>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<UseAllocContainer<int>, hamon::less<>>()));
 
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<double>, hamon::greater<double>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<UseAllocContainer<int>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<double>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<UseAllocContainer<int>, hamon::less<>>()));
 
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<double>, hamon::greater<double>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<UseAllocContainer<int>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<double>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<UseAllocContainer<int>, hamon::less<>>()));
 
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<double>, hamon::greater<double>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test4<UseAllocContainer<int>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<double>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4<UseAllocContainer<int>, hamon::less<>>()));
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

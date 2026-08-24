@@ -8,11 +8,6 @@
 #define HAMON_FLAT_SET_FLAT_SET_HPP
 
 #include <hamon/flat_set/flat_set_fwd.hpp>
-#include <hamon/flat_set/config.hpp>
-#include <hamon/container/sorted_unique.hpp>
-
-#if !defined(HAMON_USE_STD_FLAT_SET)
-
 #include <hamon/flat_set/detail/flat_set_iterator.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/ranges/adjacent_find.hpp>
@@ -33,6 +28,7 @@
 #include <hamon/container/detail/has_is_transparent.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/container/detail/reserve_append_size.hpp>
+#include <hamon/container/sorted_unique.hpp>
 #include <hamon/detail/exception_guard.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/detail/scope_guard.hpp>
@@ -1351,7 +1347,5 @@ struct uses_allocator<hamon::flat_set<Key, Compare, KeyContainer>, Allocator>
 {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_FLAT_SET_FLAT_SET_HPP

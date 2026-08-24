@@ -27,18 +27,10 @@ namespace hamon_flat_multiset_test
 namespace op_assign_init_list_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using Set = hamon::flat_multiset<Key, Compare, KeyContainer>;
@@ -85,9 +77,9 @@ FLAT_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultisetTest, OpAssignInitListTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::less<char>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::less<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
 
 	{
 		std::initializer_list<hamon::string> elems = {"Alice", "Bob", "Carol", "Alice"};
@@ -103,9 +95,6 @@ GTEST_TEST(FlatMultisetTest, OpAssignInitListTest)
 		EXPECT_EQ("Alice, Alice, Bob, Carol, ", ss.str());
 	}
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace op_assign_init_list_test
 

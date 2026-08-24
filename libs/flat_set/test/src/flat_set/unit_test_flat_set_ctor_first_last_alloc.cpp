@@ -32,18 +32,10 @@ namespace hamon_flat_set_test
 namespace ctor_first_last_alloc_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename Compare, template <typename> class IteratorWrapper>
-FLAT_SET_TEST_CONSTEXPR bool test_impl()
+HAMON_CXX20_CONSTEXPR bool test_impl()
 {
 	using Key = typename KeyContainer::value_type;
 	using Set = hamon::flat_set<Key, Compare, KeyContainer>;
@@ -167,7 +159,7 @@ FLAT_SET_TEST_CONSTEXPR bool test_impl()
 }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	VERIFY(test_impl<KeyContainer, Compare, cpp17_input_iterator_wrapper>());
 //	VERIFY(test_impl<KeyContainer, Compare, input_iterator_wrapper>());
@@ -183,13 +175,10 @@ FLAT_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatSetTest, CtorFirstLastAllocTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::greater<>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<UseAllocContainer<int>, hamon::less<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::greater<>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<UseAllocContainer<int>, hamon::less<>>()));
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace ctor_first_last_alloc_test
 

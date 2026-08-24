@@ -26,28 +26,16 @@ namespace hamon_flat_set_test
 namespace insert_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename Compare>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using Set = hamon::flat_set<Key, Compare, KeyContainer>;
 	using ValueType = typename Set::value_type;
 	using Iterator = typename Set::iterator;
-#if defined(HAMON_USE_STD_FLAT_SET)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().insert(hamon::declval<ValueType const&>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().insert(hamon::declval<ValueType&&>())), Result>::value, "");
@@ -158,9 +146,9 @@ void test_exceptions()
 
 GTEST_TEST(FlatSetTest, InsertTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::greater<char>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::greater<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
 
 	test_exceptions<hamon::vector>();
 	test_exceptions<hamon::deque>();
@@ -187,9 +175,6 @@ GTEST_TEST(FlatSetTest, InsertTest)
 		EXPECT_EQ("1, 2, 3, 4, 5, 6, 7, ", ss.str());
 	}
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace insert_test
 

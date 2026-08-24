@@ -26,14 +26,6 @@ namespace hamon_flat_multimap_test
 namespace contains_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Map, typename K, typename = void>
@@ -45,7 +37,7 @@ struct is_contains_invocable<Map, K, hamon::void_t<decltype(hamon::declval<Map>(
 	: public hamon::true_type {};
 
 template <typename KeyContainer, typename MappedContainer>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -91,11 +83,11 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultimapTest, ContainsHeterogeneousTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::vector<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::deque<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::vector<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::deque<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>, MinSequenceContainer<long>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::vector<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::deque<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::vector<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::deque<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>, MinSequenceContainer<long>>()));
 
 	{
 		hamon::flat_multimap<hamon::string, int, hamon::less<>> fm =
@@ -114,9 +106,6 @@ GTEST_TEST(FlatMultimapTest, ContainsHeterogeneousTest)
 		EXPECT_FALSE(fm.contains((const char*)"Eve"));
 	}
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace contains_heterogeneous_test
 

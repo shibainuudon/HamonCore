@@ -27,14 +27,6 @@ namespace hamon_flat_map_test
 namespace try_emplace_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Void, typename T, typename... Args>
@@ -50,7 +42,7 @@ template <typename T, typename... Args>
 using is_try_emplace_invocable = is_try_emplace_invocable_impl<void, T, Args...>;
 
 template <typename KeyContainer, typename MappedContainer>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -70,11 +62,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 	using Map = Map1;
 	using Iterator = typename Map::iterator;
-#if defined(HAMON_USE_STD_FLAT_MAP)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().try_emplace(hamon::declval<int const&>(), hamon::declval<T>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().try_emplace(hamon::declval<int&&>(), hamon::declval<T>())), Result>::value, "");
@@ -253,18 +241,15 @@ void test_exceptions()
 
 GTEST_TEST(FlatMapTest, TryEmplaceHeterogeneousTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::vector<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::deque<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::vector<long>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::deque<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>, MinSequenceContainer<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::vector<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>, hamon::deque<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::vector<long>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::deque<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>, MinSequenceContainer<char>>()));
 
 	test_exceptions<hamon::vector, hamon::vector>();
 	test_exceptions<hamon::deque, hamon::deque>();
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace try_emplace_heterogeneous_test
 

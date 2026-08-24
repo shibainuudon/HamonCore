@@ -21,25 +21,15 @@ namespace hamon_flat_multimap_test
 namespace ctor_default_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::flat_multimap<Key, T>;
 
 	static_assert( hamon::is_default_constructible<Map>::value, "");
-#if !defined(HAMON_USE_STD_FLAT_MAP)
 	//static_assert(!hamon::is_nothrow_default_constructible<Map>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_default_constructible<Map>::value, "");
 	static_assert(!hamon::is_trivially_default_constructible<Map>::value, "");
 
@@ -72,19 +62,16 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultimapTest, CtorDefaultTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace ctor_default_test
 

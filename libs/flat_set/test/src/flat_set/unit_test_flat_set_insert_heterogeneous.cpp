@@ -29,29 +29,17 @@ namespace hamon_flat_set_test
 namespace insert_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <template <typename...> class TKeyContainer>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Compare = hamon::less<>;
 	using KeyContainer = TKeyContainer<Key>;
 	using Set = hamon::flat_set<Key, Compare, KeyContainer>;
 	using Iterator = typename Set::iterator;
-#if defined(HAMON_USE_STD_FLAT_SET)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().insert(hamon::declval<int>())), Result>::value, "");
 	static_assert(!noexcept(hamon::declval<Set&>().insert(hamon::declval<int>())), "");
@@ -128,16 +116,13 @@ void test_exceptions()
 
 GTEST_TEST(FlatSetTest, InsertHeterogeneousTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer>()));
 
 	test_exceptions<hamon::vector>();
 	test_exceptions<hamon::deque>();
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace insert_heterogeneous_test
 

@@ -29,18 +29,10 @@ namespace hamon_flat_map_test
 namespace try_emplace_hint_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
@@ -134,14 +126,8 @@ struct S1
 	constexpr S1(int i, int j) : x(i), y(j) {}
 };
 
-FLAT_MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
-#if defined(HAMON_USE_STD_FLAT_MAP)
-	namespace ns = std;
-#else
-	namespace ns = hamon;
-#endif
-
 	using Map = hamon::flat_map<int, S1>;
 	using ConstIterator = typename Map::const_iterator;
 
@@ -151,14 +137,14 @@ FLAT_MAP_TEST_CONSTEXPR bool test2()
 	static_assert( is_try_emplace_hint_invocable<Map&, ConstIterator, int const&, S1>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map&, ConstIterator, int const&, int>::value, "");
 	static_assert( is_try_emplace_hint_invocable<Map&, ConstIterator, int const&, int, int>::value, "");
-	static_assert(!is_try_emplace_hint_invocable<Map&, ConstIterator, ns::piecewise_construct_t, ns::tuple<int>, ns::tuple<int, int>>::value, "");
+	static_assert(!is_try_emplace_hint_invocable<Map&, ConstIterator, hamon::piecewise_construct_t, hamon::tuple<int>, hamon::tuple<int, int>>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, int&&, S1 const&>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, int&&, int>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, int&&, int, int>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, int const&, S1>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, int const&, int>::value, "");
 	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, int const&, int, int>::value, "");
-	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, ns::piecewise_construct_t, ns::tuple<int>, ns::tuple<int, int>>::value, "");
+	static_assert(!is_try_emplace_hint_invocable<Map const&, ConstIterator, hamon::piecewise_construct_t, hamon::tuple<int>, hamon::tuple<int, int>>::value, "");
 
 	Map v;
 
@@ -306,20 +292,17 @@ void test_exceptions()
 
 GTEST_TEST(FlatMapTest, TryEmplaceHintTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::greater<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::greater<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
 
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 	test_exceptions<hamon::vector, hamon::vector>();
 	test_exceptions<hamon::deque, hamon::deque>();
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace try_emplace_hint_test
 

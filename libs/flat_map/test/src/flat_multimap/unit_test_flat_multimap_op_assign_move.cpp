@@ -21,18 +21,10 @@ namespace hamon_flat_multimap_test
 namespace op_assign_move_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <template <typename...> class TKeyContainer, template <typename...> class TMappedContainer>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	{
 		using Key = int;
@@ -197,10 +189,10 @@ void test_exceptions()
 
 GTEST_TEST(FlatMultimapTest, OpAssignMoveTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::vector>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::deque>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque, hamon::vector>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque, hamon::deque>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::vector>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::deque>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque, hamon::vector>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque, hamon::deque>()));
 
 	EXPECT_TRUE((test<std::vector, std::vector>()));
 	EXPECT_TRUE((test<std::vector, std::deque>()));
@@ -210,9 +202,6 @@ GTEST_TEST(FlatMultimapTest, OpAssignMoveTest)
 	test_exceptions<hamon::vector, hamon::vector>();
 	test_exceptions<hamon::deque, hamon::deque>();
 }
-
-#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_MAP_TEST_CONSTEXPR
 
 }	// namespace op_assign_move_test
 

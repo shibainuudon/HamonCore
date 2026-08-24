@@ -8,11 +8,6 @@
 #define HAMON_FLAT_MAP_FLAT_MULTIMAP_HPP
 
 #include <hamon/flat_map/flat_multimap_fwd.hpp>
-#include <hamon/flat_map/config.hpp>
-#include <hamon/container/sorted_equivalent.hpp>
-
-#if !defined(HAMON_USE_STD_FLAT_MAP)
-
 #include <hamon/flat_map/detail/flat_map_iterator.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
@@ -36,6 +31,7 @@
 #include <hamon/container/detail/range_key_type.hpp>
 #include <hamon/container/detail/range_mapped_type.hpp>
 #include <hamon/container/detail/reserve_append_size.hpp>
+#include <hamon/container/sorted_equivalent.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/detail/exception_guard.hpp>
@@ -1603,7 +1599,5 @@ struct uses_allocator<hamon::flat_multimap<Key, T, Compare, KeyContainer, Mapped
 {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_FLAT_MAP_FLAT_MULTIMAP_HPP

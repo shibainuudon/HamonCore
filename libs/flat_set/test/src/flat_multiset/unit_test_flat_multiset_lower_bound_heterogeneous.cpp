@@ -28,14 +28,6 @@ namespace hamon_flat_multiset_test
 namespace lower_bound_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Set, typename K, typename = void>
@@ -47,7 +39,7 @@ struct is_lower_bound_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Se
 	: public hamon::true_type {};
 
 template <typename KeyContainer>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using Set1 = hamon::flat_multiset<Key, hamon::less<>, KeyContainer>;
@@ -136,9 +128,9 @@ FLAT_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultisetTest, LowerBoundHeterogeneousTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<TransparentKey>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>>()));
 
 	{
 		hamon::flat_multiset<hamon::string, hamon::less<>> fs = {
@@ -160,9 +152,6 @@ GTEST_TEST(FlatMultisetTest, LowerBoundHeterogeneousTest)
 		EXPECT_EQ("Bob, Carol, David, ", ss.str());
 	}
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace lower_bound_heterogeneous_test
 

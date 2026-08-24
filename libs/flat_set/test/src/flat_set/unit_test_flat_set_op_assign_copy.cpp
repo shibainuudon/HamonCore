@@ -20,18 +20,10 @@ namespace hamon_flat_set_test
 namespace op_assign_copy_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_SET)
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define FLAT_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <template <typename...> class TKeyContainer>
-FLAT_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	{
 		using Key = int;
@@ -307,8 +299,8 @@ void test_exceptions()
 
 GTEST_TEST(FlatSetTest, OpAssignCopyTest)
 {
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector>()));
-	FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque>()));
 
 	EXPECT_TRUE((test<std::vector>()));
 	EXPECT_TRUE((test<std::deque>()));
@@ -316,9 +308,6 @@ GTEST_TEST(FlatSetTest, OpAssignCopyTest)
 	test_exceptions<hamon::vector>();
 	test_exceptions<hamon::deque>();
 }
-
-#undef FLAT_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef FLAT_SET_TEST_CONSTEXPR
 
 }	// namespace op_assign_copy_test
 
