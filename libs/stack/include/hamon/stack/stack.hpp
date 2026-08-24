@@ -8,10 +8,6 @@
 #define HAMON_STACK_STACK_HPP
 
 #include <hamon/stack/stack_fwd.hpp>
-#include <hamon/stack/config.hpp>
-
-#if !defined(HAMON_USE_STD_STACK)
-
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
@@ -408,7 +404,5 @@ struct uses_allocator<hamon::stack<T, Container>, Alloc>
 	: uses_allocator<Container, Alloc>::type {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_STACK_STACK_HPP

@@ -166,17 +166,11 @@ GTEST_TEST(StackTest, CtadTest)
 	test1<int>();
 	test1<float>();
 
-#if !defined(HAMON_USE_STD_STACK) || \
-	(defined(__cpp_lib_adaptor_iterator_pair_constructor) && (__cpp_lib_adaptor_iterator_pair_constructor >= 202106L))
 	test2<int>();
 	test2<float>();
-#endif
 
-#if !defined(HAMON_USE_STD_STACK) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 	test3<int>();
 	test3<float>();
-#endif
 }
 
 }	// namespace ctad_test

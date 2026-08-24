@@ -21,17 +21,13 @@
 #include "iterator_test.hpp"
 #include "stack_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_STACK) || \
-	(defined(__cpp_lib_adaptor_iterator_pair_constructor) && (__cpp_lib_adaptor_iterator_pair_constructor >= 202106L))
-
 namespace hamon_stack_test
 {
 
 namespace ctor_iterator_alloc_test
 {
 
-#if !defined(HAMON_USE_STD_STACK) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define STACK_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define STACK_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -49,11 +45,9 @@ STACK_TEST_CONSTEXPR bool test_impl()
 	using Alloc = TestAllocator<T>;
 
 	static_assert( hamon::is_constructible<Stack, Iterator, Iterator, Alloc const&>::value, "");
-#if !defined(HAMON_USE_STD_STACK)
 	static_assert(
 		hamon::is_nothrow_constructible<Stack,     Iterator, Iterator, Alloc const&>::value ==
 		hamon::is_nothrow_constructible<Container, Iterator, Iterator, Alloc const&>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<Stack, Iterator, Iterator, Alloc const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Stack, Iterator, Iterator, Alloc const&>::value, "");
 
@@ -109,5 +103,3 @@ GTEST_TEST(StackTest, CtorIteratorAllocTest)
 }	// namespace ctor_iterator_alloc_test
 
 }	// namespace hamon_stack_test
-
-#endif

@@ -17,17 +17,13 @@
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
-#if !defined(HAMON_USE_STD_STACK) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 namespace hamon_stack_test
 {
 
 namespace push_range_test
 {
 
-#if !defined(HAMON_USE_STD_STACK) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define STACK_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define STACK_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -46,10 +42,8 @@ STACK_TEST_CONSTEXPR bool test_impl()
 	static_assert(hamon::is_same<decltype(hamon::declval<Stack&>().push_range(hamon::declval<Range const&>())), void>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Stack&>().push_range(hamon::declval<Range&&>())), void>::value, "");
 
-#if !defined(HAMON_USE_STD_STACK)
 	static_assert(!noexcept(hamon::declval<Stack&>().push_range(hamon::declval<Range const&>())), "");
 	static_assert(!noexcept(hamon::declval<Stack&>().push_range(hamon::declval<Range&&>())), "");
-#endif
 
 	Stack s;
 	VERIFY(s.empty());
@@ -119,5 +113,3 @@ GTEST_TEST(StackTest, PushRangeTest)
 }	// namespace push_range_test
 
 }	// namespace hamon_stack_test
-
-#endif
