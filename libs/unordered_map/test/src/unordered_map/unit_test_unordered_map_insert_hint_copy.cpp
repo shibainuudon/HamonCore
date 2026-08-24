@@ -20,18 +20,10 @@ namespace hamon_unordered_map_test
 namespace insert_hint_copy_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::unordered_map<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -107,7 +99,7 @@ struct S1
 	S1& operator=(S1 const&) = delete;
 };
 
-UNORDERED_MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::unordered_map<int, S1>;
 	using ValueType = typename Map::value_type;
@@ -166,17 +158,17 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(UnorderedMapTest, InsertHintCopyTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -195,7 +187,7 @@ GTEST_TEST(UnorderedMapTest, InsertHintCopyTest)
 			v.insert(v.cend(), hamon::move(x));
 			EXPECT_EQ(1u, v.size());
 		}
-#if !defined(HAMON_USE_STD_UNORDERED_MAP)	// 要素が挿入されないときに一時オブジェクトが作成されるかどうかは実装依存
+#if 1	// 要素が挿入されないときに一時オブジェクトが作成されるかどうかは実装依存
 		{
 			ValueType const x{1, ThrowOnCopy{10}};
 			EXPECT_NO_THROW(v.insert(v.cend(), x));
@@ -205,9 +197,6 @@ GTEST_TEST(UnorderedMapTest, InsertHintCopyTest)
 	}
 #endif
 }
-
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
 
 }	// namespace insert_hint_copy_test
 

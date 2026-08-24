@@ -19,27 +19,17 @@ namespace hamon_unordered_map_test
 namespace key_eq_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::unordered_map<Key, T, hamon::hash<Key>, TestEqualTo<Key>>;
 	using Hasher = typename Map::hasher;
 	using KeyEqual = typename Map::key_equal;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().key_eq()), KeyEqual>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MAP)
 	static_assert( noexcept(hamon::declval<Map const&>().key_eq()), "");
-#endif
 
 	KeyEqual pred1{42};
 	KeyEqual pred2{43};
@@ -61,19 +51,16 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMapTest, KeyEqTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 }
-
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
 
 }	// namespace key_eq_test
 

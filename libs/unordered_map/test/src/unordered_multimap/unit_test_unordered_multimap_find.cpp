@@ -20,18 +20,10 @@ namespace hamon_unordered_multimap_test
 namespace find_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using Iterator = typename Map::iterator;
@@ -39,10 +31,8 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().find(hamon::declval<Key const&>())), Iterator>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().find(hamon::declval<Key const&>())), ConstIterator>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 	//static_assert( noexcept(hamon::declval<Map&>().find(hamon::declval<Key const&>())), "");
 	//static_assert( noexcept(hamon::declval<Map const&>().find(hamon::declval<Key const&>())), "");
-#endif
 
 	{
 		Map v
@@ -101,9 +91,8 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 	{
 		using Map = hamon::unordered_multimap<Key, T, NoThrowHash<Key>, NoThrowEqualTo<Key>>;
 		static_assert( noexcept(hamon::declval<Map&>().find(hamon::declval<Key const&>())), "");
@@ -124,7 +113,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test_noexcept()
 		static_assert(!noexcept(hamon::declval<Map&>().find(hamon::declval<Key const&>())), "");
 		static_assert(!noexcept(hamon::declval<Map const&>().find(hamon::declval<Key const&>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -133,29 +121,26 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedMultimapTest, FindTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<float, float>()));
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace find_test
 

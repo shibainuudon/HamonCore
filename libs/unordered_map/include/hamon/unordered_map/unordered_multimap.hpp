@@ -8,12 +8,7 @@
 #define HAMON_UNORDERED_MAP_UNORDERED_MULTIMAP_HPP
 
 #include <hamon/unordered_map/unordered_multimap_fwd.hpp>
-#include <hamon/unordered_map/config.hpp>
-
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
-
 #include <hamon/unordered_map/unordered_map_fwd.hpp>
-
 #include <hamon/algorithm/is_permutation.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -1371,8 +1366,29 @@ swap(
 	x.swap(y);
 }
 
-}	// namespace hamon
+// 23.5.4.4 Erasure[unord.multimap.erasure]
 
-#endif
+template <typename K, typename T, typename H, typename P, typename A, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename unordered_multimap<K, T, H, P, A>::size_type
+erase_if(unordered_multimap<K, T, H, P, A>& c, Predicate pred)
+{
+	// [unord.multimap.erasure]/1
+	auto original_size = c.size();
+	for (auto i = c.begin(), last = c.end(); i != last; )
+	{
+		if (pred(*i))
+		{
+			i = c.erase(i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return original_size - c.size();
+}
+
+}	// namespace hamon
 
 #endif // HAMON_UNORDERED_MAP_UNORDERED_MULTIMAP_HPP

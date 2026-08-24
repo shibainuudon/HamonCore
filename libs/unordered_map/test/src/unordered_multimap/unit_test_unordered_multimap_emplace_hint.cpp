@@ -23,18 +23,10 @@ namespace hamon_unordered_multimap_test
 namespace emplace_hint_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -129,21 +121,15 @@ struct S1
 	S1& operator=(S1 const&) = delete;
 };
 
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
-#if defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
-	namespace ns = std;
-#else
-	namespace ns = hamon;
-#endif
-
 	hamon::unordered_multimap<int, S1> v;
 
 	{
 		auto r = v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(10, 20));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(10, 20));
 		VERIFY(r->first == 1);
 		VERIFY(r->second.x == 10);
 		VERIFY(r->second.y == 20);
@@ -152,9 +138,9 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace_hint(v.begin(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(30, 40));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(30, 40));
 		VERIFY(r->first == 1);
 		VERIFY(r->second.x == 30);
 		VERIFY(r->second.y == 40);
@@ -163,9 +149,9 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace_hint(v.begin(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(50, 60));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(50, 60));
 		VERIFY(r->first == 2);
 		VERIFY(r->second.x == 50);
 		VERIFY(r->second.y == 60);
@@ -180,73 +166,64 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(UnorderedMultimapTest, EmplaceHintTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-#if defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
-		namespace ns = std;
-#else
-		namespace ns = hamon;
-#endif
-
 		hamon::unordered_multimap<int, ThrowIfNegative> v;
 		EXPECT_TRUE(v.empty());
 
 		EXPECT_THROW(v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(-1)),
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(-1)),
 			ThrowIfNegative::Exception);
 		EXPECT_EQ(0u, v.size());
 
 		v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(10));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 
 		v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(11));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(11));
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_THROW(v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(3),
-			ns::forward_as_tuple(-10)),
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(3),
+			hamon::forward_as_tuple(-10)),
 			ThrowIfNegative::Exception);
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_THROW(v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(-10)),
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(-10)),
 			ThrowIfNegative::Exception);
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_NO_THROW(v.emplace_hint(v.end(),
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(12)));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(12)));
 		EXPECT_EQ(3u, v.size());
 	}
 #endif
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace emplace_hint_test
 

@@ -24,18 +24,10 @@ namespace hamon_unordered_multimap_test
 namespace op_assign_move_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using ValueType = typename hamon::unordered_multimap<Key, T>::value_type;
 	using Hasher = TestHash<Key>;
@@ -46,9 +38,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 		using Map = hamon::unordered_multimap<Key, T, Hasher, KeyEqual, Allocator>;
 
 		static_assert( hamon::is_move_assignable<Map>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 		static_assert( hamon::is_nothrow_move_assignable<Map>::value, "");
-#endif
 		static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
 
 		Hasher h1{1};
@@ -102,9 +92,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 		using Map = hamon::unordered_multimap<Key, T, Hasher, KeyEqual, Allocator>;
 
 		static_assert( hamon::is_move_assignable<Map>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 		static_assert(!hamon::is_nothrow_move_assignable<Map>::value, "");
-#endif
 		static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
 
 		Hasher h1{1};
@@ -158,9 +146,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 		using Map = hamon::unordered_multimap<Key, T, Hasher, KeyEqual, Allocator>;
 
 		static_assert( hamon::is_move_assignable<Map>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 		static_assert(!hamon::is_nothrow_move_assignable<Map>::value, "");
-#endif
 		static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
 
 		Hasher h1{1};
@@ -217,19 +203,16 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMultimapTest, OpAssignMoveTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace op_assign_move_test
 

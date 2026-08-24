@@ -15,27 +15,16 @@
 #include "constexpr_test.hpp"
 #include "unordered_multimap_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_unordered_multimap_test
 {
 
 namespace insert_node_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using NodeType = typename Map::node_type;
@@ -133,7 +122,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	// コピー不可、ムーブ不可なオブジェクトを別のMapに移動する
 
@@ -231,7 +220,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	// ハッシュ関数、比較関数が異なるMapに移動する
 
@@ -330,7 +319,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	// mapからmultimapに移動する
 
@@ -445,26 +434,21 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(UnorderedMultimapTest, InsertNodeTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test4()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4()));
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace insert_node_test
 
 }	// namespace hamon_unordered_multimap_test
-
-#endif

@@ -18,22 +18,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_multimap_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) || \
-	defined(__cpp_lib_generic_unordered_lookup) && (__cpp_lib_generic_unordered_lookup >= 201811L)
-
 namespace hamon_unordered_multimap_test
 {
 
 namespace contains_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -46,7 +35,7 @@ struct is_contains_invocable<Map, K, hamon::void_t<decltype(hamon::declval<Map>(
 	: public hamon::true_type {};
 
 template <typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Map1 = hamon::unordered_multimap<Key, T>;
@@ -68,10 +57,8 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().contains(hamon::declval<int>())), bool>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().contains(hamon::declval<int>())), bool>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 	//static_assert( noexcept(hamon::declval<Map&>().contains(hamon::declval<int>())), "");
 	//static_assert( noexcept(hamon::declval<Map const&>().contains(hamon::declval<int>())), "");
-#endif
 
 	Map const v
 	{
@@ -99,9 +86,8 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 }
 
 template <typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 	using Key = TransparentKey;
 	{
 		using Map = hamon::unordered_multimap<Key, T, NoThrowHash<>, NoThrowEqualTo<>>;
@@ -123,7 +109,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test_noexcept()
 		static_assert(!noexcept(hamon::declval<Map&>().contains(hamon::declval<int>())), "");
 		static_assert(!noexcept(hamon::declval<Map const&>().contains(hamon::declval<int>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -132,20 +117,15 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedMultimapTest, ContainsHeterogeneousTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test_noexcept<int>());
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test_noexcept<char>());
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test_noexcept<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_noexcept<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_noexcept<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_noexcept<float>());
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace contains_heterogeneous_test
 
 }	// namespace hamon_unordered_multimap_test
-
-#endif

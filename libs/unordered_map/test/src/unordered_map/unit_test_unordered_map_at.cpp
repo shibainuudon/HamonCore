@@ -20,18 +20,10 @@ namespace hamon_unordered_map_test
 namespace at_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::unordered_map<Key, T>;
 	using MappedType = typename Map::mapped_type;
@@ -79,15 +71,15 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMapTest, AtTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 HAMON_WARNING_PUSH()
@@ -130,9 +122,6 @@ HAMON_WARNING_DISABLE_GCC("-Wunused-result")
 HAMON_WARNING_POP()
 #endif
 }
-
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
 
 }	// namespace at_test
 

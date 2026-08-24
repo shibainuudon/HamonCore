@@ -26,27 +26,16 @@
 #include "constexpr_test.hpp"
 #include "unordered_multimap_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_unordered_multimap_test
 {
 
 namespace merge_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 
@@ -90,7 +79,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(v1.count(Key{2}) == 0);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -98,7 +86,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 	{
 		Map v1
@@ -138,7 +125,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -146,14 +132,13 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 
 	return true;
 }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map1 = hamon::unordered_multimap<Key, T>;
 	using Map2 = hamon::unordered_multimap<Key, T, TransparentHash, hamon::equal_to<>>;
@@ -202,7 +187,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 2);
 		VERIFY(v1.count(Key{4}) == 0);
-#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -210,7 +194,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 	{
 		Map1 v1
@@ -251,7 +234,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 2);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -259,14 +241,13 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 
 	return true;
 }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Map1 = hamon::unordered_multimap<Key, T>;
 	using Map2 = hamon::unordered_map<Key, T, TransparentHash, hamon::equal_to<>>;
@@ -315,7 +296,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 2);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -323,7 +303,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 	{
 		Map1 v1
@@ -365,7 +344,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 		VERIFY(v1.count(Key{2}) == 2);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 0);
-#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -373,7 +351,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 
 	return true;
@@ -383,42 +360,37 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(UnorderedMultimapTest, MergeTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, float>()));
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace merge_test
 
 }	// namespace hamon_unordered_multimap_test
-
-#endif

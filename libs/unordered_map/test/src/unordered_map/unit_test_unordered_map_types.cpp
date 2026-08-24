@@ -57,11 +57,7 @@ void test()
 
 	static_assert(hamon::is_same<typename Map::key_type, Key>::value, "");
 	static_assert(hamon::is_same<typename Map::mapped_type, T>::value, "");
-#if defined(HAMON_USE_STD_UNORDERED_MAP)
-	static_assert(hamon::is_same<typename Map::value_type, std::pair<const Key, T>>::value, "");
-#else
 	static_assert(hamon::is_same<typename Map::value_type, hamon::pair<const Key, T>>::value, "");
-#endif
 	static_assert(hamon::is_same<typename Map::hasher, Hash>::value, "");
 	static_assert(hamon::is_same<typename Map::key_equal, Pred>::value, "");
 	static_assert(hamon::is_same<typename Map::allocator_type, Allocator>::value, "");
@@ -77,11 +73,8 @@ void test()
 	static_assert(hamon::is_object<typename Map::const_iterator>::value, "");
 	static_assert(hamon::is_object<typename Map::local_iterator>::value, "");
 	static_assert(hamon::is_object<typename Map::const_local_iterator>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
 	static_assert(hamon::is_object<typename Map::node_type>::value, "");
 	static_assert(hamon::is_object<typename Map::insert_return_type>::value, "");
-#endif
 }
 
 GTEST_TEST(UnorderedMapTest, TypesTest)

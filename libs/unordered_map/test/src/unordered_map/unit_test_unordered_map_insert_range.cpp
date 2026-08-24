@@ -15,27 +15,16 @@
 #include "ranges_test.hpp"
 #include "unordered_map_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 namespace hamon_unordered_map_test
 {
 
 namespace insert_range_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, template <typename> class RangeWrapper>
-UNORDERED_MAP_TEST_CONSTEXPR bool test_impl()
+HAMON_CXX20_CONSTEXPR bool test_impl()
 {
 	using Map = hamon::unordered_map<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -158,7 +147,7 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test_impl()
 }
 
 template <typename Key, typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	return
 		test_impl<Key, T, test_input_range>() &&
@@ -177,15 +166,15 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMapTest, InsertRangeTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -230,11 +219,6 @@ GTEST_TEST(UnorderedMapTest, InsertRangeTest)
 #endif
 }
 
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
-
 }	// namespace insert_range_test
 
 }	// namespace hamon_unordered_map_test
-
-#endif

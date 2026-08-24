@@ -17,22 +17,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_map_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) || \
-	(defined(__cpp_lib_associative_heterogeneous_insertion) && (__cpp_lib_associative_heterogeneous_insertion >= 202306L))
-
 namespace hamon_unordered_map_test
 {
 
 namespace op_subscript_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -45,7 +34,7 @@ struct is_op_subscript_invocable<Map, K, hamon::void_t<decltype(hamon::declval<M
 	: public hamon::true_type {};
 
 template <typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Map1 = hamon::unordered_map<Key, T>;
@@ -114,16 +103,11 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMapTest, OpSubscriptHeterogeneousTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
-
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
 
 }	// namespace op_subscript_heterogeneous_test
 
 }	// namespace hamon_unordered_map_test
-
-#endif

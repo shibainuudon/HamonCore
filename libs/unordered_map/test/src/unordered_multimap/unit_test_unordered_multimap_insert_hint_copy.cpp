@@ -20,18 +20,10 @@ namespace hamon_unordered_multimap_test
 namespace insert_hint_copy_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -114,7 +106,7 @@ struct S1
 	S1& operator=(S1 const&) = delete;
 };
 
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::unordered_multimap<int, S1>;
 	using ValueType = typename Map::value_type;
@@ -163,17 +155,17 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(UnorderedMultimapTest, InsertHintCopyTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -200,9 +192,6 @@ GTEST_TEST(UnorderedMultimapTest, InsertHintCopyTest)
 	}
 #endif
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace insert_hint_copy_test
 

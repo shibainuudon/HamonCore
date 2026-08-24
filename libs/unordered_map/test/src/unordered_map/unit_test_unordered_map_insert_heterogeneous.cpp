@@ -27,29 +27,17 @@ namespace hamon_unordered_map_test
 namespace insert_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '初期化中': '_Ty' から '_Ty2' への変換です。データが失われる可能性があります。
 
 template <typename Key, typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::unordered_map<Key, T>;
 	using Iterator = typename Map::iterator;
-#if defined(HAMON_USE_STD_UNORDERED_MAP)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	// from std::pair
 
@@ -112,7 +100,6 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test1()
 		}
 	}
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) || (defined(__cpp_lib_tuple_like) && (__cpp_lib_tuple_like >= 202207L))
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::tuple<int, float>>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::tuple<char, double>>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::tuple<char, float>>())), Result>::value, "");
@@ -150,9 +137,7 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test1()
 			VERIFY(v.load_factor() <= v.max_load_factor());
 		}
 	}
-#endif
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP)
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<int, float>>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<char, double>>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<char, float>>())), Result>::value, "");
@@ -206,7 +191,6 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test1()
 			VERIFY(v.load_factor() <= v.max_load_factor());
 		}
 	}
-#endif
 
 	return true;
 }
@@ -231,7 +215,7 @@ struct S2
 	explicit S2(S1 const&);
 };
 
-UNORDERED_MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map1 = hamon::unordered_map<int, S1>;
 	using Map2 = hamon::unordered_map<int, S2>;
@@ -251,12 +235,12 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(UnorderedMapTest, InsertHeterogeneousTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, double>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, double>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, double>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, double>()));
 
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -285,9 +269,6 @@ GTEST_TEST(UnorderedMapTest, InsertHeterogeneousTest)
 	}
 #endif
 }
-
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
 
 }	// namespace insert_heterogeneous_test
 

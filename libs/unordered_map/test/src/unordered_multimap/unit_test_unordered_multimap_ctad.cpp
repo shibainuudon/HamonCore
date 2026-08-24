@@ -90,18 +90,10 @@ namespace hamon_unordered_multimap_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, template <typename> class IteratorWrapper>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1_impl()
+HAMON_CXX20_CONSTEXPR bool test1_impl()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -161,20 +153,18 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1_impl()
 		hamon::unordered_multimap v(Iterator{a}, Iterator{a + 6}, 8, Hash{}, Allocator{});
 		static_assert(hamon::is_same<decltype(v), hamon::unordered_multimap<Key, T, Hash, typename Map::key_equal, Allocator>>::value, "");
 	}
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)	// TODO(LWG 2713)
 	// (f, l, a)
 	{
 		using Allocator = hamon::allocator<ValueType>;
 		hamon::unordered_multimap v(Iterator{a}, Iterator{a + 6}, Allocator{});
 		static_assert(hamon::is_same<decltype(v), hamon::unordered_multimap<Key, T, typename Map::hasher, typename Map::key_equal, Allocator>>::value, "");
 	}
-#endif
 
 	return true;
 }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_impl<Key, T, cpp17_input_iterator_wrapper>());
 //	VERIFY(test1_impl<Key, T, input_iterator_wrapper>());
@@ -185,11 +175,8 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 template <typename Key, typename T, template <typename> class RangeWrapper>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2_impl()
+HAMON_CXX20_CONSTEXPR bool test2_impl()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -250,20 +237,18 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2_impl()
 		hamon::unordered_multimap v(hamon::from_range, r, 8, Hash{}, Allocator{});
 		static_assert(hamon::is_same<decltype(v), hamon::unordered_multimap<Key, T, Hash, typename Map::key_equal, Allocator>>::value, "");
 	}
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)	// TODO(LWG 2713)
 	// (from_range, rg, a)
 	{
 		using Allocator = hamon::allocator<ValueType>;
 		hamon::unordered_multimap v(hamon::from_range, r, Allocator{});
 		static_assert(hamon::is_same<decltype(v), hamon::unordered_multimap<Key, T, typename Map::hasher, typename Map::key_equal, Allocator>>::value, "");
 	}
-#endif
 
 	return true;
 }
 
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_impl<Key, T, test_input_range>());
 	VERIFY(test2_impl<Key, T, test_forward_range>());
@@ -278,18 +263,12 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-#endif
-
 template <typename Key, typename T>
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Map = hamon::unordered_multimap<Key, T>;
 	using ValueType = typename Map::value_type;
-#if defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
-	using PairType = std::pair<Key, T>;
-#else
 	using PairType = hamon::pair<Key, T>;
-#endif
 
 	// (il)
 	{
@@ -363,7 +342,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 		}, 8, Hash{}, Allocator{});
 		static_assert(hamon::is_same<decltype(v), hamon::unordered_multimap<Key, T, Hash, typename Map::key_equal, Allocator>>::value, "");
 	}
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)	// TODO(LWG 2713)
 	// (il, a)
 	{
 		using Allocator = hamon::allocator<ValueType>;
@@ -374,7 +352,6 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 		}, Allocator{});
 		static_assert(hamon::is_same<decltype(v), hamon::unordered_multimap<Key, T, typename Map::hasher, typename Map::key_equal, Allocator>>::value, "");
 	}
-#endif
 
 	return true;
 }
@@ -383,42 +360,36 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(UnorderedMultimapTest, CtadTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
-#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
 
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, float>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, int>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, char>()));
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, float>()));
 }
-
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

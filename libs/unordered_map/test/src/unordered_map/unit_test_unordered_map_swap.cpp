@@ -27,18 +27,10 @@ namespace hamon_unordered_map_test
 namespace swap_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-UNORDERED_MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using ValueType = typename hamon::unordered_map<Key, T>::value_type;
 	using Hasher = TestHash<Key>;
@@ -50,10 +42,8 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 
 		static_assert(hamon::is_same<decltype(hamon::declval<Map&>().swap(hamon::declval<Map&>())), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(hamon::declval<Map&>(), hamon::declval<Map&>())), void>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MAP)
 		static_assert(!noexcept(hamon::declval<Map&>().swap(hamon::declval<Map&>())), "");
 		static_assert(!noexcept(swap(hamon::declval<Map&>(), hamon::declval<Map&>())), "");
-#endif
 
 		Hasher h1{1};
 		Hasher h2{2};
@@ -232,7 +222,6 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 		VERIFY(v2.at(Key{5}) == T{80});
 		VERIFY(v2.at(Key{6}) == T{90});
 	}
-#if !defined(HAMON_USE_STD_UNORDERED_MAP)
 	{
 		using Allocator = TestAllocator6<ValueType>;
 		using Map = hamon::unordered_map<Key, T, Hasher, KeyEqual, Allocator>;
@@ -326,7 +315,6 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 		VERIFY(v2.at(Key{5}) == T{80});
 		VERIFY(v2.at(Key{6}) == T{90});
 	}
-#endif
 
 	return true;
 }
@@ -335,19 +323,16 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMapTest, SwapTest)
 {
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 }
-
-#undef UNORDERED_MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MAP_TEST_CONSTEXPR
 
 }	// namespace swap_test
 
