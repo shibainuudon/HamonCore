@@ -98,7 +98,11 @@ HAMON_CXX20_CONSTEXPR bool test02()
 GTEST_TEST(RangesTest, ConcatViewCtorViewsTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test00());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test01());
+#else
+	EXPECT_TRUE(test01());
+#endif
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test02());
 }
 
