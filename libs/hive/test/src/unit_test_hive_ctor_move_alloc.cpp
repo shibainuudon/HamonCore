@@ -33,9 +33,7 @@ HAMON_CXX20_CONSTEXPR bool test1()
 	using Hive = hamon::hive<T, Allocator>;
 
 	static_assert( hamon::is_constructible           <Hive, Hive&&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_HIVE)
 	static_assert(!hamon::is_nothrow_constructible   <Hive, Hive&&, Allocator const&>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<Hive, Hive&&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible <Hive, Hive&&, Allocator const&>::value, "");
 
@@ -80,9 +78,7 @@ HAMON_CXX20_CONSTEXPR bool test2()
 	using Hive = hamon::hive<T, Allocator>;
 
 	static_assert( hamon::is_constructible           <Hive, Hive&&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_HIVE)
 	static_assert( hamon::is_nothrow_constructible   <Hive, Hive&&, Allocator const&>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<Hive, Hive&&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible <Hive, Hive&&, Allocator const&>::value, "");
 
@@ -125,9 +121,7 @@ HAMON_CXX20_CONSTEXPR bool test3()
 	using Hive = hamon::hive<T, Allocator>;
 
 	static_assert( hamon::is_constructible           <Hive, Hive&&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_HIVE)
 	static_assert(!hamon::is_nothrow_constructible   <Hive, Hive&&, Allocator const&>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<Hive, Hive&&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible <Hive, Hive&&, Allocator const&>::value, "");
 

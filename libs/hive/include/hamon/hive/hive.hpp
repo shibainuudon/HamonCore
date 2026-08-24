@@ -9,10 +9,6 @@
 
 #include <hamon/hive/hive_fwd.hpp>
 #include <hamon/hive/hive_limits.hpp>
-#include <hamon/hive/config.hpp>
-
-#if !defined(HAMON_USE_STD_HIVE)
-
 #include <hamon/hive/detail/hive_impl.hpp>
 #include <hamon/hive/detail/hive_traits.hpp>
 
@@ -878,8 +874,39 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);
 }
 
-}	// namespace hamon
+// 23.3.9.6 Erasure[hive.erasure]
 
-#endif
+template <typename T, typename Allocator, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::hive<T, Allocator>::size_type
+erase_if(hamon::hive<T, Allocator>& c, Predicate pred)
+{
+	// [hive.erasure]/2
+	auto original_size = c.size();
+	for (auto i = c.begin(), last = c.end(); i != last; )
+	{
+		if (pred(*i))
+		{
+			i = c.erase(i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return original_size - c.size();
+}
+
+template <typename T, typename Allocator, typename U = T>
+HAMON_CXX14_CONSTEXPR
+typename hamon::hive<T, Allocator>::size_type
+erase(hamon::hive<T, Allocator>& c, const U& value)
+{
+	// [hive.erasure]/1
+	using const_reference = typename hamon::hive<T, Allocator>::const_reference;
+	return hamon::erase_if(c, [&](const_reference elem) -> bool { return elem == value; });
+}
+
+}	// namespace hamon
 
 #endif // HAMON_HIVE_HIVE_HPP
