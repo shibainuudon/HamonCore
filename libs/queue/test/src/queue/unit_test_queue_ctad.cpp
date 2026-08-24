@@ -44,8 +44,7 @@ namespace hamon_queue_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_QUEUE) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -183,17 +182,11 @@ GTEST_TEST(QueueTest, CtadTest)
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-#if !defined(HAMON_USE_STD_QUEUE) || \
-	(defined(__cpp_lib_adaptor_iterator_pair_constructor) && (__cpp_lib_adaptor_iterator_pair_constructor >= 202106L))
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
-#endif
 
-#if !defined(HAMON_USE_STD_QUEUE) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test3<int>()));
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test3<float>()));
-#endif
 }
 
 #undef QUEUE_TEST_CONSTEXPR_EXPECT_TRUE

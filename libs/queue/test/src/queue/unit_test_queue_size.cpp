@@ -20,8 +20,7 @@ namespace hamon_queue_test
 namespace size_test
 {
 
-#if !defined(HAMON_USE_STD_QUEUE) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -40,10 +39,8 @@ QUEUE_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_same<decltype(hamon::declval<Queue&>().size()), SizeType>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Queue const&>().size()), SizeType>::value, "");
 
-#if !defined(HAMON_USE_STD_QUEUE)
 	static_assert(noexcept(hamon::declval<Queue      &>().size()) == noexcept(hamon::declval<Container      &>().size()), "");
 	static_assert(noexcept(hamon::declval<Queue const&>().size()) == noexcept(hamon::declval<Container const&>().size()), "");
-#endif
 
 	Queue q;
 	VERIFY(q.size() == 0);

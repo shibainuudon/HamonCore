@@ -23,8 +23,7 @@ namespace hamon_queue_test
 namespace ctor_defaulte_test
 {
 
-#if !defined(HAMON_USE_STD_QUEUE) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -40,11 +39,9 @@ QUEUE_TEST_CONSTEXPR bool test()
 	using Queue = hamon::queue<T, Container>;
 
 	static_assert( hamon::is_default_constructible<Queue>::value, "");
-#if !defined(HAMON_USE_STD_QUEUE)
 	static_assert(
 		hamon::is_nothrow_default_constructible<Queue>::value ==
 		hamon::is_nothrow_default_constructible<Container>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_default_constructible<Queue>::value, "");
 	static_assert(!hamon::is_trivially_default_constructible<Queue>::value, "");
 

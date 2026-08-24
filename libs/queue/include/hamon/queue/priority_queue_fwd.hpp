@@ -7,21 +7,6 @@
 #ifndef HAMON_QUEUE_PRIORITY_QUEUE_FWD_HPP
 #define HAMON_QUEUE_PRIORITY_QUEUE_FWD_HPP
 
-#include <hamon/queue/config.hpp>
-
-#if defined(HAMON_USE_STD_PRIORITY_QUEUE)
-
-#include <queue>
-
-namespace hamon
-{
-
-using std::priority_queue;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/vector.hpp>
 #include <hamon/functional/less.hpp>
 
@@ -37,7 +22,5 @@ template <
 class priority_queue;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_QUEUE_PRIORITY_QUEUE_FWD_HPP

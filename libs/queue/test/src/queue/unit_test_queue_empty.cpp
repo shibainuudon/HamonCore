@@ -20,8 +20,7 @@ namespace hamon_queue_test
 namespace empty_test
 {
 
-#if !defined(HAMON_USE_STD_QUEUE) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -39,10 +38,8 @@ QUEUE_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_same<decltype(hamon::declval<Queue&>().empty()), bool>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Queue const&>().empty()), bool>::value, "");
 
-#if !defined(HAMON_USE_STD_QUEUE)
 	static_assert(noexcept(hamon::declval<Queue      &>().empty()) == noexcept(hamon::declval<Container      &>().empty()), "");
 	static_assert(noexcept(hamon::declval<Queue const&>().empty()) == noexcept(hamon::declval<Container const&>().empty()), "");
-#endif
 
 	{
 		Container const c{T{10}, T{20}, T{30}};

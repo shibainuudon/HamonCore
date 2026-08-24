@@ -8,10 +8,6 @@
 #define HAMON_QUEUE_QUEUE_HPP
 
 #include <hamon/queue/queue_fwd.hpp>
-#include <hamon/queue/config.hpp>
-
-#if !defined(HAMON_USE_STD_QUEUE)
-
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
@@ -421,7 +417,5 @@ struct uses_allocator<hamon::queue<T, Container>, Alloc>
     : uses_allocator<Container, Alloc>::type {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_QUEUE_QUEUE_HPP

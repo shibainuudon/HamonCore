@@ -21,8 +21,7 @@ namespace hamon_queue_test
 namespace back_test
 {
 
-#if !defined(HAMON_USE_STD_QUEUE) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -42,10 +41,8 @@ QUEUE_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_same<decltype(hamon::declval<Queue      &>().back()), Reference>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Queue const&>().back()), ConstReference>::value, "");
 
-#if !defined(HAMON_USE_STD_QUEUE)
 	static_assert(noexcept(hamon::declval<Queue      &>().back()) == noexcept(hamon::declval<Container      &>().back()), "");
 	static_assert(noexcept(hamon::declval<Queue const&>().back()) == noexcept(hamon::declval<Container const&>().back()), "");
-#endif
 
 	{
 		Queue q;

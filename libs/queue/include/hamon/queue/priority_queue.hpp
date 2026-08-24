@@ -8,10 +8,6 @@
 #define HAMON_QUEUE_PRIORITY_QUEUE_HPP
 
 #include <hamon/queue/priority_queue_fwd.hpp>
-#include <hamon/queue/config.hpp>
-
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE)
-
 #include <hamon/algorithm/make_heap.hpp>
 #include <hamon/algorithm/pop_heap.hpp>
 #include <hamon/algorithm/push_heap.hpp>
@@ -505,7 +501,5 @@ struct uses_allocator<hamon::priority_queue<T, Container, Compare>, Alloc>
 	: uses_allocator<Container, Alloc>::type {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_QUEUE_PRIORITY_QUEUE_HPP

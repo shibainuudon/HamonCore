@@ -26,18 +26,10 @@ namespace hamon_priority_queue_test
 namespace ctor_copy_alloc_test
 {
 
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE)
-#define PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define PRIORITY_QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define PRIORITY_QUEUE_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename Container>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Alloc = TestAllocator<T>;
 
@@ -49,11 +41,9 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test()
 		using Queue = hamon::priority_queue<T, Container, Compare>;
 
 		static_assert( hamon::is_constructible<Queue, Queue const&, Alloc const&>::value, "");
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE)
 		static_assert(
 			hamon::is_nothrow_constructible<Queue,     Queue const&,     Alloc const&>::value ==
 			hamon::is_nothrow_constructible<Container, Container const&, Alloc const&>::value, "");
-#endif
 		static_assert( hamon::is_implicitly_constructible<Queue, Queue const&, Alloc const&>::value, "");
 		static_assert(!hamon::is_trivially_constructible<Queue, Queue const&, Alloc const&>::value, "");
 
@@ -67,11 +57,9 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test()
 		using Queue = hamon::priority_queue<T, Container, Compare>;
 
 		static_assert( hamon::is_constructible<Queue, Queue const&, Alloc const&>::value, "");
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE)
 		static_assert(
 			hamon::is_nothrow_constructible<Queue,     Queue const&,     Alloc const&>::value ==
 			hamon::is_nothrow_constructible<Container, Container const&, Alloc const&>::value, "");
-#endif
 		static_assert( hamon::is_implicitly_constructible<Queue, Queue const&, Alloc const&>::value, "");
 		static_assert(!hamon::is_trivially_constructible<Queue, Queue const&, Alloc const&>::value, "");
 
@@ -88,11 +76,11 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(PriorityQueueTest, CtorCopyAllocTest)
 {
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::deque<int>>()));
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<float, hamon::deque<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::deque<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::deque<float>>()));
 
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
 
 	EXPECT_TRUE((test<int,   std::deque<int,   hamon::allocator<int>>>()));
 	EXPECT_TRUE((test<float, std::deque<float, hamon::allocator<float>>>()));
@@ -100,9 +88,6 @@ GTEST_TEST(PriorityQueueTest, CtorCopyAllocTest)
 	EXPECT_TRUE((test<int,   std::vector<int,   hamon::allocator<int>>>()));
 	EXPECT_TRUE((test<float, std::vector<float, hamon::allocator<float>>>()));
 }
-
-#undef RIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE
-#undef RIORITY_QUEUE_TEST_CONSTEXPR
 
 }	// namespace ctor_copy_alloc_test
 

@@ -21,17 +21,13 @@
 #include "ranges_test.hpp"
 #include "queue_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_QUEUE) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 namespace hamon_queue_test
 {
 
 namespace ctor_range_alloc_test
 {
 
-#if !defined(HAMON_USE_STD_QUEUE) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
@@ -104,5 +100,3 @@ GTEST_TEST(QueueTest, CtorRangeAllocTest)
 }	// namespace ctor_range_alloc_test
 
 }	// namespace hamon_queue_test
-
-#endif

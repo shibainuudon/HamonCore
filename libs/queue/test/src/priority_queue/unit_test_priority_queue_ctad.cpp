@@ -66,18 +66,10 @@ namespace hamon_priority_queue_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE)
-#define PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define PRIORITY_QUEUE_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define PRIORITY_QUEUE_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename Container, typename Compare>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test1_impl_2()
+HAMON_CXX20_CONSTEXPR bool test1_impl_2()
 {
 	{
 		Container const c{T{1}, T{2}, T{3}};
@@ -95,7 +87,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test1_impl_2()
 }
 
 template <typename T, typename Container>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test1_impl_1()
+HAMON_CXX20_CONSTEXPR bool test1_impl_1()
 {
 	VERIFY((test1_impl_2<T, Container, hamon::less<T>>()));
 	VERIFY((test1_impl_2<T, Container, hamon::greater<T>>()));
@@ -103,7 +95,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test1_impl_1()
 }
 
 template <typename T>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY((test1_impl_1<T, hamon::deque<T>>()));
 	VERIFY((test1_impl_1<T, hamon::vector<T>>()));
@@ -123,7 +115,7 @@ template <typename Container, typename Allocator>
 using container_rebind_allocator_t = typename container_rebind_allocator<Container, Allocator>::type;
 
 template <typename T, typename Container, typename Compare, template <typename> class IteratorWrapper>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_3()
+HAMON_CXX20_CONSTEXPR bool test2_impl_3()
 {
 	using Iterator = IteratorWrapper<T>;
 	using DefaultCompare = typename hamon::priority_queue<T>::value_compare;
@@ -144,7 +136,6 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_3()
 		static_assert(hamon::is_same<decltype(q), hamon::priority_queue<T, Container, Compare>>::value, "");
 	}
 
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE)	// LWG 3506
 	using Alloc = TestAllocator<T>;
 	{
 		hamon::priority_queue q(Iterator{v}, Iterator{v + 4}, Alloc{});
@@ -160,13 +151,12 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_3()
 		hamon::priority_queue q(Iterator{v}, Iterator{v + 4}, Compare{}, Container{}, Alloc{});
 		static_assert(hamon::is_same<decltype(q), hamon::priority_queue<T, Container, Compare>>::value, "");
 	}
-#endif
 
 	return true;
 }
 
 template <typename T, typename Container, typename Compare>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_2()
+HAMON_CXX20_CONSTEXPR bool test2_impl_2()
 {
 	VERIFY((test2_impl_3<T, Container, Compare, cpp17_input_iterator_wrapper>()));
 //	VERIFY((test2_impl_3<T, Container, Compare, input_iterator_wrapper>()));
@@ -178,7 +168,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_2()
 }
 
 template <typename T, typename Container>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_1()
+HAMON_CXX20_CONSTEXPR bool test2_impl_1()
 {
 	VERIFY((test2_impl_2<T, Container, hamon::less<T>>()));
 	VERIFY((test2_impl_2<T, Container, hamon::greater<T>>()));
@@ -186,7 +176,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test2_impl_1()
 }
 
 template <typename T>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY((test2_impl_1<T, hamon::deque<T>>()));
 	VERIFY((test2_impl_1<T, hamon::vector<T>>()));
@@ -194,7 +184,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test2()
 }
 
 template <typename T, typename Container, typename Compare, template <typename> class RangeWrapper>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test3_impl_3()
+HAMON_CXX20_CONSTEXPR bool test3_impl_3()
 {
 	using Range = RangeWrapper<T>;
 	using DefaultCompare = typename hamon::priority_queue<T>::value_compare;
@@ -226,7 +216,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test3_impl_3()
 }
 
 template <typename T, typename Container, typename Compare>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test3_impl_2()
+HAMON_CXX20_CONSTEXPR bool test3_impl_2()
 {
 	VERIFY((test3_impl_3<T, Container, Compare, test_input_range>()));
 	VERIFY((test3_impl_3<T, Container, Compare, test_forward_range>()));
@@ -242,7 +232,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test3_impl_2()
 }
 
 template <typename T, typename Container>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test3_impl_1()
+HAMON_CXX20_CONSTEXPR bool test3_impl_1()
 {
 	VERIFY((test3_impl_2<T, Container, hamon::less<T>>()));
 	VERIFY((test3_impl_2<T, Container, hamon::greater<T>>()));
@@ -250,7 +240,7 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test3_impl_1()
 }
 
 template <typename T>
-PRIORITY_QUEUE_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	VERIFY((test3_impl_1<T, hamon::deque<T>>()));
 	VERIFY((test3_impl_1<T, hamon::vector<T>>()));
@@ -261,21 +251,15 @@ PRIORITY_QUEUE_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(PriorityQueueTest, CtadTest)
 {
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
-#if !defined(HAMON_USE_STD_PRIORITY_QUEUE) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test3<int>()));
-	PRIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test3<float>()));
-#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float>()));
 }
-
-#undef RIORITY_QUEUE_TEST_CONSTEXPR_EXPECT_TRUE
-#undef RIORITY_QUEUE_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 
