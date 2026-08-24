@@ -38,12 +38,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 		ConstReference
 	>::value, "");
 
-#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::declval<Vector&>()[hamon::declval<SizeType>()]), "");
 	static_assert(!noexcept(
 		hamon::declval<Vector const&>()[hamon::declval<SizeType>()]), "");
-#endif
 
 	{
 		Vector v{1,2,3};

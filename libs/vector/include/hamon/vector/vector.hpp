@@ -8,15 +8,13 @@
 #define HAMON_VECTOR_VECTOR_HPP
 
 #include <hamon/vector/vector_fwd.hpp>
-#include <hamon/vector/config.hpp>
-
-#if !defined(HAMON_USE_STD_VECTOR)
-
 #include <hamon/vector/detail/vector_iterator.hpp>
 #include <hamon/vector/detail/vector_impl.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
+#include <hamon/algorithm/remove.hpp>
+#include <hamon/algorithm/remove_if.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -33,6 +31,7 @@
 #include <hamon/functional/cref.hpp>
 #include <hamon/iterator/detail/cpp17_forward_iterator.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -870,6 +869,31 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);
 }
 
+// [vector.erasure], erasure
+template <typename T, typename Allocator, typename U = T>
+HAMON_CXX14_CONSTEXPR
+typename hamon::vector<T, Allocator>::size_type
+erase(hamon::vector<T, Allocator>& c, U const& value)
+{
+	// [vector.erasure]/1
+	auto it = hamon::remove(c.begin(), c.end(), value);
+	auto r = hamon::distance(it, c.end());
+	c.erase(it, c.end());
+	return static_cast<typename hamon::vector<T, Allocator>::size_type>(r);
+}
+
+template <typename T, typename Allocator, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::vector<T, Allocator>::size_type
+erase_if(hamon::vector<T, Allocator>& c, Predicate pred)
+{
+	// [vector.erasure]/2
+	auto it = hamon::remove_if(c.begin(), c.end(), pred);
+	auto r = hamon::distance(it, c.end());
+	c.erase(it, c.end());
+	return static_cast<typename hamon::vector<T, Allocator>::size_type>(r);
+}
+
 }	// namespace hamon
 
 #include <hamon/serialization/detail/save_vector.hpp>
@@ -892,7 +916,5 @@ void load_value(Archive& ia, hamon::vector<T>& t)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VECTOR_VECTOR_HPP

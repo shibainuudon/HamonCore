@@ -73,10 +73,8 @@ HAMON_CXX20_CONSTEXPR bool test1()
 
 	static_assert( hamon::is_constructible<Vector, Vector&&>::value, "");
 	static_assert( hamon::is_constructible<Vector, Vector&&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert( hamon::is_nothrow_constructible<Vector, Vector&&>::value, "");
 	static_assert( hamon::is_nothrow_constructible<Vector, Vector&&, Allocator const&>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<Vector, Vector&&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Vector, Vector&&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Vector, Vector&&>::value, "");
