@@ -13,27 +13,16 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_set_test
 {
 
 namespace extract_position_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::set<Key>;
 	using NodeType = typename Set::node_type;
@@ -124,9 +113,9 @@ int S::s_dtor_count = 0;
 
 GTEST_TEST(SetTest, ExtractPositionTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
 	S::s_ctor_count = 0;
 	S::s_dtor_count = 0;
@@ -154,11 +143,6 @@ GTEST_TEST(SetTest, ExtractPositionTest)
 	EXPECT_EQ(5, S::s_dtor_count);
 }
 
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
-
 }	// namespace extract_position_test
 
 }	// namespace hamon_set_test
-
-#endif

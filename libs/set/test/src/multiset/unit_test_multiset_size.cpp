@@ -17,18 +17,10 @@ namespace hamon_multiset_test
 namespace size_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::multiset<Key>;
 	using SizeType = typename Set::size_type;
@@ -61,9 +53,9 @@ MULTISET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MultisetTest, SizeTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/multiset/size
 	{
@@ -71,9 +63,6 @@ GTEST_TEST(MultisetTest, SizeTest)
 		EXPECT_TRUE(nums.size() == 4);
 	}
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace size_test
 

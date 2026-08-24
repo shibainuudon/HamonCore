@@ -30,18 +30,10 @@ namespace hamon_multiset_test
 namespace types_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename Compare, typename Allocator>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::multiset<Key, Compare, Allocator>;
 	using AllocTraits = hamon::allocator_traits<Allocator>;
@@ -59,9 +51,8 @@ MULTISET_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_unsigned<typename Set::size_type>::value, "");
 	static_assert(hamon::is_integral<typename Set::difference_type>::value, "");
 	static_assert(hamon::is_signed<typename Set::difference_type>::value, "");
-#if !defined(HAMON_USE_STD_MULTISET)
 	static_assert(hamon::is_object<typename Set::node_type>::value, "");
-#endif
+
 	return true;
 }
 
@@ -69,13 +60,10 @@ MULTISET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MultisetTest, TypesTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int, hamon::less<int>, hamon::allocator<int>>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char, hamon::less<>, hamon::allocator<char>>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float, hamon::greater<>, hamon::allocator<float>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, hamon::less<int>, hamon::allocator<int>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, hamon::less<>, hamon::allocator<char>>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::greater<>, hamon::allocator<float>>()));
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace types_test
 

@@ -27,25 +27,12 @@ namespace hamon_set_test
 namespace swap_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
 	using value_type = T;
-#if !defined(HAMON_USE_STD_SET)
 	using is_always_equal = hamon::false_type;
 	using propagate_on_container_swap = hamon::true_type;
-#else
-	using is_always_equal = std::false_type;
-	using propagate_on_container_swap = std::true_type;
-#endif
 
 	int id;
 
@@ -113,7 +100,7 @@ struct MyLess
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<Key>;
 
@@ -121,10 +108,8 @@ SET_TEST_CONSTEXPR bool test1()
 		Set v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_SET) && (HAMON_CXX_STANDARD >= 17)
 		static_assert(noexcept(v.swap(v)), "");
 		static_assert(noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Set v1 { Key{3}, Key{1}, Key{4}, Key{1}, Key{5} };
@@ -195,7 +180,7 @@ SET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Compare = MyLess;
 	using Allocator = MyAllocator<Key>;
@@ -205,10 +190,8 @@ SET_TEST_CONSTEXPR bool test2()
 		Set v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_SET)
 		static_assert(!noexcept(v.swap(v)), "");
 		static_assert(!noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Compare c1{10};
@@ -286,9 +269,9 @@ std::string ToString(const hamon::set<T, C>& set)
 
 GTEST_TEST(SetTest, SwapTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -341,9 +324,6 @@ GTEST_TEST(SetTest, SwapTest)
 		EXPECT_EQ(6, s2.key_comp().id);
 	}
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace swap_test
 

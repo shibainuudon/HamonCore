@@ -26,14 +26,6 @@ namespace hamon_set_test
 namespace iterator_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T, typename U = T, typename = void>
 struct has_eq
 	: public hamon::false_type {};
@@ -93,7 +85,7 @@ struct has_compare_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=
 #endif
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::set<Key>;
 	using difference_type = typename Set::difference_type;
@@ -185,15 +177,12 @@ SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(SetTest, IteratorTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<short>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<long>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace iterator_test
 

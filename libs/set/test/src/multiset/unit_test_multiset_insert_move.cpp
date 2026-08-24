@@ -19,14 +19,6 @@ namespace hamon_multiset_test
 namespace insert_move_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 struct S1
 {
 	int x;
@@ -112,7 +104,7 @@ struct ThrowOnMove
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 	using ValueType = typename Set::value_type;
@@ -196,7 +188,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	hamon::multiset<S1> v;
 
@@ -319,10 +311,10 @@ MULTISET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultisetTest, InsertMoveTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 	S2::s_ctor_count = 0;
 	S2::s_move_ctor_count = 0;
@@ -387,9 +379,6 @@ GTEST_TEST(MultisetTest, InsertMoveTest)
 	}
 #endif
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace insert_move_test
 

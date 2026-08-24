@@ -14,22 +14,11 @@
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 namespace hamon_multiset_test
 {
 
 namespace insert_range_test
 {
-
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 struct MayThrow
@@ -64,7 +53,7 @@ struct MayThrow
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, template <typename> class RangeWrapper>
-MULTISET_TEST_CONSTEXPR bool test_impl()
+HAMON_CXX20_CONSTEXPR bool test_impl()
 {
 	using Set = hamon::multiset<Key>;
 	using ValueType = typename Set::value_type;
@@ -117,7 +106,7 @@ MULTISET_TEST_CONSTEXPR bool test_impl()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	return
 		test_impl<Key, test_input_range>() &&
@@ -150,9 +139,9 @@ std::string ToString(const hamon::multiset<T, C>& set)
 
 GTEST_TEST(MultisetTest, InsertRangeTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -219,11 +208,6 @@ GTEST_TEST(MultisetTest, InsertRangeTest)
 	}
 }
 
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
-
 }	// namespace insert_range_test
 
 }	// namespace hamon_multiset_test
-
-#endif

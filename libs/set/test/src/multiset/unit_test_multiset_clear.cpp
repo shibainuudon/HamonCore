@@ -19,14 +19,6 @@ namespace hamon_multiset_test
 namespace clear_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 struct S
 {
 	static int s_ctor_count;
@@ -61,7 +53,7 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::multiset<Key>;
 
@@ -99,9 +91,9 @@ std::string ToString(const hamon::multiset<T, C>& set)
 
 GTEST_TEST(MultisetTest, ClearTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
 	S::s_ctor_count = 0;
 	S::s_dtor_count = 0;
@@ -142,9 +134,6 @@ GTEST_TEST(MultisetTest, ClearTest)
 		EXPECT_EQ("{}", ToString(container));
 	}
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace clear_test
 

@@ -21,19 +21,11 @@ namespace hamon_multiset_test
 namespace upper_bound_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 // iterator upper_bound(const key_type& x);
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 	using Iterator = typename Set::iterator;
@@ -95,7 +87,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 
 // const_iterator upper_bound(const key_type& x) const;
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::multiset<Key>;
 	using ConstIterator = typename Set::const_iterator;
@@ -119,17 +111,14 @@ MULTISET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultisetTest, UpperBoundTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace upper_bound_test
 

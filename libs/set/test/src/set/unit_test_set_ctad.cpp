@@ -48,18 +48,10 @@ namespace hamon_set_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, template <typename> class IteratorWrapper>
-SET_TEST_CONSTEXPR bool test1_impl()
+HAMON_CXX20_CONSTEXPR bool test1_impl()
 {
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<Key>;
@@ -95,7 +87,7 @@ SET_TEST_CONSTEXPR bool test1_impl()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_impl<Key, cpp17_input_iterator_wrapper>());
 //	VERIFY(test1_impl<Key, input_iterator_wrapper>());
@@ -106,11 +98,8 @@ SET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 template <typename Key, template <typename> class RangeWrapper>
-SET_TEST_CONSTEXPR bool test2_impl()
+HAMON_CXX20_CONSTEXPR bool test2_impl()
 {
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<Key>;
@@ -150,7 +139,7 @@ SET_TEST_CONSTEXPR bool test2_impl()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_impl<Key, test_input_range>());
 	VERIFY(test2_impl<Key, test_forward_range>());
@@ -165,10 +154,8 @@ SET_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-#endif
-
 template <typename Key>
-SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<Key>;
@@ -199,24 +186,18 @@ SET_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(SetTest, CtadTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test2<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test2<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test2<float>());
-#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<float>());
 
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test3<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test3<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test3<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<float>());
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	defined(__cpp_lib_generic_associative_lookup) && (__cpp_lib_generic_associative_lookup >= 201304L)
-
 namespace hamon_multiset_test
 {
 
 namespace lower_bound_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -57,7 +46,7 @@ struct S
 };
 
 // template<class K> iterator lower_bound(const K& x);
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<S, hamon::less<>>;
 	using Iterator = typename Set::iterator;
@@ -118,7 +107,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 }
 
 // template<class K> const_iterator lower_bound(const K& x) const;
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::multiset<S, hamon::less<>>;
 	using ConstIterator = typename Set::const_iterator;
@@ -143,15 +132,10 @@ MULTISET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultisetTest, LowerBoundHeterogeneousTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace lower_bound_heterogeneous_test
 
 }	// namespace hamon_multiset_test
-
-#endif

@@ -19,19 +19,11 @@ namespace hamon_set_test
 namespace count_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 // size_type count(const key_type& x) const;
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::set<Key>;
 	using SizeType = typename Set::size_type;
@@ -74,9 +66,9 @@ int S::s_ctor_count = 0;
 
 GTEST_TEST(SetTest, CountTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
 	// https://en.cppreference.com/w/cpp/container/set/count
 
@@ -90,9 +82,6 @@ GTEST_TEST(SetTest, CountTest)
 		EXPECT_EQ(7, S::s_ctor_count);
 	}
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace count_test
 

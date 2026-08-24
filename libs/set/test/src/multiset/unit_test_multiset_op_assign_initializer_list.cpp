@@ -17,18 +17,10 @@ namespace hamon_multiset_test
 namespace op_assign_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 	using ValueType = typename Set::value_type;
@@ -84,13 +76,10 @@ MULTISET_TEST_CONSTEXPR bool test1()
 
 GTEST_TEST(MultisetTest, OpAssignInitializerListTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace op_assign_initializer_list_test
 

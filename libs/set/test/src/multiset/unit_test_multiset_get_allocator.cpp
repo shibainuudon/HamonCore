@@ -19,14 +19,6 @@ namespace hamon_multiset_test
 namespace get_allocator_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -65,7 +57,7 @@ struct MyAllocator
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename Allocator>
-MULTISET_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Allocator const& alloc)
 {
 	using Set = hamon::multiset<Key, hamon::less<>, Allocator>;
 
@@ -86,7 +78,7 @@ MULTISET_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	hamon::allocator<Key> alloc;
 	VERIFY(test_impl<Key>(alloc));
@@ -95,7 +87,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	MyAllocator<Key> alloc{42};
 	VERIFY(test_impl<Key>(alloc));
@@ -107,17 +99,14 @@ MULTISET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultisetTest, GetAllocatorTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace get_allocator_test
 

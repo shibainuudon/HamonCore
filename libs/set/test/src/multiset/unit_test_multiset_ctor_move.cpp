@@ -20,14 +20,6 @@ namespace hamon_multiset_test
 namespace ctor_move_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator1
 {
@@ -194,14 +186,12 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename Compare, typename Allocator>
-MULTISET_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 {
 	using Set = hamon::multiset<Key, Compare, Allocator>;
 
 	static_assert( hamon::is_move_constructible<Set>::value, "");
-#if !defined(HAMON_USE_STD_MULTISET)
 	static_assert( hamon::is_nothrow_move_constructible<Set>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_move_constructible<Set>::value, "");
 	static_assert(!hamon::is_trivially_move_constructible<Set>::value, "");
 
@@ -253,7 +243,7 @@ MULTISET_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& all
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	MyLess comp{13};
 	hamon::allocator<Key> alloc;
@@ -263,7 +253,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	MyLess comp{14};
 	MyAllocator1<Key> alloc{42};
@@ -273,7 +263,7 @@ MULTISET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	MyLess comp{15};
 	MyAllocator2<Key> alloc{42};
@@ -286,9 +276,9 @@ MULTISET_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(MultisetTest, CtorMoveTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -324,9 +314,6 @@ GTEST_TEST(MultisetTest, CtorMoveTest)
 	EXPECT_EQ(0, S::s_move_ctor_count);
 	EXPECT_EQ(4, S::s_dtor_count);
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace ctor_move_test
 

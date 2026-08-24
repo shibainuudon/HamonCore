@@ -8,7 +8,6 @@
  *	erase_if(multiset<Key, Compare, Allocator>& c, Predicate pred);
  */
 
-#include <hamon/set/erase_if.hpp>
 #include <hamon/set/multiset.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/type_traits.hpp>
@@ -24,14 +23,6 @@ namespace hamon_multiset_test
 namespace erase_if_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 struct IsZero
 {
 	template <typename T>
@@ -44,7 +35,7 @@ struct IsZero
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::multiset<Key>;
 	using SizeType = typename Set::size_type;
@@ -95,9 +86,9 @@ std::string ToString(const hamon::multiset<T, C>& set)
 
 GTEST_TEST(MultisetTest, EraseIfTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<short>()));
 
 	// https://en.cppreference.com/w/cpp/container/multiset/erase_if
 	{
@@ -111,9 +102,6 @@ GTEST_TEST(MultisetTest, EraseIfTest)
 		EXPECT_EQ(5u, count);
 	}
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace erase_if_test
 

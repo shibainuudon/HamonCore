@@ -44,10 +44,8 @@ GTEST_TEST(SetTest, PmrTest)
 	set.erase(1);
 	EXPECT_EQ("{2, 3, 5}", ToString(set));
 
-#if !defined(HAMON_USE_STD_SET) || (HAMON_CXX_STANDARD >= 20)
 	EXPECT_TRUE(set.contains(3));
 	EXPECT_FALSE(set.contains(4));
-#endif
 
 	hamon::string_view word = "element";
 	hamon::pmr::set<char> characters(word.begin(), word.end());

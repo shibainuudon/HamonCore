@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_SET) || \
-	defined(__cpp_lib_generic_associative_lookup) && (__cpp_lib_generic_associative_lookup >= 201304L)
-
 namespace hamon_set_test
 {
 
 namespace lower_bound_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -57,7 +46,7 @@ struct S
 };
 
 // template<class K> iterator lower_bound(const K& x);
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<S, hamon::less<>>;
 	using Iterator = typename Set::iterator;
@@ -97,7 +86,7 @@ SET_TEST_CONSTEXPR bool test1()
 }
 
 // template<class K> const_iterator lower_bound(const K& x) const;
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::set<S, hamon::less<>>;
 	using ConstIterator = typename Set::const_iterator;
@@ -122,15 +111,10 @@ SET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(SetTest, LowerBoundHeterogeneousTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace lower_bound_heterogeneous_test
 
 }	// namespace hamon_set_test
-
-#endif

@@ -23,14 +23,6 @@ namespace hamon_set_test
 namespace ctor_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -126,7 +118,7 @@ struct MyGreater
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename Compare, typename Allocator>
-SET_TEST_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& alloc)
 {
 	using Set = hamon::set<Key, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
@@ -257,7 +249,7 @@ SET_TEST_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& alloc)
 }
 
 template <typename Key, typename Compare, typename Allocator>
-SET_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& alloc)
 {
 	using Set = hamon::set<Key, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
@@ -388,7 +380,7 @@ SET_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& alloc)
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	hamon::allocator<Key> alloc;
 	{
@@ -404,7 +396,7 @@ SET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	MyAllocator<Key> alloc{42};
 	{
@@ -423,17 +415,14 @@ SET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(SetTest, CtorInitializerListTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace ctor_initializer_list_test
 

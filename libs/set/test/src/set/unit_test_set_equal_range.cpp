@@ -21,27 +21,15 @@ namespace hamon_set_test
 namespace equal_range_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 // pair<iterator, iterator> equal_range(const key_type& x);
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<Key>;
 	using Iterator = typename Set::iterator;
-#if defined(HAMON_USE_STD_SET)
-	using Result = std::pair<Iterator, Iterator>;
-#else
 	using Result = hamon::pair<Iterator, Iterator>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().equal_range(hamon::declval<Key const&>())), Result>::value, "");
 	static_assert(!noexcept(hamon::declval<Set&>().equal_range(hamon::declval<Key const&>())), "");
@@ -93,15 +81,11 @@ SET_TEST_CONSTEXPR bool test1()
 
 // pair<const_iterator, const_iterator> equal_range(const key_type& x) const;
 template <typename Key>
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::set<Key>;
 	using ConstIterator = typename Set::const_iterator;
-#if defined(HAMON_USE_STD_SET)
-	using Result = std::pair<ConstIterator, ConstIterator>;
-#else
 	using Result = hamon::pair<ConstIterator, ConstIterator>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().equal_range(hamon::declval<Key const&>())), Result>::value, "");
 	static_assert(!noexcept(hamon::declval<Set const&>().equal_range(hamon::declval<Key const&>())), "");
@@ -122,17 +106,14 @@ SET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(SetTest, EqualRangeTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace equal_range_test
 

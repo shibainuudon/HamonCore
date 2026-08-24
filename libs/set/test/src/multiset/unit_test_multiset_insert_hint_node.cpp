@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_multiset_test
 {
 
 namespace insert_hint_node_test
 {
-
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
 
 struct S
 {
@@ -52,7 +41,7 @@ struct S
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 	using NodeType = typename Set::node_type;
@@ -129,7 +118,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::multiset<S>;
 
@@ -191,7 +180,7 @@ MULTISET_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-MULTISET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Set1 = hamon::multiset<int, hamon::less<>>;
 	using Set2 = hamon::multiset<int, hamon::greater<>>;
@@ -281,7 +270,7 @@ MULTISET_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
-MULTISET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Set1 = hamon::multiset<int, hamon::less<>>;
 	using Set2 = hamon::set<int, hamon::greater<>>;
@@ -375,20 +364,15 @@ MULTISET_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(MultisetTest, InsertHintNodeTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test3()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test4()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4()));
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace insert_hint_node_test
 
 }	// namespace hamon_multiset_test
-
-#endif

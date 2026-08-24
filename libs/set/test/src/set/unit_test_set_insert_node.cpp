@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_set_test
 {
 
 namespace insert_node_test
 {
-
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
 
 struct S
 {
@@ -52,7 +41,7 @@ struct S
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<Key>;
 	using NodeType = typename Set::node_type;
@@ -131,7 +120,7 @@ SET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set = hamon::set<S>;
 
@@ -196,7 +185,7 @@ SET_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Set1 = hamon::set<int, hamon::less<>>;
 	using Set2 = hamon::set<int, hamon::greater<>>;
@@ -291,7 +280,7 @@ SET_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
-SET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Set1 = hamon::set<int, hamon::less<>>;
 	using Set2 = hamon::multiset<int, hamon::greater<>>;
@@ -393,20 +382,15 @@ SET_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(SetTest, InsertNodeTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test3()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test4()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4()));
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace insert_node_test
 
 }	// namespace hamon_set_test
-
-#endif

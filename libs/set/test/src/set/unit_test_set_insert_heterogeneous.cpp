@@ -12,22 +12,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_associative_heterogeneous_insertion) && (__cpp_lib_associative_heterogeneous_insertion >= 202306L))
-
 namespace hamon_set_test
 {
 
 namespace insert_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
 
 struct HeterogeneousKey
 {
@@ -60,15 +49,11 @@ struct Compare
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<int, Compare>;
 	using Iterator = typename Set::iterator;
-#if defined(HAMON_USE_STD_SET)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	Set v {1, -2};
 
@@ -91,14 +76,9 @@ SET_TEST_CONSTEXPR bool test1()
 
 GTEST_TEST(SetTest, InsertHeterogeneousTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace insert_heterogeneous_test
 
 }	// namespace hamon_set_test
-
-#endif

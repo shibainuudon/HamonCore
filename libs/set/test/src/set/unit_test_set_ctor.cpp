@@ -85,8 +85,7 @@ GTEST_TEST(SetTest, CtorTest)
 
 	// (12) Range constructor
 	const auto w = {"Eurybia", "Theia", "Rhea", "Aura", "Mnemosyne", "Mnemosyne"};
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
+#if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 	hamon::set<std::string> g(hamon::from_range, w); // overload (12)
 #else
 	hamon::set<std::string> g(w.begin(), w.end()); // fallback to (4)

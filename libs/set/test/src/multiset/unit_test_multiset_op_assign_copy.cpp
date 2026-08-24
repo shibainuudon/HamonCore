@@ -18,14 +18,6 @@ namespace hamon_multiset_test
 namespace op_assign_copy_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator1
 {
@@ -185,7 +177,7 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 
@@ -253,7 +245,7 @@ HAMON_WARNING_POP()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Compare = hamon::less<>;
 	using Allocator = MyAllocator1<Key>;
@@ -279,7 +271,7 @@ MULTISET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Compare = hamon::less<>;
 	using Allocator = MyAllocator2<Key>;
@@ -305,7 +297,7 @@ MULTISET_TEST_CONSTEXPR bool test3()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Compare = MyLess;
 	using Set = hamon::multiset<Key, Compare>;
@@ -332,9 +324,9 @@ MULTISET_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(MultisetTest, OpAssignCopyTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -348,7 +340,6 @@ GTEST_TEST(MultisetTest, OpAssignCopyTest)
 	EXPECT_TRUE(test4<char>());
 	EXPECT_TRUE(test4<float>());
 
-#if !defined(HAMON_USE_STD_MULTISET)
 	S::s_ctor_count = 0;
 	S::s_copy_ctor_count = 0;
 	S::s_move_ctor_count = 0;
@@ -476,11 +467,7 @@ GTEST_TEST(MultisetTest, OpAssignCopyTest)
 	EXPECT_EQ(2, S::s_copy_ctor_count);
 	EXPECT_EQ(0, S::s_move_ctor_count);
 	EXPECT_EQ(8, S::s_dtor_count);
-#endif
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace op_assign_copy_test
 

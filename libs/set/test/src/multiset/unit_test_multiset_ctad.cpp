@@ -48,18 +48,10 @@ namespace hamon_multiset_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, template <typename> class IteratorWrapper>
-MULTISET_TEST_CONSTEXPR bool test1_impl()
+HAMON_CXX20_CONSTEXPR bool test1_impl()
 {
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<Key>;
@@ -95,7 +87,7 @@ MULTISET_TEST_CONSTEXPR bool test1_impl()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_impl<Key, cpp17_input_iterator_wrapper>());
 //	VERIFY(test1_impl<Key, input_iterator_wrapper>());
@@ -106,11 +98,8 @@ MULTISET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 template <typename Key, template <typename> class RangeWrapper>
-MULTISET_TEST_CONSTEXPR bool test2_impl()
+HAMON_CXX20_CONSTEXPR bool test2_impl()
 {
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<Key>;
@@ -150,7 +139,7 @@ MULTISET_TEST_CONSTEXPR bool test2_impl()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_impl<Key, test_input_range>());
 	VERIFY(test2_impl<Key, test_forward_range>());
@@ -165,10 +154,8 @@ MULTISET_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-#endif
-
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<Key>;
@@ -199,24 +186,18 @@ MULTISET_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(MultisetTest, CtadTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test2<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test2<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test2<float>());
-#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<float>());
 
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test3<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test3<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test3<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3<float>());
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

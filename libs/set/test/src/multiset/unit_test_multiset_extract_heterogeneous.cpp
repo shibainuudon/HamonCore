@@ -13,35 +13,22 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_associative_heterogeneous_erasure) && (__cpp_lib_associative_heterogeneous_erasure >= 202110L))
-
 namespace hamon_multiset_test
 {
 
 namespace extract_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::multiset<Key, hamon::less<>>;
 	using NodeType = typename Set::node_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().extract(hamon::declval<int>())), NodeType>::value, "");
-#if !defined(HAMON_USE_STD_MULTISET)
 	static_assert(!noexcept(hamon::declval<Set&>().extract(hamon::declval<int>())), "");
-#endif
 
 	Set v{Key{3}, Key{1}, Key{4}, Key{1}, Key{5} };
 	VERIFY(v.size() == 5);
@@ -131,9 +118,9 @@ int S::s_dtor_count = 0;
 
 GTEST_TEST(MultisetTest, ExtractHeterogeneousTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
 	S::s_ctor_count = 0;
 	S::s_dtor_count = 0;
@@ -171,11 +158,6 @@ GTEST_TEST(MultisetTest, ExtractHeterogeneousTest)
 	EXPECT_EQ(5, S::s_dtor_count);
 }
 
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
-
 }	// namespace extract_heterogeneous_test
 
 }	// namespace hamon_multiset_test
-
-#endif

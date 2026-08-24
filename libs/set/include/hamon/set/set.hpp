@@ -8,10 +8,6 @@
 #define HAMON_SET_SET_HPP
 
 #include <hamon/set/set_fwd.hpp>
-#include <hamon/set/config.hpp>
-
-#if !defined(HAMON_USE_STD_SET)
-
 #include <hamon/set/multiset_fwd.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/red_black_tree.hpp>
@@ -1013,8 +1009,29 @@ swap(set<Key, Compare, Allocator>& x, set<Key, Compare, Allocator>& y)
 	x.swap(y);
 }
 
-}	// namespace hamon
+// 23.4.6.3 Erasure[set.erasure]
 
-#endif
+template <typename Key, typename Compare, typename Alloc, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::set<Key, Compare, Alloc>::size_type
+erase_if(hamon::set<Key, Compare, Alloc>& c, Predicate pred)
+{
+	// [set.erasure]/1
+	auto const sz = c.size();
+	for (auto i = c.begin(), last = c.end(); i != last; )
+	{
+		if (pred(*i))
+		{
+			i = c.erase(i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return sz - c.size();
+}
+
+}	// namespace hamon
 
 #endif // HAMON_SET_SET_HPP

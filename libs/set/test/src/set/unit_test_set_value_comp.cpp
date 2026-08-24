@@ -17,14 +17,6 @@ namespace hamon_set_test
 namespace value_comp_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 struct MyLess
 {
 	int id;
@@ -73,7 +65,7 @@ struct MyGreater
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename Compare>
-SET_TEST_CONSTEXPR bool test_impl(Compare const& comp)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp)
 {
 	using Set = hamon::set<Key, Compare>;
 
@@ -94,7 +86,7 @@ SET_TEST_CONSTEXPR bool test_impl(Compare const& comp)
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	{
 		MyLess comp{13};
@@ -121,9 +113,9 @@ struct ModCmp
 
 GTEST_TEST(SetTest, ValueCompTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/set/value_comp
 	{
@@ -150,9 +142,6 @@ GTEST_TEST(SetTest, ValueCompTest)
 		EXPECT_TRUE(it == cont.end());
 	}
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace value_comp_test
 

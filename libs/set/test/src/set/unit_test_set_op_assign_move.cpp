@@ -21,14 +21,6 @@ namespace hamon_set_test
 namespace op_assign_move_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator1
 {
@@ -188,7 +180,7 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<Key>;
 
@@ -253,7 +245,7 @@ SET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Compare = hamon::less<>;
 	using Allocator = MyAllocator1<Key>;
@@ -279,16 +271,14 @@ SET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Compare = hamon::less<>;
 	using Allocator = MyAllocator2<Key>;
 	using Set = hamon::set<Key, Compare, Allocator>;
 
 	static_assert( hamon::is_move_assignable<Set>::value, "");
-#if !defined(HAMON_USE_STD_SET)
 	static_assert(!hamon::is_nothrow_move_assignable<Set>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_move_assignable<Set>::value, "");
 
 	Set v1{Allocator{10}};
@@ -307,7 +297,7 @@ SET_TEST_CONSTEXPR bool test3()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Compare = MyLess;
 	using Set = hamon::set<Key, Compare>;
@@ -334,9 +324,9 @@ SET_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(SetTest, OpAssignMoveTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -350,7 +340,6 @@ GTEST_TEST(SetTest, OpAssignMoveTest)
 	EXPECT_TRUE(test4<char>());
 	EXPECT_TRUE(test4<float>());
 
-#if !defined(HAMON_USE_STD_SET)
 	S::s_ctor_count = 0;
 	S::s_copy_ctor_count = 0;
 	S::s_move_ctor_count = 0;
@@ -478,11 +467,7 @@ GTEST_TEST(SetTest, OpAssignMoveTest)
 	EXPECT_EQ(0, S::s_copy_ctor_count);
 	EXPECT_EQ(0, S::s_move_ctor_count);
 	EXPECT_EQ(6, S::s_dtor_count);
-#endif
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace op_assign_move_test
 

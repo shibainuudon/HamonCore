@@ -23,23 +23,11 @@
 #include <string>
 #include <sstream>
 
-#if 1	// TODO
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_multiset_test
 {
 
 namespace merge_test
 {
-
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
 
 struct S
 {
@@ -61,7 +49,7 @@ struct S
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 
@@ -107,7 +95,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set1 = hamon::multiset<Key, hamon::less<>>;
 	using Set2 = hamon::multiset<Key, hamon::greater<>>;
@@ -154,7 +142,7 @@ MULTISET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Set1 = hamon::multiset<Key, hamon::less<>>;
 	using Set2 = hamon::set<Key, hamon::greater<>>;
@@ -206,7 +194,7 @@ MULTISET_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
-MULTISET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Set = hamon::multiset<S>;
 
@@ -259,19 +247,19 @@ std::string ToString(const hamon::multiset<T, C>& set)
 
 GTEST_TEST(MultisetTest, MergeTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test3<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test3<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test3<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float>()));
 
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test4()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4()));
 
 	// https://en.cppreference.com/w/cpp/container/multiset/merge
 	{
@@ -289,12 +277,6 @@ GTEST_TEST(MultisetTest, MergeTest)
 	}
 }
 
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
-
 }	// namespace merge_test
 
 }	// namespace hamon_multiset_test
-
-#endif
-#endif

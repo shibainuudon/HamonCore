@@ -18,14 +18,6 @@ namespace hamon_set_test
 namespace insert_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 #if !defined(HAMON_NO_EXCEPTIONS)
 struct MayThrow
 {
@@ -59,7 +51,7 @@ struct MayThrow
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::set<Key>;
 	using ValueType = typename Set::value_type;
@@ -103,9 +95,9 @@ SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(SetTest, InsertInitializerListTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -147,9 +139,6 @@ GTEST_TEST(SetTest, InsertInitializerListTest)
 	}
 #endif
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace insert_initializer_list_test
 

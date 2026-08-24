@@ -10,27 +10,16 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_set_test
 {
 
 namespace node_type_test
 {
 
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::set<Key>;
 	using NodeType = typename Set::node_type;
@@ -54,9 +43,7 @@ SET_TEST_CONSTEXPR bool test()
 	static_assert(!hamon::is_copy_assignable<NodeType>::value, "");
 
 	static_assert( hamon::is_move_assignable<NodeType>::value, "");
-#if !defined(HAMON_USE_STD_SET)
 	static_assert(!hamon::is_nothrow_move_assignable<NodeType>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_move_assignable<NodeType>::value, "");
 
 	static_assert(hamon::is_same<decltype(hamon::declval<NodeType const&>().empty()), bool>::value, "");
@@ -66,14 +53,12 @@ SET_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_same<decltype(hamon::declval<NodeType&>().swap(hamon::declval<NodeType&>())), void>::value, "");
 	static_assert(hamon::is_same<decltype(swap(hamon::declval<NodeType&>(), hamon::declval<NodeType&>())), void>::value, "");
 
-#if !defined(HAMON_USE_STD_SET)
 	static_assert( noexcept(hamon::declval<NodeType const&>().empty()), "");
 	static_assert( noexcept(hamon::declval<NodeType const&>().operator bool()), "");
 	static_assert(!noexcept(hamon::declval<NodeType const&>().get_allocator()), "");
 	static_assert(!noexcept(hamon::declval<NodeType const&>().value()), "");
 	static_assert( noexcept(hamon::declval<NodeType&>().swap(hamon::declval<NodeType&>())), "");
 	static_assert( noexcept(swap(hamon::declval<NodeType&>(), hamon::declval<NodeType&>())), "");
-#endif
 
 	{
 		NodeType node;
@@ -140,16 +125,11 @@ SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(SetTest, NodeTypeTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	SET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
-
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
 
 }	// namespace node_type_test
 
 }	// namespace hamon_set_test
-
-#endif

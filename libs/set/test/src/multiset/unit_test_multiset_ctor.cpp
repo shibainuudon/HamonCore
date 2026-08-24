@@ -63,8 +63,7 @@ GTEST_TEST(MultisetTest, CtorTest)
 
 	// (12) Range constructor
 	const auto w = {"a", "b", "c", "d", "d", "c", "b", "a"};
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
+#if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 	hamon::multiset<std::string> f(hamon::from_range, w); // overload (12)
 #else
 	hamon::multiset<std::string> f(w.begin(), w.end()); // fallback to (4)

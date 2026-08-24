@@ -23,23 +23,11 @@
 #include <string>
 #include <sstream>
 
-#if 1	// TODO
-#if !defined(HAMON_USE_STD_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_set_test
 {
 
 namespace merge_test
 {
-
-#if !defined(HAMON_USE_STD_SET)
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define SET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define SET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define SET_TEST_CONSTEXPR              /**/
-#endif
 
 struct S
 {
@@ -61,7 +49,7 @@ struct S
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::set<Key>;
 
@@ -115,7 +103,7 @@ SET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set1 = hamon::set<Key, hamon::less<>>;
 	using Set2 = hamon::set<Key, hamon::greater<>>;
@@ -170,7 +158,7 @@ SET_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Set1 = hamon::set<Key, hamon::less<>>;
 	using Set2 = hamon::multiset<Key, hamon::greater<>>;
@@ -230,7 +218,7 @@ SET_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
-SET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Set = hamon::set<S>;
 
@@ -287,19 +275,19 @@ std::string ToString(const hamon::set<T, C>& set)
 
 GTEST_TEST(SetTest, MergeTest)
 {
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<int>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<char>()));
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float>()));
 
-	SET_TEST_CONSTEXPR_EXPECT_TRUE((test4()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4()));
 
 	// https://en.cppreference.com/w/cpp/container/set/merge
 	{
@@ -317,12 +305,6 @@ GTEST_TEST(SetTest, MergeTest)
 	}
 }
 
-#undef SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef SET_TEST_CONSTEXPR
-
 }	// namespace merge_test
 
 }	// namespace hamon_set_test
-
-#endif
-#endif

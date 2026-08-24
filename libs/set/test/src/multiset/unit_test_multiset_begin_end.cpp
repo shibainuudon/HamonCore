@@ -25,18 +25,10 @@ namespace hamon_multiset_test
 namespace begin_end_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::multiset<Key>;
 	using Iterator = typename Set::iterator;
@@ -177,9 +169,9 @@ MULTISET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MultisetTest, BeginEndTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/multiset/begin
 	{
@@ -200,9 +192,6 @@ GTEST_TEST(MultisetTest, BeginEndTest)
 		EXPECT_EQ("come:1, not:1, out:1, some:1, sorted:2, will:1, words:1, ", out.str());
 	}
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace begin_end_test
 

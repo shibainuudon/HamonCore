@@ -23,18 +23,10 @@ namespace hamon_multiset_test
 namespace rbegin_rend_test
 {
 
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::multiset<Key>;
 	using ReverseIterator = typename Set::reverse_iterator;
@@ -175,9 +167,9 @@ MULTISET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MultisetTest, RBeginREndTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/multiset/rbegin
 	{
@@ -190,9 +182,6 @@ GTEST_TEST(MultisetTest, RBeginREndTest)
 		EXPECT_EQ("4 4 3 3 2 2 1 1 ", out.str());
 	}
 }
-
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
 
 }	// namespace rbegin_rend_test
 

@@ -20,22 +20,11 @@
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
-#if !defined(HAMON_USE_STD_MULTISET) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 namespace hamon_multiset_test
 {
 
 namespace ctor_range_test
 {
-
-#if !defined(HAMON_USE_STD_MULTISET)
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTISET_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTISET_TEST_CONSTEXPR              /**/
-#endif
 
 template <typename T>
 struct MyAllocator
@@ -108,7 +97,7 @@ struct MyLess
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, template <typename> class RangeWrapper, typename Compare, typename Allocator>
-MULTISET_TEST_CONSTEXPR bool test_imp2(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_imp2(Compare const& comp, Allocator const& alloc)
 {
 	using Set = hamon::multiset<Key, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
@@ -272,7 +261,7 @@ MULTISET_TEST_CONSTEXPR bool test_imp2(Compare const& comp, Allocator const& all
 }
 
 template <typename Key, typename Compare, typename Allocator>
-MULTISET_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 {
 	return
 		test_imp2<Key, test_input_range>(comp, alloc) &&
@@ -288,7 +277,7 @@ MULTISET_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& all
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	MyLess comp{13};
 	hamon::allocator<Key> alloc;
@@ -297,7 +286,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	MyLess comp{14};
 	MyAllocator<Key> alloc{42};
@@ -309,20 +298,15 @@ MULTISET_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultisetTest, CtorRangeTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
 
-#undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTISET_TEST_CONSTEXPR
-
 }	// namespace ctor_range_test
 
 }	// namespace hamon_multiset_test
-
-#endif
