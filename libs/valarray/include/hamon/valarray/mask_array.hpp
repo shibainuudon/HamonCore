@@ -8,10 +8,6 @@
 #define HAMON_VALARRAY_MASK_ARRAY_HPP
 
 #include <hamon/valarray/mask_array_fwd.hpp>
-#include <hamon/valarray/config.hpp>
-
-#if !defined(HAMON_USE_STD_VALARRAY)
-
 #include <hamon/valarray/detail/valarray_class.hpp>
 #include <hamon/valarray/detail/valarray_range.hpp>
 #include <hamon/algorithm/ranges/count.hpp>
@@ -217,7 +213,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VALARRAY_MASK_ARRAY_HPP

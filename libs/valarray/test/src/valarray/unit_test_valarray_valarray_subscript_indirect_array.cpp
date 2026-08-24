@@ -30,10 +30,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const hamon::valarray<T> va = { 1, 2, 3, 4, 5 };
 		const hamon::valarray<hamon::size_t> mask = { 0, 2, 4 };
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(va[mask]), hamon::valarray<T>>::value, "");
 		static_assert(!noexcept(va[mask]), "");
-#endif
 
 		hamon::valarray<T> result = va[mask];
 
@@ -100,9 +98,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const hamon::valarray<hamon::size_t> mask = { 0, 2, 4 };
 
 		static_assert(hamon::is_same<decltype(va[mask]), hamon::indirect_array<T>>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(!noexcept(va[mask]), "");
-#endif
 
 		hamon::indirect_array<T> result = va[mask];
 

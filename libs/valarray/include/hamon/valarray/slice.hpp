@@ -8,10 +8,6 @@
 #define HAMON_VALARRAY_SLICE_HPP
 
 #include <hamon/valarray/slice_fwd.hpp>
-#include <hamon/valarray/config.hpp>
-
-#if !defined(HAMON_USE_STD_VALARRAY)
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
@@ -82,7 +78,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VALARRAY_SLICE_HPP

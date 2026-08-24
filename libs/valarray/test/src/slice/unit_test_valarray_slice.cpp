@@ -34,16 +34,12 @@ namespace slice_test
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	static_assert( hamon::is_default_constructible<hamon::slice>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert( hamon::is_nothrow_default_constructible<hamon::slice>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_default_constructible<hamon::slice>::value, "");
 	static_assert( hamon::is_implicitly_default_constructible<hamon::slice>::value, "");
 
 	static_assert( hamon::is_constructible<hamon::slice, hamon::size_t, hamon::size_t, hamon::size_t>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert( hamon::is_nothrow_constructible<hamon::slice, hamon::size_t, hamon::size_t, hamon::size_t>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<hamon::slice, hamon::size_t, hamon::size_t, hamon::size_t>::value, "");
 	static_assert( hamon::is_implicitly_constructible<hamon::slice, hamon::size_t, hamon::size_t, hamon::size_t>::value, "");
 
@@ -56,11 +52,9 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(s.size()), hamon::size_t>::value, "");
 		static_assert(hamon::is_same<decltype(s.stride()), hamon::size_t>::value, "");
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(noexcept(s.start()), "");
 		static_assert(noexcept(s.size()), "");
 		static_assert(noexcept(s.stride()), "");
-#endif
 
 		VERIFY(s.start() == 0);
 		VERIFY(s.size() == 0);
@@ -73,7 +67,6 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(s.stride() == 2);
 	}
 
-#if !(defined(HAMON_USE_STD_VALARRAY) && HAMON_CXX_STANDARD < 20)
 	// [slice.ops]
 	{
 		hamon::slice s1;
@@ -82,10 +75,8 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(s1 == s1), bool>::value, "");
 		static_assert(hamon::is_same<decltype(s1 != s1), bool>::value, "");
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(noexcept(s1 == s1), "");
 		static_assert(noexcept(s1 != s1), "");
-#endif
 
 		VERIFY( (s1 == s2));
 		VERIFY(!(s1 != s2));
@@ -125,7 +116,6 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(!(s1 == s2));
 		VERIFY( (s1 != s2));
 	}
-#endif
 
 	return true;
 }

@@ -7,7 +7,6 @@
 #ifndef HAMON_VALARRAY_HPP
 #define HAMON_VALARRAY_HPP
 
-#include <hamon/valarray/config.hpp>
 #include <hamon/valarray/gslice.hpp>
 #include <hamon/valarray/gslice_array.hpp>
 #include <hamon/valarray/indirect_array.hpp>

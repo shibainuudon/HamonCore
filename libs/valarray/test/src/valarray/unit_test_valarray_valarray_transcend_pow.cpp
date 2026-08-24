@@ -39,10 +39,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		hamon::valarray<T> v1(a1, N);
 		hamon::valarray<T> v2(a2, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(pow(v1, v2)), hamon::valarray<T>>::value, "");
 		static_assert(!noexcept(pow(v1, v2)), "");
-#endif
 
 		hamon::valarray<T> v3 = pow(v1, v2);
 		VERIFY(v3.size() == v1.size());
@@ -63,10 +61,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const unsigned N = sizeof(a1) / sizeof(a1[0]);
 		hamon::valarray<T> v1(a1, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(pow(v1, T{})), hamon::valarray<T>>::value, "");
 		static_assert(!noexcept(pow(v1, T{})), "");
-#endif
 
 		hamon::valarray<T> v3 = pow(v1, 2.0);
 		VERIFY(v3.size() == v1.size());
@@ -87,10 +83,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const unsigned N = sizeof(a1) / sizeof(a1[0]);
 		hamon::valarray<T> v1(a1, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(pow(T{}, v1)), hamon::valarray<T>>::value, "");
 		static_assert(!noexcept(pow(T{}, v1)), "");
-#endif
 
 		hamon::valarray<T> v3 = pow(2.0, v1);
 		VERIFY(v3.size() == v1.size());

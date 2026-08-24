@@ -26,10 +26,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	static_assert(!hamon::is_default_constructible<hamon::slice_array<T>>::value, "");
 
 	static_assert(hamon::is_copy_constructible<hamon::slice_array<T>>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert(hamon::is_nothrow_copy_constructible<hamon::slice_array<T>>::value, "");
 	static_assert(hamon::is_trivially_copy_constructible<hamon::slice_array<T>>::value, "");
-#endif
 	static_assert(hamon::is_implicitly_copy_constructible<hamon::slice_array<T>>::value, "");
 
 	return true;

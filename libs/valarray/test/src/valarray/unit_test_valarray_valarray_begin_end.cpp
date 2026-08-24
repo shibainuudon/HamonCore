@@ -37,12 +37,11 @@ HAMON_CXX20_CONSTEXPR bool test()
 		hamon::valarray<T> v(a, 5);
 		const hamon::valarray<T>& cv = v;
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(noexcept(hamon::begin(v)), "");
 		static_assert(noexcept(hamon::begin(cv)), "");
 		static_assert(noexcept(hamon::end(v)), "");
 		static_assert(noexcept(hamon::end(cv)), "");
-#endif
+
 		using hamon::begin;
 		using It = decltype(begin(v));
 		using CIt = decltype(begin(cv));

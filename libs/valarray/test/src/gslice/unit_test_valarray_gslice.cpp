@@ -32,9 +32,7 @@ namespace gslice_test
 inline HAMON_CXX20_CONSTEXPR bool test()
 {
 	static_assert( hamon::is_default_constructible<hamon::gslice>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert(!hamon::is_nothrow_default_constructible<hamon::gslice>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_default_constructible<hamon::gslice>::value, "");
 	static_assert( hamon::is_implicitly_default_constructible<hamon::gslice>::value, "");
 
@@ -52,11 +50,9 @@ inline HAMON_CXX20_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(gs.size()), hamon::valarray<hamon::size_t>>::value, "");
 		static_assert(hamon::is_same<decltype(gs.stride()), hamon::valarray<hamon::size_t>>::value, "");
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert( noexcept(gs.start()), "");
 		static_assert(!noexcept(gs.size()), "");
 		static_assert(!noexcept(gs.stride()), "");
-#endif
 
 		VERIFY(gs.start() == 0);
 		VERIFY(gs.size().size() == 0);

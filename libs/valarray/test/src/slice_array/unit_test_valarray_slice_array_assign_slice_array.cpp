@@ -32,10 +32,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	hamon::slice_array<T> s1 = v1[hamon::slice(1, 5, 3)];
 	hamon::slice_array<T> s2 = v2[hamon::slice(2, 5, 2)];
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert(hamon::is_same<decltype(s1 = s2), hamon::slice_array<T> const&>::value, "");
 	static_assert(noexcept(s1 = s2), "");
-#endif
 
 	auto& t = (s1 = s2);
 	VERIFY(&t == &s1);

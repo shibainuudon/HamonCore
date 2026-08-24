@@ -34,10 +34,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		hamon::valarray<T> v1(a1, N);
 		hamon::valarray<T> v2(a2, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(v1 < v2), hamon::valarray<bool>>::value, "");
 		static_assert(!noexcept(v1 < v2), "");
-#endif
 
 		hamon::valarray<bool> v3 = v1 < v2;
 		hamon::valarray<bool> v3a = +(v1 < v2);
@@ -57,10 +55,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const unsigned N = 5;
 		hamon::valarray<T> v1(a1, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(v1 < T{}), hamon::valarray<bool>>::value, "");
 		static_assert(!noexcept(v1 < T{}), "");
-#endif
 
 		hamon::valarray<bool> v3 = v1 < 2;
 		hamon::valarray<bool> v3a = +(v1 < 2);
@@ -80,10 +76,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const unsigned N = 5;
 		hamon::valarray<T> v2(a2, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(T{} < v2), hamon::valarray<bool>>::value, "");
 		static_assert(!noexcept(T{} < v2), "");
-#endif
 
 		hamon::valarray<bool> v3 = 2 < v2;
 		hamon::valarray<bool> v3a = +(2 < v2);

@@ -35,10 +35,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const hamon::size_t stride = 2u; // 何個置きに処理するか
 		const hamon::slice sl(start, length, stride);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(va[sl]), hamon::valarray<T>>::value, "");
 		static_assert(!noexcept(va[sl]), "");
-#endif
 
 		hamon::valarray<T> result = va[sl];
 
@@ -77,9 +75,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		const hamon::slice sl(start, length, stride);
 
 		static_assert(hamon::is_same<decltype(va[sl]), hamon::slice_array<T>>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(noexcept(va[sl]), "");
-#endif
 
 		hamon::slice_array<T> result = va[sl];
 

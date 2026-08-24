@@ -28,9 +28,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		hamon::valarray<T> const va{1,2,3};
 
 		static_assert(hamon::is_same<decltype(va[0]), T const&>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(noexcept(va[0]), "");
-#endif
 
 		VERIFY(va[0] == T{1});
 		VERIFY(va[1] == T{2});
@@ -42,9 +40,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		hamon::valarray<T> va{1,2,3};
 
 		static_assert(hamon::is_same<decltype(va[0]), T&>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(noexcept(va[0]), "");
-#endif
 
 		VERIFY(va[0] == T{1});
 		VERIFY(va[1] == T{2});

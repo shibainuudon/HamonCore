@@ -24,9 +24,7 @@ template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
 	static_assert(hamon::is_default_constructible<hamon::valarray<T>>::value, "");
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert(hamon::is_nothrow_default_constructible<hamon::valarray<T>>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_default_constructible<hamon::valarray<T>>::value, "");
 	static_assert(hamon::is_implicitly_default_constructible<hamon::valarray<T>>::value, "");
 

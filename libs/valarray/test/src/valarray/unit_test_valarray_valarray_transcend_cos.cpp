@@ -33,10 +33,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	const unsigned N = sizeof(a1) / sizeof(a1[0]);
 	hamon::valarray<T> v1(a1, N);
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert(hamon::is_same<decltype(cos(v1)), hamon::valarray<T>>::value, "");
 	static_assert(!noexcept(cos(v1)), "");
-#endif
 
 	hamon::valarray<T> v3 = cos(v1);
 	VERIFY(v3.size() == v1.size());

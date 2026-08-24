@@ -40,10 +40,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	hamon::mask_array<T> s1 = v1[vb1];
 	hamon::mask_array<T> s2 = v2[vb2];
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 	static_assert(hamon::is_same<decltype(s1 = s2), hamon::mask_array<T> const&>::value, "");
 	static_assert(noexcept(s1 = s2), "");
-#endif
 
 	auto& t = (s1 = s2);
 	VERIFY(&t == &s1);

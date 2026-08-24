@@ -25,10 +25,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	{
 		hamon::valarray<T> a = { 1, -2, 3 };
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 		static_assert(hamon::is_same<decltype(+a), hamon::valarray<T>>::value, "");
 		static_assert(!noexcept(+a), "");
-#endif
 
 		hamon::valarray<T> result = +a;
 		VERIFY(result.size() == 3u);

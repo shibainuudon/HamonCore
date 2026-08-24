@@ -25,14 +25,12 @@ HAMON_CXX20_CONSTEXPR bool test()
 {
 	hamon::valarray<T> const va{1,2,3};
 
-#if !defined(HAMON_USE_STD_VALARRAY)
 	auto f1 = [](T t)->T {return t;};
 	auto f2 = [](T const& t)->T {return t;};
 	static_assert(hamon::is_same<decltype(va.apply(f1)), hamon::valarray<T>>::value, "");
 	static_assert(hamon::is_same<decltype(va.apply(f2)), hamon::valarray<T>>::value, "");
 	static_assert(!noexcept(va.apply(f1)), "");
 	static_assert(!noexcept(va.apply(f2)), "");
-#endif
 
 	hamon::valarray<T> va2 = va.apply([](T x){return static_cast<T>(x + 2);});
 	VERIFY(va2.size() == 3u);

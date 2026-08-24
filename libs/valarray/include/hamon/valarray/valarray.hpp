@@ -8,9 +8,6 @@
 #define HAMON_VALARRAY_VALARRAY_HPP
 
 #include <hamon/valarray/valarray_fwd.hpp>
-#include <hamon/valarray/config.hpp>
-
-#if !defined(HAMON_USE_STD_VALARRAY)
 
 #include <hamon/valarray/detail/valarray_class.hpp>
 
@@ -155,7 +152,5 @@ valarray<T>::operator[](valarray<hamon::size_t> const& indarr)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VALARRAY_VALARRAY_HPP
