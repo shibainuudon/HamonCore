@@ -8,11 +8,21 @@
 #define HAMON_TYPE_TRAITS_DETAIL_COMMON_TYPE_HELPER_HPP
 
 #include <hamon/type_traits/add_lvalue_reference.hpp>
+#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/copy_cv.hpp>
+#include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_reference.hpp>
+#include <hamon/type_traits/is_rvalue_reference.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -46,12 +56,43 @@ struct XREF<T&&>
 template <typename From, typename To>
 using COPYCV = hamon::copy_cv_t<To, From>;
 
-// [meta.trans.other]/3.4	COND-RES(X, Y)
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-volatile")
+HAMON_WARNING_DISABLE_MSVC(4244)	// '引数': 'T' から 'const T' への変換です。データが失われる可能性があります。
+
+// [meta.trans.other]/3.4	COND-RES(X, Y)
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
 
 template <typename X, typename Y>
 using COND_RES = decltype(false ? hamon::declval<X(&)()>()() : hamon::declval<Y(&)()>()());
+
+#else
+
+template <typename X, typename Y, typename = void>
+struct COND_RES_workaround {};
+
+template <typename X, typename Y>
+struct COND_RES_workaround<X, Y, hamon::void_t<decltype(false ? hamon::declval<X(&)()>()() : hamon::declval<Y(&)()>()())>>
+{
+    using U = hamon::remove_cvref_t<X>;
+    using type = hamon::conditional_t<
+		hamon::conjunction<
+			hamon::is_same<U, hamon::remove_cvref_t<Y>>,
+			hamon::disjunction<hamon::is_scalar<U>, hamon::is_array<U>>,
+			hamon::disjunction<
+				hamon::conjunction<hamon::is_lvalue_reference<X>, hamon::is_rvalue_reference<Y>>,
+				hamon::conjunction<hamon::is_rvalue_reference<X>, hamon::is_lvalue_reference<Y>>
+			>
+		>::value,
+        hamon::decay_t<COPYCV<hamon::remove_reference_t<X>, hamon::remove_reference_t<Y>>>,
+		decltype(false ? hamon::declval<X(&)()>()() : hamon::declval<Y(&)()>()())
+	>;
+};
+
+template <typename X, typename Y>
+using COND_RES = typename COND_RES_workaround<X, Y>::type;
+
+#endif
 
 HAMON_WARNING_POP()
 
