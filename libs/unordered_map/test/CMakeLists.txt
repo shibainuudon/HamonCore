@@ -18,6 +18,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		array
 		functional
+		initializer_list
 		memory
 		memory_resource
 		pair

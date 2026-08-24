@@ -7,6 +7,7 @@
  */
 
 #include <hamon/map/map.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -52,8 +53,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 	Map v;
 
-	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<std::initializer_list<ValueType>>())), void>::value, "");
-	static_assert(!noexcept(v.insert(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<hamon::initializer_list<ValueType>>())), void>::value, "");
+	static_assert(!noexcept(v.insert(hamon::declval<hamon::initializer_list<ValueType>>())), "");
 
 	VERIFY(v.empty());
 

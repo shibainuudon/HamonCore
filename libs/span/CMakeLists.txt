@@ -24,6 +24,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		config
 		cstddef
 		debug
+		initializer_list
 		iterator
 		limits
 		memory

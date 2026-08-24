@@ -7,10 +7,10 @@
  */
 
 #include <hamon/unordered_map/unordered_map.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "unordered_map_test_helper.hpp"
 
@@ -28,8 +28,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Map = hamon::unordered_map<Key, T>;
 	using ValueType = typename Map::value_type;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::initializer_list<ValueType>>())), void>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::initializer_list<ValueType>>())), void>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::initializer_list<ValueType>>())), "");
 
 	Map v;
 

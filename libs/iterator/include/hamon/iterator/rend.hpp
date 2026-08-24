@@ -22,9 +22,9 @@ using std::rend;
 #else
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -59,7 +59,7 @@ rend(T (&a)[N]) HAMON_NOEXCEPT
 
 template <typename E>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::reverse_iterator<E const*>
-rend(std::initializer_list<E> il) HAMON_NOEXCEPT
+rend(hamon::initializer_list<E> il) HAMON_NOEXCEPT
 {
 	// [iterator.range]/13
 	return hamon::reverse_iterator<E const*>(il.begin());

@@ -7,6 +7,7 @@
  */
 
 #include <hamon/list/list.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -76,14 +77,14 @@ LIST_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
 {
 	using List = hamon::list<T, Allocator>;
 
-	static_assert( hamon::is_constructible<List, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<List, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<List, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<List, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<List, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<List, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<List, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<List, std::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<List, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<List, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<List, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<List, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<List, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<List, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<List, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<List, hamon::initializer_list<T>, Allocator const&>::value, "");
 
 	{
 		List v = {T{1}, T{2}, T{3}};

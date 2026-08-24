@@ -9,7 +9,7 @@
 
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/cstddef.hpp>
-#include <initializer_list>
+#include <hamon/initializer_list.hpp>
 
 namespace hamon_bigint_test
 {
@@ -26,7 +26,7 @@ private:
 
 public:
 	HAMON_CXX14_CONSTEXPR
-	MyVector(std::initializer_list<T> il)
+	MyVector(hamon::initializer_list<T> il)
 		: m_size(il.size())
 		, m_data{}
 	{

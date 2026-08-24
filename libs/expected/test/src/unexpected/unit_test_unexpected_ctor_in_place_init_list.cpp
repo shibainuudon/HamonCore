@@ -9,13 +9,13 @@
 
 #include <hamon/expected/unexpected.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_unexpected_test
@@ -34,26 +34,26 @@ struct Arg
 
 struct Error
 {
-	std::initializer_list<int> list;
+	hamon::initializer_list<int> list;
 	Arg arg;
-	HAMON_CXX14_CONSTEXPR explicit Error(std::initializer_list<int> l, const Arg& a) : list(l), arg(a) {}
-	HAMON_CXX14_CONSTEXPR explicit Error(std::initializer_list<int> l, Arg&& a) noexcept : list(l), arg(hamon::move(a)) {}
+	HAMON_CXX14_CONSTEXPR explicit Error(hamon::initializer_list<int> l, const Arg& a) : list(l), arg(a) {}
+	HAMON_CXX14_CONSTEXPR explicit Error(hamon::initializer_list<int> l, Arg&& a) noexcept : list(l), arg(hamon::move(a)) {}
 };
 
 // Test Constraints:
-static_assert( hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, std::initializer_list<int>, Arg const&>::value, "");
-static_assert( hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, std::initializer_list<int>, Arg &&>::value, "");
+static_assert( hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg const&>::value, "");
+static_assert( hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg &&>::value, "");
 #if !defined(HAMON_USE_STD_EXPECTED)
-static_assert(!hamon::is_nothrow_constructible<hamon::unexpected<Error>, hamon::in_place_t, std::initializer_list<int>, Arg const&>::value, "");
-static_assert( hamon::is_nothrow_constructible<hamon::unexpected<Error>, hamon::in_place_t, std::initializer_list<int>, Arg &&>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg const&>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg &&>::value, "");
 #endif
 
 // !is_constructible_v<E, initializer_list<U>&, Args...>
 struct Foo {};
-static_assert(!hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, std::initializer_list<double>, Arg>::value, "");
+static_assert(!hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<double>, Arg>::value, "");
 
 // test explicit
-static_assert(!hamon::is_implicitly_constructible<hamon::unexpected<Error>, hamon::in_place_t, std::initializer_list<int>, Arg>::value, "");
+static_assert(!hamon::is_implicitly_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg>::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -91,9 +91,9 @@ void test_exceptions()
 	struct ThrowOnCtor
 	{
 		struct Exception {};
-		ThrowOnCtor(std::initializer_list<int>) { throw Exception{}; }
-		ThrowOnCtor(std::initializer_list<int>, int) { throw Exception{}; }
-		ThrowOnCtor(std::initializer_list<int>, int, int) {}
+		ThrowOnCtor(hamon::initializer_list<int>) { throw Exception{}; }
+		ThrowOnCtor(hamon::initializer_list<int>, int) { throw Exception{}; }
+		ThrowOnCtor(hamon::initializer_list<int>, int, int) {}
 	};
 
 	EXPECT_THROW   (hamon::unexpected<ThrowOnCtor> u(hamon::in_place, {1,2}), ThrowOnCtor::Exception);

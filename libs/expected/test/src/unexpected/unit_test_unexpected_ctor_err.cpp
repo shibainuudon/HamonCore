@@ -8,6 +8,7 @@
  */
 
 #include <hamon/expected/unexpected.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -15,7 +16,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_unexpected_test
@@ -70,7 +70,7 @@ struct Error
 	HAMON_CXX14_CONSTEXPR Error(int ii) : i(ii) {}
 	HAMON_CXX14_CONSTEXPR Error(const Error& other) : i(other.i) {}
 	HAMON_CXX14_CONSTEXPR Error(Error&& other) : i(other.i) { other.i = 0; }
-	Error(std::initializer_list<Error>) { HAMON_ASSERT(false); }
+	Error(hamon::initializer_list<Error>) { HAMON_ASSERT(false); }
 };
 
 template <typename E>

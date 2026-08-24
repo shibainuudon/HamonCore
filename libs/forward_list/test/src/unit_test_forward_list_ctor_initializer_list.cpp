@@ -7,6 +7,7 @@
  */
 
 #include <hamon/forward_list/forward_list.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -68,14 +69,14 @@ HAMON_CXX20_CONSTEXPR bool test_impl(Allocator const& alloc)
 {
 	using ForwardList = hamon::forward_list<T, Allocator>;
 
-	static_assert( hamon::is_constructible<ForwardList, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<ForwardList, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<ForwardList, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<ForwardList, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<ForwardList, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<ForwardList, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<ForwardList, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<ForwardList, std::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<ForwardList, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<ForwardList, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<ForwardList, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<ForwardList, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<ForwardList, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<ForwardList, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<ForwardList, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<ForwardList, hamon::initializer_list<T>, Allocator const&>::value, "");
 
 	{
 		ForwardList v = {T{1}, T{2}, T{3}};

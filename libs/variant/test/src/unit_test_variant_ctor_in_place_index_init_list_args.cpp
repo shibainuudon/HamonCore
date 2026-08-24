@@ -6,13 +6,13 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -24,7 +24,7 @@ namespace ctor_in_place_index_init_list_args_test
 struct X
 {
 	hamon::size_t m_size;
-	HAMON_CXX14_CONSTEXPR X(std::initializer_list<int> il)
+	HAMON_CXX14_CONSTEXPR X(hamon::initializer_list<int> il)
 		: m_size(il.size()) {}
 };
 
@@ -32,67 +32,67 @@ struct Y
 {
 	hamon::size_t m_size;
 	int           m_value;
-	HAMON_CXX14_CONSTEXPR Y(std::initializer_list<int> il, int v)
+	HAMON_CXX14_CONSTEXPR Y(hamon::initializer_list<int> il, int v)
 		: m_size(il.size()), m_value(v) {}
 };
 
-static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<X>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<X>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<X>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<Y>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<Y>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<Y>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<X>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<X>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<X>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<Y>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Y>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<Y>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
 
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<1>, std::initializer_list<char>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<3>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, std::initializer_list<int>, char>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, std::initializer_list<char>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<3>, std::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<1>, hamon::initializer_list<char>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<3>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, hamon::initializer_list<int>, char>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<2>, hamon::initializer_list<char>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int, X, Y>, hamon::in_place_index_t<3>, hamon::initializer_list<int>, int>::value, "");
 
-static_assert( hamon::is_constructible<hamon::variant<X, int, X>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<X, int, X>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<X, int, X>, hamon::in_place_index_t<2>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<Y, Y, int>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<Y, Y, int>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<Y, Y, int>, hamon::in_place_index_t<2>, std::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<X, int, X>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<X, int, X>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<X, int, X>, hamon::in_place_index_t<2>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Y, Y, int>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Y, Y, int>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<Y, Y, int>, hamon::in_place_index_t<2>, hamon::initializer_list<int>, int>::value, "");
 
 struct Noexcept1
 {
-	Noexcept1(std::initializer_list<int>) noexcept(true);
-	Noexcept1(std::initializer_list<int>, int) noexcept(false);
+	Noexcept1(hamon::initializer_list<int>) noexcept(true);
+	Noexcept1(hamon::initializer_list<int>, int) noexcept(false);
 };
 
 struct Noexcept2
 {
-	Noexcept2(std::initializer_list<int>) noexcept(false);
-	Noexcept2(std::initializer_list<int>, int) noexcept(true);
+	Noexcept2(hamon::initializer_list<int>) noexcept(false);
+	Noexcept2(hamon::initializer_list<int>, int) noexcept(true);
 };
 
-static_assert( hamon::is_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
 
-static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
-static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, hamon::initializer_list<int>>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, hamon::initializer_list<int>, int>::value, "");
 
 GTEST_TEST(VariantTest, CtorInPlaceIndexInitListArgsTest)
 {

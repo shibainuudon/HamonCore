@@ -6,6 +6,7 @@
 
 #include <hamon/iterator/data.hpp>
 #include <hamon/array.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -17,7 +18,7 @@ namespace data_test
 {
 
 template <typename E>
-HAMON_CXX14_CONSTEXPR E initializer_list_test(std::initializer_list<E> il)
+HAMON_CXX14_CONSTEXPR E initializer_list_test(hamon::initializer_list<E> il)
 {
 	return *hamon::data(il);
 }

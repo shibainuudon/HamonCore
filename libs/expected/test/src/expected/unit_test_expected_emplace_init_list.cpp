@@ -10,6 +10,7 @@
 #include <hamon/expected/expected.hpp>
 #include <hamon/expected/unexpect.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/in_place_t.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_expected_test
@@ -41,33 +41,33 @@ using CanEmplace = CanEmplaceImpl<void, T, Args...>;
 template <bool Noexcept1, bool Noexcept2>
 struct CtorFromInitializerList
 {
-	CtorFromInitializerList(std::initializer_list<int>&) noexcept(Noexcept1);
-	CtorFromInitializerList(std::initializer_list<int>&, int) noexcept(Noexcept2);
+	CtorFromInitializerList(hamon::initializer_list<int>&) noexcept(Noexcept1);
+	CtorFromInitializerList(hamon::initializer_list<int>&, int) noexcept(Noexcept2);
 };
 
-static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<true, true>, int>, std::initializer_list<int>&>::value, "");
-static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<true, true>, int>, std::initializer_list<int>&, int>::value, "");
-static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<true, false>, int>, std::initializer_list<int>&>::value, "");
-static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<true, false>, int>, std::initializer_list<int>&, int>::value, "");
-static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<false, true>, int>, std::initializer_list<int>&>::value, "");
-static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<false, true>, int>, std::initializer_list<int>&, int>::value, "");
-static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<false, false>, int>, std::initializer_list<int>&>::value, "");
-static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<false, false>, int>, std::initializer_list<int>&, int>::value, "");
+static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<true, true>, int>, hamon::initializer_list<int>&>::value, "");
+static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<true, true>, int>, hamon::initializer_list<int>&, int>::value, "");
+static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<true, false>, int>, hamon::initializer_list<int>&>::value, "");
+static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<true, false>, int>, hamon::initializer_list<int>&, int>::value, "");
+static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<false, true>, int>, hamon::initializer_list<int>&>::value, "");
+static_assert( CanEmplace<hamon::expected<CtorFromInitializerList<false, true>, int>, hamon::initializer_list<int>&, int>::value, "");
+static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<false, false>, int>, hamon::initializer_list<int>&>::value, "");
+static_assert(!CanEmplace<hamon::expected<CtorFromInitializerList<false, false>, int>, hamon::initializer_list<int>&, int>::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 struct Data
 {
-	std::initializer_list<int> il;
+	hamon::initializer_list<int> il;
 	int i;
 
-	constexpr Data(std::initializer_list<int>& l, int ii) noexcept : il(l), i(ii) {}
+	constexpr Data(hamon::initializer_list<int>& l, int ii) noexcept : il(l), i(ii) {}
 };
 
 HAMON_CXX14_CONSTEXPR bool test()
 {
 	static_assert(noexcept(hamon::declval<hamon::expected<Data, int>&>().emplace(
-		hamon::declval<std::initializer_list<int>>(), hamon::declval<int>())), "");
+		hamon::declval<hamon::initializer_list<int>>(), hamon::declval<int>())), "");
 
 	{
 		auto list1 = {1, 2, 3};

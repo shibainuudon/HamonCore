@@ -18,6 +18,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
 		cmath
+		initializer_list
 		iterator
 		string_view
 		common_test)

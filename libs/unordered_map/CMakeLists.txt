@@ -26,6 +26,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		container
 		debug
 		functional
+		initializer_list
 		iterator
 		memory
 		memory_resource

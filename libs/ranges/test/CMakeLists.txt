@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		config
 		deque
 		forward_list
+		initializer_list
 		iterator
 		list
 		memory

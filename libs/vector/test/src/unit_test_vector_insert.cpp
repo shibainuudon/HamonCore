@@ -13,6 +13,7 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
@@ -341,11 +342,11 @@ HAMON_CXX20_CONSTEXPR bool test5()
 	using ConstIterator = typename Vector::const_iterator;
 
 	static_assert(hamon::is_same<
-		decltype(hamon::declval<Vector&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::initializer_list<T>>())),
+		decltype(hamon::declval<Vector&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::initializer_list<T>>())),
 		Iterator
 	>::value, "");
 	static_assert(!noexcept(
-		hamon::declval<Vector&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::initializer_list<T>>())), "");
+		hamon::declval<Vector&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::initializer_list<T>>())), "");
 
 	{
 		Vector v;

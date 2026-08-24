@@ -12,6 +12,7 @@
  */
 
 #include <hamon/forward_list/forward_list.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -249,7 +250,7 @@ HAMON_CXX20_CONSTEXPR bool test5()
 	{
 		ForwardList v;
 		ConstIterator it;
-		std::initializer_list<T> il;
+		hamon::initializer_list<T> il;
 		static_assert(hamon::is_same<decltype(v.insert_after(it, il)), Iterator>::value, "");
 		static_assert(!noexcept(v.insert_after(it, il)), "");
 	}

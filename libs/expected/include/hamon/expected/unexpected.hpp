@@ -12,6 +12,7 @@
 
 #if !defined(HAMON_USE_STD_EXPECTED)
 
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
@@ -26,7 +27,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -65,10 +65,10 @@ public:
 
 	template <typename U, typename... Args,
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<E, std::initializer_list<U>&, Args...>::value>>	// [expected.un.cons]/7
+			hamon::is_constructible<E, hamon::initializer_list<U>&, Args...>::value>>	// [expected.un.cons]/7
 	HAMON_CXX11_CONSTEXPR explicit
-	unexpected(hamon::in_place_t, std::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
-		hamon::is_nothrow_constructible<E, std::initializer_list<U>&, Args...>::value)
+	unexpected(hamon::in_place_t, hamon::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
+		hamon::is_nothrow_constructible<E, hamon::initializer_list<U>&, Args...>::value)
 		: unex(il, hamon::forward<Args>(args)...)	// [expected.un.cons]/8
 	{}
 

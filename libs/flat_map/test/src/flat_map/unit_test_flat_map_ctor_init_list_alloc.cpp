@@ -21,6 +21,7 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
@@ -48,25 +49,25 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using ValueType = typename Map::value_type;
 	using Alloc = hamon::allocator<char>;
 
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert( hamon::is_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, hamon::sorted_unique_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::sorted_unique_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
 	{
 		Alloc const alloc;

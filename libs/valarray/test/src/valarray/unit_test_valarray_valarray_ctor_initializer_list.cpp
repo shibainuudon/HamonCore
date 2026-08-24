@@ -7,9 +7,9 @@
  */
 
 #include <hamon/valarray/valarray.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_valarray_test
@@ -23,9 +23,9 @@ namespace valarray_ctor_initializer_list_test
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	static_assert( hamon::is_constructible<hamon::valarray<T>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<hamon::valarray<T>, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<hamon::valarray<T>, std::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::valarray<T>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::valarray<T>, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<hamon::valarray<T>, hamon::initializer_list<T>>::value, "");
 	hamon::valarray<T> va = {1,2,3,4};
 	VERIFY(va.size() == 4u);
 	VERIFY(va[0] == T{1});

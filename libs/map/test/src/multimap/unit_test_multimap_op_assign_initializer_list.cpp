@@ -7,6 +7,7 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -24,7 +25,7 @@ HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<Key, T>;
 	using ValueType = typename Map::value_type;
-	using IL = std::initializer_list<ValueType>;
+	using IL = hamon::initializer_list<ValueType>;
 
 	static_assert( hamon::is_assignable<Map, IL>::value, "");
 	static_assert(!hamon::is_nothrow_assignable<Map, IL>::value, "");

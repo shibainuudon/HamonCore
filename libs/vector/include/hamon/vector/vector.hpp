@@ -29,6 +29,7 @@
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/cref.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_forward_iterator.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -55,7 +56,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -237,7 +237,7 @@ public:
 	}
 
 	HAMON_CXX11_CONSTEXPR
-	vector(std::initializer_list<T> il, Allocator const& a = Allocator())
+	vector(hamon::initializer_list<T> il, Allocator const& a = Allocator())
 		: vector(il.begin(), il.end(), a)
 	{}
 
@@ -326,7 +326,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR vector&
-	operator=(std::initializer_list<T> il)
+	operator=(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
 		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
@@ -388,7 +388,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	assign(std::initializer_list<T> il)
+	assign(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/65
 		this->assign(il.begin(), il.end());
@@ -738,7 +738,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, std::initializer_list<T> il)
+	insert(const_iterator position, hamon::initializer_list<T> il)
 	{
 		return this->insert(position, il.begin(), il.end());
 	}

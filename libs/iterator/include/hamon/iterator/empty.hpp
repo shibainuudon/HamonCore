@@ -22,8 +22,8 @@ using std::empty;
 #else
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -51,7 +51,7 @@ empty(T const (&)[N]) HAMON_NOEXCEPT
 
 template <typename E>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
-empty(std::initializer_list<E> il) HAMON_NOEXCEPT
+empty(hamon::initializer_list<E> il) HAMON_NOEXCEPT
 {
 	return il.size() == 0;
 }

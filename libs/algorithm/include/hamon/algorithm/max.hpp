@@ -24,8 +24,8 @@ using std::max;
 
 #include <hamon/algorithm/max_element.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -90,7 +90,7 @@ max(T const& a, T const& b)
  */
 template <typename T, typename Compare>
 inline HAMON_CXX14_CONSTEXPR T
-max(std::initializer_list<T> t, Compare comp)
+max(hamon::initializer_list<T> t, Compare comp)
 {
 	return *hamon::max_element(t.begin(), t.end(), comp);
 }
@@ -112,7 +112,7 @@ max(std::initializer_list<T> t, Compare comp)
  */
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR T
-max(std::initializer_list<T> t)
+max(hamon::initializer_list<T> t)
 {
 	return *hamon::max_element(t.begin(), t.end(), hamon::less<>());
 }

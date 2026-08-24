@@ -38,6 +38,7 @@
 #include <hamon/detail/scope_guard.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/not_fn.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/detail/cpp17_random_access_iterator.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
@@ -75,7 +76,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -239,7 +239,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		key_compare const& comp = key_compare())
 		: flat_map(il.begin(), il.end(), comp)
 	{}
@@ -247,7 +247,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		key_compare const& comp = key_compare())
 		: flat_map(hamon::sorted_unique, il.begin(), il.end(), comp)
 	{}
@@ -482,7 +482,7 @@ public:
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		Alloc const& a)
 		: flat_map(il.begin(), il.end(), a)
 	{}
@@ -494,7 +494,7 @@ public:
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		key_compare const& comp,
 		Alloc const& a)
 		: flat_map(il.begin(), il.end(), comp, a)
@@ -508,7 +508,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		Alloc const& a)
 		: flat_map(hamon::sorted_unique, il.begin(), il.end(), a)
 	{}
@@ -521,14 +521,14 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		key_compare const& comp,
 		Alloc const& a)
 		: flat_map(hamon::sorted_unique, il.begin(), il.end(), comp, a)
 	{}
 
 	HAMON_CXX14_CONSTEXPR flat_map&
-	operator=(std::initializer_list<value_type> il)
+	operator=(hamon::initializer_list<value_type> il)
 	{
 		this->clear();
 		this->insert(il);
@@ -854,13 +854,13 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(std::initializer_list<value_type> il)
+	insert(hamon::initializer_list<value_type> il)
 	{
 		this->insert(il.begin(), il.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(hamon::sorted_unique_t, std::initializer_list<value_type> il)
+	insert(hamon::sorted_unique_t, hamon::initializer_list<value_type> il)
 	{
 		this->insert(hamon::sorted_unique, il.begin(), il.end());
 	}
@@ -1826,7 +1826,7 @@ template <
 	>
 >
 flat_map(
-	std::initializer_list<hamon::pair<Key, T>>,
+	hamon::initializer_list<hamon::pair<Key, T>>,
 	Compare = Compare())
 ->flat_map<Key, T, Compare>;
 
@@ -1838,7 +1838,7 @@ template <
 >
 flat_map(
 	hamon::sorted_unique_t,
-	std::initializer_list<hamon::pair<Key, T>>,
+	hamon::initializer_list<hamon::pair<Key, T>>,
 	Compare = Compare())
 ->flat_map<Key, T, Compare>;
 

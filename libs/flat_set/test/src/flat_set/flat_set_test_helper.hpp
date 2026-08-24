@@ -8,6 +8,7 @@
 #define HAMON_FLAT_SET_TEST_HELPER_HPP
 
 #include <hamon/algorithm.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
@@ -79,7 +80,7 @@ public:
 	MinSequenceContainer() = default;
 
 	HAMON_CXX14_CONSTEXPR
-	MinSequenceContainer(std::initializer_list<T> il)
+	MinSequenceContainer(hamon::initializer_list<T> il)
 		: m_cont(il)
 	{}
 
@@ -137,7 +138,7 @@ public:
 	UseAllocContainer() = default;
 
 	HAMON_CXX14_CONSTEXPR
-	UseAllocContainer(std::initializer_list<T> il)
+	UseAllocContainer(hamon::initializer_list<T> il)
 		: m_cont(il)
 	{}
 

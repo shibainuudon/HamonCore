@@ -8,6 +8,7 @@
 
 #include <hamon/hive.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/numeric/accumulate.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
@@ -15,7 +16,6 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_hive_test
@@ -31,10 +31,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Hive = hamon::hive<T>;
 
-	static_assert( hamon::is_assignable          <Hive, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_assignable  <Hive, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_assignable<Hive, std::initializer_list<T>>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Hive&>() = hamon::declval<std::initializer_list<T>>()), Hive&>::value, "");
+	static_assert( hamon::is_assignable          <Hive, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_assignable  <Hive, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_assignable<Hive, hamon::initializer_list<T>>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Hive&>() = hamon::declval<hamon::initializer_list<T>>()), Hive&>::value, "");
 
 	Hive v1;
 	VERIFY(v1.empty());

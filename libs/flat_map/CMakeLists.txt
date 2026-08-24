@@ -27,6 +27,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstddef
 		detail
 		functional
+		initializer_list
 		iterator
 		memory
 		pair

@@ -24,8 +24,8 @@ using std::min;
 
 #include <hamon/algorithm/min_element.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -90,7 +90,7 @@ min(T const& a, T const& b)
  */
 template <typename T, typename Compare>
 inline HAMON_CXX14_CONSTEXPR T
-min(std::initializer_list<T> t, Compare comp)
+min(hamon::initializer_list<T> t, Compare comp)
 {
 	return *hamon::min_element(t.begin(), t.end(), comp);
 }
@@ -112,7 +112,7 @@ min(std::initializer_list<T> t, Compare comp)
  */
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR T
-min(std::initializer_list<T> t)
+min(hamon::initializer_list<T> t)
 {
 	return *hamon::min_element(t.begin(), t.end(), hamon::less<>());
 }

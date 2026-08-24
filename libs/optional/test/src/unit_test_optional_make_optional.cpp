@@ -13,6 +13,7 @@
  */
 
 #include <hamon/optional.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -32,7 +33,7 @@ struct S
 	int value;
 
 	HAMON_CXX11_CONSTEXPR S(int i) : value(i) {}
-	HAMON_CXX14_CONSTEXPR S(std::initializer_list<int> il) : value((int)il.size()) {}
+	HAMON_CXX14_CONSTEXPR S(hamon::initializer_list<int> il) : value((int)il.size()) {}
 };
 
 GTEST_TEST(OptionalTest, MakeOptionalTest)

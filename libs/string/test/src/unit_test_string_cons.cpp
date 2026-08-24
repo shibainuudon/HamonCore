@@ -29,12 +29,12 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 #include "ranges_test.hpp"
@@ -582,14 +582,14 @@ ConsTest()
 	}
 
 	// constexpr basic_string(initializer_list<charT>, const Allocator& = Allocator());
-	static_assert( hamon::is_constructible           <string, std::initializer_list<CharT>>::value, "is_constructible");
-	static_assert(!hamon::is_nothrow_constructible   <string, std::initializer_list<CharT>>::value, "is_nothrow_constructible");
-	static_assert( hamon::is_implicitly_constructible<string, std::initializer_list<CharT>>::value, "is_implicitly_constructible");
-	static_assert(!hamon::is_trivially_constructible <string, std::initializer_list<CharT>>::value, "is_trivially_constructible");
-	static_assert( hamon::is_constructible           <string, std::initializer_list<CharT>, const Allocator&>::value, "is_constructible");
-	static_assert(!hamon::is_nothrow_constructible   <string, std::initializer_list<CharT>, const Allocator&>::value, "is_nothrow_constructible");
-	static_assert( hamon::is_implicitly_constructible<string, std::initializer_list<CharT>, const Allocator&>::value, "is_implicitly_constructible");
-	static_assert(!hamon::is_trivially_constructible <string, std::initializer_list<CharT>, const Allocator&>::value, "is_trivially_constructible");
+	static_assert( hamon::is_constructible           <string, hamon::initializer_list<CharT>>::value, "is_constructible");
+	static_assert(!hamon::is_nothrow_constructible   <string, hamon::initializer_list<CharT>>::value, "is_nothrow_constructible");
+	static_assert( hamon::is_implicitly_constructible<string, hamon::initializer_list<CharT>>::value, "is_implicitly_constructible");
+	static_assert(!hamon::is_trivially_constructible <string, hamon::initializer_list<CharT>>::value, "is_trivially_constructible");
+	static_assert( hamon::is_constructible           <string, hamon::initializer_list<CharT>, const Allocator&>::value, "is_constructible");
+	static_assert(!hamon::is_nothrow_constructible   <string, hamon::initializer_list<CharT>, const Allocator&>::value, "is_nothrow_constructible");
+	static_assert( hamon::is_implicitly_constructible<string, hamon::initializer_list<CharT>, const Allocator&>::value, "is_implicitly_constructible");
+	static_assert(!hamon::is_trivially_constructible <string, hamon::initializer_list<CharT>, const Allocator&>::value, "is_trivially_constructible");
 	{
 		auto const p = Helper::abcde();
 		string const s =

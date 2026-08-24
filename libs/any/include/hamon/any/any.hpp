@@ -8,6 +8,7 @@
 #define HAMON_ANY_ANY_HPP
 
 #include <hamon/cstddef/byte.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -21,7 +22,6 @@
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include <typeinfo>
 
 namespace hamon
@@ -239,10 +239,10 @@ public:
 		typename VT = hamon::decay_t<T>,	// [any.cons]/16
 		typename = hamon::enable_if_t<		// [any.cons]/17
 			hamon::is_copy_constructible<VT>::value &&
-			hamon::is_constructible<VT, std::initializer_list<U>&, Args...>::value
+			hamon::is_constructible<VT, hamon::initializer_list<U>&, Args...>::value
 		>
 	>
-	explicit any(hamon::in_place_type_t<T>, std::initializer_list<U> il, Args&&... args)
+	explicit any(hamon::in_place_type_t<T>, hamon::initializer_list<U> il, Args&&... args)
 	{
 		// [any.cons]/19
 		Impl<VT>::construct(this, il, hamon::forward<Args>(args)...);
@@ -309,10 +309,10 @@ public:
 		typename VT = hamon::decay_t<T>,	// [any.modifiers]/9
 		typename = hamon::enable_if_t<		// [any.modifiers]/10
 			hamon::is_copy_constructible<VT>::value &&
-			hamon::is_constructible<VT, std::initializer_list<U>&, Args...>::value
+			hamon::is_constructible<VT, hamon::initializer_list<U>&, Args...>::value
 		>
 	>
-	hamon::decay_t<T>& emplace(std::initializer_list<U> il, Args&&... args)
+	hamon::decay_t<T>& emplace(hamon::initializer_list<U> il, Args&&... args)
 	{
 		// [any.modifiers]/12
 		this->reset();

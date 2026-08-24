@@ -17,7 +17,6 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_expected_test

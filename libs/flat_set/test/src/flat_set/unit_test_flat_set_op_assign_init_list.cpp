@@ -9,6 +9,7 @@
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/deque.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_set_test_helper.hpp"
@@ -37,8 +37,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Set = hamon::flat_set<Key, Compare, KeyContainer>;
 	using ValueType = typename Set::value_type;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().operator=(hamon::declval<std::initializer_list<ValueType>>())), Set&>::value, "");
-	static_assert(!noexcept(hamon::declval<Set&>().operator=(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().operator=(hamon::declval<hamon::initializer_list<ValueType>>())), Set&>::value, "");
+	static_assert(!noexcept(hamon::declval<Set&>().operator=(hamon::declval<hamon::initializer_list<ValueType>>())), "");
 
 	Set v
 	{
@@ -83,7 +83,7 @@ GTEST_TEST(FlatSetTest, OpAssignInitListTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, hamon::less<int>>()));
 
 	{
-		std::initializer_list<hamon::string> elems = {"Alice", "Carol", "Bob"};
+		hamon::initializer_list<hamon::string> elems = {"Alice", "Carol", "Bob"};
 
 		hamon::flat_set<hamon::string> fs;
 		fs = elems;

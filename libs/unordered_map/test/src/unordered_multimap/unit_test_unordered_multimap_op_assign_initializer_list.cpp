@@ -7,11 +7,11 @@
  */
 
 #include <hamon/unordered_map/unordered_multimap.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_unordered_multimap_test
@@ -28,9 +28,9 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Map = hamon::unordered_multimap<Key, T>;
 	using ValueType = typename Map::value_type;
 
-	static_assert( hamon::is_assignable<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_assignable<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_assignable<Map, std::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_assignable<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_assignable<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_assignable<Map, hamon::initializer_list<ValueType>>::value, "");
 
 	Map v;
 	v.max_load_factor(0.5f);

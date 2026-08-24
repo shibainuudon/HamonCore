@@ -27,6 +27,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstdint
 		debug
 		functional
+		initializer_list
 		memory
 		memory_resource
 		string_view

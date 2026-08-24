@@ -26,6 +26,7 @@
 #include <hamon/functional/ranges/less_equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/functional/ranges/greater_equal.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/detail/all.hpp>
@@ -47,7 +48,6 @@
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -116,13 +116,13 @@ public:
 		typename = hamon::enable_if_t<
 			variant_detail::exactly_once<T, Types...>::value>,						// [variant.ctor]/25.1
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<T, std::initializer_list<U>&, Args...>::value>,	// [variant.ctor]/25.2
+			hamon::is_constructible<T, hamon::initializer_list<U>&, Args...>::value>,	// [variant.ctor]/25.2
 		hamon::size_t I = variant_detail::find_index<T, Types...>::value
 	>
 	HAMON_CXX14_CONSTEXPR explicit
-	variant(hamon::in_place_type_t<T>, std::initializer_list<U> il, Args&&... args)
+	variant(hamon::in_place_type_t<T>, hamon::initializer_list<U> il, Args&&... args)
 		HAMON_NOEXCEPT_IF((
-			hamon::is_nothrow_constructible<T, std::initializer_list<U>&, Args...>::value))	// extension
+			hamon::is_nothrow_constructible<T, hamon::initializer_list<U>&, Args...>::value))	// extension
 		: base_type(hamon::in_place_index_t<I>{}, il, hamon::forward<Args>(args)...)		// [variant.ctor]/26
 	{}
 
@@ -143,12 +143,12 @@ public:
 		typename = hamon::enable_if_t<(I < sizeof...(Types))>,					// [variant.ctor]/35.1
 		typename Ti = hamon::nth_t<I, Types...>,
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<Ti, std::initializer_list<U>&, Args...>::value>	// [variant.ctor]/35.2
+			hamon::is_constructible<Ti, hamon::initializer_list<U>&, Args...>::value>	// [variant.ctor]/35.2
 	>
 	HAMON_CXX14_CONSTEXPR explicit
-	variant(hamon::in_place_index_t<I> tag, std::initializer_list<U> il, Args&&... args)
+	variant(hamon::in_place_index_t<I> tag, hamon::initializer_list<U> il, Args&&... args)
 		HAMON_NOEXCEPT_IF((
-			hamon::is_nothrow_constructible<Ti, std::initializer_list<U>&, Args...>::value))	// extension
+			hamon::is_nothrow_constructible<Ti, hamon::initializer_list<U>&, Args...>::value))	// extension
 		: base_type(tag, il, hamon::forward<Args>(args)...)						// [variant.ctor]/36
 	{}
 
@@ -197,13 +197,13 @@ public:
 
 	template <typename T, typename U, typename... Args,
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<T, std::initializer_list<U>&, Args...>::value>,			// [variant.mod]/3
+			hamon::is_constructible<T, hamon::initializer_list<U>&, Args...>::value>,			// [variant.mod]/3
 		typename = hamon::enable_if_t<
 			variant_detail::exactly_once<T, Types...>::value>,		// [variant.mod]/3
 		hamon::size_t I = variant_detail::find_index<T, Types...>::value	// [variant.mod]/4
 	>
 	HAMON_CXX14_CONSTEXPR T&
-	emplace(std::initializer_list<U> il, Args&&... args)
+	emplace(hamon::initializer_list<U> il, Args&&... args)
 	{
 		return base_type::emplace(
 			hamon::in_place_index_t<I>{}, il, hamon::forward<Args>(args)...);
@@ -228,12 +228,12 @@ public:
 		typename = hamon::enable_if_t<(I < sizeof...(Types))>,		// [variant.mod]/12
 		typename Ti = hamon::nth_t<I, Types...>,
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<Ti, std::initializer_list<U>&, Args...>::value>			// [variant.mod]/13
+			hamon::is_constructible<Ti, hamon::initializer_list<U>&, Args...>::value>			// [variant.mod]/13
 	>
 	HAMON_CXX14_CONSTEXPR
 	// hamon::variant_alternative_t<I, variant<Types...>>&
 	Ti&	// make SFINAE-friendly
-	emplace(std::initializer_list<U> il, Args&&... args)
+	emplace(hamon::initializer_list<U> il, Args&&... args)
 	{
 		return base_type::emplace(
 			hamon::in_place_index_t<I>{}, il, hamon::forward<Args>(args)...);

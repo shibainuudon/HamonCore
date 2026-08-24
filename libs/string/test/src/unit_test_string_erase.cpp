@@ -11,7 +11,6 @@
 #include <hamon/string/basic_string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 

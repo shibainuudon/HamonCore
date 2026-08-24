@@ -18,6 +18,7 @@
 
 #include <hamon/flat_set/flat_multiset.hpp>
 #include <hamon/functional.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <hamon/type_traits.hpp>
@@ -41,25 +42,25 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using ValueType = typename Set::value_type;
 	using Alloc = hamon::allocator<char>;
 
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert( hamon::is_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Alloc const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, hamon::sorted_equivalent_t, std::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::sorted_equivalent_t, hamon::initializer_list<ValueType>, Compare const&, Alloc const&>::value, "");
 
 	{
 		Alloc const alloc;

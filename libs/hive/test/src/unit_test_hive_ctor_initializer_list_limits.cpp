@@ -8,13 +8,13 @@
 
 #include <hamon/hive.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/numeric/accumulate.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_hive_test
@@ -31,15 +31,15 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Hive = hamon::hive<T>;
 	using Allocator = typename Hive::allocator_type;
 
-	static_assert( hamon::is_constructible           <Hive, std::initializer_list<T>, hamon::hive_limits>::value, "");
-	static_assert(!hamon::is_nothrow_constructible   <Hive, std::initializer_list<T>, hamon::hive_limits>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Hive, std::initializer_list<T>, hamon::hive_limits>::value, "");
-	static_assert(!hamon::is_trivially_constructible <Hive, std::initializer_list<T>, hamon::hive_limits>::value, "");
+	static_assert( hamon::is_constructible           <Hive, hamon::initializer_list<T>, hamon::hive_limits>::value, "");
+	static_assert(!hamon::is_nothrow_constructible   <Hive, hamon::initializer_list<T>, hamon::hive_limits>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Hive, hamon::initializer_list<T>, hamon::hive_limits>::value, "");
+	static_assert(!hamon::is_trivially_constructible <Hive, hamon::initializer_list<T>, hamon::hive_limits>::value, "");
 
-	static_assert( hamon::is_constructible           <Hive, std::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible   <Hive, std::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Hive, std::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
-	static_assert(!hamon::is_trivially_constructible <Hive, std::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
+	static_assert( hamon::is_constructible           <Hive, hamon::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible   <Hive, hamon::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Hive, hamon::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
+	static_assert(!hamon::is_trivially_constructible <Hive, hamon::initializer_list<T>, hamon::hive_limits, const Allocator&>::value, "");
 
 	hamon::hive_limits block_limits{1, 100};
 	Allocator alloc;

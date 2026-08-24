@@ -23,12 +23,12 @@
  */
 
 #include <hamon/unordered_set/unordered_set.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_unordered_set_test
@@ -49,26 +49,26 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Allocator = typename Set::allocator_type;
 	using ValueType = typename Set::value_type;
 
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, SizeType>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, SizeType>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, SizeType>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, SizeType>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, SizeType>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, SizeType>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, SizeType>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, SizeType>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
 
 	// (il)
 	{
@@ -139,14 +139,14 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.get_allocator() == alloc);
 	}
 
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
 
 	// (il, n, a)
 	{
@@ -181,10 +181,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.get_allocator() == alloc);
 	}
 
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
 
 	// (il, a)
 	{

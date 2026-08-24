@@ -1,0 +1,16 @@
+name: initializer_list
+
+on:
+  push:
+    paths:
+      - libs/initializer_list/**
+      - .github/workflows/initializer_list.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/initializer_list

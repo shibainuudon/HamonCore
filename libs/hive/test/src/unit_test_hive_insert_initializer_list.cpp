@@ -8,11 +8,11 @@
 
 #include <hamon/hive.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/numeric/accumulate.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_hive_test
@@ -28,8 +28,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Hive = hamon::hive<T>;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Hive>().insert(hamon::declval<std::initializer_list<T>>())), void>::value, "");
-	static_assert(!noexcept(hamon::declval<Hive>().insert(hamon::declval<std::initializer_list<T>>())), "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Hive>().insert(hamon::declval<hamon::initializer_list<T>>())), void>::value, "");
+	static_assert(!noexcept(hamon::declval<Hive>().insert(hamon::declval<hamon::initializer_list<T>>())), "");
 
 	Hive v;
 	VERIFY(v.empty());

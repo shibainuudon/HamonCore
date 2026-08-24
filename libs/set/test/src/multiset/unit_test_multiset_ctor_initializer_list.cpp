@@ -12,6 +12,7 @@
  */
 
 #include <hamon/set/multiset.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -123,22 +124,22 @@ HAMON_CXX20_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& all
 	using Set = hamon::multiset<Key, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
 
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
 
 	{
 		Set v { Key{3}, Key{1}, Key{4}, Key{1}, Key{5} };
@@ -262,22 +263,22 @@ HAMON_CXX20_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& all
 	using Set = hamon::multiset<Key, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
 
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Set, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Set, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
 
 	{
 		Set v { Key{3}, Key{1}, Key{4}, Key{1}, Key{5} };

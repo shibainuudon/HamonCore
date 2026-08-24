@@ -10,6 +10,7 @@
  */
 
 #include <hamon/list/list.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -177,7 +178,7 @@ LIST_TEST_CONSTEXPR bool test3()
 
 	{
 		List v;
-		std::initializer_list<T> il;
+		hamon::initializer_list<T> il;
 		static_assert(hamon::is_same<decltype(v.assign(il)), void>::value, "");
 		static_assert(!noexcept(v.assign(il)), "");
 	}
@@ -247,7 +248,7 @@ LIST_TEST_CONSTEXPR bool test3()
 		}
 
 		{
-			std::initializer_list<T> il;
+			hamon::initializer_list<T> il;
 			v.assign(il);
 			VERIFY(v.empty());
 			VERIFY(v.size() == 0);

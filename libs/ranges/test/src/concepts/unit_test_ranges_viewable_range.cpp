@@ -11,6 +11,7 @@
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/movable.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/vector.hpp>
 #include "ranges_test.hpp"
@@ -99,17 +100,17 @@ HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  const T5&); // lvalue
 HAMON_RANGES_VIEWABLE_RANGE_TEST(false, const T5&&);
 
 // ...but not if the (non-view, lvalue-or-movable) range is an initializer_list.
-static_assert( hamon::ranges::range<std::initializer_list<int>>, "");
-static_assert(!hamon::ranges::view<std::initializer_list<int>>, "");
-static_assert( hamon::constructible_from<std::initializer_list<int>, std::initializer_list<int>>, "");
-static_assert( hamon::movable<std::initializer_list<int>>, "");
+static_assert( hamon::ranges::range<hamon::initializer_list<int>>, "");
+static_assert(!hamon::ranges::view<hamon::initializer_list<int>>, "");
+static_assert( hamon::constructible_from<hamon::initializer_list<int>, hamon::initializer_list<int>>, "");
+static_assert( hamon::movable<hamon::initializer_list<int>>, "");
 
-HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::initializer_list<int>);
-HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  std::initializer_list<int>&);
-HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::initializer_list<int>&&);
-HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::initializer_list<int> const);
-HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  std::initializer_list<int> const&);
-HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::initializer_list<int> const&&);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(false, hamon::initializer_list<int>);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  hamon::initializer_list<int>&);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(false, hamon::initializer_list<int>&&);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(false, hamon::initializer_list<int> const);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  hamon::initializer_list<int> const&);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(false, hamon::initializer_list<int> const&&);
 
 // viewable_range<T> is not satisfied for (range=true, view=false, constructible_from=true, lvalue-or-movable=false)
 struct T6 : test_input_range<int> { T6(T6&&); T6& operator=(T6&&) = delete; };

@@ -20,6 +20,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		concepts
 		deque
 		forward_list
+		initializer_list
 		list
 		map
 		memory

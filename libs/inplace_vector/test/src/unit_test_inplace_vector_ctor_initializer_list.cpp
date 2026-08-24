@@ -7,9 +7,9 @@
  */
 
 #include <hamon/inplace_vector.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -69,10 +69,10 @@ HAMON_CXX14_CONSTEXPR bool test_impl_0()
 {
 	using InplaceVector = hamon::inplace_vector<T, N>;
 
-	static_assert( hamon::is_constructible<InplaceVector, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<InplaceVector, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<InplaceVector, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<InplaceVector, std::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<InplaceVector, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<InplaceVector, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<InplaceVector, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<InplaceVector, hamon::initializer_list<T>>::value, "");
 
 	{
 		InplaceVector v({});

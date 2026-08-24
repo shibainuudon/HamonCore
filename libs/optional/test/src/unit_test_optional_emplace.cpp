@@ -8,6 +8,7 @@
  */
 
 #include <hamon/optional.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -74,10 +75,10 @@ struct S2
 {
 	int value;
 	S2() : value(0) {}
-	S2(std::initializer_list<int>, int&) : value(1) {}
-	S2(std::initializer_list<int>, int&&) : value(2) {}
-	S2(std::initializer_list<int>, int const&) : value(3) {}
-	S2(std::initializer_list<int>, int const&&) : value(4) {}
+	S2(hamon::initializer_list<int>, int&) : value(1) {}
+	S2(hamon::initializer_list<int>, int&&) : value(2) {}
+	S2(hamon::initializer_list<int>, int const&) : value(3) {}
+	S2(hamon::initializer_list<int>, int const&&) : value(4) {}
 };
 
 void PerfectForwardTest()

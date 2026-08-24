@@ -36,6 +36,7 @@ using std::optional;
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/detail/converts_from_any_cvref.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
@@ -60,7 +61,6 @@ using std::optional;
 #include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -121,15 +121,15 @@ public:
 		: base_type(hamon::in_place_t{}, hamon::forward<Args>(args)...)
 	{}
 
-	// optional(hamon::in_place_t, std::initializer_list<U> il, Args&&... args)
+	// optional(hamon::in_place_t, hamon::initializer_list<U> il, Args&&... args)
 	template <typename U, typename... Args,
 		// [optional.ctor]/18
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<T, std::initializer_list<U>&, Args...>::value>>
+			hamon::is_constructible<T, hamon::initializer_list<U>&, Args...>::value>>
 	explicit HAMON_CXX14_CONSTEXPR
-	optional(hamon::in_place_t, std::initializer_list<U> il, Args&&... args)
+	optional(hamon::in_place_t, hamon::initializer_list<U> il, Args&&... args)
 	HAMON_NOEXCEPT_IF((
-		hamon::is_nothrow_constructible<T, std::initializer_list<U>&, Args...>::value))
+		hamon::is_nothrow_constructible<T, hamon::initializer_list<U>&, Args...>::value))
 		: base_type(hamon::in_place_t{}, il, hamon::forward<Args>(args)...)
 	{}
 
@@ -329,9 +329,9 @@ public:
 
 	template <typename U, typename... Args,
 		typename = hamon::enable_if_t<	// [optional.assign]/35
-			hamon::is_constructible<T, std::initializer_list<U>&, Args...>::value>>
+			hamon::is_constructible<T, hamon::initializer_list<U>&, Args...>::value>>
 	HAMON_CXX14_CONSTEXPR T&
-	emplace(std::initializer_list<U> il, Args&&... args)
+	emplace(hamon::initializer_list<U> il, Args&&... args)
 	{
 		// [optional.assign]/36
 		reset();

@@ -8,9 +8,10 @@
 #define HAMON_ANY_MAKE_ANY_HPP
 
 #include <hamon/any/any.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/forward.hpp>
-#include <initializer_list>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -25,7 +26,7 @@ make_any(Args&&... args)
 
 template <typename T, typename U, typename... Args>
 HAMON_NODISCARD inline hamon::any
-make_any(std::initializer_list<U> il, Args&&... args)
+make_any(hamon::initializer_list<U> il, Args&&... args)
 {
 	// [any.nonmembers]/3
 	return hamon::any(hamon::in_place_type_t<T>{}, il, hamon::forward<Args>(args)...);

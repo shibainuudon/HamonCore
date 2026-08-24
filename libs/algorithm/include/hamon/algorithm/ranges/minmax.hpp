@@ -34,6 +34,7 @@ using std::ranges::minmax;
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable_storable.hpp>
 #include <hamon/iterator/projected.hpp>
@@ -46,7 +47,6 @@ using std::ranges::minmax;
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -134,7 +134,7 @@ struct minmax_fn
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR minmax_result<T>
-	operator()(std::initializer_list<T> r,
+	operator()(hamon::initializer_list<T> r,
 		Comp comp = {}, Proj proj = {}) const
 	{
 		return (*this)(ranges::subrange<T const*>(r),

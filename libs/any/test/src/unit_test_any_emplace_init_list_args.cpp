@@ -8,6 +8,7 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/vector.hpp>
@@ -22,7 +23,7 @@ namespace emplace_init_list_args_test
 #if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnCtor
 {
-	ThrowOnCtor(std::initializer_list<int>, int)
+	ThrowOnCtor(hamon::initializer_list<int>, int)
 	{
 		throw 42;
 	}

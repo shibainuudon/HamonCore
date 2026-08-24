@@ -31,6 +31,7 @@
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
@@ -49,7 +50,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -132,7 +132,7 @@ public:
 //		noexcept(N == 0 || hamon::is_nothrow_move_constructible<T>::value);
 
 	HAMON_CXX11_CONSTEXPR
-	inplace_vector(std::initializer_list<T> il)
+	inplace_vector(hamon::initializer_list<T> il)
 		: inplace_vector(il.begin(), il.end())
 	{}
 
@@ -149,7 +149,7 @@ public:
 //			hamon::is_nothrow_move_constructible<T>::value));
 
 	HAMON_CXX14_CONSTEXPR inplace_vector&
-	operator=(std::initializer_list<T> il)
+	operator=(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
 		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
@@ -213,7 +213,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	assign(std::initializer_list<T> il)
+	assign(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/65
 		this->assign(il.begin(), il.end());
@@ -657,7 +657,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, std::initializer_list<T> il)
+	insert(const_iterator position, hamon::initializer_list<T> il)
 	{
 		return this->insert(position, il.begin(), il.end());
 	}

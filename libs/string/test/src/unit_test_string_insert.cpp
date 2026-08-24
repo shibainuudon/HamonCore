@@ -20,10 +20,10 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
@@ -414,8 +414,8 @@ InsertTest()
 	{
 		auto p = Helper::abcde();
 		string s;
-		static_assert(!noexcept(s.insert(s.begin(), std::initializer_list<CharT>{})), "");
-		static_assert(hamon::is_same<decltype(s.insert(s.begin(), std::initializer_list<CharT>{})), Iterator>::value, "");
+		static_assert(!noexcept(s.insert(s.begin(), hamon::initializer_list<CharT>{})), "");
+		static_assert(hamon::is_same<decltype(s.insert(s.begin(), hamon::initializer_list<CharT>{})), Iterator>::value, "");
 		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{

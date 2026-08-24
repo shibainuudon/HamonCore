@@ -14,11 +14,11 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
@@ -179,9 +179,9 @@ OpAssignTest()
 	}
 
 	// constexpr basic_string& operator=(initializer_list<charT>);
-	static_assert( hamon::is_assignable          <string, std::initializer_list<CharT>>::value, "is_assignable");
-	static_assert(!hamon::is_nothrow_assignable  <string, std::initializer_list<CharT>>::value, "is_nothrow_assignable");
-	static_assert(!hamon::is_trivially_assignable<string, std::initializer_list<CharT>>::value, "is_trivially_assignable");
+	static_assert( hamon::is_assignable          <string, hamon::initializer_list<CharT>>::value, "is_assignable");
+	static_assert(!hamon::is_nothrow_assignable  <string, hamon::initializer_list<CharT>>::value, "is_nothrow_assignable");
+	static_assert(!hamon::is_trivially_assignable<string, hamon::initializer_list<CharT>>::value, "is_trivially_assignable");
 	{
 		string s;
 		VERIFY(GeneralCheck(s));

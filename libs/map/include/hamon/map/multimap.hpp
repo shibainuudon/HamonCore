@@ -35,6 +35,7 @@
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -66,7 +67,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -196,14 +196,14 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	multimap(std::initializer_list<value_type> il, Compare const& comp = Compare(), Allocator const& a = Allocator())
+	multimap(hamon::initializer_list<value_type> il, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: multimap(comp, a)
 	{
 		this->insert(il);
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	multimap(std::initializer_list<value_type> il, Allocator const& a)
+	multimap(hamon::initializer_list<value_type> il, Allocator const& a)
 		: multimap(il, Compare(), a)
 	{}
 
@@ -329,7 +329,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR multimap&
-	operator=(std::initializer_list<value_type> il)
+	operator=(hamon::initializer_list<value_type> il)
 	{
 		// [associative.reqmts.general]/38
 		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
@@ -544,7 +544,7 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(std::initializer_list<value_type> il)
+	insert(hamon::initializer_list<value_type> il)
 	{
 		this->insert(il.begin(), il.end());
 	}
@@ -926,7 +926,7 @@ template <
 	typename A = hamon::allocator<hamon::pair<Key const, T>>,
 	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<Key>),
 	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, A)>
-multimap(std::initializer_list<hamon::pair<Key, T>>, Compare = Compare(), Allocator = Allocator())
+multimap(hamon::initializer_list<hamon::pair<Key, T>>, Compare = Compare(), Allocator = Allocator())
 ->multimap<Key, T, Compare, Allocator>;
 
 template <
@@ -952,7 +952,7 @@ multimap(hamon::from_range_t, R&&, Allocator)
 template <
 	typename Key, typename T,
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
-multimap(std::initializer_list<hamon::pair<Key, T>>, Allocator)
+multimap(hamon::initializer_list<hamon::pair<Key, T>>, Allocator)
 ->multimap<Key, T, hamon::less<Key>, Allocator>;
 
 #endif

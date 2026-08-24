@@ -7,6 +7,7 @@
 #include <hamon/container/detail/red_black_tree.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/functional.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/ranges.hpp>
@@ -227,7 +228,7 @@ tree_black_height(Tree const& t)
 
 template <typename Tree, typename T = typename Tree::value_type>
 HAMON_CXX14_CONSTEXPR bool
-tree_equal(Tree const& t, std::initializer_list<T> il)
+tree_equal(Tree const& t, hamon::initializer_list<T> il)
 {
 	if (t.size() != il.size())
 	{

@@ -7,11 +7,11 @@
  */
 
 #include <hamon/unordered_set/unordered_set.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_unordered_set_test
@@ -28,9 +28,9 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Set = hamon::unordered_set<Key>;
 	using ValueType = typename Set::value_type;
 
-	static_assert( hamon::is_assignable<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_assignable<Set, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_assignable<Set, std::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_assignable<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_assignable<Set, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_assignable<Set, hamon::initializer_list<ValueType>>::value, "");
 
 	Set v;
 	VERIFY(v.empty());

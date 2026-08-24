@@ -12,6 +12,7 @@
  */
 
 #include <hamon/list/list.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -404,7 +405,7 @@ LIST_TEST_CONSTEXPR bool test5()
 	{
 		List v;
 		ConstIterator it;
-		std::initializer_list<T> il;
+		hamon::initializer_list<T> il;
 		static_assert(hamon::is_same<decltype(v.insert(it, il)), Iterator>::value, "");
 		static_assert(!noexcept(v.insert(it, il)), "");
 	}

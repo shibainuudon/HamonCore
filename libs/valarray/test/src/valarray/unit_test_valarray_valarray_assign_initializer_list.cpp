@@ -8,9 +8,9 @@
 
 #include <hamon/valarray/valarray.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_valarray_test
@@ -24,9 +24,9 @@ namespace valarray_assign_initializer_list_test
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	static_assert( hamon::is_assignable<hamon::valarray<T>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_assignable<hamon::valarray<T>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_assignable<hamon::valarray<T>, std::initializer_list<T>>::value, "");
+	static_assert( hamon::is_assignable<hamon::valarray<T>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_assignable<hamon::valarray<T>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_assignable<hamon::valarray<T>, hamon::initializer_list<T>>::value, "");
 
 	T a[] = { 1, 2, 3, 4, 5 };
 	const unsigned N = sizeof(a) / sizeof(a[0]);

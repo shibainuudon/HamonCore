@@ -23,6 +23,7 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/detail/converts_from_any_cvref.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -54,7 +55,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -363,10 +363,10 @@ public:
 	{}
 
 	template <typename U, typename... Args, typename = hamon::enable_if_t<
-		hamon::is_constructible<T, std::initializer_list<U>&, Args...>::value>>	// [expected.object.cons]/36
+		hamon::is_constructible<T, hamon::initializer_list<U>&, Args...>::value>>	// [expected.object.cons]/36
 	HAMON_CXX11_CONSTEXPR explicit
-	expected(hamon::in_place_t, std::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
-		hamon::is_nothrow_constructible<T, std::initializer_list<U>&, Args...>::value)
+	expected(hamon::in_place_t, hamon::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
+		hamon::is_nothrow_constructible<T, hamon::initializer_list<U>&, Args...>::value)
 		: base_type(hamon::in_place, il, hamon::forward<Args>(args)...)			// [expected.object.cons]/37
 	{}
 
@@ -379,10 +379,10 @@ public:
 	{}
 
 	template <typename U, typename... Args, typename = hamon::enable_if_t<
-		hamon::is_constructible<E, std::initializer_list<U>&, Args...>::value>>	// [expected.object.cons]/44
+		hamon::is_constructible<E, hamon::initializer_list<U>&, Args...>::value>>	// [expected.object.cons]/44
 	HAMON_CXX11_CONSTEXPR explicit
-	expected(hamon::unexpect_t, std::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
-		hamon::is_nothrow_constructible<E, std::initializer_list<U>&, Args...>::value)
+	expected(hamon::unexpect_t, hamon::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
+		hamon::is_nothrow_constructible<E, hamon::initializer_list<U>&, Args...>::value)
 		: base_type(hamon::unexpect, il, hamon::forward<Args>(args)...)			// [expected.object.cons]/45
 	{}
 
@@ -526,9 +526,9 @@ public:
 
 	template <typename U, typename... Args,
 		typename = hamon::enable_if_t<
-			hamon::is_nothrow_constructible<T, std::initializer_list<U>&, Args...>::value>>	// [expected.object.assign]/18
+			hamon::is_nothrow_constructible<T, hamon::initializer_list<U>&, Args...>::value>>	// [expected.object.assign]/18
 	HAMON_CXX14_CONSTEXPR T&
-	emplace(std::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT
+	emplace(hamon::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT
 	{
 		// [expected.object.assign]/19
 		if (this->has_value())
@@ -1597,10 +1597,10 @@ public:
 	{}
 
 	template <typename U, typename... Args, typename = hamon::enable_if_t<
-		hamon::is_constructible<E, std::initializer_list<U>&, Args...>::value>>	// [expected.void.cons]/27
+		hamon::is_constructible<E, hamon::initializer_list<U>&, Args...>::value>>	// [expected.void.cons]/27
 	HAMON_CXX11_CONSTEXPR explicit
-	expected(hamon::unexpect_t, std::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
-		hamon::is_nothrow_constructible<E, std::initializer_list<U>&, Args...>::value)
+	expected(hamon::unexpect_t, hamon::initializer_list<U> il, Args&&... args) HAMON_NOEXCEPT_IF(	// noexcept as an extension
+		hamon::is_nothrow_constructible<E, hamon::initializer_list<U>&, Args...>::value)
 		: base_type(hamon::unexpect, il, hamon::forward<Args>(args)...)			// [expected.void.cons]/28
 	{}
 

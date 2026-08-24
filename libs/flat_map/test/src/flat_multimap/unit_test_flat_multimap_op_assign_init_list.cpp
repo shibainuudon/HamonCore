@@ -9,6 +9,7 @@
 #include <hamon/flat_map/flat_multimap.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -37,8 +38,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
 	using ValueType = typename Map::value_type;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().operator=(hamon::declval<std::initializer_list<ValueType>>())), Map&>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().operator=(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().operator=(hamon::declval<hamon::initializer_list<ValueType>>())), Map&>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().operator=(hamon::declval<hamon::initializer_list<ValueType>>())), "");
 
 	Map v
 	{

@@ -18,10 +18,10 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
@@ -512,8 +512,8 @@ AppendTest()
 	{
 		auto p = Helper::abcde();
 		string s;
-		static_assert(!noexcept(s.append(std::initializer_list<CharT>{})), "");
-		static_assert(hamon::is_same<decltype(s.append(std::initializer_list<CharT>{})), string&>::value, "");
+		static_assert(!noexcept(s.append(hamon::initializer_list<CharT>{})), "");
+		static_assert(hamon::is_same<decltype(s.append(hamon::initializer_list<CharT>{})), string&>::value, "");
 		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{

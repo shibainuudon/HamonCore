@@ -7,6 +7,7 @@
 #include <hamon/iterator/rend.hpp>
 #include <hamon/iterator/rbegin.hpp>
 #include <hamon/array.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
@@ -85,7 +86,7 @@ GTEST_TEST(IteratorTest, REndTest)
 	}
 
 	{
-		std::initializer_list<int> il {1,2,3,4};
+		hamon::initializer_list<int> il {1,2,3,4};
 		auto it = hamon::rbegin(il);
 		EXPECT_EQ(4, *it);
 		EXPECT_TRUE(it != hamon::rend(il));

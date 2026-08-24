@@ -7,6 +7,7 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -47,14 +48,14 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Allocator = hamon::allocator<T>;
 	using Vector = hamon::vector<T, Allocator>;
 
-	static_assert( hamon::is_constructible<Vector, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<Vector, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Vector, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Vector, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Vector, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Vector, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Vector, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Vector, std::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Vector, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<Vector, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Vector, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Vector, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Vector, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Vector, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Vector, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Vector, hamon::initializer_list<T>, Allocator const&>::value, "");
 
 	{
 		Vector v = {T{1}, T{2}, T{3}};

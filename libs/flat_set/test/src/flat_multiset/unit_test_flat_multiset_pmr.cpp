@@ -11,6 +11,7 @@
 #include <hamon/deque.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/greater.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory_resource.hpp>
 #include <hamon/ranges.hpp>
 #include <hamon/string.hpp>
@@ -129,7 +130,7 @@ GTEST_TEST(FlatMultisetTest, PmrTest)
 		using M = hamon::flat_multiset<int, hamon::less<int>, hamon::pmr::vector<int>>;
 		hamon::pmr::monotonic_buffer_resource mr;
 		hamon::pmr::vector<M> vm(&mr);
-		std::initializer_list<M::value_type> il = {3, 1, 4, 1, 5};
+		hamon::initializer_list<M::value_type> il = {3, 1, 4, 1, 5};
 		vm.emplace_back(il);
 		EXPECT_TRUE((vm[0] == M {1, 1, 3, 4, 5}));
 		EXPECT_TRUE(hamon::move(vm[0]).extract().get_allocator().resource() == &mr);
@@ -140,7 +141,7 @@ GTEST_TEST(FlatMultisetTest, PmrTest)
 		using M = hamon::flat_multiset<int, C, hamon::pmr::deque<int>>;
 		hamon::pmr::monotonic_buffer_resource mr;
 		hamon::pmr::vector<M> vm(&mr);
-		std::initializer_list<M::value_type> il = {3, 1, 4, 1, 5};
+		hamon::initializer_list<M::value_type> il = {3, 1, 4, 1, 5};
 		vm.emplace_back(il, C(5));
 		EXPECT_TRUE((vm[0] == M {1, 1, 3, 4, 5}));
 		EXPECT_TRUE(hamon::move(vm[0]).extract().get_allocator().resource() == &mr);

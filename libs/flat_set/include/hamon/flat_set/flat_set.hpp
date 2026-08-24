@@ -34,6 +34,7 @@
 #include <hamon/detail/scope_guard.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/not_fn.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/ranges/prev.hpp>
@@ -68,7 +69,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -171,12 +171,12 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	flat_set(std::initializer_list<value_type> il, key_compare const& comp = key_compare())
+	flat_set(hamon::initializer_list<value_type> il, key_compare const& comp = key_compare())
 		: flat_set(il.begin(), il.end(), comp)
 	{}
 
 	HAMON_CXX14_CONSTEXPR
-	flat_set(hamon::sorted_unique_t, std::initializer_list<value_type> il, key_compare const& comp = key_compare())
+	flat_set(hamon::sorted_unique_t, hamon::initializer_list<value_type> il, key_compare const& comp = key_compare())
 		: flat_set(hamon::sorted_unique, il.begin(), il.end(), comp)
 	{}
 
@@ -323,7 +323,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
-	flat_set(std::initializer_list<value_type> il, Alloc const& a)
+	flat_set(hamon::initializer_list<value_type> il, Alloc const& a)
 		: flat_set(il.begin(), il.end(), a)
 	{}
 
@@ -331,7 +331,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
-	flat_set(std::initializer_list<value_type> il, key_compare const& comp, Alloc const& a)
+	flat_set(hamon::initializer_list<value_type> il, key_compare const& comp, Alloc const& a)
 		: flat_set(il.begin(), il.end(), comp, a)
 	{}
 
@@ -339,7 +339,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
-	flat_set(hamon::sorted_unique_t, std::initializer_list<value_type> il, Alloc const& a)
+	flat_set(hamon::sorted_unique_t, hamon::initializer_list<value_type> il, Alloc const& a)
 		: flat_set(hamon::sorted_unique, il.begin(), il.end(), a)
 	{}
 
@@ -347,12 +347,12 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
-	flat_set(hamon::sorted_unique_t, std::initializer_list<value_type> il, key_compare const& comp, Alloc const& a)
+	flat_set(hamon::sorted_unique_t, hamon::initializer_list<value_type> il, key_compare const& comp, Alloc const& a)
 		: flat_set(hamon::sorted_unique, il.begin(), il.end(), comp, a)
 	{}
 
 	HAMON_CXX14_CONSTEXPR flat_set&
-	operator=(std::initializer_list<value_type> il)
+	operator=(hamon::initializer_list<value_type> il)
 	{
 		this->clear();
 		this->insert(il);
@@ -576,13 +576,13 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(std::initializer_list<value_type> il)
+	insert(hamon::initializer_list<value_type> il)
 	{
 		this->insert(il.begin(), il.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(hamon::sorted_unique_t, std::initializer_list<value_type> il)
+	insert(hamon::sorted_unique_t, hamon::initializer_list<value_type> il)
 	{
 		this->insert(hamon::sorted_unique, il.begin(), il.end());
 	}
@@ -1288,7 +1288,7 @@ template <
 		!hamon::detail::simple_allocator<Compare>
 	>
 >
-flat_set(std::initializer_list<Key>, Compare = Compare())
+flat_set(hamon::initializer_list<Key>, Compare = Compare())
 ->flat_set<Key, Compare>;
 
 template <
@@ -1298,7 +1298,7 @@ template <
 		!hamon::detail::simple_allocator<Compare>
 	>
 >
-flat_set(hamon::sorted_unique_t, std::initializer_list<Key>, Compare = Compare())
+flat_set(hamon::sorted_unique_t, hamon::initializer_list<Key>, Compare = Compare())
 ->flat_set<Key, Compare>;
 
 #endif

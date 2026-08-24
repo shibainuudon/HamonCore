@@ -7,10 +7,10 @@
  */
 
 #include <hamon/unordered_set/unordered_set.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
@@ -28,8 +28,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Set = hamon::unordered_set<Key>;
 	using ValueType = typename Set::value_type;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().insert(hamon::declval<std::initializer_list<ValueType>>())), void>::value, "");
-	static_assert(!noexcept(hamon::declval<Set&>().insert(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().insert(hamon::declval<hamon::initializer_list<ValueType>>())), void>::value, "");
+	static_assert(!noexcept(hamon::declval<Set&>().insert(hamon::declval<hamon::initializer_list<ValueType>>())), "");
 
 	Set v;
 

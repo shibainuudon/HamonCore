@@ -7,6 +7,7 @@
  */
 
 #include <hamon/set/set.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -58,8 +59,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 	Set v;
 
-	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<std::initializer_list<ValueType>>())), void>::value, "");
-	static_assert(!noexcept(v.insert(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<hamon::initializer_list<ValueType>>())), void>::value, "");
+	static_assert(!noexcept(v.insert(hamon::declval<hamon::initializer_list<ValueType>>())), "");
 
 	{
 		v.insert({ Key{3}, Key{2}, Key{3}, Key{1}, Key{2}, Key{3} });

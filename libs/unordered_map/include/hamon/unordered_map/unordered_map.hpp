@@ -36,6 +36,7 @@
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/hash.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -72,7 +73,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -277,7 +277,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	unordered_map(
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		size_type n = size_type(),
 		hasher const& hf = hasher(),
 		key_equal const& eql = key_equal(),
@@ -291,7 +291,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	unordered_map(
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		size_type n,
 		allocator_type const& a)	// may throw
 		: unordered_map(il, n, hasher(), key_equal(), a)
@@ -299,7 +299,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	unordered_map(
-		std::initializer_list<value_type> il,
+		hamon::initializer_list<value_type> il,
 		size_type n,
 		hasher const& hf,
 		allocator_type const& a)	// may throw
@@ -308,7 +308,7 @@ public:
 
 	// LWG 2713
 	HAMON_CXX14_CONSTEXPR
-	unordered_map(std::initializer_list<value_type> il, allocator_type const& a)	// may throw
+	unordered_map(hamon::initializer_list<value_type> il, allocator_type const& a)	// may throw
 		: unordered_map(il, size_type(), hasher(), key_equal(), a)
 	{}
 
@@ -453,7 +453,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR unordered_map&
-	operator=(std::initializer_list<value_type> il)
+	operator=(hamon::initializer_list<value_type> il)
 	{
 		// [unord.req.general]/69
 		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
@@ -654,7 +654,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(std::initializer_list<value_type> il)
+	insert(hamon::initializer_list<value_type> il)
 	{
 		// [unord.req.general]/116
 		this->insert(il.begin(), il.end());	// may throw
@@ -1579,7 +1579,7 @@ template <
 	typename Pair = hamon::pair<Key const, T>,
 	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<Pair>)>	// [unord.req.general]/248.2
 unordered_map(
-	std::initializer_list<hamon::pair<Key, T>>,
+	hamon::initializer_list<hamon::pair<Key, T>>,
 	hamon::detail::deduced_size_type_t<Allocator> = 0/*see below*/,
 	Hash = Hash(), Pred = Pred(), Allocator = Allocator())
 ->unordered_map<Key, T, Hash, Pred, Allocator>;
@@ -1587,7 +1587,7 @@ unordered_map(
 template <typename Key, typename T,
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(
-	std::initializer_list<hamon::pair<Key, T>>,
+	hamon::initializer_list<hamon::pair<Key, T>>,
 	hamon::detail::deduced_size_type_t<Allocator>,
 	Allocator)
 ->unordered_map<Key, T, hamon::hash<Key>, hamon::equal_to<Key>, Allocator>;
@@ -1596,14 +1596,14 @@ template <typename Key, typename T,
 	HAMON_CONSTRAINT(hamon::detail::is_hasher, Hash),				// [unord.req.general]/248.3
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(
-	std::initializer_list<hamon::pair<Key, T>>,
+	hamon::initializer_list<hamon::pair<Key, T>>,
 	hamon::detail::deduced_size_type_t<Allocator>,
 	Hash, Allocator)
 ->unordered_map<Key, T, Hash, hamon::equal_to<Key>, Allocator>;
 
 template <typename Key, typename T,
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
-unordered_map(std::initializer_list<hamon::pair<Key, T>>, Allocator)
+unordered_map(hamon::initializer_list<hamon::pair<Key, T>>, Allocator)
 ->unordered_map<Key, T, hamon::hash<Key>, hamon::equal_to<Key>, Allocator>;
 
 #endif

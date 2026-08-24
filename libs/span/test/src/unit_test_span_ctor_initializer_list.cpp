@@ -1,13 +1,13 @@
 ﻿/**
  *	@file	unit_test_span_ctor_initializer_list.cpp
  *
- *	@brief	span::span(std::initializer_list<value_type>) のテスト
+ *	@brief	span::span(hamon::initializer_list<value_type>) のテスト
  */
 
 #include <hamon/span.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -22,20 +22,20 @@ namespace ctor_initializer_list_test
 template <typename T>
 void test()
 {
-	static_assert(!hamon::is_constructible<hamon::span<T               >, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<hamon::span<T const         >, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<hamon::span<T const volatile>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_constructible<hamon::span<T               , 3>, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<hamon::span<T const         , 3>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 3>, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<hamon::span<T const volatile, 3>, std::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 3>, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         , 3>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 3>, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile, 3>, hamon::initializer_list<T>>::value, "");
 
-	static_assert(!hamon::is_nothrow_constructible<hamon::span<T const>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<hamon::span<T const, 3>, std::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::span<T const>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::span<T const, 3>, hamon::initializer_list<T>>::value, "");
 
-	static_assert( hamon::is_implicitly_constructible<hamon::span<T const>, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_implicitly_constructible<hamon::span<T const, 3>, std::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<hamon::span<T const>, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_implicitly_constructible<hamon::span<T const, 3>, hamon::initializer_list<T>>::value, "");
 }
 
 HAMON_CXX14_CONSTEXPR bool test1(hamon::span<const int> s)

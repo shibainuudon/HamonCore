@@ -17,7 +17,6 @@
 #include <hamon/utility/in_place_t.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_expected_test

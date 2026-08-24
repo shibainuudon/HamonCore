@@ -28,6 +28,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstdlib
 		detail
 		functional
+		initializer_list
 		limits
 		memory
 		type_traits

@@ -26,6 +26,7 @@
 #include <hamon/functional/cref.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -51,7 +52,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -271,7 +271,7 @@ public:
 	{}
 
 	HAMON_CXX14_CONSTEXPR
-	hive(std::initializer_list<T> il, Allocator const& a = Allocator())
+	hive(hamon::initializer_list<T> il, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
 		// [hive.cons]/22
@@ -281,7 +281,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	hive(std::initializer_list<T> il, hive_limits block_limits, Allocator const& a = Allocator())
+	hive(hamon::initializer_list<T> il, hive_limits block_limits, Allocator const& a = Allocator())
 		: m_allocator(a)
 		, m_impl(block_limits)
 	{
@@ -396,7 +396,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR hive&
-	operator=(std::initializer_list<T> il)
+	operator=(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
 		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
@@ -443,7 +443,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	assign(std::initializer_list<T> il)
+	assign(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/65
 		m_impl.AssignRange(m_allocator, il);
@@ -683,7 +683,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	insert(std::initializer_list<T> il)
+	insert(hamon::initializer_list<T> il)
 	{
 		m_impl.InsertRange(m_allocator, il);
 	}

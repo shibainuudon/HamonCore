@@ -24,9 +24,9 @@ using std::minmax;
 
 #include <hamon/algorithm/minmax_element.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -93,7 +93,7 @@ minmax(T const& a, T const& b)
  */
 template <typename T, typename Compare>
 inline HAMON_CXX14_CONSTEXPR hamon::pair<T, T>
-minmax(std::initializer_list<T> t, Compare comp)
+minmax(hamon::initializer_list<T> t, Compare comp)
 {
 	auto const p = hamon::minmax_element(t.begin(), t.end(), comp);
 	return hamon::pair<T, T>(*p.first, *p.second);
@@ -116,7 +116,7 @@ minmax(std::initializer_list<T> t, Compare comp)
  */
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::pair<T, T>
-minmax(std::initializer_list<T> t)
+minmax(hamon::initializer_list<T> t)
 {
 	return hamon::minmax(t, hamon::less<>());
 }

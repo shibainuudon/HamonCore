@@ -9,6 +9,7 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -30,7 +31,7 @@ using invoke_emplace =
 struct X
 {
 	hamon::size_t m_size;
-	HAMON_CXX14_CONSTEXPR X(std::initializer_list<int> il)
+	HAMON_CXX14_CONSTEXPR X(hamon::initializer_list<int> il)
 		: m_size(il.size()) {}
 };
 
@@ -38,7 +39,7 @@ struct Y
 {
 	hamon::size_t m_size;
 	int           m_value;
-	HAMON_CXX14_CONSTEXPR Y(std::initializer_list<int> il, int v)
+	HAMON_CXX14_CONSTEXPR Y(hamon::initializer_list<int> il, int v)
 		: m_size(il.size()), m_value(v) {}
 };
 
@@ -72,22 +73,22 @@ GTEST_TEST(VariantTest, EmplaceTypeInitListArgsTest)
 
 	{
 		using V = hamon::variant<int>;
-		static_assert(!hamon::is_detected<invoke_emplace, V, int, std::initializer_list<int>>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, int, std::initializer_list<int>, int>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, int, hamon::initializer_list<int>>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, int, hamon::initializer_list<int>, int>::value, "");
 	}
 	{
 		using V = hamon::variant<int, X, Y>;
-		static_assert(!hamon::is_detected<invoke_emplace, V, int, std::initializer_list<int>>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, int, std::initializer_list<int>, int>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, int, hamon::initializer_list<int>>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, int, hamon::initializer_list<int>, int>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, X, int>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, X, std::initializer_list<int>>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, X, std::initializer_list<char>>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, X, std::initializer_list<int>, int>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, Y, std::initializer_list<int>>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, X, hamon::initializer_list<int>>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, X, hamon::initializer_list<char>>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, X, hamon::initializer_list<int>, int>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, Y, hamon::initializer_list<int>>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, Y, int>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, Y, std::initializer_list<int>, int>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, Y, std::initializer_list<char>, int>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, Y, std::initializer_list<int>, int, int>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, Y, hamon::initializer_list<int>, int>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, Y, hamon::initializer_list<char>, int>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, Y, hamon::initializer_list<int>, int, int>::value, "");
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{

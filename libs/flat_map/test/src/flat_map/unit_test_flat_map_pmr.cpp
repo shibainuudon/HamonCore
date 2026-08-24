@@ -8,6 +8,7 @@
 #include <hamon/functional.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory_resource.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/pair.hpp>
@@ -139,7 +140,7 @@ GTEST_TEST(FlatMapTest, PmrTest)
 		using M = hamon::flat_map<int, int, hamon::less<int>, hamon::pmr::vector<int>, hamon::pmr::vector<int>>;
 		hamon::pmr::monotonic_buffer_resource mr;
 		hamon::pmr::vector<M> vm(&mr);
-		std::initializer_list<M::value_type> il = {{3, 3}, {1, 1}, {4, 4}, {1, 1}, {5, 5}};
+		hamon::initializer_list<M::value_type> il = {{3, 3}, {1, 1}, {4, 4}, {1, 1}, {5, 5}};
 		vm.emplace_back(il);
 		EXPECT_TRUE((vm[0] == M {{1, 1}, {3, 3}, {4, 4}, {5, 5}}));
 		EXPECT_TRUE(vm[0].keys().get_allocator().resource() == &mr);
@@ -151,7 +152,7 @@ GTEST_TEST(FlatMapTest, PmrTest)
 		using M = hamon::flat_map<int, int, C, hamon::pmr::vector<int>, hamon::pmr::deque<int>>;
 		hamon::pmr::monotonic_buffer_resource mr;
 		hamon::pmr::vector<M> vm(&mr);
-		std::initializer_list<M::value_type> il = {{3, 3}, {1, 1}, {4, 4}, {1, 1}, {5, 5}};
+		hamon::initializer_list<M::value_type> il = {{3, 3}, {1, 1}, {4, 4}, {1, 1}, {5, 5}};
 		vm.emplace_back(il, C(5));
 		EXPECT_TRUE((vm[0] == M {{1, 1}, {3, 3}, {4, 4}, {5, 5}}));
 		EXPECT_TRUE(vm[0].keys().get_allocator().resource() == &mr);

@@ -10,7 +10,6 @@
 #include <hamon/ranges/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 #if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>

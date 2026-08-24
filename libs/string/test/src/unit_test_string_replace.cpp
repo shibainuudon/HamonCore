@@ -24,10 +24,10 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
@@ -403,8 +403,8 @@ ReplaceTest()
 		auto p1 = Helper::abcde();
 		auto p2 = Helper::ABCDE();
 		string s = p1;
-		static_assert(!noexcept(s.replace(ConstIterator{}, ConstIterator{}, std::initializer_list<CharT>{})), "");
-		static_assert(hamon::is_same<decltype(s.replace(ConstIterator{}, ConstIterator{}, std::initializer_list<CharT>{})), string&>::value, "");
+		static_assert(!noexcept(s.replace(ConstIterator{}, ConstIterator{}, hamon::initializer_list<CharT>{})), "");
+		static_assert(hamon::is_same<decltype(s.replace(ConstIterator{}, ConstIterator{}, hamon::initializer_list<CharT>{})), string&>::value, "");
 		{
 			auto& r = s.replace(s.begin() + 1, s.begin() + 4, {p2[0], p2[3]});
 			VERIFY(&r == &s);

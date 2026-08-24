@@ -27,6 +27,7 @@ using std::span;
 #include <hamon/concepts/detail/is_specialization_of_array.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/const_iterator.hpp>
@@ -55,7 +56,6 @@ using std::span;
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <array>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -339,7 +339,7 @@ public:
 		>
 	>
 	HAMON_CXX11_CONSTEXPR explicit(extent != hamon::dynamic_extent)
-	span(std::initializer_list<value_type> il)
+	span(hamon::initializer_list<value_type> il)
 		: m_impl(il.begin(), il.size())		// [span.cons]/20
 	{
 		HAMON_ASSERT(extent == hamon::dynamic_extent || il.size() == extent);	// [span.cons]/19
@@ -352,7 +352,7 @@ public:
 		hamon::size_t N = extent, hamon::enable_if_t<N != hamon::dynamic_extent>* = nullptr
 	>
 	HAMON_CXX11_CONSTEXPR explicit
-	span(std::initializer_list<value_type> il)
+	span(hamon::initializer_list<value_type> il)
 		: m_impl(il.begin(), il.size())		// [span.cons]/20
 	{}
 
@@ -363,7 +363,7 @@ public:
 		hamon::size_t N = extent, hamon::enable_if_t<N == hamon::dynamic_extent>* = nullptr
 	>
 	HAMON_CXX11_CONSTEXPR
-	span(std::initializer_list<value_type> il)
+	span(hamon::initializer_list<value_type> il)
 		: m_impl(il.begin(), il.size())		// [span.cons]/20
 	{}
 #endif

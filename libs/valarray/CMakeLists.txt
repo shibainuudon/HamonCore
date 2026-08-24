@@ -24,6 +24,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstddef
 		debug
 		functional
+		initializer_list
 		memory
 		type_traits
 		utility)

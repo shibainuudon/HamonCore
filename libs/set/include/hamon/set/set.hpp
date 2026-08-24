@@ -31,6 +31,7 @@
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -62,7 +63,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -172,14 +172,14 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	set(std::initializer_list<value_type> il, Compare const& comp = Compare(), Allocator const& a = Allocator())
+	set(hamon::initializer_list<value_type> il, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: set(comp, a)
 	{
 		this->insert(il);
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	set(std::initializer_list<value_type> il, Allocator const& a)
+	set(hamon::initializer_list<value_type> il, Allocator const& a)
 		: set(il, Compare(), a)
 	{}
 
@@ -305,7 +305,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	set& operator=(std::initializer_list<value_type> il)
+	set& operator=(hamon::initializer_list<value_type> il)
 	{
 		// [associative.reqmts.general]/38
 		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
@@ -524,7 +524,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void insert(std::initializer_list<value_type> il)
+	void insert(hamon::initializer_list<value_type> il)
 	{
 		this->insert(il.begin(), il.end());
 	}
@@ -911,7 +911,7 @@ template <
 	typename Key,
 	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<Key>),
 	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<Key>)>
-set(std::initializer_list<Key>, Compare = Compare(), Allocator = Allocator())
+set(hamon::initializer_list<Key>, Compare = Compare(), Allocator = Allocator())
 ->set<Key, Compare, Allocator>;
 
 template <
@@ -935,7 +935,7 @@ set(hamon::from_range_t, R&&, Allocator)
 template <
 	typename Key,
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
-set(std::initializer_list<Key>, Allocator)
+set(hamon::initializer_list<Key>, Allocator)
 ->set<Key, hamon::less<Key>, Allocator>;
 
 #endif

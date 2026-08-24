@@ -7,6 +7,7 @@
  */
 
 #include <hamon/inplace_vector.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
@@ -85,7 +86,7 @@ HAMON_CXX14_CONSTEXPR bool test_impl_0()
 
 	{
 		InplaceVector v;
-		std::initializer_list<T> il;
+		hamon::initializer_list<T> il;
 		static_assert(hamon::is_same<decltype(v = il), InplaceVector&>::value, "");
 		static_assert(!noexcept(v = il), "");
 	}

@@ -46,6 +46,7 @@ set(SUBDIRECTORIES
 	functional
 	hive
 	ieee754
+	initializer_list
 	inplace_vector
 	iomanip
 	ios

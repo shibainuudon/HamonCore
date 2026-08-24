@@ -7,6 +7,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -47,14 +48,14 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Allocator = hamon::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 
-	static_assert( hamon::is_constructible<Deque, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_constructible<Deque, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Deque, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Deque, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Deque, std::initializer_list<T>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Deque, std::initializer_list<T>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Deque, std::initializer_list<T>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Deque, std::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Deque, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_constructible<Deque, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Deque, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Deque, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Deque, hamon::initializer_list<T>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Deque, hamon::initializer_list<T>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Deque, hamon::initializer_list<T>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Deque, hamon::initializer_list<T>, Allocator const&>::value, "");
 
 	{
 		Deque v = {T{1}, T{2}, T{3}};

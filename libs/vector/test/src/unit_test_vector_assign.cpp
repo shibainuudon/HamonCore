@@ -10,6 +10,7 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
@@ -106,11 +107,11 @@ HAMON_CXX20_CONSTEXPR bool test3()
 	using Vector = hamon::vector<T>;
 
 	static_assert(hamon::is_same<
-		decltype(hamon::declval<Vector>().assign(hamon::declval<std::initializer_list<T>>())),
+		decltype(hamon::declval<Vector>().assign(hamon::declval<hamon::initializer_list<T>>())),
 		void
 	>::value, "");
 	static_assert(!noexcept(
-		hamon::declval<Vector>().assign(hamon::declval<std::initializer_list<T>>())), "");
+		hamon::declval<Vector>().assign(hamon::declval<hamon::initializer_list<T>>())), "");
 
 	{
 		Vector v;

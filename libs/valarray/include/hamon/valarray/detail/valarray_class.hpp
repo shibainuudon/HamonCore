@@ -17,6 +17,7 @@
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
@@ -28,7 +29,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -139,7 +139,7 @@ public:
 	}
 
 	HAMON_CXX20_CONSTEXPR
-	valarray(std::initializer_list<T> il)
+	valarray(hamon::initializer_list<T> il)
 		: valarray(il.begin(), il.size())	// [valarray.cons]/9
 	{}
 
@@ -193,7 +193,7 @@ public:
 	}
 
 	HAMON_CXX20_CONSTEXPR valarray&
-	operator=(std::initializer_list<T> il)
+	operator=(hamon::initializer_list<T> il)
 	{
 		// [valarray.assign]/7
 		return *this = valarray(il);

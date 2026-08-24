@@ -33,6 +33,7 @@ using std::basic_string;
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -66,7 +67,6 @@ using std::basic_string;
 #include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 #include <ios>		// ios_base, streamsize
 #include <istream>	// basic_istream
 #include <ostream>	// basic_ostream
@@ -516,7 +516,7 @@ public:
 	{}
 
 	HAMON_CXX14_CONSTEXPR
-	basic_string(std::initializer_list<CharT> il, Allocator const& a = Allocator())
+	basic_string(hamon::initializer_list<CharT> il, Allocator const& a = Allocator())
 		: basic_string(il.begin(), il.end(), a, hamon::detail::overload_priority<1>{})	// [string.cons]/23
 	{}
 
@@ -639,7 +639,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_string&
-	operator=(std::initializer_list<CharT> il)
+	operator=(hamon::initializer_list<CharT> il)
 	{
 		// [string.cons]/36
 		return *this = StringView(il.begin(), il.size());
@@ -948,7 +948,7 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_string&
-	operator+=(std::initializer_list<CharT> il)
+	operator+=(hamon::initializer_list<CharT> il)
 	{
 		// [string.op.append]/6
 		return append(il);
@@ -1073,7 +1073,7 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_string&
-	append(std::initializer_list<CharT> il)
+	append(hamon::initializer_list<CharT> il)
 	{
 		// [string.append]/16
 		return append(il.begin(), il.size());
@@ -1162,7 +1162,7 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_string&
-	assign(std::initializer_list<CharT> il)
+	assign(hamon::initializer_list<CharT> il)
 	{
 		// [string.assign]/12
 		return assign(il.begin(), il.size());
@@ -1369,7 +1369,7 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator p, std::initializer_list<CharT> il)
+	insert(const_iterator p, hamon::initializer_list<CharT> il)
 	{
 		// [string.insert]/28
 		return insert(p, il.begin(), il.end());
@@ -1614,7 +1614,7 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_string&
-	replace(const_iterator i1, const_iterator i2, std::initializer_list<CharT> il)
+	replace(const_iterator i1, const_iterator i2, hamon::initializer_list<CharT> il)
 	{
 		// [string.replace]/26
 		return replace(i1, i2, il.begin(), il.size());

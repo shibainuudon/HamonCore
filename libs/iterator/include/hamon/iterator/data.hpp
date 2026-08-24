@@ -22,8 +22,8 @@ using std::data;
 #else
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -60,7 +60,7 @@ data(T (&a)[N]) HAMON_NOEXCEPT
 
 template <typename E>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR const E*
-data(std::initializer_list<E> il) HAMON_NOEXCEPT
+data(hamon::initializer_list<E> il) HAMON_NOEXCEPT
 {
 	return il.begin();
 }

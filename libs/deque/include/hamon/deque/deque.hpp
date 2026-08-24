@@ -25,6 +25,7 @@
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -49,7 +50,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -183,7 +183,7 @@ public:
 	}
 
 	HAMON_CXX11_CONSTEXPR
-	deque(std::initializer_list<T> il, Allocator const& a = Allocator())
+	deque(hamon::initializer_list<T> il, Allocator const& a = Allocator())
 		: deque(il.begin(), il.end(), a)
 	{}
 
@@ -267,7 +267,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX14_CONSTEXPR deque& operator=(std::initializer_list<T> il)
+	HAMON_CXX14_CONSTEXPR deque& operator=(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
 		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
@@ -314,7 +314,7 @@ public:
 		m_impl.AssignFillN(m_allocator, n, t);
 	}
 
-	HAMON_CXX14_CONSTEXPR void assign(std::initializer_list<T> il)
+	HAMON_CXX14_CONSTEXPR void assign(hamon::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/65
 		this->assign(il.begin(), il.end());
@@ -643,7 +643,7 @@ public:
 		return this->begin() + pos_offset;
 	}
 
-	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, std::initializer_list<T> il)
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, hamon::initializer_list<T> il)
 	{
 		return this->insert(position, il.begin(), il.end());
 	}

@@ -8,6 +8,7 @@
  */
 
 #include <hamon/expected/unexpected.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -60,7 +61,7 @@ struct Error
 	Arg arg;
 	HAMON_CXX14_CONSTEXPR explicit Error(const Arg& a) : arg(a) {}
 	HAMON_CXX14_CONSTEXPR explicit Error(Arg&& a) : arg(hamon::move(a)) {}
-	Error(std::initializer_list<Error>) :arg(0){ HAMON_ASSERT(false); }
+	Error(hamon::initializer_list<Error>) :arg(0){ HAMON_ASSERT(false); }
 };
 
 template <typename E>

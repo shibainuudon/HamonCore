@@ -10,6 +10,7 @@
  */
 
 #include <hamon/forward_list/forward_list.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -132,7 +133,7 @@ HAMON_CXX20_CONSTEXPR bool test3()
 
 	{
 		ForwardList v;
-		std::initializer_list<T> il;
+		hamon::initializer_list<T> il;
 		static_assert(hamon::is_same<decltype(v.assign(il)), void>::value, "");
 		static_assert(!noexcept(v.assign(il)), "");
 	}
@@ -172,7 +173,7 @@ HAMON_CXX20_CONSTEXPR bool test3()
 		}
 
 		{
-			std::initializer_list<T> il;
+			hamon::initializer_list<T> il;
 			v.assign(il);
 			VERIFY(v.empty());
 		}

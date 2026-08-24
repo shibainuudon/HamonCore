@@ -23,11 +23,11 @@ using std::make_optional;
 #else
 
 #include <hamon/optional/optional.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/in_place_t.hpp>
 #include <hamon/config.hpp>
-#include <initializer_list>
 
 namespace hamon
 {
@@ -51,7 +51,7 @@ make_optional(Args&&... args)
 template <typename T, typename U, typename... Args>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX14_CONSTEXPR hamon::optional<T>
-make_optional(std::initializer_list<U> il, Args&&... args)
+make_optional(hamon::initializer_list<U> il, Args&&... args)
 {
 	return hamon::optional<T>(hamon::in_place, il, hamon::forward<Args>(args)...);
 }

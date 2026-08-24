@@ -12,6 +12,7 @@
  */
 
 #include <hamon/map/map.hpp>
+#include <hamon/initializer_list.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -123,23 +124,23 @@ HAMON_CXX20_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& all
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
 
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
 
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
 
 	{
 		Map v
@@ -300,23 +301,23 @@ HAMON_CXX20_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& all
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
 
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Compare const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
 
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, hamon::initializer_list<ValueType>, Allocator const&>::value, "");
 
 	{
 		Map v
