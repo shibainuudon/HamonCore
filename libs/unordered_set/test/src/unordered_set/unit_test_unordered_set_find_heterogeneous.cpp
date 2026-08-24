@@ -20,22 +20,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	defined(__cpp_lib_generic_unordered_lookup) && (__cpp_lib_generic_unordered_lookup >= 201811L)
-
 namespace hamon_unordered_set_test
 {
 
 namespace find_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -47,7 +36,7 @@ template <typename Set, typename K>
 struct is_find_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().find(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Set1 = hamon::unordered_set<Key>;
@@ -71,10 +60,8 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().find(hamon::declval<int>())), Iterator>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().find(hamon::declval<int>())), ConstIterator>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	//static_assert( noexcept(hamon::declval<Set&>().find(hamon::declval<int>())), "");
 	//static_assert( noexcept(hamon::declval<Set const&>().find(hamon::declval<int>())), "");
-#endif
 
 	{
 		Set v{Key{3}, Key{1}, Key{4}, Key{1}};
@@ -122,9 +109,8 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 	return true;
 }
 
-UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	using Key = TransparentKey;
 	{
 		using Set = hamon::unordered_set<Key, NoThrowHash<>, NoThrowEqualTo<>>;
@@ -146,7 +132,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 		static_assert(!noexcept(hamon::declval<Set&>().find(hamon::declval<int>())), "");
 		static_assert(!noexcept(hamon::declval<Set const&>().find(hamon::declval<int>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -155,16 +140,11 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedSetTest, FindHeterogeneousTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE(test_noexcept());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_noexcept());
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace find_heterogeneous_test
 
 }	// namespace hamon_unordered_set_test
-
-#endif

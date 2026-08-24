@@ -17,22 +17,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_multiset_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) || \
-	(defined(__cpp_lib_associative_heterogeneous_erasure) && (__cpp_lib_associative_heterogeneous_erasure >= 202110L))
-
 namespace hamon_unordered_multiset_test
 {
 
 namespace extract_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -44,7 +33,7 @@ template <typename Set, typename K>
 struct is_extract_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().extract(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Set1 = hamon::unordered_multiset<Key>;
@@ -66,9 +55,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 	using NodeType = typename Set::node_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().extract(hamon::declval<int>())), NodeType>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 	//static_assert( noexcept(hamon::declval<Set&>().extract(hamon::declval<int>())), "");
-#endif
 
 	Set v
 	{
@@ -149,9 +136,8 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 	return true;
 }
 
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 	using Key = TransparentKey;
 	{
 		using Set = hamon::unordered_multiset<Key, NoThrowHash<>, NoThrowEqualTo<>>;
@@ -169,7 +155,6 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test_noexcept()
 		using Set = hamon::unordered_multiset<Key, ThrowHash<>, ThrowEqualTo<>>;
 		static_assert(!noexcept(hamon::declval<Set&>().extract(hamon::declval<int>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -178,16 +163,11 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedMultisetTest, ExtractHeterogeneousTest)
 {
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test()));
 
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept()));
 }
-
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR
 
 }	// namespace extract_heterogeneous_test
 
 }	// namespace hamon_unordered_multiset_test
-
-#endif

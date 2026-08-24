@@ -26,27 +26,16 @@
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_unordered_set_test
 {
 
 namespace merge_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::unordered_set<Key>;
 
@@ -88,7 +77,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test1()
 		VERIFY(v1.count(Key{2}) == 0);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -96,7 +84,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test1()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 	{
 		Set v1
@@ -136,7 +123,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test1()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 1);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -144,14 +130,13 @@ UNORDERED_SET_TEST_CONSTEXPR bool test1()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 
 	return true;
 }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Set1 = hamon::unordered_set<Key>;
 	using Set2 = hamon::unordered_set<Key, TransparentHash, hamon::equal_to<>>;
@@ -198,7 +183,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test2()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 0);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 1);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -206,7 +190,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test2()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 	{
 		Set1 v1
@@ -245,7 +228,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test2()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 0);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -253,14 +235,13 @@ UNORDERED_SET_TEST_CONSTEXPR bool test2()
 		VERIFY(v2.count(Key{2}) == 0);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 
 	return true;
 }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Set1 = hamon::unordered_set<Key>;
 	using Set2 = hamon::unordered_multiset<Key, TransparentHash, hamon::equal_to<>>;
@@ -307,7 +288,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test3()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 0);
 		VERIFY(v1.count(Key{4}) == 0);
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 2);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 0);
@@ -315,7 +295,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test3()
 		VERIFY(v2.count(Key{2}) == 1);
 		VERIFY(v2.count(Key{3}) == 0);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 	{
 		Set1 v1
@@ -359,7 +338,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test3()
 		VERIFY(v1.count(Key{2}) == 1);
 		VERIFY(v1.count(Key{3}) == 1);
 		VERIFY(v1.count(Key{4}) == 1);
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_STDLIB_DINKUMWARE))	// Microsoft-STL だとマージ後のオブジェクトの状態が怪しい
 		VERIFY(v2.size() == 5);
 		VERIFY(v2.load_factor() <= v2.max_load_factor());
 		VERIFY(v2.count(Key{0}) == 1);
@@ -367,7 +345,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test3()
 		VERIFY(v2.count(Key{2}) == 2);
 		VERIFY(v2.count(Key{3}) == 1);
 		VERIFY(v2.count(Key{4}) == 0);
-#endif
 	}
 
 	return true;
@@ -377,24 +354,19 @@ UNORDERED_SET_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(UnorderedSetTest, MergeTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test3<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float>()));
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace merge_test
 
 }	// namespace hamon_unordered_set_test
-
-#endif

@@ -8,7 +8,6 @@
  *	erase_if(unordered_set<K, T, H, P, A>& c, Predicate pred);
  */
 
-#include <hamon/unordered_set/erase_if.hpp>
 #include <hamon/unordered_set/unordered_set.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
@@ -20,14 +19,6 @@ namespace hamon_unordered_set_test
 
 namespace erase_if_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -41,7 +32,7 @@ struct is_key_1
 };
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::unordered_set<Key>;
 	using SizeType = typename Set::size_type;
@@ -87,13 +78,10 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedSetTest, EraseIfTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace erase_if_test
 

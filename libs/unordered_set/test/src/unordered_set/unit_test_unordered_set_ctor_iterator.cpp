@@ -40,18 +40,10 @@ namespace hamon_unordered_set_test
 namespace ctor_iterator_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, template <typename> class IteratorWrapper>
-UNORDERED_SET_TEST_CONSTEXPR bool test_impl()
+HAMON_CXX20_CONSTEXPR bool test_impl()
 {
 	using Set = hamon::unordered_set<Key>;
 	using SizeType  = typename Set::size_type;
@@ -137,7 +129,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_impl()
 		VERIFY(v.get_allocator() == alloc);
 	}
 
-#if !(defined(HAMON_USE_STD_UNORDERED_SET) && (HAMON_CXX_STANDARD < 14))
 	static_assert( hamon::is_constructible<Set, Iterator, Iterator, SizeType, Allocator const&>::value, "");
 	static_assert( hamon::is_constructible<Set, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, Iterator, Iterator, SizeType, Allocator const&>::value, "");
@@ -171,9 +162,7 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_impl()
 		VERIFY(v.load_factor() <= v.max_load_factor());
 		VERIFY(v.get_allocator() == alloc);
 	}
-#endif
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET)	// TODO(LWG 2713)
 	static_assert( hamon::is_constructible<Set, Iterator, Iterator, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, Iterator, Iterator, Allocator const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Set, Iterator, Iterator, Allocator const&>::value, "");
@@ -191,13 +180,12 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_impl()
 		VERIFY(v.load_factor() <= v.max_load_factor());
 		VERIFY(v.get_allocator() == alloc);
 	}
-#endif
 
 	return true;
 }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	return
 		test_impl<Key, cpp17_input_iterator_wrapper>() &&
@@ -212,13 +200,10 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedSetTest, CtorIteratorTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace ctor_iterator_test
 

@@ -24,18 +24,10 @@ namespace hamon_unordered_multiset_test
 namespace op_assign_move_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Hasher = TestHash<Key>;
 	using KeyEqual = TestEqualTo<Key>;
@@ -45,9 +37,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 		using Set = hamon::unordered_multiset<Key, Hasher, KeyEqual, Allocator>;
 
 		static_assert( hamon::is_move_assignable<Set>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 		static_assert( hamon::is_nothrow_move_assignable<Set>::value, "");
-#endif
 		static_assert(!hamon::is_trivially_move_assignable<Set>::value, "");
 
 		Hasher h1{1};
@@ -90,9 +80,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 		using Set = hamon::unordered_multiset<Key, Hasher, KeyEqual, Allocator>;
 
 		static_assert( hamon::is_move_assignable<Set>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 		static_assert(!hamon::is_nothrow_move_assignable<Set>::value, "");
-#endif
 		static_assert(!hamon::is_trivially_move_assignable<Set>::value, "");
 
 		Hasher h1{1};
@@ -135,9 +123,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 		using Set = hamon::unordered_multiset<Key, Hasher, KeyEqual, Allocator>;
 
 		static_assert( hamon::is_move_assignable<Set>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 		static_assert(!hamon::is_nothrow_move_assignable<Set>::value, "");
-#endif
 		static_assert(!hamon::is_trivially_move_assignable<Set>::value, "");
 
 		Hasher h1{1};
@@ -183,13 +169,10 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMultisetTest, OpAssignMoveTest)
 {
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR
 
 }	// namespace op_assign_move_test
 

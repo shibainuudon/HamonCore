@@ -20,18 +20,10 @@ namespace hamon_unordered_set_test
 namespace insert_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::unordered_set<Key>;
 	using ValueType = typename Set::value_type;
@@ -58,9 +50,9 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedSetTest, InsertInitializerListTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -92,9 +84,6 @@ GTEST_TEST(UnorderedSetTest, InsertInitializerListTest)
 	}
 #endif
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace insert_initializer_list_test
 

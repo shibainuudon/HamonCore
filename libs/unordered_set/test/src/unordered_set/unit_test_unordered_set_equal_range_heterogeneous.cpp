@@ -22,22 +22,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	defined(__cpp_lib_generic_unordered_lookup) && (__cpp_lib_generic_unordered_lookup >= 201811L)
-
 namespace hamon_unordered_set_test
 {
 
 namespace equal_range_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -49,7 +38,7 @@ template <typename Set, typename K>
 struct is_equal_range_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().equal_range(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Set1 = hamon::unordered_set<Key>;
@@ -71,20 +60,13 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 	using SizeType = typename Set::size_type;
 	using Iterator = typename Set::iterator;
 	using ConstIterator = typename Set::const_iterator;
-#if defined(HAMON_USE_STD_UNORDERED_SET)
-	using Result1 = std::pair<Iterator, Iterator>;
-	using Result2 = std::pair<ConstIterator, ConstIterator>;
-#else
 	using Result1 = hamon::pair<Iterator, Iterator>;
 	using Result2 = hamon::pair<ConstIterator, ConstIterator>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().equal_range(hamon::declval<int>())), Result1>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().equal_range(hamon::declval<int>())), Result2>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	//static_assert( noexcept(hamon::declval<Set&>().equal_range(hamon::declval<int>())), "");
 	//static_assert( noexcept(hamon::declval<Set const&>().equal_range(hamon::declval<int>())), "");
-#endif
 
 	{
 		auto check = [](Set& v, int k, SizeType size)
@@ -132,9 +114,8 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 	return true;
 }
 
-UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	using Key = TransparentKey;
 	{
 		using Set = hamon::unordered_set<Key, NoThrowHash<>, NoThrowEqualTo<>>;
@@ -156,7 +137,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 		static_assert(!noexcept(hamon::declval<Set&>().equal_range(hamon::declval<int>())), "");
 		static_assert(!noexcept(hamon::declval<Set const&>().equal_range(hamon::declval<int>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -165,16 +145,11 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedSetTest, EqualRangeHeterogeneousTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE(test_noexcept());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_noexcept());
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace equal_range_heterogeneous_test
 
 }	// namespace hamon_unordered_set_test
-
-#endif

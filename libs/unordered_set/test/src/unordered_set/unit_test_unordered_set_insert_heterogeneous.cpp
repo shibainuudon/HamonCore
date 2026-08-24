@@ -18,22 +18,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	(defined(__cpp_lib_associative_heterogeneous_insertion) && (__cpp_lib_associative_heterogeneous_insertion >= 202306L))
-
 namespace hamon_unordered_set_test
 {
 
 namespace insert_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -45,7 +34,7 @@ template <typename Set, typename K>
 struct is_insert_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().insert(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Set1 = hamon::unordered_set<Key>;
@@ -65,11 +54,7 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 	using Set = Set4;
 	using Iterator = typename Set::iterator;
-#if defined(HAMON_USE_STD_UNORDERED_SET)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().insert(hamon::declval<char>())), Result>::value, "");
 	static_assert(!noexcept(hamon::declval<Set&>().insert(hamon::declval<char>())), "");
@@ -108,7 +93,7 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedSetTest, InsertHeterogeneousTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -135,11 +120,6 @@ GTEST_TEST(UnorderedSetTest, InsertHeterogeneousTest)
 #endif
 }
 
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
-
 }	// namespace insert_heterogeneous_test
 
 }	// namespace hamon_unordered_set_test
-
-#endif

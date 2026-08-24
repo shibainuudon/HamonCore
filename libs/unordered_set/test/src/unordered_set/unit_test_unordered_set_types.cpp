@@ -68,11 +68,8 @@ void test()
 	static_assert(hamon::is_object<typename Set::const_iterator>::value, "");
 	static_assert(hamon::is_object<typename Set::local_iterator>::value, "");
 	static_assert(hamon::is_object<typename Set::const_local_iterator>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
 	static_assert(hamon::is_object<typename Set::node_type>::value, "");
 	static_assert(hamon::is_object<typename Set::insert_return_type>::value, "");
-#endif
 }
 
 GTEST_TEST(UnorderedSetTest, TypesTest)

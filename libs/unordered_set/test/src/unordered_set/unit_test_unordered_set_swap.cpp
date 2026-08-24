@@ -27,18 +27,10 @@ namespace hamon_unordered_set_test
 namespace swap_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Hasher = TestHash<Key>;
 	using KeyEqual = TestEqualTo<Key>;
@@ -49,10 +41,8 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 		static_assert(hamon::is_same<decltype(hamon::declval<Set&>().swap(hamon::declval<Set&>())), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(hamon::declval<Set&>(), hamon::declval<Set&>())), void>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 		static_assert(!noexcept(hamon::declval<Set&>().swap(hamon::declval<Set&>())), "");
 		static_assert(!noexcept(swap(hamon::declval<Set&>(), hamon::declval<Set&>())), "");
-#endif
 
 		Hasher h1{1};
 		Hasher h2{2};
@@ -173,7 +163,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 		VERIFY(v2.hash_function() != h1);
 		VERIFY(v2.hash_function() == h2);
 	}
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	{
 		using Allocator = TestAllocator6<Key>;
 		using Set = hamon::unordered_set<Key, Hasher, KeyEqual, Allocator>;
@@ -238,7 +227,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 		VERIFY(v2.hash_function() != h1);
 		VERIFY(v2.hash_function() == h2);
 	}
-#endif
 
 	return true;
 }
@@ -247,13 +235,10 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedSetTest, SwapTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace swap_test
 

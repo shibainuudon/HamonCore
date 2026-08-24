@@ -17,22 +17,11 @@
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	(defined(__cpp_lib_associative_heterogeneous_erasure) && (__cpp_lib_associative_heterogeneous_erasure >= 202110L))
-
 namespace hamon_unordered_set_test
 {
 
 namespace erase_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -44,7 +33,7 @@ template <typename Set, typename K>
 struct is_erase_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().erase(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Key = TransparentKey;
 	using Set1 = hamon::unordered_set<Key>;
@@ -66,9 +55,7 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 	using SizeType = typename Set::size_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().erase(hamon::declval<int>())), SizeType>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	//static_assert( noexcept(hamon::declval<Set&>().erase(hamon::declval<int>())), "");
-#endif
 
 	{
 		Set v{Key{0}, Key{2}, Key{3}, Key{1}, Key{4}, };
@@ -116,9 +103,8 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 	return true;
 }
 
-UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	using Key = TransparentKey;
 	{
 		using Set = hamon::unordered_set<Key, NoThrowHash<>, NoThrowEqualTo<>>;
@@ -136,7 +122,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 		using Set = hamon::unordered_set<Key, ThrowHash<>, ThrowEqualTo<>>;
 		static_assert(!noexcept(hamon::declval<Set&>().erase(hamon::declval<int>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -145,16 +130,11 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedSetTest, EraseHeterogeneousTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test()));
 
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept()));
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace erase_heterogeneous_test
 
 }	// namespace hamon_unordered_set_test
-
-#endif

@@ -15,27 +15,16 @@
 #include "constexpr_test.hpp"
 #include "unordered_multiset_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_unordered_multiset_test
 {
 
 namespace insert_hint_node_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Set = hamon::unordered_multiset<Key>;
 	using Iterator = typename Set::iterator;
@@ -163,7 +152,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	// コピー不可、ムーブ不可なオブジェクトを別のSetに移動する
 
@@ -269,7 +258,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	// ハッシュ関数、比較関数が異なるSetに移動する
 
@@ -367,7 +356,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	// setからmultisetに移動する
 
@@ -469,20 +458,15 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(UnorderedMultisetTest, InsertHintNodeTest)
 {
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test3()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test4()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test4()));
 }
-
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR
 
 }	// namespace insert_hint_node_test
 
 }	// namespace hamon_unordered_multiset_test
-
-#endif

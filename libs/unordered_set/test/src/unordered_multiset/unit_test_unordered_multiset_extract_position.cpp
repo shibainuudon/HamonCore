@@ -14,36 +14,23 @@
 #include "constexpr_test.hpp"
 #include "unordered_multiset_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_unordered_multiset_test
 {
 
 namespace extract_position_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::unordered_multiset<Key>;
 	using NodeType = typename Set::node_type;
 	using ConstIterator = typename Set::const_iterator;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().extract(hamon::declval<ConstIterator>())), NodeType>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 	//static_assert( noexcept(hamon::declval<Set&>().extract(hamon::declval<ConstIterator>())), "");
-#endif
 
 	Set v
 	{
@@ -92,9 +79,8 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 }
 
 template <typename Key>
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 	{
 		using Set = hamon::unordered_multiset<Key, NoThrowHash<Key>, NoThrowEqualTo<Key>>;
 		using ConstIterator = typename Set::const_iterator;
@@ -115,7 +101,6 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test_noexcept()
 		using ConstIterator = typename Set::const_iterator;
 		static_assert( noexcept(hamon::declval<Set&>().extract(hamon::declval<ConstIterator>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -124,20 +109,15 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedMultisetTest, ExtractPositionTest)
 {
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<int>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<char>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<float>()));
 }
-
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR
 
 }	// namespace extract_position_test
 
 }	// namespace hamon_unordered_multiset_test
-
-#endif

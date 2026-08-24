@@ -13,35 +13,22 @@
 #include "constexpr_test.hpp"
 #include "unordered_set_test_helper.hpp"
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_unordered_set_test
 {
 
 namespace extract_key_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_SET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_SET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::unordered_set<Key>;
 	using NodeType = typename Set::node_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().extract(hamon::declval<Key const&>())), NodeType>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	//static_assert( noexcept(hamon::declval<Set&>().extract(hamon::declval<Key const&>())), "");
-#endif
 
 	Set v
 	{
@@ -148,9 +135,8 @@ UNORDERED_SET_TEST_CONSTEXPR bool test()
 }
 
 template <typename Key>
-UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
+HAMON_CXX20_CONSTEXPR bool test_noexcept()
 {
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
 	{
 		using Set = hamon::unordered_set<Key, NoThrowHash<Key>, NoThrowEqualTo<Key>>;
 		static_assert( noexcept(hamon::declval<Set&>().extract(hamon::declval<Key const&>())), "");
@@ -167,7 +153,6 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 		using Set = hamon::unordered_set<Key, ThrowHash<Key>, ThrowEqualTo<Key>>;
 		static_assert(!noexcept(hamon::declval<Set&>().extract(hamon::declval<Key const&>())), "");
 	}
-#endif
 
 	return true;
 }
@@ -176,20 +161,15 @@ UNORDERED_SET_TEST_CONSTEXPR bool test_noexcept()
 
 GTEST_TEST(UnorderedSetTest, ExtractKeyTest)
 {
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<int>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<char>()));
-	UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE((test_noexcept<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test_noexcept<float>()));
 }
-
-#undef UNORDERED_SET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_SET_TEST_CONSTEXPR
 
 }	// namespace extract_key_test
 
 }	// namespace hamon_unordered_set_test
-
-#endif

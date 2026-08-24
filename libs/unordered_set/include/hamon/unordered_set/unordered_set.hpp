@@ -8,12 +8,7 @@
 #define HAMON_UNORDERED_SET_UNORDERED_SET_HPP
 
 #include <hamon/unordered_set/unordered_set_fwd.hpp>
-#include <hamon/unordered_set/config.hpp>
-
-#if !defined(HAMON_USE_STD_UNORDERED_SET)
-
 #include <hamon/unordered_set/unordered_multiset_fwd.hpp>
-
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
@@ -1364,8 +1359,29 @@ swap(
 	x.swap(y);
 }
 
-}	// namespace hamon
+// 23.5.6.3 Erasure[unord.set.erasure]
 
-#endif
+template <typename K, typename H, typename P, typename A, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename unordered_set<K, H, P, A>::size_type
+erase_if(unordered_set<K, H, P, A>& c, Predicate pred)
+{
+	// [unord.set.erasure]/1
+	auto original_size = c.size();
+	for (auto i = c.begin(), last = c.end(); i != last; )
+	{
+		if (pred(*i))
+		{
+			i = c.erase(i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return original_size - c.size();
+}
+
+}	// namespace hamon
 
 #endif // HAMON_UNORDERED_SET_UNORDERED_SET_HPP

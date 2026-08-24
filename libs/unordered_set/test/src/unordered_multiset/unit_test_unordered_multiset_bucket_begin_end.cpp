@@ -23,18 +23,10 @@ namespace hamon_unordered_multiset_test
 namespace bucket_begin_end_test
 {
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
-#else
-#define UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
-#define UNORDERED_MULTISET_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Set = hamon::unordered_multiset<Key>;
 	using SizeType = typename Set::size_type;
@@ -50,7 +42,6 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().cbegin(hamon::declval<SizeType>())), ConstLocalIterator>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Set const&>().cend  (hamon::declval<SizeType>())), ConstLocalIterator>::value, "");
 
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
 	static_assert( noexcept(hamon::declval<Set&>().begin (hamon::declval<SizeType>())), "");
 	static_assert( noexcept(hamon::declval<Set&>().end   (hamon::declval<SizeType>())), "");
 	static_assert( noexcept(hamon::declval<Set&>().cbegin(hamon::declval<SizeType>())), "");
@@ -59,7 +50,6 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 	static_assert( noexcept(hamon::declval<Set const&>().end   (hamon::declval<SizeType>())), "");
 	static_assert( noexcept(hamon::declval<Set const&>().cbegin(hamon::declval<SizeType>())), "");
 	static_assert( noexcept(hamon::declval<Set const&>().cend  (hamon::declval<SizeType>())), "");
-#endif
 
 	{
 		Set v{Key{3}, Key{1}, Key{4}, Key{1}};
@@ -126,13 +116,10 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(UnorderedMultisetTest, BucketBeginEndTest)
 {
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
-#undef UNORDERED_MULTISET_TEST_CONSTEXPR
 
 }	// namespace bucket_begin_end_test
 
