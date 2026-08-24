@@ -69,7 +69,11 @@ GTEST_TEST(ForwardListTest, FrontTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>());
+#else
+	EXPECT_TRUE(test<S1>());
+#endif
 }
 
 }	// namespace front_test

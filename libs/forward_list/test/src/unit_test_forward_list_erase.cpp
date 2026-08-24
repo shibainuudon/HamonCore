@@ -86,7 +86,11 @@ HAMON_CXX20_CONSTEXPR bool test2()
 GTEST_TEST(ForwardListTest, EraseTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+#else
+	EXPECT_TRUE(test2());
+#endif
 }
 
 }	// namespace erase_test

@@ -304,9 +304,15 @@ HAMON_CXX20_CONSTEXPR bool test3()
 
 GTEST_TEST(ForwardListTest, OpAssignTest)
 {
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+#else
+	EXPECT_TRUE(test1<int>());
+	EXPECT_TRUE(test1<char>());
+	EXPECT_TRUE(test1<float>());
+#endif
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());

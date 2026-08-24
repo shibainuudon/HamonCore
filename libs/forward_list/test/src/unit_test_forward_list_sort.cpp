@@ -281,7 +281,11 @@ GTEST_TEST(ForwardListTest, SortTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<char>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2<float>());
 
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3());
+#else
+	EXPECT_TRUE(test3());
+#endif
 }
 
 }	// namespace sort_test

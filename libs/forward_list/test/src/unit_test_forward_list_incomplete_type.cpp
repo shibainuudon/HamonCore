@@ -28,7 +28,11 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, IncompleteTypeTest)
 {
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
+#else
+	EXPECT_TRUE(test());
+#endif
 }
 
 }	// namespace incomplete_type_test
