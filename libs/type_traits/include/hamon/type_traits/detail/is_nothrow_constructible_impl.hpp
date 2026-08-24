@@ -19,10 +19,15 @@ namespace hamon
 namespace detail
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4197)	// 'T': キャストの トップレベルの volatile は無視されます。
+
 template <typename T, typename... Args>
 struct do_is_nothrow_constructible_impl
 	: public hamon::bool_constant<noexcept(T(hamon::declval<Args>()...))>
 {};
+
+HAMON_WARNING_POP()
 
 #if defined(HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT)
 template <typename T, hamon::size_t N, typename... Args>

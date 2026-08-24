@@ -11,16 +11,22 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 namespace detail
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4197)	// 'T': キャストの トップレベルの volatile は無視されます。
+
 template <typename T>
 struct do_is_nothrow_default_constructible_impl
 	: public hamon::bool_constant<noexcept(T())>
 {};
+
+HAMON_WARNING_POP()
 
 template <typename T>
 struct is_nothrow_default_constructible_impl
