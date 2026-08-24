@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_associative_heterogeneous_insertion) && (__cpp_lib_associative_heterogeneous_insertion >= 202306L))
-
 namespace hamon_map_test
 {
 
 namespace try_emplace_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
 
 struct Key
 {
@@ -104,15 +93,11 @@ struct MayThrow
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::map<Key, float, hamon::less<>>;
 	using Iterator = typename Map::iterator;
-#if defined(HAMON_USE_STD_MAP)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	{
 		Map v;
@@ -208,7 +193,7 @@ MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MapTest, TryEmplaceHeterogeneousTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 
 	S2::s_ctor_count = 0;
 	S2::s_dtor_count = 0;
@@ -273,11 +258,6 @@ GTEST_TEST(MapTest, TryEmplaceHeterogeneousTest)
 #endif
 }
 
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
-
 }	// namespace try_emplace_heterogeneous_test
 
 }	// namespace hamon_map_test
-
-#endif

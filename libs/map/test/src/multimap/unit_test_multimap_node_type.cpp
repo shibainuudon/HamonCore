@@ -10,27 +10,16 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_multimap_test
 {
 
 namespace node_type_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<Key, T>;
 	using NodeType = typename Map::node_type;
@@ -55,9 +44,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	static_assert(!hamon::is_copy_assignable<NodeType>::value, "");
 
 	static_assert( hamon::is_move_assignable<NodeType>::value, "");
-#if !defined(HAMON_USE_STD_MULTIMAP)
 	static_assert(!hamon::is_nothrow_move_assignable<NodeType>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_move_assignable<NodeType>::value, "");
 
 	static_assert(hamon::is_same<decltype(hamon::declval<NodeType const&>().empty()), bool>::value, "");
@@ -68,7 +55,6 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	static_assert(hamon::is_same<decltype(hamon::declval<NodeType&>().swap(hamon::declval<NodeType&>())), void>::value, "");
 	static_assert(hamon::is_same<decltype(swap(hamon::declval<NodeType&>(), hamon::declval<NodeType&>())), void>::value, "");
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
 	static_assert( noexcept(hamon::declval<NodeType const&>().empty()), "");
 	static_assert( noexcept(hamon::declval<NodeType const&>().operator bool()), "");
 	static_assert(!noexcept(hamon::declval<NodeType const&>().get_allocator()), "");
@@ -76,7 +62,6 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	static_assert(!noexcept(hamon::declval<NodeType const&>().mapped()), "");
 	static_assert( noexcept(hamon::declval<NodeType&>().swap(hamon::declval<NodeType&>())), "");
 	static_assert( noexcept(swap(hamon::declval<NodeType&>(), hamon::declval<NodeType&>())), "");
-#endif
 
 	{
 		NodeType node;
@@ -153,7 +138,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::multimap<Key, T>;
 	using NodeType = typename Map::node_type;
@@ -227,15 +212,15 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultimapTest, NodeTypeTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
 	EXPECT_TRUE((test2<int, int>()));
 	EXPECT_TRUE((test2<int, char>()));
@@ -248,11 +233,6 @@ GTEST_TEST(MultimapTest, NodeTypeTest)
 	EXPECT_TRUE((test2<float, float>()));
 }
 
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
-
 }	// namespace node_type_test
 
 }	// namespace hamon_multimap_test
-
-#endif

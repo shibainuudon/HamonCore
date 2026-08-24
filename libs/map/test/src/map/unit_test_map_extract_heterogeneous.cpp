@@ -13,36 +13,23 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_associative_heterogeneous_erasure) && (__cpp_lib_associative_heterogeneous_erasure >= 202110L))
-
 namespace hamon_map_test
 {
 
 namespace extract_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::map<Key, T, hamon::less<>>;
 	using ValueType = typename Map::value_type;
 	using NodeType = typename Map::node_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().extract(hamon::declval<int>())), NodeType>::value, "");
-#if !defined(HAMON_USE_STD_MAP)
 	static_assert(!noexcept(hamon::declval<Map&>().extract(hamon::declval<int>())), "");
-#endif
 
 	Map v
 	{
@@ -109,22 +96,17 @@ MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MapTest, ExtractHeterogeneousTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace extract_heterogeneous_test
 
 }	// namespace hamon_map_test
-
-#endif

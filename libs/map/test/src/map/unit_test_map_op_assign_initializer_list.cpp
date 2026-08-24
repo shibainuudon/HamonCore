@@ -17,18 +17,10 @@ namespace hamon_map_test
 namespace op_assign_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -90,19 +82,16 @@ MAP_TEST_CONSTEXPR bool test1()
 
 GTEST_TEST(MapTest, OpAssignInitializerListTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace op_assign_initializer_list_test
 

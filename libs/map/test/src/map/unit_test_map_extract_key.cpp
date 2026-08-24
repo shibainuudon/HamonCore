@@ -14,36 +14,23 @@
 #include <string>
 #include <sstream>
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 namespace hamon_map_test
 {
 
 namespace extract_key_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::map<Key, T>;
 	using ValueType = typename Map::value_type;
 	using NodeType = typename Map::node_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().extract(hamon::declval<Key const&>())), NodeType>::value, "");
-#if !defined(HAMON_USE_STD_MAP)
 	static_assert(!noexcept(hamon::declval<Map&>().extract(hamon::declval<Key const&>())), "");
-#endif
 
 	Map v
 	{
@@ -121,15 +108,15 @@ std::string ToString(const hamon::map<Key, T, C>& m)
 
 GTEST_TEST(MapTest, ExtractKeyTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 
 	// https://en.cppreference.com/w/cpp/container/map/extract
 	{
@@ -147,11 +134,6 @@ GTEST_TEST(MapTest, ExtractKeyTest)
 	}
 }
 
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
-
 }	// namespace extract_key_test
 
 }	// namespace hamon_map_test
-
-#endif

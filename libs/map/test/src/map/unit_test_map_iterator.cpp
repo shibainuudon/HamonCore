@@ -22,14 +22,6 @@ namespace hamon_map_test
 namespace iterator_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T, typename U = T, typename = void>
 struct has_eq
 	: public hamon::false_type {};
@@ -89,7 +81,7 @@ struct has_compare_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=
 #endif
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test_impl()
+HAMON_CXX20_CONSTEXPR bool test_impl()
 {
 	using Map = hamon::map<Key, T>;
 	using value_type      = typename Map::value_type;
@@ -183,7 +175,7 @@ MAP_TEST_CONSTEXPR bool test_impl()
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	VERIFY(test_impl<Key, char>());
 	VERIFY(test_impl<Key, short>());
@@ -198,15 +190,12 @@ MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MapTest, IteratorTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<short>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<long>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float>()));
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace iterator_test
 

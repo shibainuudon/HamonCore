@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_associative_heterogeneous_insertion) && (__cpp_lib_associative_heterogeneous_insertion >= 202306L))
-
 namespace hamon_map_test
 {
 
 namespace at_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
 
 struct Key
 {
@@ -67,7 +56,7 @@ struct Key
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<Key, T, hamon::less<>>;
 	using MappedType = typename Map::mapped_type;
@@ -105,7 +94,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename T>
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::map<Key, T, hamon::less<>>;
 	using MappedType = typename Map::mapped_type;
@@ -144,13 +133,13 @@ bool operator<(const HeavyKey& x, const HeavyKey& y) { return x.o[0] < y.o[0]; }
 
 GTEST_TEST(MapTest, AtHeterogeneousTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float>()));
 
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 HAMON_WARNING_PUSH()
@@ -210,11 +199,6 @@ HAMON_WARNING_POP()
 	}
 }
 
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
-
 }	// namespace at_heterogeneous_test
 
 }	// namespace hamon_map_test
-
-#endif

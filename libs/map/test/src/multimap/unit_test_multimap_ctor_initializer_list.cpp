@@ -23,14 +23,6 @@ namespace hamon_multimap_test
 namespace ctor_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -120,7 +112,7 @@ struct MyGreater
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Compare, typename Allocator>
-MULTIMAP_TEST_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& alloc)
 {
 	using Map = hamon::multimap<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
@@ -138,12 +130,10 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& a
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || (HAMON_CXX_STANDARD >= 14)
 	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-#endif
 
 	{
 		Map v
@@ -262,7 +252,6 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& a
 			VERIFY(it == v.rend());
 		}
 	}
-#if !defined(HAMON_USE_STD_MULTIMAP) || (HAMON_CXX_STANDARD >= 14)
 	{
 		Map v
 		{
@@ -303,13 +292,12 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl_1(Compare const& comp, Allocator const& a
 			VERIFY(it == v.rend());
 		}
 	}
-#endif
 
 	return true;
 }
 
 template <typename Key, typename T, typename Compare, typename Allocator>
-MULTIMAP_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& alloc)
 {
 	using Map = hamon::multimap<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
@@ -327,12 +315,10 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& a
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Compare const&, Allocator const&>::value, "");
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || (HAMON_CXX_STANDARD >= 14)
 	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, Allocator const&>::value, "");
-#endif
 
 	{
 		Map v
@@ -451,7 +437,6 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& a
 			VERIFY(it == v.rend());
 		}
 	}
-#if !defined(HAMON_USE_STD_MULTIMAP) || (HAMON_CXX_STANDARD >= 14)
 	{
 		Map v
 		{
@@ -492,13 +477,12 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& a
 			VERIFY(it == v.rend());
 		}
 	}
-#endif
 
 	return true;
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1_2()
+HAMON_CXX20_CONSTEXPR bool test1_2()
 {
 	hamon::allocator<typename hamon::multimap<Key, T>::value_type> alloc;
 	{
@@ -514,7 +498,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1_2()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2_2()
+HAMON_CXX20_CONSTEXPR bool test2_2()
 {
 	MyAllocator<typename hamon::multimap<Key, T>::value_type> alloc{42};
 	{
@@ -530,7 +514,7 @@ MULTIMAP_TEST_CONSTEXPR bool test2_2()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_2<Key, int>());
 	VERIFY(test1_2<Key, char>());
@@ -540,7 +524,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_2<Key, int>());
 	VERIFY(test2_2<Key, char>());
@@ -553,17 +537,14 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultimapTest, CtorInitializerListTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace ctor_initializer_list_test
 

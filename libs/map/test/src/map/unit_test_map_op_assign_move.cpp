@@ -20,14 +20,6 @@ namespace hamon_map_test
 namespace op_assign_move_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator1
 {
@@ -182,7 +174,7 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -260,7 +252,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Compare = hamon::less<>;
 	using Allocator = MyAllocator1<typename hamon::map<Key, T>::value_type>;
@@ -294,16 +286,14 @@ MAP_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using Compare = hamon::less<>;
 	using Allocator = MyAllocator2<typename hamon::map<Key, T>::value_type>;
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 
 	static_assert( hamon::is_move_assignable<Map>::value, "");
-#if !defined(HAMON_USE_STD_MAP)
 	static_assert(!hamon::is_nothrow_move_assignable<Map>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
 
 	Map v1{Allocator{10}};
@@ -330,7 +320,7 @@ MAP_TEST_CONSTEXPR bool test3()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test4()
+HAMON_CXX20_CONSTEXPR bool test4()
 {
 	using Compare = MyLess;
 	using Map = hamon::map<Key, T, Compare>;
@@ -365,15 +355,15 @@ MAP_TEST_CONSTEXPR bool test4()
 
 GTEST_TEST(MapTest, OpAssignMoveTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
 	EXPECT_TRUE((test2<int, int>()));
 	EXPECT_TRUE((test2<int, char>()));
@@ -405,7 +395,6 @@ GTEST_TEST(MapTest, OpAssignMoveTest)
 	EXPECT_TRUE((test4<float, char>()));
 	EXPECT_TRUE((test4<float, float>()));
 
-#if !defined(HAMON_USE_STD_MAP)
 	{
 		using Allocator = MyAllocator1<typename hamon::map<int, S>::value_type>;
 		using Map = hamon::map<int, S, hamon::less<>, Allocator>;
@@ -542,11 +531,7 @@ GTEST_TEST(MapTest, OpAssignMoveTest)
 		EXPECT_EQ(0, S::s_move_ctor_count);
 		EXPECT_EQ(5, S::s_dtor_count);
 	}
-#endif
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace op_assign_move_test
 

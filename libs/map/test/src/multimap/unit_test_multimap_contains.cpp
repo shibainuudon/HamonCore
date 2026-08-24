@@ -14,28 +14,17 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-// P0458R2
-#if !defined(HAMON_USE_STD_MULTIMAP) || (HAMON_CXX_STANDARD >= 20)
-
 namespace hamon_multimap_test
 {
 
 namespace contains_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 // bool contains(const key_type& x) const;
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<Key, T>;
 
@@ -87,7 +76,7 @@ struct S
 };
 
 // template<class K> bool contains(const K& x) const;
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::multimap<S, float, hamon::less<>>;
 
@@ -123,17 +112,17 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultimapTest, ContainsTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 	// https://en.cppreference.com/w/cpp/container/multimap/contains
 	{
@@ -143,11 +132,6 @@ GTEST_TEST(MultimapTest, ContainsTest)
 	}
 }
 
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
-
 }	// namespace contains_test
 
 }	// namespace hamon_multimap_test
-
-#endif

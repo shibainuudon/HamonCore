@@ -25,18 +25,10 @@ namespace hamon_multimap_test
 namespace rbegin_rend_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -176,15 +168,15 @@ MULTIMAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MultimapTest, RBeginREndTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
 
 	// https://en.cppreference.com/w/cpp/container/multimap/rbegin
 	{
@@ -223,9 +215,6 @@ GTEST_TEST(MultimapTest, RBeginREndTest)
 		EXPECT_EQ("{ h, 42 }, { g, 7 }, { f, 6 }, { e, 5 }, { d, 4 }, { c, 3 }, { b, 2 }, { a, 1 }, ", out2.str());
 	}
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace rbegin_rend_test
 

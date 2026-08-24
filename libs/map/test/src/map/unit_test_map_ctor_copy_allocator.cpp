@@ -19,14 +19,6 @@ namespace hamon_map_test
 namespace ctor_copy_allocator_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator1
 {
@@ -188,7 +180,7 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Compare, typename Allocator>
-MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 {
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
@@ -242,7 +234,7 @@ MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1_2()
+HAMON_CXX20_CONSTEXPR bool test1_2()
 {
 	MyLess comp{13};
 	hamon::allocator<typename hamon::map<Key, T>::value_type> alloc;
@@ -252,7 +244,7 @@ MAP_TEST_CONSTEXPR bool test1_2()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test2_2()
+HAMON_CXX20_CONSTEXPR bool test2_2()
 {
 	MyLess comp{14};
 	MyAllocator1<typename hamon::map<Key, T>::value_type> alloc{42};
@@ -262,7 +254,7 @@ MAP_TEST_CONSTEXPR bool test2_2()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test3_2()
+HAMON_CXX20_CONSTEXPR bool test3_2()
 {
 	MyLess comp{15};
 	MyAllocator2<typename hamon::map<Key, T>::value_type> alloc{42};
@@ -272,7 +264,7 @@ MAP_TEST_CONSTEXPR bool test3_2()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_2<Key, int>());
 	VERIFY(test1_2<Key, char>());
@@ -282,7 +274,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_2<Key, int>());
 	VERIFY(test2_2<Key, char>());
@@ -292,7 +284,7 @@ MAP_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	VERIFY(test3_2<Key, int>());
 	VERIFY(test3_2<Key, char>());
@@ -305,9 +297,9 @@ MAP_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(MapTest, CtorCopyAllocatorTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -316,9 +308,6 @@ GTEST_TEST(MapTest, CtorCopyAllocatorTest)
 	EXPECT_TRUE(test3<int>());
 	EXPECT_TRUE(test3<char>());
 	EXPECT_TRUE(test3<float>());
-
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_map_try_emplace) && (__cpp_lib_map_try_emplace >= 201411L))
 
 	using Allocator = MyAllocator1<typename hamon::map<int, S>::value_type>;
 	using Map = hamon::map<int, S, hamon::less<>, Allocator>;
@@ -374,12 +363,7 @@ GTEST_TEST(MapTest, CtorCopyAllocatorTest)
 	EXPECT_EQ(3, S::s_copy_ctor_count);
 	EXPECT_EQ(0, S::s_move_ctor_count);
 	EXPECT_EQ(6, S::s_dtor_count);
-
-#endif
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace ctor_copy_allocator_test
 

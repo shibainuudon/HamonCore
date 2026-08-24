@@ -27,25 +27,12 @@ namespace hamon_multimap_test
 namespace swap_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
 	using value_type = T;
-#if !defined(HAMON_USE_STD_MULTIMAP)
 	using is_always_equal = hamon::false_type;
 	using propagate_on_container_swap = hamon::true_type;
-#else
-	using is_always_equal = std::false_type;
-	using propagate_on_container_swap = std::true_type;
-#endif
 
 	int id;
 
@@ -113,7 +100,7 @@ struct MyLess
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -122,10 +109,8 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 		Map v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_MULTIMAP) && (HAMON_CXX_STANDARD >= 17)
 		static_assert(noexcept(v.swap(v)), "");
 		static_assert(noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Map v1
@@ -191,13 +176,9 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
-#if defined(HAMON_USE_STD_MULTIMAP)
-	using ValueType = std::pair<Key const, T>;
-#else
 	using ValueType = hamon::pair<Key const, T>;
-#endif
 	using Compare = MyLess;
 	using Allocator = MyAllocator<ValueType>;
 	using Map = hamon::multimap<Key, T, Compare, Allocator>;
@@ -206,10 +187,8 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 		Map v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_MULTIMAP)
 		static_assert(!noexcept(v.swap(v)), "");
 		static_assert(!noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Compare c1{10};
@@ -307,15 +286,15 @@ std::string ToString(const hamon::multimap<Key, T, C>& m)
 
 GTEST_TEST(MultimapTest, SwapTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
 	EXPECT_TRUE((test2<int, int>()));
 	EXPECT_TRUE((test2<int, char>()));
@@ -362,9 +341,6 @@ GTEST_TEST(MultimapTest, SwapTest)
 		EXPECT_EQ("beta", iter->second);
 	}
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace swap_test
 

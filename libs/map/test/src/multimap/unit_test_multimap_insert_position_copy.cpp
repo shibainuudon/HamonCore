@@ -21,14 +21,6 @@ namespace hamon_multimap_test
 namespace insert_position_copy_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 struct S1
 {
 	int x;
@@ -98,7 +90,7 @@ struct ThrowOnCopy
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -240,7 +232,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::multimap<int, S1>;
 	using ValueType = typename Map::value_type;
@@ -331,17 +323,17 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultimapTest, InsertPositionCopyTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 	S2::s_ctor_count = 0;
 	S2::s_copy_ctor_count = 0;
@@ -410,11 +402,6 @@ GTEST_TEST(MultimapTest, InsertPositionCopyTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-#if defined(HAMON_USE_STD_MULTIMAP)
-		namespace ns = std;
-#else
-		namespace ns = hamon;
-#endif
 		using Map = hamon::multimap<int, ThrowOnCopy>;
 		using ValueType = typename Map::value_type;
 
@@ -427,9 +414,9 @@ GTEST_TEST(MultimapTest, InsertPositionCopyTest)
 		}
 
 		v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(10));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 
 		{
@@ -440,9 +427,6 @@ GTEST_TEST(MultimapTest, InsertPositionCopyTest)
 	}
 #endif
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace insert_position_copy_test
 

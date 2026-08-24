@@ -17,14 +17,6 @@ namespace hamon_map_test
 namespace value_comp_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 struct MyLess
 {
 	int id;
@@ -73,7 +65,7 @@ struct MyGreater
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Compare>
-MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp)
 {
 	using Map = hamon::map<Key, T, Compare>;
 	using ValueCompare = typename Map::value_compare;
@@ -99,7 +91,7 @@ MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp)
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	{
 		MyLess comp{13};
@@ -130,9 +122,9 @@ struct ModCmp
 
 GTEST_TEST(MapTest, ValueCompTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/map/value_comp
 	{
@@ -162,9 +154,6 @@ GTEST_TEST(MapTest, ValueCompTest)
 		EXPECT_TRUE(it == cont.end());
 	}
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace value_comp_test
 

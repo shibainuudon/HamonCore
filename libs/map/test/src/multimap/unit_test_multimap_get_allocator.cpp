@@ -19,14 +19,6 @@ namespace hamon_multimap_test
 namespace get_allocator_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -65,7 +57,7 @@ struct MyAllocator
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Allocator>
-MULTIMAP_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Allocator const& alloc)
 {
 	using Set = hamon::multimap<Key, T, hamon::less<>, Allocator>;
 
@@ -86,7 +78,7 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1_2()
+HAMON_CXX20_CONSTEXPR bool test1_2()
 {
 	using ValueType = typename hamon::multimap<Key, T>::value_type;
 	hamon::allocator<ValueType> alloc;
@@ -96,7 +88,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1_2()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2_2()
+HAMON_CXX20_CONSTEXPR bool test2_2()
 {
 	using ValueType = typename hamon::multimap<Key, T>::value_type;
 	MyAllocator<ValueType> alloc{42};
@@ -106,7 +98,7 @@ MULTIMAP_TEST_CONSTEXPR bool test2_2()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_2<Key, int>());
 	VERIFY(test1_2<Key, char>());
@@ -116,7 +108,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_2<Key, int>());
 	VERIFY(test2_2<Key, char>());
@@ -129,17 +121,14 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultimapTest, GetAllocatorTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace get_allocator_test
 

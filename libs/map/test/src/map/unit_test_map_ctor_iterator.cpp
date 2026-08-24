@@ -26,14 +26,6 @@ namespace hamon_map_test
 namespace ctor_iterator_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -105,7 +97,7 @@ struct MyLess
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, template <typename> class IteratorWrapper, typename Compare, typename Allocator>
-MAP_TEST_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
 {
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
@@ -124,12 +116,10 @@ MAP_TEST_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, Compare const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, Compare const&, Allocator const&>::value, "");
 
-#if !defined(HAMON_USE_STD_MAP) || (HAMON_CXX_STANDARD >= 14)
 	static_assert( hamon::is_constructible<Map, Iterator, Iterator, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, Allocator const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, Allocator const&>::value, "");
-#endif
 
 	ValueType a[] =
 	{
@@ -210,7 +200,6 @@ MAP_TEST_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
 			VERIFY(it == v.rend());
 		}
 	}
-#if !defined(HAMON_USE_STD_MAP) || (HAMON_CXX_STANDARD >= 14)
 	{
 		Map v(Iterator{a}, Iterator{a + 6}, alloc);
 		VERIFY(!v.empty());
@@ -234,7 +223,6 @@ MAP_TEST_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
 			VERIFY(it == v.rend());
 		}
 	}
-#endif
 	{
 		Map v(Iterator{a}, Iterator{a});
 		VERIFY(v.empty());
@@ -262,7 +250,6 @@ MAP_TEST_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
 		VERIFY(v.key_comp() == comp);
 		VERIFY(v.get_allocator() == alloc);
 	}
-#if !defined(HAMON_USE_STD_MAP) || (HAMON_CXX_STANDARD >= 14)
 	{
 		Map v(Iterator{a}, Iterator{a}, alloc);
 		VERIFY(v.empty());
@@ -272,13 +259,12 @@ MAP_TEST_CONSTEXPR bool test_impl2(Compare const& comp, Allocator const& alloc)
 		VERIFY(v.key_comp() == Compare{});
 		VERIFY(v.get_allocator() == alloc);
 	}
-#endif
 
 	return true;
 }
 
 template <typename Key, typename T, typename Compare, typename Allocator>
-MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 {
 	return
 		test_impl2<Key, T, cpp17_input_iterator_wrapper>(comp, alloc) &&
@@ -290,7 +276,7 @@ MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1_2()
+HAMON_CXX20_CONSTEXPR bool test1_2()
 {
 	hamon::allocator<typename hamon::map<Key, T>::value_type> alloc;
 	MyLess comp{13};
@@ -300,7 +286,7 @@ MAP_TEST_CONSTEXPR bool test1_2()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test2_2()
+HAMON_CXX20_CONSTEXPR bool test2_2()
 {
 	MyAllocator<typename hamon::map<Key, T>::value_type> alloc{42};
 	MyLess comp{14};
@@ -310,7 +296,7 @@ MAP_TEST_CONSTEXPR bool test2_2()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_2<Key, int>());
 	VERIFY(test1_2<Key, char>());
@@ -320,7 +306,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_2<Key, int>());
 	VERIFY(test2_2<Key, char>());
@@ -333,17 +319,14 @@ MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MapTest, CtorIteratorTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace ctor_iterator_test
 

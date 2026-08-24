@@ -15,22 +15,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	defined(__cpp_lib_generic_associative_lookup) && (__cpp_lib_generic_associative_lookup >= 201304L)
-
 namespace hamon_map_test
 {
 
 namespace upper_bound_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -55,7 +44,7 @@ struct S
 };
 
 // template<class K> iterator upper_bound(const K& x);
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<S, float, hamon::less<>>;
 	using Iterator = typename Map::iterator;
@@ -95,7 +84,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 // template<class K> const_iterator upper_bound(const K& x) const;
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::map<S, float, hamon::less<>>;
 	using ConstIterator = typename Map::const_iterator;
@@ -132,15 +121,10 @@ MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MapTest, UpperBoundHeterogeneousTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace upper_bound_heterogeneous_test
 
 }	// namespace hamon_map_test
-
-#endif

@@ -79,9 +79,6 @@ GTEST_TEST(MapTest, InsertTest)
 		EXPECT_TRUE(hamon::size(heights) != n);
 	}
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_node_extract) && (__cpp_lib_node_extract >= 201606L))
-
 	auto node_hinata = heights.extract(it_hinata);
 	hamon::map<std::string, float> heights2;
 
@@ -109,8 +106,6 @@ GTEST_TEST(MapTest, InsertTest)
 
 	// Print resulting map
 	EXPECT_EQ("[Azumane] = 184.7, [Hinata] = 162.8, [Kageyama] = 180.6, [Kozume] = 169.2, [Kuroo] = 187.7, [Tsukishima] = 188.3, ", ToString(heights2));
-
-#endif
 }
 
 }	// namespace insert_test

@@ -16,22 +16,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_map_try_emplace) && (__cpp_lib_map_try_emplace >= 201411L))
-
 namespace hamon_map_test
 {
 
 namespace try_emplace_hint_test
 {
-
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
 
 struct S1
 {
@@ -92,7 +81,7 @@ struct MayThrow
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<Key, T>;
 	using ValueType = typename Map::value_type;
@@ -163,7 +152,7 @@ MAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	hamon::map<int, S1> v;
 
@@ -245,17 +234,17 @@ MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MapTest, TryEmplaceHintTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 	S2::s_ctor_count = 0;
 	S2::s_dtor_count = 0;
@@ -320,11 +309,6 @@ GTEST_TEST(MapTest, TryEmplaceHintTest)
 #endif
 }
 
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
-
 }	// namespace try_emplace_hint_test
 
 }	// namespace hamon_map_test
-
-#endif

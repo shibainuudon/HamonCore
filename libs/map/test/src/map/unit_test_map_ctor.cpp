@@ -111,8 +111,7 @@ GTEST_TEST(MapTest, CtorTest)
 
 	using PS = std::pair<const std::string, int>;
 	const auto rg = {PS {"one", 1}, {"one", 101}, {"two", 2}, {"three", 3}};
-#if !defined(HAMON_USE_STD_MAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
+#if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 	hamon::map<std::string, int> nums(hamon::from_range, rg); // overload (12)
 #else
 	hamon::map<std::string, int> nums(rg.begin(), rg.end()); // fallback to (4)

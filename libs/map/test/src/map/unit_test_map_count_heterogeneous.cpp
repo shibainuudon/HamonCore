@@ -13,22 +13,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	defined(__cpp_lib_generic_associative_lookup) && (__cpp_lib_generic_associative_lookup >= 201304L)
-
 namespace hamon_map_test
 {
 
 namespace count_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -53,7 +42,7 @@ struct S
 };
 
 // template<class K> size_type count(const K& x) const;
-MAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::map<S, float, hamon::less<>>;
 	using SizeType = typename Map::size_type;
@@ -90,14 +79,9 @@ MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MapTest, CountHeterogeneousTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace count_heterogeneous_test
 
 }	// namespace hamon_map_test
-
-#endif

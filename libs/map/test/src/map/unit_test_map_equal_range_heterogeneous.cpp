@@ -17,22 +17,11 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_MAP) || \
-	defined(__cpp_lib_generic_associative_lookup) && (__cpp_lib_generic_associative_lookup >= 201304L)
-
 namespace hamon_map_test
 {
 
 namespace equal_range_heterogeneous_test
 {
-
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -57,15 +46,11 @@ struct S
 };
 
 // template<class K> pair<iterator, iterator> equal_range(const K& x);
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<S, float, hamon::less<>>;
 	using Iterator = typename Map::iterator;
-#if defined(HAMON_USE_STD_MAP)
-	using Result = std::pair<Iterator, Iterator>;
-#else
 	using Result = hamon::pair<Iterator, Iterator>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().equal_range(hamon::declval<int const&>())), Result>::value, "");
 	static_assert(!noexcept(hamon::declval<Map&>().equal_range(hamon::declval<int const&>())), "");
@@ -123,15 +108,11 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 // template<class K> pair<const_iterator, const_iterator> equal_range(const K& x) const;
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::map<S, float, hamon::less<>>;
 	using ConstIterator = typename Map::const_iterator;
-#if defined(HAMON_USE_STD_MAP)
-	using Result = std::pair<ConstIterator, ConstIterator>;
-#else
 	using Result = hamon::pair<ConstIterator, ConstIterator>;
-#endif
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().equal_range(hamon::declval<int const&>())), Result>::value, "");
 	static_assert(!noexcept(hamon::declval<Map const&>().equal_range(hamon::declval<int const&>())), "");
@@ -165,15 +146,10 @@ MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MapTest, EqualRangeHeterogeneousTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace equal_range_heterogeneous_test
 
 }	// namespace hamon_map_test
-
-#endif

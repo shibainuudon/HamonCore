@@ -21,19 +21,11 @@ namespace hamon_multimap_test
 namespace lower_bound_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 // iterator lower_bound(const key_type& x);
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<Key, T>;
 	using Iterator = typename Map::iterator;
@@ -95,7 +87,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 
 // const_iterator lower_bound(const key_type& x) const;
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::multimap<Key, T>;
 	using ConstIterator = typename Map::const_iterator;
@@ -131,29 +123,26 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MultimapTest, LowerBoundTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace lower_bound_test
 

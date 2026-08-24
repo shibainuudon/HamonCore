@@ -17,14 +17,6 @@ namespace hamon_multimap_test
 namespace key_comp_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 struct MyLess
 {
 	int id;
@@ -73,7 +65,7 @@ struct MyGreater
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Compare>
-MULTIMAP_TEST_CONSTEXPR bool test_impl(Compare const& comp)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp)
 {
 	using Map = hamon::multimap<Key, T, Compare>;
 
@@ -94,7 +86,7 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl(Compare const& comp)
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	{
 		MyLess comp{13};
@@ -125,9 +117,9 @@ struct ModCmp
 
 GTEST_TEST(MultimapTest, KeyCompTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/multimap/key_comp
 	{
@@ -155,9 +147,6 @@ GTEST_TEST(MultimapTest, KeyCompTest)
 		EXPECT_TRUE(it == cont.end());
 	}
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace key_comp_test
 

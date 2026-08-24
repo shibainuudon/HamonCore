@@ -49,18 +49,10 @@ namespace hamon_multimap_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, template <typename> class IteratorWrapper>
-MULTIMAP_TEST_CONSTEXPR bool test1_impl()
+HAMON_CXX20_CONSTEXPR bool test1_impl()
 {
 	using DefaultValueType = typename hamon::multimap<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
@@ -103,7 +95,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1_impl()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_impl<Key, T, cpp17_input_iterator_wrapper>());
 //	VERIFY(test1_impl<Key, T, input_iterator_wrapper>());
@@ -114,11 +106,8 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-
 template <typename Key, typename T, template <typename> class RangeWrapper>
-MULTIMAP_TEST_CONSTEXPR bool test2_impl()
+HAMON_CXX20_CONSTEXPR bool test2_impl()
 {
 	using DefaultValueType = typename hamon::multimap<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
@@ -165,7 +154,7 @@ MULTIMAP_TEST_CONSTEXPR bool test2_impl()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_impl<Key, T, test_input_range>());
 	VERIFY(test2_impl<Key, T, test_forward_range>());
@@ -180,10 +169,8 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 	return true;
 }
 
-#endif
-
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	using DefaultValueType = typename hamon::multimap<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
@@ -191,11 +178,7 @@ MULTIMAP_TEST_CONSTEXPR bool test3()
 
 	using Compare = hamon::less<>;
 	using Allocator = hamon::allocator<DefaultValueType>;
-#if defined(HAMON_USE_STD_MULTIMAP)
-	using ValueType = std::pair<Key, T>;
-#else
 	using ValueType = hamon::pair<Key, T>;
-#endif
 
 	{
 		hamon::multimap v({
@@ -249,42 +232,36 @@ MULTIMAP_TEST_CONSTEXPR bool test3()
 
 GTEST_TEST(MultimapTest, CtadTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
-#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
 
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<int, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<char, float>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, int>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, char>()));
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float, float>()));
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace ctad_test
 

@@ -20,18 +20,10 @@ namespace hamon_map_test
 namespace at_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<Key, T>;
 	using MappedType = typename Map::mapped_type;
@@ -69,7 +61,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::map<Key, T>;
 	using MappedType = typename Map::mapped_type;
@@ -98,25 +90,25 @@ MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MapTest, AtTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float, float>()));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 HAMON_WARNING_PUSH()
@@ -175,9 +167,6 @@ HAMON_WARNING_POP()
 #endif
 	}
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace at_test
 

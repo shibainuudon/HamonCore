@@ -24,14 +24,6 @@ namespace hamon_multimap_test
 namespace insert_heterogeneous_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 struct S
 {
 	static int s_ctor_count;
@@ -77,7 +69,7 @@ struct MayThrow
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::multimap<int, double>;
 	using ValueType = typename Map::value_type;
@@ -92,7 +84,6 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	static_assert(!noexcept(v.insert(hamon::declval<std::pair<char, double>>())), "");
 	static_assert(!noexcept(v.insert(hamon::declval<std::pair<char, float>>())), "");
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || (defined(__cpp_lib_tuple_like) && (__cpp_lib_tuple_like >= 202207L))
 	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<std::tuple<int, float>>())), Iterator>::value, "");
 	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<std::tuple<char, double>>())), Iterator>::value, "");
 	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<std::tuple<char, float>>())), Iterator>::value, "");
@@ -105,9 +96,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	static_assert(!noexcept(v.insert(hamon::declval<std::array<int, 2>>())), "");
 	static_assert(!noexcept(v.insert(hamon::declval<std::array<double, 2>>())), "");
 	static_assert(!noexcept(v.insert(hamon::declval<std::array<char, 2>>())), "");
-#endif
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
 	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<hamon::pair<int, float>>())), Iterator>::value, "");
 	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<hamon::pair<char, double>>())), Iterator>::value, "");
 	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<hamon::pair<char, float>>())), Iterator>::value, "");
@@ -126,7 +115,6 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 	static_assert(!noexcept(v.insert(hamon::declval<hamon::array<int, 2>>())), "");
 	static_assert(!noexcept(v.insert(hamon::declval<hamon::array<double, 2>>())), "");
 	static_assert(!noexcept(v.insert(hamon::declval<hamon::array<char, 2>>())), "");
-#endif
 
 	// from std::pair
 	{
@@ -172,7 +160,6 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(it == v.end());
 	}
 
-#if !defined(HAMON_USE_STD_MULTIMAP) || (defined(__cpp_lib_tuple_like) && (__cpp_lib_tuple_like >= 202207L))
 	// from std::tuple
 	{
 		auto r = v.insert(std::make_tuple(char{6}, 4.5f));
@@ -202,9 +189,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(*it++ == ValueType{6, 4.5});
 		VERIFY(it == v.end());
 	}
-#endif
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
 	// from hamon::pair
 	{
 		auto r = v.insert(hamon::make_pair(4, 6.5f));
@@ -256,7 +241,6 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 		VERIFY(*it++ == ValueType{7, 7.5});
 		VERIFY(it == v.end());
 	}
-#endif
 
 	return true;
 }
@@ -265,7 +249,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 
 GTEST_TEST(MultimapTest, InsertHeterogeneousTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
 
 	S::s_ctor_count = 0;
 	S::s_dtor_count = 0;
@@ -318,9 +302,6 @@ GTEST_TEST(MultimapTest, InsertHeterogeneousTest)
 	}
 #endif
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace insert_heterogeneous_test
 

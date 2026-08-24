@@ -20,14 +20,6 @@ namespace hamon_multimap_test
 namespace ctor_move_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator1
 {
@@ -171,15 +163,13 @@ int S::s_dtor_count = 0;
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Compare, typename Allocator>
-MULTIMAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 {
 	using Map = hamon::multimap<Key, T, Compare, Allocator>;
 	using ValueType = typename Map::value_type;
 
 	static_assert( hamon::is_move_constructible<Map>::value, "");
-#if !defined(HAMON_USE_STD_MULTIMAP)
 	static_assert( hamon::is_nothrow_move_constructible<Map>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_move_constructible<Map>::value, "");
 	static_assert(!hamon::is_trivially_move_constructible<Map>::value, "");
 
@@ -231,7 +221,7 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& all
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test1_2()
+HAMON_CXX20_CONSTEXPR bool test1_2()
 {
 	MyLess comp{13};
 	hamon::allocator<typename hamon::multimap<Key, T>::value_type> alloc;
@@ -241,7 +231,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1_2()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test2_2()
+HAMON_CXX20_CONSTEXPR bool test2_2()
 {
 	MyLess comp{14};
 	MyAllocator1<typename hamon::multimap<Key, T>::value_type> alloc{42};
@@ -251,7 +241,7 @@ MULTIMAP_TEST_CONSTEXPR bool test2_2()
 }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test3_2()
+HAMON_CXX20_CONSTEXPR bool test3_2()
 {
 	MyLess comp{15};
 	MyAllocator2<typename hamon::multimap<Key, T>::value_type> alloc{42};
@@ -261,7 +251,7 @@ MULTIMAP_TEST_CONSTEXPR bool test3_2()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_2<Key, int>());
 	VERIFY(test1_2<Key, char>());
@@ -271,7 +261,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_2<Key, int>());
 	VERIFY(test2_2<Key, char>());
@@ -281,7 +271,7 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 }
 
 template <typename Key>
-MULTIMAP_TEST_CONSTEXPR bool test3()
+HAMON_CXX20_CONSTEXPR bool test3()
 {
 	VERIFY(test3_2<Key, int>());
 	VERIFY(test3_2<Key, char>());
@@ -320,9 +310,9 @@ bool test4()
 
 GTEST_TEST(MultimapTest, CtorMoveTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -363,9 +353,6 @@ GTEST_TEST(MultimapTest, CtorMoveTest)
 	EXPECT_EQ(0, S::s_move_ctor_count);
 	EXPECT_EQ(4, S::s_dtor_count);
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace ctor_move_test
 

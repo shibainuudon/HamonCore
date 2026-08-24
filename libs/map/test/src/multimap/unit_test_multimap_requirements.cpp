@@ -18,11 +18,7 @@ namespace requirements_test
 template <typename Key, typename T>
 void test()
 {
-#if defined(HAMON_USE_STD_MAP)
-	using Pair = std::pair<const Key, T>;
-#else
 	using Pair = hamon::pair<const Key, T>;
-#endif
 
 	// [multimap.overview]/2
 	hamon::detail::container_requirements<hamon::multimap<Key, T>, Pair>();

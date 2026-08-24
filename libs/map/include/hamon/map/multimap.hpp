@@ -8,10 +8,6 @@
 #define HAMON_MAP_MULTIMAP_HPP
 
 #include <hamon/map/multimap_fwd.hpp>
-#include <hamon/map/config.hpp>
-
-#if !defined(HAMON_USE_STD_MULTIMAP)
-
 #include <hamon/map/map_fwd.hpp>
 #include <hamon/map/detail/heterogeneous_compare.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
@@ -1030,8 +1026,29 @@ swap(multimap<Key, T, Compare, Allocator>& x, multimap<Key, T, Compare, Allocato
 	x.swap(y);
 }
 
-}	// namespace hamon
+// 23.4.4.4 Erasure[multimap.erasure]
 
-#endif
+template <typename Key, typename T, typename Compare, typename Alloc, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::multimap<Key, T, Compare, Alloc>::size_type
+erase_if(hamon::multimap<Key, T, Compare, Alloc>& c, Predicate pred)
+{
+	// [multimap.erasure]/1
+	auto const sz = c.size();
+	for (auto i = c.begin(), last = c.end(); i != last; )
+	{
+		if (pred(*i))
+		{
+			i = c.erase(i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return sz - c.size();
+}
+
+}	// namespace hamon
 
 #endif // HAMON_MAP_MULTIMAP_HPP

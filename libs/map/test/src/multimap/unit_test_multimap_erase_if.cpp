@@ -8,7 +8,6 @@
  *	erase_if(multimap<Key, T, Compare, Allocator>& c, Predicate pred);
  */
 
-#include <hamon/map/erase_if.hpp>
 #include <hamon/map/multimap.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/type_traits.hpp>
@@ -24,14 +23,6 @@ namespace hamon_multimap_test
 namespace erase_if_test
 {
 
-#if !defined(HAMON_USE_STD_MULTIMAP)
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MULTIMAP_TEST_CONSTEXPR              /**/
-#endif
-
 struct is_key_1
 {
 	template <typename T>
@@ -43,7 +34,7 @@ struct is_key_1
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-MULTIMAP_TEST_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	using Map = hamon::multimap<int, char>;
 	using SizeType = typename Map::size_type;
@@ -86,7 +77,7 @@ std::string ToString(const hamon::multimap<Key, T, C>& m)
 
 GTEST_TEST(MultimapTest, EraseIfTest)
 {
-	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 
 	// https://en.cppreference.com/w/cpp/container/multimap/erase_if
 	{
@@ -108,9 +99,6 @@ GTEST_TEST(MultimapTest, EraseIfTest)
 		EXPECT_EQ(5u, count);
 	}
 }
-
-#undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MULTIMAP_TEST_CONSTEXPR
 
 }	// namespace erase_if_test
 

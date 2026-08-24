@@ -19,14 +19,6 @@ namespace hamon_map_test
 namespace ctor_comp_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 template <typename T>
 struct MyAllocator
 {
@@ -95,22 +87,18 @@ struct MyLess
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T, typename Compare, typename Allocator>
-MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 {
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 
 	static_assert( hamon::is_constructible<Map, Compare const&>::value, "");
-#if !defined(HAMON_USE_STD_MAP)
 	static_assert(!hamon::is_nothrow_constructible<Map, Compare const&>::value, "");
-#endif
 	static_assert(!hamon::is_implicitly_constructible<Map, Compare const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Compare const&>::value, "");
 
 	static_assert( hamon::is_constructible<Map, Compare const&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_MAP)
 	static_assert(!hamon::is_nothrow_constructible<Map, Compare const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, Compare const&, Allocator const&>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<Map, Compare const&, Allocator const&>::value, "");
 
 	{
@@ -172,7 +160,7 @@ MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1_2()
+HAMON_CXX20_CONSTEXPR bool test1_2()
 {
 	MyLess comp{13};
 	hamon::allocator<typename hamon::map<Key, T>::value_type> alloc;
@@ -182,7 +170,7 @@ MAP_TEST_CONSTEXPR bool test1_2()
 }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test2_2()
+HAMON_CXX20_CONSTEXPR bool test2_2()
 {
 	MyLess comp{14};
 	MyAllocator<typename hamon::map<Key, T>::value_type> alloc{42};
@@ -192,7 +180,7 @@ MAP_TEST_CONSTEXPR bool test2_2()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	VERIFY(test1_2<Key, int>());
 	VERIFY(test1_2<Key, char>());
@@ -202,7 +190,7 @@ MAP_TEST_CONSTEXPR bool test1()
 }
 
 template <typename Key>
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
 	VERIFY(test2_2<Key, int>());
 	VERIFY(test2_2<Key, char>());
@@ -215,17 +203,14 @@ MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(MapTest, CtorCompTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace ctor_comp_test
 

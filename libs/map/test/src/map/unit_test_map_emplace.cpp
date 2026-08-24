@@ -22,14 +22,6 @@ namespace hamon_map_test
 namespace emplace_test
 {
 
-#if !defined(HAMON_USE_STD_MAP)
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
-#else
-#define MAP_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#define MAP_TEST_CONSTEXPR              /**/
-#endif
-
 struct S1
 {
 	int x;
@@ -89,16 +81,12 @@ struct MayThrow
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using Map = hamon::map<Key, T>;
 	using ValueType = typename Map::value_type;
 	using Iterator = typename Map::iterator;
-#if defined(HAMON_USE_STD_MAP)
-	using Result = std::pair<Iterator, bool>;
-#else
 	using Result = hamon::pair<Iterator, bool>;
-#endif
 
 	Map v;
 
@@ -169,21 +157,15 @@ MAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MAP_TEST_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test2()
 {
-#if defined(HAMON_USE_STD_MAP)
-	namespace ns = std;
-#else
-	namespace ns = hamon;
-#endif
-
 	hamon::map<int, S1> v;
 
 	{
 		auto r = v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(10, 20));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(10, 20));
 		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == true);
 
@@ -197,9 +179,9 @@ MAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(3),
-			ns::forward_as_tuple(30, 40));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(3),
+			hamon::forward_as_tuple(30, 40));
 		VERIFY(r.first  == hamon::next(v.begin(), 1));
 		VERIFY(r.second == true);
 
@@ -217,9 +199,9 @@ MAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(50, 60));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(50, 60));
 		VERIFY(r.first  == hamon::next(v.begin(), 1));
 		VERIFY(r.second == true);
 
@@ -241,9 +223,9 @@ MAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(70, 80));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(70, 80));
 		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == false);
 
@@ -282,23 +264,17 @@ std::string ToString(const hamon::map<Key, T, C>& m)
 
 GTEST_TEST(MapTest, EmplaceTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
-
-#if defined(HAMON_USE_STD_MAP)
-	namespace ns = std;
-#else
-	namespace ns = hamon;
-#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 	S2::s_ctor_count = 0;
 	S2::s_dtor_count = 0;
@@ -313,25 +289,25 @@ GTEST_TEST(MapTest, EmplaceTest)
 		// 実際に挿入されない場合でもコンストラクタが実行される
 
 		v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(0),
-			ns::forward_as_tuple(10));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(0),
+			hamon::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 		EXPECT_EQ(1, S2::s_ctor_count);
 		EXPECT_EQ(0, S2::s_dtor_count);
 
 		v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(10));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(10));
 		EXPECT_EQ(2u, v.size());
 		EXPECT_EQ(2, S2::s_ctor_count);
 		EXPECT_EQ(0, S2::s_dtor_count);
 
 		v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(0),
-			ns::forward_as_tuple(20));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(0),
+			hamon::forward_as_tuple(20));
 		EXPECT_EQ(2u, v.size());
 		EXPECT_EQ(3, S2::s_ctor_count);
 		EXPECT_EQ(1, S2::s_dtor_count);
@@ -357,42 +333,42 @@ GTEST_TEST(MapTest, EmplaceTest)
 		EXPECT_TRUE(v.empty());
 
 		EXPECT_THROW(v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(-1)),
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(-1)),
 			MayThrow::Exception);
 		EXPECT_EQ(0u, v.size());
 
 		v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(1),
-			ns::forward_as_tuple(10));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(1),
+			hamon::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 
 		v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(11));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(11));
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_THROW(v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(3),
-			ns::forward_as_tuple(-10)),
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(3),
+			hamon::forward_as_tuple(-10)),
 			MayThrow::Exception);
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_THROW(v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(-10)),
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(-10)),
 			MayThrow::Exception);
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_NO_THROW(v.emplace(
-			ns::piecewise_construct,
-			ns::forward_as_tuple(2),
-			ns::forward_as_tuple(12)));
+			hamon::piecewise_construct,
+			hamon::forward_as_tuple(2),
+			hamon::forward_as_tuple(12)));
 		EXPECT_EQ(2u, v.size());
 
 #if 0	// 要素が挿入されないときに一時オブジェクトが作成されるかどうかは実装依存
@@ -413,10 +389,10 @@ GTEST_TEST(MapTest, EmplaceTest)
 		hamon::map<std::string, std::string> m;
 
 		// uses pair's move constructor
-		m.emplace(ns::make_pair(std::string("a"), std::string("a")));
+		m.emplace(hamon::make_pair(std::string("a"), std::string("a")));
 
 		// uses pair's converting move constructor
-		m.emplace(ns::make_pair("b", "abcd"));
+		m.emplace(hamon::make_pair("b", "abcd"));
 
 		// uses pair's template constructor
 		m.emplace("d", "ddd");
@@ -425,17 +401,14 @@ GTEST_TEST(MapTest, EmplaceTest)
 		m.emplace("d", "DDD");
 
 		// uses pair's piecewise constructor
-		m.emplace(ns::piecewise_construct,
-				  ns::forward_as_tuple("c"),
-				  ns::forward_as_tuple(10u, 'c'));
+		m.emplace(hamon::piecewise_construct,
+				  hamon::forward_as_tuple("c"),
+				  hamon::forward_as_tuple(10u, 'c'));
 		// an alternative is: m.try_emplace("c", 10, 'c');
 
 		EXPECT_EQ("[a] = a, [b] = abcd, [c] = cccccccccc, [d] = ddd, ", ToString(m));
 	}
 }
-
-#undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
-#undef MAP_TEST_CONSTEXPR
 
 }	// namespace emplace_test
 

@@ -68,8 +68,7 @@ GTEST_TEST(MultimapTest, CtorTest)
 	// Construction from a range
 	using PS = std::pair<int, std::string>;
 	const auto rg = {PS {3, "Earth"}, {2, "Venus"}, {1, "Mercury"}, {3, "Moon"}};
-#if !defined(HAMON_USE_STD_MULTIMAP) || \
-	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
+#if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 	hamon::multimap<int, std::string> m2(hamon::from_range, rg); // overload (12)
 #else
 	hamon::multimap<int, std::string> m2(rg.begin(), rg.end()); // fallback to (4)
