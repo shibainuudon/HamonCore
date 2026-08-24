@@ -19,8 +19,7 @@ namespace hamon_list_test
 namespace erase_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else
@@ -42,10 +41,8 @@ LIST_TEST_CONSTEXPR bool test()
 		ConstIterator it{};
 		static_assert(hamon::is_same<decltype(v.erase(it)), Iterator>::value, "");
 		static_assert(hamon::is_same<decltype(v.erase(it, it)), Iterator>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.erase(it)), "");
 		static_assert( noexcept(v.erase(it, it)), "");
-#endif
 	}
 	{
 		List v{1,2,3,4,5};

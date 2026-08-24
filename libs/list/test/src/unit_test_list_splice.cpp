@@ -23,8 +23,7 @@ namespace hamon_list_test
 namespace splice_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else
@@ -45,9 +44,7 @@ LIST_TEST_CONSTEXPR bool test1()
 		ConstIterator pos;
 		List x;
 		static_assert(hamon::is_same<decltype(v.splice(pos, x)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.splice(pos, x)), "");
-#endif
 	}
 	{
 		List v1;
@@ -172,9 +169,7 @@ LIST_TEST_CONSTEXPR bool test2()
 		ConstIterator pos;
 		List x;
 		static_assert(hamon::is_same<decltype(v.splice(pos, hamon::move(x))), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.splice(pos, hamon::move(x))), "");
-#endif
 	}
 	{
 		List v1{1,2,3,4,5};
@@ -287,9 +282,7 @@ LIST_TEST_CONSTEXPR bool test3()
 		List x;
 		ConstIterator i;
 		static_assert(hamon::is_same<decltype(v.splice(pos, x, i)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.splice(pos, x, i)), "");
-#endif
 	}
 	{
 		List v1{1,2,3,4,5};
@@ -512,9 +505,7 @@ LIST_TEST_CONSTEXPR bool test4()
 		List x;
 		ConstIterator i;
 		static_assert(hamon::is_same<decltype(v.splice(pos, hamon::move(x), i)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.splice(pos, hamon::move(x), i)), "");
-#endif
 	}
 	{
 		List v1{1,2,3,4,5};
@@ -617,9 +608,7 @@ LIST_TEST_CONSTEXPR bool test5()
 		ConstIterator first;
 		ConstIterator last;
 		static_assert(hamon::is_same<decltype(v.splice(pos, x, first, last)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.splice(pos, x, first, last)), "");
-#endif
 	}
 	{
 		List v1{1,2,3,4,5};
@@ -914,9 +903,7 @@ LIST_TEST_CONSTEXPR bool test6()
 		ConstIterator first;
 		ConstIterator last;
 		static_assert(hamon::is_same<decltype(v.splice(pos, hamon::move(x), first, last)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.splice(pos, hamon::move(x), first, last)), "");
-#endif
 	}
 	{
 		List v1{1,2,3,4,5};

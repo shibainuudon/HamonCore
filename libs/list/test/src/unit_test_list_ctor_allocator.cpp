@@ -18,8 +18,7 @@ namespace hamon_list_test
 namespace ctor_allocator_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else
@@ -87,9 +86,7 @@ LIST_TEST_CONSTEXPR bool test1(Allocator const& alloc)
 		using List = hamon::list<T, Allocator>;
 
 		static_assert( hamon::is_constructible<List, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert(!hamon::is_nothrow_constructible<List, Allocator const&>::value, "");
-#endif
 		static_assert(!hamon::is_implicitly_constructible<List, Allocator const&>::value, "");
 		static_assert(!hamon::is_trivially_constructible<List, Allocator const&>::value, "");
 

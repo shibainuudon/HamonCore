@@ -21,8 +21,7 @@ namespace hamon_list_test
 namespace merge_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else
@@ -41,9 +40,7 @@ LIST_TEST_CONSTEXPR bool test1()
 		List v;
 		List x;
 		static_assert(hamon::is_same<decltype(v.merge(x)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert(!noexcept(v.merge(x)), "");
-#endif
 	}
 
 	{
@@ -172,9 +169,7 @@ LIST_TEST_CONSTEXPR bool test2()
 		List v;
 		List x;
 		static_assert(hamon::is_same<decltype(v.merge(hamon::move(x))), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert(!noexcept(v.merge(hamon::move(x))), "");
-#endif
 	}
 
 	{
@@ -309,9 +304,7 @@ LIST_TEST_CONSTEXPR bool test3()
 		List x;
 		auto comp = [](T a, T b){ return a < b; };
 		static_assert(hamon::is_same<decltype(v.merge(x, comp)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert(!noexcept(v.merge(x, comp)), "");
-#endif
 	}
 
 	{
@@ -384,9 +377,7 @@ LIST_TEST_CONSTEXPR bool test4()
 		List x;
 		auto comp = [](T a, T b){ return a < b; };
 		static_assert(hamon::is_same<decltype(v.merge(hamon::move(x), comp)), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert(!noexcept(v.merge(hamon::move(x), comp)), "");
-#endif
 	}
 
 	{

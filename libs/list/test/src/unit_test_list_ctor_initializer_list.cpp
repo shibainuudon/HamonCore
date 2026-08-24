@@ -18,8 +18,7 @@ namespace hamon_list_test
 namespace ctor_initializer_list_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else

@@ -18,8 +18,7 @@ namespace hamon_list_test
 namespace back_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else
@@ -52,10 +51,8 @@ LIST_TEST_CONSTEXPR bool test()
 		List const cv;
 		static_assert(hamon::is_same<decltype(v.back()), Reference>::value, "");
 		static_assert(hamon::is_same<decltype(cv.back()), ConstReference>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.back()), "");
 		static_assert( noexcept(cv.back()), "");
-#endif
 	}
 	{
 		List v{T{1},T{2},T{3}};

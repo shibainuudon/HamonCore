@@ -8,10 +8,6 @@
 #define HAMON_LIST_LIST_HPP
 
 #include <hamon/list/list_fwd.hpp>
-#include <hamon/list/config.hpp>
-
-#if !defined(HAMON_USE_STD_LIST)
-
 #include <hamon/list/detail/list_iterator.hpp>
 #include <hamon/list/detail/list_node.hpp>
 #include <hamon/list/detail/list_algo.hpp>
@@ -900,6 +896,27 @@ swap(list<T, Allocator>& x, list<T, Allocator>& y)
 	x.swap(y);
 }
 
+// 24.3.11.6 Erasure[list.erasure]
+
+template <typename T, typename Allocator, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::list<T, Allocator>::size_type
+erase_if(hamon::list<T, Allocator>& c, Predicate pred)
+{
+	// [list.erasure]/2
+	return c.remove_if(pred);
+}
+
+template <typename T, typename Allocator, typename U = T>
+HAMON_CXX14_CONSTEXPR
+typename hamon::list<T, Allocator>::size_type
+erase(hamon::list<T, Allocator>& c, U const& value)
+{
+	// [list.erasure]/1
+	using elem_type = typename hamon::list<T, Allocator>::value_type;
+	return hamon::erase_if(c, [&](elem_type& elem) { return elem == value; });
+}
+
 }	// namespace hamon
 
 // シリアライズ対応
@@ -924,7 +941,5 @@ void load_value(Archive& ia, hamon::list<T, Allocator>& t)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_LIST_LIST_HPP

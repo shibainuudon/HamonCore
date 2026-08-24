@@ -17,8 +17,7 @@ namespace hamon_list_test
 namespace pop_back_test
 {
 
-#if !defined(HAMON_USE_STD_LIST) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// VS2019でconstexprにすると内部コンパイラエラーになってしまう
 #define LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
 #else
@@ -37,9 +36,7 @@ LIST_TEST_CONSTEXPR bool test()
 		List v {1,2,3};
 
 		static_assert(hamon::is_same<decltype(v.pop_back()), void>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
 		static_assert( noexcept(v.pop_back()), "");
-#endif
 
 		VERIFY(v.size() == 3);
 		v.pop_back();
