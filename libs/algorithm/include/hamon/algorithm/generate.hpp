@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_GENERATE_HPP
 #define HAMON_ALGORITHM_GENERATE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::generate;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -55,7 +40,5 @@ generate(ForwardIterator first, ForwardIterator last, Generator gen)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_GENERATE_HPP

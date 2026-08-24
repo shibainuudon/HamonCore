@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_MINMAX_ELEMENT_HPP
 #define HAMON_ALGORITHM_RANGES_MINMAX_ELEMENT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::minmax_element;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/min_max_result.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
@@ -123,7 +103,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR minmax_element_fn minmax_element{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_MINMAX_ELEMENT_HPP

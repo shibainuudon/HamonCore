@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_FIND_HPP
 #define HAMON_ALGORITHM_RANGES_FIND_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::find;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -108,7 +87,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR find_fn find{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_FIND_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_COUNT_IF_HPP
 #define HAMON_ALGORITHM_RANGES_COUNT_IF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::count_if;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -98,7 +78,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR count_if_fn count_if{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_COUNT_IF_HPP

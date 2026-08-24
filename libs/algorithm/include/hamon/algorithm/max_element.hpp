@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_MAX_ELEMENT_HPP
 #define HAMON_ALGORITHM_MAX_ELEMENT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::max_element;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
 
@@ -85,7 +70,5 @@ max_element(ForwardIterator first, ForwardIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MAX_ELEMENT_HPP

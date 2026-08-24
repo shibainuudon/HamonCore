@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_PARTITION_COPY_HPP
 #define HAMON_ALGORITHM_PARTITION_COPY_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::partition_copy;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/pair.hpp>
 #include <hamon/config.hpp>
 
@@ -87,7 +72,5 @@ partition_copy(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_PARTITION_COPY_HPP

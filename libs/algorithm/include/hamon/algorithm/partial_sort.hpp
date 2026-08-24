@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_PARTIAL_SORT_HPP
 #define HAMON_ALGORITHM_PARTIAL_SORT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::partial_sort;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/heap_select.hpp>
 #include <hamon/algorithm/sort_heap.hpp>
 #include <hamon/functional/less.hpp>
@@ -92,7 +77,5 @@ partial_sort(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_PARTIAL_SORT_HPP

@@ -7,22 +7,6 @@
 #ifndef HAMON_ALGORITHM_REMOVE_HPP
 #define HAMON_ALGORITHM_REMOVE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::remove;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/find.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/utility/move.hpp>
@@ -84,7 +68,5 @@ remove(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_REMOVE_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_REMOVE_IF_HPP
 #define HAMON_ALGORITHM_REMOVE_IF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::remove_if;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/find_if.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -79,7 +64,5 @@ remove_if(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_REMOVE_IF_HPP

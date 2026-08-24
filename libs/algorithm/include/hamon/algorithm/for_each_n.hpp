@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_FOR_EACH_N_HPP
 #define HAMON_ALGORITHM_FOR_EACH_N_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::for_each_n;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -67,7 +52,5 @@ for_each_n(InputIterator first, Size n, Function f)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_FOR_EACH_N_HPP

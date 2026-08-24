@@ -7,33 +7,6 @@
 #ifndef HAMON_ALGORITHM_COPY_BACKWARD_HPP
 #define HAMON_ALGORITHM_COPY_BACKWARD_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) &&	\
-	!(defined(HAMON_MSVC) && (HAMON_MSVC == 1930) && (HAMON_MSVC_FULL_VER <= 193030705))
-
-// 以下のコード
-// char a[] { 1, 2, 3 };
-// hamon::copy_backward(a, a+2, a+3);
-// で、
-// Visual Studio 2022 Version 17.0.(0-1) かつ、
-// Releaseビルドかつ、
-// 実行時(非constexpr)
-// のときのみ、a[2]の値が想定通りにならない。
-// Visual Studio 2022 のバグと思われる。
-// (配列の型を変えると大丈夫な時があったりする。int型は大丈夫なときが多い)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::copy_backward;
-
-}	// namespace hamon
-
-#else
-
 //#include <hamon/type_traits/enable_if.hpp>
 //#include <hamon/type_traits/remove_const.hpp>
 //#include <hamon/type_traits/is_same.hpp>
@@ -125,7 +98,5 @@ copy_backward(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_COPY_BACKWARD_HPP

@@ -7,19 +7,6 @@
 #ifndef HAMON_ALGORITHM_STABLE_SORT_HPP
 #define HAMON_ALGORITHM_STABLE_SORT_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 202306L)
-
-namespace hamon
-{
-
-using std::stable_sort;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/stable_sort_impl.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/utility/move.hpp>
@@ -61,7 +48,5 @@ stable_sort(RandomAccessIterator first, RandomAccessIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_STABLE_SORT_HPP

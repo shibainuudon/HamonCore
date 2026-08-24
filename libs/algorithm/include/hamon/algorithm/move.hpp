@@ -7,32 +7,6 @@
 #ifndef HAMON_ALGORITHM_MOVE_HPP
 #define HAMON_ALGORITHM_MOVE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-template <
-	typename InputIterator,
-	typename OutputIterator
->
-inline HAMON_CXX14_CONSTEXPR OutputIterator
-move(
-	InputIterator first,
-	InputIterator last,
-	OutputIterator result)
-{
-	return std::move(first, last, result);
-}
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -78,7 +52,5 @@ move(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MOVE_HPP

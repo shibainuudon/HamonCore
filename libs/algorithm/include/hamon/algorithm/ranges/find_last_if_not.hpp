@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_FIND_LAST_IF_NOT_HPP
 #define HAMON_ALGORITHM_RANGES_FIND_LAST_IF_NOT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) &&	\
-	defined(__cpp_lib_ranges_find_last) && (__cpp_lib_ranges_find_last >= 202207L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::find_last_if_not;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/find_if_not.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -154,7 +133,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR find_last_if_not_fn find_last_if_not{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_FIND_LAST_IF_NOT_HPP

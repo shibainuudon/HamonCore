@@ -7,22 +7,6 @@
 #ifndef HAMON_ALGORITHM_SEARCH_N_HPP
 #define HAMON_ALGORITHM_SEARCH_N_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::search_n;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
@@ -251,7 +235,5 @@ search_n(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SEARCH_N_HPP

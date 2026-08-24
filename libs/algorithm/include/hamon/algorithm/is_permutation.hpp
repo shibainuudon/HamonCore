@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_IS_PERMUTATION_HPP
 #define HAMON_ALGORITHM_IS_PERMUTATION_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::is_permutation;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -305,7 +290,5 @@ is_permutation(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_IS_PERMUTATION_HPP

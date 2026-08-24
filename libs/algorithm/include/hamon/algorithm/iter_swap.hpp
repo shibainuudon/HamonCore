@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_ITER_SWAP_HPP
 #define HAMON_ALGORITHM_ITER_SWAP_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::iter_swap;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/swap.hpp>
 #include <hamon/config.hpp>
 
@@ -50,7 +35,5 @@ iter_swap(ForwardIterator1 a, ForwardIterator2 b)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_ITER_SWAP_HPP

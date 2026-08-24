@@ -7,19 +7,6 @@
 #ifndef HAMON_ALGORITHM_CLAMP_HPP
 #define HAMON_ALGORITHM_CLAMP_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_clamp) && (__cpp_lib_clamp >= 201603)
-
-namespace hamon
-{
-
-using std::clamp;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/less.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
@@ -75,7 +62,5 @@ clamp(T const& v, T const& lo, T const& hi)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_CLAMP_HPP

@@ -7,19 +7,6 @@
 #ifndef HAMON_ALGORITHM_INPLACE_MERGE_HPP
 #define HAMON_ALGORITHM_INPLACE_MERGE_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 202306L)
-
-namespace hamon
-{
-
-using std::inplace_merge;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/inplace_merge_impl.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/utility/move.hpp>
@@ -64,7 +51,5 @@ inplace_merge(BidirectionalIterator first, BidirectionalIterator middle, Bidirec
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_INPLACE_MERGE_HPP

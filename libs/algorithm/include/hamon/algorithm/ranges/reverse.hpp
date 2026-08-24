@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_REVERSE_HPP
 #define HAMON_ALGORITHM_RANGES_REVERSE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::reverse;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -141,7 +121,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR reverse_fn reverse{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_REVERSE_HPP

@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_FOLD_LEFT_FIRST_WITH_ITER_HPP
 #define HAMON_ALGORITHM_RANGES_FOLD_LEFT_FIRST_WITH_ITER_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) &&	\
-	defined(__cpp_lib_ranges_fold) && (__cpp_lib_ranges_fold >= 202207L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::fold_left_first_with_iter;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/fold_left.hpp>
 #include <hamon/algorithm/ranges/detail/indirectly_binary_left_foldable.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -147,7 +126,5 @@ fold_left_first_with_iter_fn fold_left_first_with_iter{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_FOLD_LEFT_FIRST_WITH_ITER_HPP

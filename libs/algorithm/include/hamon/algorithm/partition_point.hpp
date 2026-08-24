@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_PARTITION_POINT_HPP
 #define HAMON_ALGORITHM_PARTITION_POINT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::partition_point;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
@@ -75,7 +60,5 @@ partition_point(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_PARTITION_POINT_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_REPLACE_COPY_HPP
 #define HAMON_ALGORITHM_REPLACE_COPY_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::replace_copy;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -72,7 +57,5 @@ replace_copy(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_REPLACE_COPY_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_PARTITION_HPP
 #define HAMON_ALGORITHM_PARTITION_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::partition;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
@@ -147,7 +132,5 @@ partition(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_PARTITION_HPP

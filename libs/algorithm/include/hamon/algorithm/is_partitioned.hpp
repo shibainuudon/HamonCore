@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_IS_PARTITIONED_HPP
 #define HAMON_ALGORITHM_IS_PARTITIONED_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::is_partitioned;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -80,7 +65,5 @@ is_partitioned(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_IS_PARTITIONED_HPP

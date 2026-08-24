@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_FIND_END_HPP
 #define HAMON_ALGORITHM_FIND_END_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::find_end;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
@@ -322,7 +307,5 @@ find_end(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_FIND_END_HPP

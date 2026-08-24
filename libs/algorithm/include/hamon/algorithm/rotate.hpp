@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_ROTATE_HPP
 #define HAMON_ALGORITHM_ROTATE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::rotate;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
@@ -302,7 +287,5 @@ rotate(ForwardIterator first, ForwardIterator middle, ForwardIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_ROTATE_HPP

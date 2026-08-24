@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_LEXICOGRAPHICAL_COMPARE_HPP
 #define HAMON_ALGORITHM_LEXICOGRAPHICAL_COMPARE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::lexicographical_compare;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
@@ -128,7 +113,5 @@ lexicographical_compare(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_LEXICOGRAPHICAL_COMPARE_HPP

@@ -12,7 +12,6 @@
 #include <hamon/algorithm/any_of.hpp>
 #include <hamon/algorithm/binary_search.hpp>
 #include <hamon/algorithm/clamp.hpp>
-#include <hamon/algorithm/config.hpp>
 #include <hamon/algorithm/contains.hpp>
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/algorithm/copy_backward.hpp>

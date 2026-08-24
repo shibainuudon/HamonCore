@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_SHIFT_LEFT_HPP
 #define HAMON_ALGORITHM_RANGES_SHIFT_LEFT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) &&	\
-	defined(__cpp_lib_shift) && (__cpp_lib_shift >= 202202L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::shift_left;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/shift_left.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -86,7 +65,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR shift_left_fn shift_left{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_SHIFT_LEFT_HPP

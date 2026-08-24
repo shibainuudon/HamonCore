@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SEARCH_HPP
 #define HAMON_ALGORITHM_SEARCH_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::search;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
@@ -255,7 +240,5 @@ search(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SEARCH_HPP

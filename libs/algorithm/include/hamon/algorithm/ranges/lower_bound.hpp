@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_LOWER_BOUND_HPP
 #define HAMON_ALGORITHM_RANGES_LOWER_BOUND_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::lower_bound;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -121,7 +100,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR lower_bound_fn lower_bound{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_LOWER_BOUND_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_GENERATE_N_HPP
 #define HAMON_ALGORITHM_GENERATE_N_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::generate_n;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -68,7 +53,5 @@ generate_n(OutputIterator first, Size n, Generator gen)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_GENERATE_N_HPP

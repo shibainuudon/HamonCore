@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SORT_HEAP_HPP
 #define HAMON_ALGORITHM_SORT_HEAP_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::sort_heap;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/pop_heap.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
@@ -87,7 +72,5 @@ sort_heap(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SORT_HEAP_HPP

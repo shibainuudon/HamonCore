@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SET_INTERSECTION_HPP
 #define HAMON_ALGORITHM_SET_INTERSECTION_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::set_intersection;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
 
@@ -125,7 +110,5 @@ set_intersection(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SET_INTERSECTION_HPP

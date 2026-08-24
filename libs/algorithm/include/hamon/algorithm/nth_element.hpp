@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_NTH_ELEMENT_HPP
 #define HAMON_ALGORITHM_NTH_ELEMENT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::nth_element;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/heap_select.hpp>
 #include <hamon/algorithm/detail/unguarded_partition_pivot.hpp>
 #include <hamon/algorithm/detail/lg.hpp>
@@ -141,7 +126,5 @@ nth_element(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_NTH_ELEMENT_HPP

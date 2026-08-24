@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SHUFFLE_HPP
 #define HAMON_ALGORITHM_SHUFFLE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::shuffle;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
@@ -80,7 +65,5 @@ shuffle(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SHUFFLE_HPP

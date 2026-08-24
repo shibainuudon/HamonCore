@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_MOVE_BACKWARD_HPP
 #define HAMON_ALGORITHM_MOVE_BACKWARD_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::move_backward;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -67,7 +52,5 @@ move_backward(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MOVE_BACKWARD_HPP

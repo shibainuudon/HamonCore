@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_REMOVE_COPY_IF_HPP
 #define HAMON_ALGORITHM_REMOVE_COPY_IF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::remove_copy_if;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -75,7 +60,5 @@ remove_copy_if(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_REMOVE_COPY_IF_HPP

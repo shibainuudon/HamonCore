@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_SEARCH_N_HPP
 #define HAMON_ALGORITHM_RANGES_SEARCH_N_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::search_n;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -233,7 +212,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR search_n_fn search_n{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_SEARCH_N_HPP

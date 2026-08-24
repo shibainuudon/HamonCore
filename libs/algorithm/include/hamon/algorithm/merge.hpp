@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_MERGE_HPP
 #define HAMON_ALGORITHM_MERGE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::merge;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
@@ -136,7 +121,5 @@ merge(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MERGE_HPP

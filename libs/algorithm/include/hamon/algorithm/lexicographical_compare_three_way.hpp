@@ -11,22 +11,6 @@
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-#include <hamon/algorithm/config.hpp>
-#include <hamon/compare/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) && defined(HAMON_USE_STD_COMPARE)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::lexicographical_compare_three_way;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/compare_three_way.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 
@@ -71,8 +55,6 @@ lexicographical_compare_three_way(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

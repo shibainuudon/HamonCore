@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_EQUAL_RANGE_HPP
 #define HAMON_ALGORITHM_RANGES_EQUAL_RANGE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::equal_range;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/lower_bound.hpp>
 #include <hamon/algorithm/ranges/upper_bound.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -135,7 +114,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR equal_range_fn equal_range{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_EQUAL_RANGE_HPP

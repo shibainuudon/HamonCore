@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_ROTATE_COPY_HPP
 #define HAMON_ALGORITHM_ROTATE_COPY_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::rotate_copy;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/config.hpp>
 
@@ -69,7 +54,5 @@ rotate_copy(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_ROTATE_COPY_HPP

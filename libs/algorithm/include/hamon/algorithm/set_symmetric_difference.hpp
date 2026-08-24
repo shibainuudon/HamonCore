@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SET_SYMMETRIC_DIFFERENCE_HPP
 #define HAMON_ALGORITHM_SET_SYMMETRIC_DIFFERENCE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::set_symmetric_difference;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
@@ -138,7 +123,5 @@ set_symmetric_difference(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SET_SYMMETRIC_DIFFERENCE_HPP

@@ -7,25 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_CONTAINS_HPP
 #define HAMON_ALGORITHM_RANGES_CONTAINS_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_ranges_contains) && (__cpp_lib_ranges_contains >= 202207L) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::contains;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/find.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -110,7 +91,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR detail::contains_fn contains{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_CONTAINS_HPP

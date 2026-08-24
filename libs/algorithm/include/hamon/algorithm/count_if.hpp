@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_COUNT_IF_HPP
 #define HAMON_ALGORITHM_COUNT_IF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::count_if;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/config.hpp>
 
@@ -60,7 +45,5 @@ count_if(InputIterator first, InputIterator last, Predicate pred)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_COUNT_IF_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_PARTIAL_SORT_COPY_HPP
 #define HAMON_ALGORITHM_PARTIAL_SORT_COPY_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::partial_sort_copy;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/make_heap.hpp>
 #include <hamon/algorithm/sort_heap.hpp>
 #include <hamon/algorithm/detail/adjust_heap.hpp>
@@ -141,7 +126,5 @@ partial_sort_copy(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_PARTIAL_SORT_COPY_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_IS_SORTED_UNTIL_HPP
 #define HAMON_ALGORITHM_RANGES_IS_SORTED_UNTIL_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::is_sorted_until;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -111,7 +91,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR is_sorted_until_fn is_sorted_until{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_IS_SORTED_UNTIL_HPP

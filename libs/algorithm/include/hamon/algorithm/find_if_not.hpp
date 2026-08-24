@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_FIND_IF_NOT_HPP
 #define HAMON_ALGORITHM_FIND_IF_NOT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::find_if_not;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -61,7 +46,5 @@ find_if_not(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_FIND_IF_NOT_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_PARTIAL_SORT_COPY_HPP
 #define HAMON_ALGORITHM_RANGES_PARTIAL_SORT_COPY_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::partial_sort_copy;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/make_heap.hpp>
 #include <hamon/algorithm/ranges/pop_heap.hpp>
@@ -177,7 +157,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR partial_sort_copy_fn partial_sort_copy{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_PARTIAL_SORT_COPY_HPP

@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_ENDS_WITH_HPP
 #define HAMON_ALGORITHM_RANGES_ENDS_WITH_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) &&	\
-	defined(__cpp_lib_ranges_starts_ends_with) && (__cpp_lib_ranges_starts_ends_with >= 202106L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::ends_with;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -146,7 +125,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR ends_with_fn ends_with{};
 
 }	// namespace hamon
 
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_ENDS_WITH_HPP
-#include <hamon/concepts/detail/constraint.hpp>

@@ -7,27 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_REMOVE_COPY_HPP
 #define HAMON_ALGORITHM_RANGES_REMOVE_COPY_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::remove_copy;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -127,7 +106,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR remove_copy_fn remove_copy{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_REMOVE_COPY_HPP

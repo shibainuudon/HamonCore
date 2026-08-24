@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_SET_SYMMETRIC_DIFFERENCE_HPP
 #define HAMON_ALGORITHM_RANGES_SET_SYMMETRIC_DIFFERENCE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::set_symmetric_difference;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -154,7 +134,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR set_symmetric_difference_fn set_symmetric_diffe
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_SET_SYMMETRIC_DIFFERENCE_HPP

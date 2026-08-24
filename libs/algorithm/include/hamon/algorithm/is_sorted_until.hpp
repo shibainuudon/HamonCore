@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_IS_SORTED_UNTIL_HPP
 #define HAMON_ALGORITHM_IS_SORTED_UNTIL_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::is_sorted_until;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
 
@@ -88,7 +73,5 @@ is_sorted_until(ForwardIterator first, ForwardIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_IS_SORTED_UNTIL_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_REVERSE_HPP
 #define HAMON_ALGORITHM_REVERSE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::reverse;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
@@ -56,7 +41,5 @@ reverse(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_REVERSE_HPP

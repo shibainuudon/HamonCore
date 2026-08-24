@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_IS_HEAP_HPP
 #define HAMON_ALGORITHM_IS_HEAP_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::is_heap;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/is_heap_until.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
@@ -75,7 +60,5 @@ is_heap(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_IS_HEAP_HPP

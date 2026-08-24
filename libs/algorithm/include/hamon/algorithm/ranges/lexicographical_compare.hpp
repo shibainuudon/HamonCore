@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_LEXICOGRAPHICAL_COMPARE_HPP
 #define HAMON_ALGORITHM_RANGES_LEXICOGRAPHICAL_COMPARE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::lexicographical_compare;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/min.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstring/memcmp.hpp>
@@ -217,7 +197,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR lexicographical_compare_fn lexicographical_comp
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_LEXICOGRAPHICAL_COMPARE_HPP

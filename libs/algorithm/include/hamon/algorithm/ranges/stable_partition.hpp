@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_STABLE_PARTITION_HPP
 #define HAMON_ALGORITHM_RANGES_STABLE_PARTITION_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::stable_partition;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/stable_partition.hpp>
 #include <hamon/algorithm/ranges/detail/make_pred_proj.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -103,7 +83,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR stable_partition_fn stable_partition{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_STABLE_PARTITION_HPP

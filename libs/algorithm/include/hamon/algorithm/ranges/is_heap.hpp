@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_IS_HEAP_HPP
 #define HAMON_ALGORITHM_RANGES_IS_HEAP_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::is_heap;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/is_heap_until.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
@@ -95,7 +75,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR is_heap_fn is_heap{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_IS_HEAP_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_PREV_PERMUTATION_HPP
 #define HAMON_ALGORITHM_RANGES_PREV_PERMUTATION_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::prev_permutation;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_found_result.hpp>
 #include <hamon/algorithm/ranges/reverse.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -143,7 +123,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR prev_permutation_fn prev_permutation{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_PREV_PERMUTATION_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SORT_HPP
 #define HAMON_ALGORITHM_SORT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::sort;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/sort_impl.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/utility/move.hpp>
@@ -62,7 +47,5 @@ sort(RandomAccessIterator first, RandomAccessIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SORT_HPP

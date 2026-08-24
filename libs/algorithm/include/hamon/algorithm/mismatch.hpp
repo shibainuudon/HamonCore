@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_MISMATCH_HPP
 #define HAMON_ALGORITHM_MISMATCH_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::mismatch;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/config.hpp>
@@ -112,7 +97,5 @@ mismatch(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MISMATCH_HPP

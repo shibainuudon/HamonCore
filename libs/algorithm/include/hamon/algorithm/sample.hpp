@@ -7,19 +7,6 @@
 #ifndef HAMON_ALGORITHM_SAMPLE_HPP
 #define HAMON_ALGORITHM_SAMPLE_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_sample) && (__cpp_lib_sample >= 201603)
-
-namespace hamon
-{
-
-using std::sample;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/min.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
@@ -169,7 +156,5 @@ sample(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SAMPLE_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_ROTATE_HPP
 #define HAMON_ALGORITHM_RANGES_ROTATE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::rotate;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/swap_ranges.hpp>
 #include <hamon/algorithm/ranges/move.hpp>
 #include <hamon/algorithm/ranges/reverse.hpp>
@@ -266,7 +246,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR rotate_fn rotate{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_ROTATE_HPP

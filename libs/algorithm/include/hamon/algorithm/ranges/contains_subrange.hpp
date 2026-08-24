@@ -7,24 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_CONTAINS_SUBRANGE_HPP
 #define HAMON_ALGORITHM_RANGES_CONTAINS_SUBRANGE_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_ranges_contains) && (__cpp_lib_ranges_contains >= 202207L)
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::contains_subrange;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/search.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -123,7 +105,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR detail::contains_subrange_fn contains_subrange{
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_CONTAINS_SUBRANGE_HPP

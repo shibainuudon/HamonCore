@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_MINMAX_HPP
 #define HAMON_ALGORITHM_MINMAX_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::minmax;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/minmax_element.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/initializer_list.hpp>
@@ -122,7 +107,5 @@ minmax(hamon::initializer_list<T> t)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MINMAX_HPP

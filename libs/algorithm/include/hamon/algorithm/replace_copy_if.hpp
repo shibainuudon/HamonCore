@@ -7,22 +7,6 @@
 #ifndef HAMON_ALGORITHM_REPLACE_COPY_IF_HPP
 #define HAMON_ALGORITHM_REPLACE_COPY_IF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::replace_copy_if;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
@@ -79,7 +63,5 @@ replace_copy_if(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_REPLACE_COPY_IF_HPP

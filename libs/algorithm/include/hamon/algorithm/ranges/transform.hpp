@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_TRANSFORM_HPP
 #define HAMON_ALGORITHM_RANGES_TRANSFORM_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::transform;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -180,7 +160,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR transform_fn transform{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_TRANSFORM_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_FOR_EACH_N_HPP
 #define HAMON_ALGORITHM_RANGES_FOR_EACH_N_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::for_each_n;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_fun_result.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -119,7 +99,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR for_each_n_fn for_each_n{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_FOR_EACH_N_HPP

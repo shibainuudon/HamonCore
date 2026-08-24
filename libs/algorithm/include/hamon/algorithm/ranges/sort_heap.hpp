@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_SORT_HEAP_HPP
 #define HAMON_ALGORITHM_RANGES_SORT_HEAP_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::sort_heap;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/sort_heap.hpp>
 #include <hamon/algorithm/ranges/detail/make_comp_proj.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -99,7 +79,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR sort_heap_fn sort_heap{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_SORT_HEAP_HPP

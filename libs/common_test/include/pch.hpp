@@ -7,7 +7,6 @@
 #ifndef UNIT_TEST_COMMON_PCH_HPP
 #define UNIT_TEST_COMMON_PCH_HPP
 
-#include <algorithm>
 #include <array>
 #include <deque>
 #include <forward_list>

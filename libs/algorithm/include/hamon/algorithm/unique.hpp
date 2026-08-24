@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_UNIQUE_HPP
 #define HAMON_ALGORITHM_UNIQUE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::unique;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/adjacent_find.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/utility/move.hpp>
@@ -114,7 +99,5 @@ unique(ForwardIterator first, ForwardIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_UNIQUE_HPP

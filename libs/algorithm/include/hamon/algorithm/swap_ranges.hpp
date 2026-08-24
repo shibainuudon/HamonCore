@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SWAP_RANGES_HPP
 #define HAMON_ALGORITHM_SWAP_RANGES_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::swap_ranges;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
@@ -67,16 +52,6 @@ swap_ranges(
 
 	return first2;
 }
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/iterator/ranges/iter_swap.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
 
 /**
  *	@brief		指定された2つの範囲同士を swap する

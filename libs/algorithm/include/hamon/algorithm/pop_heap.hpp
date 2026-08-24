@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_POP_HEAP_HPP
 #define HAMON_ALGORITHM_POP_HEAP_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::pop_heap;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/adjust_heap.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -116,7 +101,5 @@ pop_heap(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_POP_HEAP_HPP

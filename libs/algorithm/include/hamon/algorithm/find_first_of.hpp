@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_FIND_FIRST_OF_HPP
 #define HAMON_ALGORITHM_FIND_FIRST_OF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::find_first_of;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/config.hpp>
 
@@ -105,7 +90,5 @@ find_first_of(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_FIND_FIRST_OF_HPP

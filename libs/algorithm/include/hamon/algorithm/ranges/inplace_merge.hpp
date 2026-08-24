@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_INPLACE_MERGE_HPP
 #define HAMON_ALGORITHM_RANGES_INPLACE_MERGE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::inplace_merge;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/inplace_merge.hpp>
 #include <hamon/algorithm/ranges/detail/make_comp_proj.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
@@ -106,7 +86,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR inplace_merge_fn inplace_merge{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_INPLACE_MERGE_HPP

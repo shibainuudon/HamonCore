@@ -7,19 +7,6 @@
 #ifndef HAMON_ALGORITHM_STABLE_PARTITION_HPP
 #define HAMON_ALGORITHM_STABLE_PARTITION_HPP
 
-#include <algorithm>
-
-#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 202306L)
-
-namespace hamon
-{
-
-using std::stable_partition;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/detail/stable_partition_impl.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -60,7 +47,5 @@ stable_partition(BidirectionalIterator first, BidirectionalIterator last, Predic
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_STABLE_PARTITION_HPP

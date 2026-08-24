@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_MOVE_BACKWARD_HPP
 #define HAMON_ALGORITHM_RANGES_MOVE_BACKWARD_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::move_backward;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -165,7 +145,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR move_backward_fn move_backward{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_MOVE_BACKWARD_HPP

@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_IN_IN_RESULT_HPP
 #define HAMON_ALGORITHM_RANGES_IN_IN_RESULT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::in_in_result;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
@@ -84,7 +64,5 @@ struct in_in_result
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_IN_IN_RESULT_HPP

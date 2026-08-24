@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_MAX_HPP
 #define HAMON_ALGORITHM_MAX_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::max;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/max_element.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/initializer_list.hpp>
@@ -118,7 +103,5 @@ max(hamon::initializer_list<T> t)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_MAX_HPP

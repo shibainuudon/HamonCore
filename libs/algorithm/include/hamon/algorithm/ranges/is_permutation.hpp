@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_IS_PERMUTATION_HPP
 #define HAMON_ALGORITHM_RANGES_IS_PERMUTATION_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::is_permutation;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/count_if.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -206,7 +186,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR is_permutation_fn is_permutation{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_IS_PERMUTATION_HPP

@@ -7,22 +7,6 @@
 #ifndef HAMON_ALGORITHM_FIND_HPP
 #define HAMON_ALGORITHM_FIND_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::find;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
@@ -63,7 +47,5 @@ find(InputIterator first, InputIterator last, T const& value)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_FIND_HPP

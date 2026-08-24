@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_TRANSFORM_HPP
 #define HAMON_ALGORITHM_TRANSFORM_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::transform;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -93,15 +78,6 @@ transform(
 
 	return result;
 }
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/config.hpp>
-
-namespace hamon
-{
 
 /**
  *	@brief		全ての要素に関数を適用する

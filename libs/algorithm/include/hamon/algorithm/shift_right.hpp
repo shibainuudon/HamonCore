@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_SHIFT_RIGHT_HPP
 #define HAMON_ALGORITHM_SHIFT_RIGHT_HPP
 
-#include <hamon/config.hpp>
-#include <algorithm>
-
-#if defined(__cpp_lib_shift) && (__cpp_lib_shift >= 201806) &&	\
-	!(defined(HAMON_APPLE_CLANG) && (HAMON_APPLE_CLANG <= 130000))
-
-namespace hamon
-{
-
-using std::shift_right;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
@@ -31,6 +16,7 @@ using std::shift_right;
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -123,7 +109,5 @@ shift_right(ForwardIterator first, ForwardIterator last,
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_SHIFT_RIGHT_HPP

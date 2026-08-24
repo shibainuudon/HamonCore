@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_NONE_OF_HPP
 #define HAMON_ALGORITHM_NONE_OF_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::none_of;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 
@@ -64,7 +49,5 @@ none_of(InputIterator first, InputIterator last, Predicate pred)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_NONE_OF_HPP

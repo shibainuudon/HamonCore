@@ -7,21 +7,6 @@
 #ifndef HAMON_ALGORITHM_ADJACENT_FIND_HPP
 #define HAMON_ALGORITHM_ADJACENT_FIND_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::adjacent_find;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/config.hpp>
 
@@ -99,7 +84,5 @@ adjacent_find(ForwardIterator first, ForwardIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_ADJACENT_FIND_HPP

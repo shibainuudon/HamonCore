@@ -7,22 +7,6 @@
 #ifndef HAMON_ALGORITHM_EQUAL_RANGE_HPP
 #define HAMON_ALGORITHM_EQUAL_RANGE_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_ALGORITHM) && \
-	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-using std::equal_range;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/lower_bound.hpp>
 #include <hamon/algorithm/upper_bound.hpp>
 #include <hamon/iterator/advance.hpp>
@@ -130,7 +114,5 @@ equal_range(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_EQUAL_RANGE_HPP

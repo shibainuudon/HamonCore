@@ -7,26 +7,6 @@
 #ifndef HAMON_ALGORITHM_RANGES_PARTITION_POINT_HPP
 #define HAMON_ALGORITHM_RANGES_PARTITION_POINT_HPP
 
-#include <hamon/algorithm/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
-
-#include <algorithm>
-
-namespace hamon
-{
-
-namespace ranges
-{
-
-using std::ranges::partition_point;
-
-}	// namespace ranges
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -110,7 +90,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR partition_point_fn partition_point{};
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ALGORITHM_RANGES_PARTITION_POINT_HPP
