@@ -7,21 +7,6 @@
 #ifndef HAMON_ARRAY_ARRAY_HPP
 #define HAMON_ARRAY_ARRAY_HPP
 
-#include <hamon/array/config.hpp>
-
-#if defined(HAMON_USE_STD_ARRAY)
-
-#include <array>
-
-namespace hamon
-{
-
-using std::array;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
@@ -41,7 +26,7 @@ using std::array;
 namespace hamon
 {
 
-// 24.3.7 Class template array[array]
+// 23.3.3 Class template array[array]
 template <typename T, hamon::size_t N>
 struct array
 {
@@ -79,6 +64,7 @@ private:
 		}
 	};
 
+	// [array.zero]/1
 	template <typename U>
 	struct array_traits<U, 0>
 	{
@@ -91,7 +77,7 @@ private:
 		}
 
 		static HAMON_CXX14_CONSTEXPR void
-		swap(array<U, 0>&, array<U, 0>&) HAMON_NOEXCEPT	// [array.zero]/4
+		swap(array<U, 0>&, array<U, 0>&) HAMON_NOEXCEPT	// [array.zero]/3
 		{
 			// do nothing
 		}
@@ -300,6 +286,7 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR T*
 	data() HAMON_NOEXCEPT
 	{
+		// [array.members]/2
 		return traits_type::ptr(m_elems);
 	}
 
@@ -307,6 +294,7 @@ HAMON_WARNING_POP()
 	HAMON_CXX11_CONSTEXPR T const*
 	data() const HAMON_NOEXCEPT
 	{
+		// [array.members]/2
 		return traits_type::ptr(m_elems);
 	}
 };
@@ -420,6 +408,8 @@ struct is_specialization_of_array<hamon::array<T, N>>
 namespace std
 {
 
+// 23.3.3.7 Tuple interface[array.tuple]
+
 // tuple_size の特殊化
 template <typename T, hamon::size_t N>
 struct tuple_size<hamon::array<T, N>>
@@ -435,7 +425,5 @@ struct tuple_element<I, hamon::array<T, N>>
 };
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_ARRAY_ARRAY_HPP

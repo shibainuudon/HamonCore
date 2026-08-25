@@ -7,26 +7,12 @@
 #ifndef HAMON_ARRAY_TO_ARRAY_HPP
 #define HAMON_ARRAY_TO_ARRAY_HPP
 
-#include <hamon/array/config.hpp>
-#include <array>
-
-#if defined(HAMON_USE_STD_ARRAY) &&	\
-	defined(__cpp_lib_to_array) && (__cpp_lib_to_array >= 201907L)
-
-namespace hamon
-{
-
-using std::to_array;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/array/array.hpp>
+#include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
+#include <hamon/concepts/detail/cpp17_move_constructible.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_array.hpp>
-#include <hamon/type_traits/is_copy_constructible.hpp>
-#include <hamon/type_traits/is_move_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
@@ -68,8 +54,12 @@ to_array(T (&a)[N])
 HAMON_NOEXCEPT_IF(hamon::is_nothrow_copy_constructible<T>::value)	// noexcept as an extension
 {
 	// [array.creation]/1
-	static_assert(!hamon::is_array<T>::value, "");
-	static_assert(hamon::is_copy_constructible<T>::value, "");
+	static_assert(!hamon::is_array_v<T>, "");
+	static_assert(hamon::is_constructible_v<hamon::remove_cv_t<T>, T&>, "");
+
+	// [array.creation]/2
+	static_assert(hamon::detail::cpp17_copy_constructible<T>, "");
+
 	return hamon::detail::to_array_impl(a, hamon::make_index_sequence<N>{});
 }
 
@@ -80,13 +70,15 @@ to_array(T (&&a)[N])
 HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<T>::value)	// noexcept as an extension
 {
 	// [array.creation]/4
-	static_assert(!hamon::is_array<T>::value, "");
-	static_assert(hamon::is_move_constructible<T>::value, "");
+	static_assert(!hamon::is_array_v<T>, "");
+	static_assert(hamon::is_constructible_v<hamon::remove_cv_t<T>, T>, "");
+
+	// [array.creation]/5
+	static_assert(hamon::detail::cpp17_move_constructible<T>, "");
+
 	return hamon::detail::to_array_impl(hamon::move(a), hamon::make_index_sequence<N>{});
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ARRAY_TO_ARRAY_HPP

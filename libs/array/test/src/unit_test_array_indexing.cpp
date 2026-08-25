@@ -34,7 +34,6 @@ void IndexingTest()
 	static_assert(hamon::is_same<decltype(hamon::declval<hamon::array<T, 2> const>()[hamon::declval<hamon::size_t>()]), T const&>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<hamon::array<T, 3> const>()[hamon::declval<hamon::size_t>()]), T const&>::value, "");
 
-#if !defined(HAMON_USE_STD_ARRAY)
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 0>>()[hamon::declval<hamon::size_t>()]);
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 1>>()[hamon::declval<hamon::size_t>()]);
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 2>>()[hamon::declval<hamon::size_t>()]);
@@ -43,7 +42,6 @@ void IndexingTest()
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 1> const>()[hamon::declval<hamon::size_t>()]);
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 2> const>()[hamon::declval<hamon::size_t>()]);
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 3> const>()[hamon::declval<hamon::size_t>()]);
-#endif
 
 	{
 		hamon::array<T, 3> a{ T(1), T(2), T(3) };

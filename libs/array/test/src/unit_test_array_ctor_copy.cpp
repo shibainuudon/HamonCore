@@ -34,9 +34,7 @@ void CtorCopyTest()
 	static_assert( hamon::is_copy_assignable<hamon::array<T, 2>>::value, "");
 	static_assert( hamon::is_copy_assignable<hamon::array<T, 3>>::value, "");
 
-#if !defined(HAMON_USE_STD_ARRAY)
 	static_assert( hamon::is_copy_assignable<hamon::array<T const, 0>>::value, "");
-#endif
 	static_assert(!hamon::is_copy_assignable<hamon::array<T const, 1>>::value, "");
 	static_assert(!hamon::is_copy_assignable<hamon::array<T const, 2>>::value, "");
 	static_assert(!hamon::is_copy_assignable<hamon::array<T const, 3>>::value, "");

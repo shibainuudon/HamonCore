@@ -91,7 +91,6 @@ GTEST_TEST(ArrayTest, SwapTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SwapTest<float>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SwapTest<double>());
 
-#if !defined(HAMON_USE_STD_ARRAY)
 	{
 		using Array = hamon::array<NonSwappable, 0>;
 		Array a1{};
@@ -109,7 +108,6 @@ GTEST_TEST(ArrayTest, SwapTest)
 		EXPECT_TRUE(a1.size() == 0);
 		EXPECT_TRUE(a2.size() == 0);
 	}
-#endif
 	{
 		using Array = hamon::array<NonSwappable, 1>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<Array&>().swap(hamon::declval<Array&>()));

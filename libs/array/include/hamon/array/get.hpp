@@ -7,21 +7,6 @@
 #ifndef HAMON_ARRAY_GET_HPP
 #define HAMON_ARRAY_GET_HPP
 
-#include <hamon/array/config.hpp>
-
-#if defined(HAMON_USE_STD_ARRAY)
-
-#include <array>
-
-namespace hamon
-{
-
-using std::get;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/array/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/move.hpp>
@@ -29,6 +14,8 @@ using std::get;
 
 namespace hamon
 {
+
+// 23.3.3.7 Tuple interface[array.tuple]
 
 template <hamon::size_t I, typename T, hamon::size_t N>
 HAMON_NODISCARD	// nodiscard as an extension
@@ -75,7 +62,5 @@ get(array<T, N> const&& arr) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ARRAY_GET_HPP

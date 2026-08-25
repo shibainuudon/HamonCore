@@ -33,7 +33,6 @@ void FrontTest()
 	static_assert(hamon::is_same<decltype(hamon::declval<hamon::array<T, 2> const>().front()), T const&>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<hamon::array<T, 3> const>().front()), T const&>::value, "");
 
-#if !defined(HAMON_USE_STD_ARRAY)
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 0>>().front());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 1>>().front());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 2>>().front());
@@ -42,7 +41,6 @@ void FrontTest()
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 1> const>().front());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 2> const>().front());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 3> const>().front());
-#endif
 
 	{
 		hamon::array<T, 3> a{ T(1), T(2), T(3) };

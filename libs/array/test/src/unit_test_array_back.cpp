@@ -33,7 +33,6 @@ void BackTest()
 	static_assert(hamon::is_same<decltype(hamon::declval<hamon::array<T, 2> const>().back()), T const&>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<hamon::array<T, 3> const>().back()), T const&>::value, "");
 
-#if !defined(HAMON_USE_STD_ARRAY)
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 0>>().back());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 1>>().back());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 2>>().back());
@@ -42,7 +41,6 @@ void BackTest()
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 1> const>().back());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 2> const>().back());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::array<T, 3> const>().back());
-#endif
 
 	{
 		hamon::array<T, 3> a{ T(1), T(2), T(3) };

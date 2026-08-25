@@ -31,7 +31,7 @@ void load_value(Archive& ia, hamon::array<T, N>& t)
 	hamon::serialization::detail::load_array(ia, t);
 }
 
-#if !defined(HAMON_USE_STD_ARRAY)
+#if 1
 template <typename Archive, typename T, hamon::size_t N>
 void save_value(Archive& oa, std::array<T, N> const& t)
 {
