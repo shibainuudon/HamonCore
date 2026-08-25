@@ -7,34 +7,15 @@
 #ifndef HAMON_BIT_BIT_CAST_HPP
 #define HAMON_BIT_BIT_CAST_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_BIT_CAST) &&	\
-	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
-
-// bit_cast が constexpr であることを定義
-#define	HAMON_HAS_CONSTEXPR_BIT_CAST
-
-#include <bit>
-
-namespace hamon
-{
-
-using std::bit_cast;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstring/memcpy.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 22.11.3 Function template bit_cast[bit.cast]
 
 /**
  *	@brief	ビットレベルの再解釈キャスト
@@ -62,34 +43,24 @@ template <
 	typename To,
 	typename From,
 	typename = hamon::enable_if_t<
-		hamon::conjunction<
-			hamon::bool_constant<sizeof(To) == sizeof(From)>,
-			hamon::is_trivially_copyable<To>,
-			hamon::is_trivially_copyable<From>
-		>::value
+		(sizeof(To) == sizeof(From)) &&			// [bit.cast]/1.1
+		hamon::is_trivially_copyable_v<To> &&	// [bit.cast]/1.2
+		hamon::is_trivially_copyable_v<From>	// [bit.cast]/1.3
 	>
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR To
-bit_cast(From const& src) HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+To bit_cast(From const& src) HAMON_NOEXCEPT
 {
-#if HAMON_HAS_BUILTIN(__builtin_bit_cast)
-
-// bit_cast が constexpr であることを定義
-#define	HAMON_HAS_CONSTEXPR_BIT_CAST
-
+	// [bit.cast]/3
+#if HAMON_HAS_BUILTIN(__builtin_bit_cast) || defined(HAMON_MSVC)
 	return __builtin_bit_cast(To, src);
-
 #else
-
 	alignas(To) unsigned char dst[sizeof(To)];
 	hamon::memcpy(dst, &src, sizeof(To));
 	return *(reinterpret_cast<To*>(&dst));
-
 #endif
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_BIT_CAST_HPP

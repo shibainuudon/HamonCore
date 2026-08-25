@@ -5,14 +5,11 @@
  */
 
 #include <hamon/bit/bit_width.hpp>
+#include <hamon/cstdint.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4307)	// 整数定数がオーバーフローしました。
 
 namespace hamon_bit_test
 {
@@ -23,7 +20,8 @@ namespace bit_width_test
 template <typename T>
 void BitWidthTestU8(void)
 {
-	static_assert(hamon::is_same<decltype(hamon::bit_width(hamon::declval<T>())), int>::value, "LWG Issue 3656");
+	static_assert(hamon::is_same_v<int, decltype(hamon::bit_width(hamon::declval<T>()))>, "LWG Issue 3656");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::bit_width((T)0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::bit_width((T)1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, hamon::bit_width((T)2));
@@ -186,10 +184,14 @@ GTEST_TEST(BitTest, BitWidthTest)
 	BitWidthTestU32<hamon::uint64_t>();
 
 	BitWidthTestU64<hamon::uint64_t>();
+
+	BitWidthTestU8<unsigned char>();
+	BitWidthTestU8<unsigned short>();
+	BitWidthTestU8<unsigned int>();
+	BitWidthTestU8<unsigned long>();
+	BitWidthTestU8<unsigned long long>();
 }
 
 }	// namespace bit_width_test
 
 }	// namespace hamon_bit_test
-
-HAMON_WARNING_POP()

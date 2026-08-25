@@ -7,23 +7,12 @@
 #ifndef HAMON_BIT_ENDIAN_HPP
 #define HAMON_BIT_ENDIAN_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_ENDIAN)
-
-#include <bit>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-using std::endian;
-
-}	// namespace hamon
-
-#else
-
-namespace hamon
-{
+// 22.11.10 Endian[bit.endian]
 
 enum class endian
 {
@@ -49,7 +38,5 @@ enum class endian
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_ENDIAN_HPP

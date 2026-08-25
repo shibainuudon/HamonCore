@@ -7,33 +7,16 @@
 #ifndef HAMON_BIT_BIT_WIDTH_HPP
 #define HAMON_BIT_BIT_WIDTH_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_INT_POW2) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930)) && \
-	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)) && \
-	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 160000))
-// LWG Issue 3656 が適用される前の標準ライブラリは、bit_widthの戻り値の型が int になっていないので使わない
-#include <bit>
-
-namespace hamon
-{
-
-using std::bit_width;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/bit/countl_zero.hpp>
-#include <hamon/bit/bitsof.hpp>
-#include <hamon/cstddef/size_t.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 22.11.5 Integral powers of 2[bit.pow.two]
 
 /**
  *	@brief	値を表現するために必要なビット幅を求める。
@@ -49,20 +32,14 @@ namespace hamon
  *	戻り値に1を足す理由は、対数を求められない0を引数として許容することでnoexceptとし、
  *	かつx == 1である場合と区別するためである。
  */
-template <
-	typename T,
-	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value
-	>
->
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR int
-bit_width(T x) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>	// [bit.pow.two]/11
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+int bit_width(T x) HAMON_NOEXCEPT
 {
-	return static_cast<int>(hamon::bitsof(x)) - hamon::countl_zero(x);
+	// [bit.pow.two]/12
+	return hamon::numeric_limits<T>::digits - hamon::countl_zero(x);
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_BIT_WIDTH_HPP

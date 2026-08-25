@@ -9,11 +9,14 @@
 
 #include <hamon/bit/bit_cast.hpp>
 #include <hamon/bit/bit_ceil.hpp>
+//#include <hamon/bit/bit_compress.hpp>	// since C++29
+//#include <hamon/bit/bit_expand.hpp>	// since C++29
 #include <hamon/bit/bit_floor.hpp>
+//#include <hamon/bit/bit_repeat.hpp>	// since C++29
+//#include <hamon/bit/bit_reverse.hpp>	// since C++29
 #include <hamon/bit/bit_width.hpp>
 #include <hamon/bit/bitsof.hpp>
-#include <hamon/bit/byteswap.hpp>
-#include <hamon/bit/config.hpp>
+#include <hamon/bit/byteswap.hpp>	// since C++23
 #include <hamon/bit/countl_one.hpp>
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/bit/countr_one.hpp>
@@ -23,7 +26,7 @@
 #include <hamon/bit/popcount.hpp>
 #include <hamon/bit/rotl.hpp>
 #include <hamon/bit/rotr.hpp>
-#include <hamon/bit/shl.hpp>
-#include <hamon/bit/shr.hpp>
+#include <hamon/bit/shl.hpp>	// since C++29
+#include <hamon/bit/shr.hpp>	// since C++29
 
 #endif // HAMON_BIT_HPP

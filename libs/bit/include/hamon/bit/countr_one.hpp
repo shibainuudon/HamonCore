@@ -7,28 +7,15 @@
 #ifndef HAMON_BIT_COUNTR_ONE_HPP
 #define HAMON_BIT_COUNTR_ONE_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_BITOPS)
-
-#include <bit>
-
-namespace hamon
-{
-
-using std::countr_one;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/bit/countr_zero.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 22.11.8 Counting[bit.count]
 
 /**
  *	@brief	最下位から1のビットが連続でいくつあるかを返す。(Count Trailing Ones)
@@ -39,20 +26,14 @@ namespace hamon
  *
  *	@return x を2進数で表現した際に、最下位ビットから1が何ビット続くかを返す。
  */
-template <
-	typename T,
-	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value
-	>
->
-inline HAMON_CONSTEXPR int
-countr_one(T x) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>	// [bit.count]/8
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+int countr_one(T x) HAMON_NOEXCEPT
 {
+	// [bit.count]/9
 	return countr_zero(static_cast<T>(~x));
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_COUNTR_ONE_HPP

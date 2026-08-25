@@ -6,11 +6,10 @@
 
 #include <hamon/bit/countr_one.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4307)	// 整数定数がオーバーフローしました。
 
 namespace hamon_bit_test
 {
@@ -21,6 +20,8 @@ namespace countr_one_test
 template <typename T>
 void CountrOneTestU8(void)
 {
+	static_assert(hamon::is_same_v<int, decltype(hamon::countr_one(hamon::declval<T>()))>, "");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(8, hamon::countr_one((T)0xff));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, hamon::countr_one((T)0x7f));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(6, hamon::countr_one((T)0x3f));
@@ -227,5 +228,3 @@ GTEST_TEST(BitTest, CountrOneTest)
 }	// namespace countr_one_test
 
 }	// namespace hamon_bit_test
-
-HAMON_WARNING_POP()

@@ -7,42 +7,17 @@
 #ifndef HAMON_BIT_ROTR_HPP
 #define HAMON_BIT_ROTR_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_BITOPS)
-
-#include <bit>
-
-namespace hamon
-{
-
-using std::rotr;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/bit/bitsof.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_unsigned.hpp>
-//#include <hamon/limits.hpp>
+#include <hamon/bit/detail/rotr_impl.hpp>
+#include <hamon/bit/detail/rotl_impl.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-namespace detail
-{
-
-template <int N, typename T>
-inline HAMON_CXX11_CONSTEXPR T
-rotr_impl(T x, unsigned int r) HAMON_NOEXCEPT
-{
-	// [bit.rotate]/7
-	return r == 0 ? x : static_cast<T>((x >> r) | (x << (N - r)));
-}
-
-}	// namespace detail
+// 22.11.7 Rotating[bit.rotate]
 
 /**
  *	@brief	環状右シフト(キャリーなし右ローテート)
@@ -57,22 +32,22 @@ rotr_impl(T x, unsigned int r) HAMON_NOEXCEPT
  *	 * r が正である場合は (x >> r) | (x << (N - r)) が返る
  *	 * r が負である場合は rotl(x, -r) が返る
  */
-template <
-	typename T,
-	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value	// [bit.rotate]/5
-	>,
-//	int N = hamon::numeric_limits<T>::digits	// [bit.rotate]/1
-	int N = hamon::bitsof<T>()
->
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR T
-rotr(T x, int s) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>	// [bit.rotate]/5
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T rotr(T x, int s) HAMON_NOEXCEPT
 {
-	return detail::rotr_impl<N>(x, static_cast<unsigned int>(s) % N);	// [bit.rotate]/6
+	int N = hamon::numeric_limits<T>::digits;	// [bit.rotate]/1
+	int r = s % N;	// [bit.rotate]/6
+
+	// [bit.rotate]/7
+	return
+		r == 0 ?
+			x :
+		r > 0 ?
+			hamon::detail::rotr_impl(x, N, r) :
+			hamon::detail::rotl_impl(x, N, -r);
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_ROTR_HPP

@@ -7,27 +7,14 @@
 #ifndef HAMON_BIT_HAS_SINGLE_BIT_HPP
 #define HAMON_BIT_HAS_SINGLE_BIT_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_INT_POW2)
-
-#include <bit>
-
-namespace hamon
-{
-
-using std::has_single_bit;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 22.11.5 Integral powers of 2[bit.pow.two]
 
 /**
  *	@brief	2の累乗かどうか取得する.
@@ -38,20 +25,14 @@ namespace hamon
  *
  *	@return	xが2の累乗ならtrueを返す。
  */
-template <
-	typename T,
-	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value
-	>
->
-inline HAMON_CONSTEXPR bool
-has_single_bit(T x) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>	// [bit.pow.two]/1
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool has_single_bit(T x) HAMON_NOEXCEPT
 {
+	// [bit.pow.two]/2
 	return x > 0 && ((x & (x - 1)) == 0);
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_HAS_SINGLE_BIT_HPP

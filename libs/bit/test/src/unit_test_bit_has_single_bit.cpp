@@ -6,6 +6,8 @@
 
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -18,6 +20,8 @@ namespace has_single_bit_test
 template <typename T>
 void HasSingleBitTestU8(void)
 {
+	static_assert(hamon::is_same_v<bool, decltype(hamon::has_single_bit(hamon::declval<T>()))>, "");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, hamon::has_single_bit((T) 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true , hamon::has_single_bit((T) 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true , hamon::has_single_bit((T) 2));
@@ -169,6 +173,12 @@ GTEST_TEST(BitTest, HasSingleBitTest)
 	HasSingleBitTestU32<hamon::uint64_t>();
 
 	HasSingleBitTestU64<hamon::uint64_t>();
+
+	HasSingleBitTestU8<unsigned char>();
+	HasSingleBitTestU8<unsigned short>();
+	HasSingleBitTestU8<unsigned int>();
+	HasSingleBitTestU8<unsigned long>();
+	HasSingleBitTestU8<unsigned long long>();
 }
 
 }	// namespace has_single_bit_test

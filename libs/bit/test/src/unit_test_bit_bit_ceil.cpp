@@ -6,12 +6,10 @@
 
 #include <hamon/bit/bit_ceil.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4307)	// 整数定数がオーバーフローしました。
-//HAMON_WARNING_DISABLE_MSVC(4310)	// キャストによって定数値が切り捨てられました。
 
 namespace hamon_bit_test
 {
@@ -22,6 +20,8 @@ namespace bit_ceil_test
 template <typename T>
 void BitCeilTestU8(void)
 {
+	static_assert(hamon::is_same_v<T, decltype(hamon::bit_ceil(hamon::declval<T>()))>, "");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0x01), hamon::bit_ceil(T(0x00)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0x01), hamon::bit_ceil(T(0x01)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0x02), hamon::bit_ceil(T(0x02)));
@@ -240,10 +240,14 @@ GTEST_TEST(BitTest, BitCeilTest)
 	BitCeilTestU32<hamon::uint64_t>();
 
 	BitCeilTestU64<hamon::uint64_t>();
+
+	BitCeilTestU8<unsigned char>();
+	BitCeilTestU8<unsigned short>();
+	BitCeilTestU8<unsigned int>();
+	BitCeilTestU8<unsigned long>();
+	BitCeilTestU8<unsigned long long>();
 }
 
 }	// namespace bit_ceil_test
 
 }	// namespace hamon_bit_test
-
-HAMON_WARNING_POP()

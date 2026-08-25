@@ -7,28 +7,15 @@
 #ifndef HAMON_BIT_COUNTR_ZERO_HPP
 #define HAMON_BIT_COUNTR_ZERO_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_BITOPS)
-
-#include <bit>
-
-namespace hamon
-{
-
-using std::countr_zero;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/bit/popcount.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 22.11.8 Counting[bit.count]
 
 /**
  *	@brief	最下位から0のビットが連続でいくつあるかを返す。(Count Trailing Zeros)
@@ -39,20 +26,14 @@ namespace hamon
  *
  *	@return x を2進数で表現した際に、最下位ビットから0が何ビット続くかを返す。
  */
-template <
-	typename T,
-	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value
-	>
->
-inline HAMON_CONSTEXPR int
-countr_zero(T x) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>	// [bit.count]/6
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+int countr_zero(T x) HAMON_NOEXCEPT
 {
+	// [bit.count]/7
 	return popcount<T>(static_cast<T>((~x) & (x - 1)));
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_COUNTR_ZERO_HPP

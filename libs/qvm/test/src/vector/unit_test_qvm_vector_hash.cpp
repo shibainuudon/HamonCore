@@ -15,12 +15,6 @@ namespace hamon_qvm_test
 namespace vector_test
 {
 
-#if defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#  define HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE HAMON_CXX11_CONSTEXPR_EXPECT_TRUE
-#else
-#  define HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE EXPECT_TRUE
-#endif
-
 TYPED_TEST(VectorTest, HashTest)
 {
 	using T = TypeParam;
@@ -34,10 +28,10 @@ TYPED_TEST(VectorTest, HashTest)
 		HAMON_CONSTEXPR vector2 const v3(0, 2);
 		HAMON_CONSTEXPR vector2 const v4(1, 3);
 
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v1));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v2));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v3));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v4));
 	}
 
 	{
@@ -47,11 +41,11 @@ TYPED_TEST(VectorTest, HashTest)
 		HAMON_CONSTEXPR vector3 const v4(1, 3, 3);
 		HAMON_CONSTEXPR vector3 const v5(1, 2,-3);
 
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v1));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v2));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v3));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v4));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v5));
 	}
 
 	{
@@ -62,16 +56,14 @@ TYPED_TEST(VectorTest, HashTest)
 		HAMON_CONSTEXPR vector4 const v5(1, 2,-3, 4);
 		HAMON_CONSTEXPR vector4 const v6(1, 2, 3, 1);
 
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v1));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v2));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v3));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v4));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v5));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) == hamon::ranges::hash(v2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(v1) != hamon::ranges::hash(v6));
 	}
 }
-
-#undef HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE
 
 }	// namespace vector_test
 

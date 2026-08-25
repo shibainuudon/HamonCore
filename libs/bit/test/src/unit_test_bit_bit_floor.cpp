@@ -6,6 +6,8 @@
 
 #include <hamon/bit/bit_floor.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -18,6 +20,8 @@ namespace bit_floor_test
 template <typename T>
 void BitFloorTestU8(void)
 {
+	static_assert(hamon::is_same_v<T, decltype(hamon::bit_floor(hamon::declval<T>()))>, "");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0x00), hamon::bit_floor(T(0x00)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0x01), hamon::bit_floor(T(0x01)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0x02), hamon::bit_floor(T(0x02)));
@@ -244,6 +248,12 @@ GTEST_TEST(BitTest, BitFloorTest)
 	BitFloorTestU32<hamon::uint64_t>();
 
 	BitFloorTestU64<hamon::uint64_t>();
+
+	BitFloorTestU8<unsigned char>();
+	BitFloorTestU8<unsigned short>();
+	BitFloorTestU8<unsigned int>();
+	BitFloorTestU8<unsigned long>();
+	BitFloorTestU8<unsigned long long>();
 }
 
 }	// namespace bit_floor_test

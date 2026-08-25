@@ -23,18 +23,6 @@
 #include "constexpr_test.hpp"
 #include "get_random_value.hpp"
 
-#if defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
-#  define HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ HAMON_CXX11_CONSTEXPR_EXPECT_EQ
-#  define HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE HAMON_CXX11_CONSTEXPR_EXPECT_NE
-#  define HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ HAMON_CXX14_CONSTEXPR_EXPECT_EQ
-#  define HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_NE HAMON_CXX14_CONSTEXPR_EXPECT_NE
-#else
-#  define HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ EXPECT_EQ
-#  define HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE EXPECT_NE
-#  define HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ EXPECT_EQ
-#  define HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_NE EXPECT_NE
-#endif
-
 namespace hamon_functional_test
 {
 
@@ -221,28 +209,28 @@ void HashFloatTest()
 	HAMON_CXX11_CONSTEXPR T const inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR T const nan = hamon::numeric_limits<T>::quiet_NaN();
 
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(T(0)), hamon::ranges::hash(T(0)));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(1)));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(T(-1)), hamon::ranges::hash(T(-1)));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(T(0) + eps));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(T(0) - eps));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(1) + eps));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(1) - eps));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(T(0)), hamon::ranges::hash(T(0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(T(-1)), hamon::ranges::hash(T(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(T(0) + eps));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(T(0) - eps));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(1) + eps));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(1) - eps));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(1)), hamon::ranges::hash(T(-1)));
 
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(eps), hamon::ranges::hash(eps));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(max), hamon::ranges::hash(max));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(min), hamon::ranges::hash(min));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(low), hamon::ranges::hash(low));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(inf), hamon::ranges::hash(inf));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(nan), hamon::ranges::hash(nan));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(eps), hamon::ranges::hash(eps));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(max), hamon::ranges::hash(max));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(min), hamon::ranges::hash(min));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(low), hamon::ranges::hash(low));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(inf), hamon::ranges::hash(inf));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(nan), hamon::ranges::hash(nan));
 
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(eps));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(max));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(min));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(low));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(inf));
-	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(nan));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(eps));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(max));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(min));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(low));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(inf));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(T(0)), hamon::ranges::hash(nan));
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -343,10 +331,10 @@ GTEST_TEST(FunctionalTest, RangesHashArrayTest)
 		HAMON_CXX11_CONSTEXPR float b[] = {0.0f, 0.5f, -1.5f, 2.0f};
 		HAMON_CXX11_CONSTEXPR float c[] = {0.0f, 0.5f, -1.5f};
 		HAMON_CXX11_CONSTEXPR float d[] = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
-		HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(a));
-		HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(b));
-		HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(c));
-		HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(d));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(a));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(b));
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(c));
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(d));
 	}
 }
 
@@ -366,10 +354,10 @@ GTEST_TEST(FunctionalTest, RangesHashStdArrayTest)
 		HAMON_CXX11_CONSTEXPR hamon::array<float, 4> b = {0.0f, 0.5f, -1.5f, 2.0f};
 		HAMON_CXX11_CONSTEXPR hamon::array<float, 3> c = {0.0f, 0.5f, -1.5f};
 		HAMON_CXX11_CONSTEXPR hamon::array<float, 5> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
-		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(a));
-		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(b));
-		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(c));
-		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(d));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash(a), hamon::ranges::hash(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(c));
+		HAMON_CXX14_CONSTEXPR_EXPECT_NE(hamon::ranges::hash(a), hamon::ranges::hash(d));
 	}
 }
 
@@ -447,7 +435,7 @@ GTEST_TEST(FunctionalTest, RangesHashPairTest)
 {
 	{
 		HAMON_CXX14_CONSTEXPR std::pair<int, float> p {1, 2.5f};
-		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 1, 2.5f), hamon::ranges::hash(p));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 1, 2.5f), hamon::ranges::hash(p));
 	}
 	{
 		HAMON_CXX14_CONSTEXPR std::pair<S1, S1> p{S1{3}, S1{4}};
@@ -471,7 +459,7 @@ GTEST_TEST(FunctionalTest, RangesHashTupleTest)
 	}
 	{
 		HAMON_CXX14_CONSTEXPR std::tuple<S1, float, S1, int> t{S1{4}, 5.5f, S1{6}, 7};
-		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::ranges::hash(t));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::ranges::hash(t));
 	}
 }
 
@@ -498,8 +486,3 @@ GTEST_TEST(FunctionalTest, RangesHashUniquePtrTest)
 }	// namespace ranges_hash_test
 
 }	// namespace hamon_functional_test
-
-#undef HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ
-#undef HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_NE
-#undef HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ
-#undef HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_NE

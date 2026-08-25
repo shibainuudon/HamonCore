@@ -6,11 +6,10 @@
 
 #include <hamon/bit/popcount.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4307)	// 整数定数がオーバーフローしました。
 
 namespace hamon_bit_test
 {
@@ -21,6 +20,8 @@ namespace popcount_test
 template <typename T>
 void PopCountTestU8(void)
 {
+	static_assert(hamon::is_same_v<int, decltype(hamon::popcount(hamon::declval<T>()))>, "");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::popcount((T)0x00));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::popcount((T)0x01));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::popcount((T)0x02));
@@ -202,10 +203,14 @@ GTEST_TEST(BitTest, PopCountTest)
 	PopCountTestU32<hamon::uint64_t>();
 
 	PopCountTestU64<hamon::uint64_t>();
+
+	PopCountTestU8<unsigned char>();
+	PopCountTestU8<unsigned short>();
+	PopCountTestU8<unsigned int>();
+	PopCountTestU8<unsigned long>();
+	PopCountTestU8<unsigned long long>();
 }
 
 }	// namespace popcount_test
 
 }	// namespace hamon_bit_test
-
-HAMON_WARNING_POP()

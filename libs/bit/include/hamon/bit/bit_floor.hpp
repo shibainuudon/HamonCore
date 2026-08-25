@@ -7,71 +7,16 @@
 #ifndef HAMON_BIT_BIT_FLOOR_HPP
 #define HAMON_BIT_BIT_FLOOR_HPP
 
-#include <hamon/bit/config.hpp>
-
-#if defined(HAMON_HAS_CXX_LIB_INT_POW2)
-
-#include <bit>
-
-namespace hamon
-{
-
-using std::bit_floor;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/bit/bitsof.hpp>
-#include <hamon/cstddef/size_t.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/bit/countl_zero.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-namespace detail
-{
-
-// このアルゴリズムに関する詳細は
-// Hacker's Delight (ハッカーのたのしみ) ヘンリー・S・ウォーレン、ジュニア著
-// http://www.hackersdelight.org/
-// を参照してください。
-//
-//	元々のコードは
-//	uint64_t bit_floor(uint64_t x)
-//	{
-//		x = x | (x >> 1);
-//		x = x | (x >> 2);
-//		x = x | (x >> 4);
-//		x = x | (x >> 8);
-//		x = x | (x >>16);
-//		x = x | (x >>32);
-//		return x - (x >> 1);
-//	}
-//
-//	これを任意のビット数に拡張しています。
-
-template <typename T, hamon::size_t N>
-struct bit_floor_impl
-{
-	static HAMON_CONSTEXPR T invoke(T x) HAMON_NOEXCEPT
-	{
-		return bit_floor_impl<T, N / 2>::invoke(static_cast<T>(x | (x >> N)));
-	}
-};
-
-template <typename T>
-struct bit_floor_impl<T, 0>
-{
-	static HAMON_CONSTEXPR T invoke(T x) HAMON_NOEXCEPT
-	{
-		return static_cast<T>(x - (x >> 1));
-	}
-};
-
-}	// namespace detail
+// 22.11.5 Integral powers of 2[bit.pow.two]
 
 /**
  *	@brief	2の累乗への切り下げ
@@ -83,20 +28,14 @@ struct bit_floor_impl<T, 0>
  *	@return xが0のときは0を返す。
  *          そうでない場合、x 以下の最大の2の累乗を返す。
  */
-template <
-	typename T,
-	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value
-	>
->
-inline HAMON_CONSTEXPR T
-bit_floor(T x) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>	// [bit.pow.two]/9
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T bit_floor(T x) HAMON_NOEXCEPT
 {
-	return detail::bit_floor_impl<T, bitsof(x) / 2>::invoke(x);
+	// [bit.pow.two]/10
+	return x == 0 ? T(0) : static_cast<T>(T(1) << (hamon::numeric_limits<T>::digits - hamon::countl_zero(static_cast<T>(x >> 1))));
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_BIT_BIT_FLOOR_HPP
