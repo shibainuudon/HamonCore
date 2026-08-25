@@ -15,6 +15,8 @@
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_trivially_default_constructible.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_queue_test

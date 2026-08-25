@@ -14,6 +14,9 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <list>
+#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 

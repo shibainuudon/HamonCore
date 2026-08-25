@@ -31,6 +31,9 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <list>
+#include <vector>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"

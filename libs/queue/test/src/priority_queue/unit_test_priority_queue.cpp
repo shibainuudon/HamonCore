@@ -7,6 +7,7 @@
 #include <hamon/queue.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
+#include <vector>
 
 namespace hamon_priority_queue_test
 {

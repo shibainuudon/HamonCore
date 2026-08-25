@@ -20,6 +20,8 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/swap.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_priority_queue_test

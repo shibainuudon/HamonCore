@@ -17,6 +17,9 @@
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <list>
+#include <vector>
 #include "constexpr_test.hpp"
 #include "stack_test_helper.hpp"
 

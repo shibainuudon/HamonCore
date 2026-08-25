@@ -15,6 +15,8 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_queue_test

@@ -17,6 +17,8 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
+#include <deque>
+#include <vector>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 
