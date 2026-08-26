@@ -49,46 +49,6 @@ void test()
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
-#if defined(HAMON_USE_STD_COMPLEX)
-	{
-		auto x = hamon::sqrt(hamon::complex<T>(1.0, 2.0));
-		EXPECT_NEAR( 1.272019649514069,   (double)x.real(), error);
-		EXPECT_NEAR( 0.78615137775742328, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::sqrt(hamon::complex<T>(1.0, -2.0));
-		EXPECT_NEAR( 1.272019649514069,   (double)x.real(), error);
-		EXPECT_NEAR(-0.78615137775742328, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::sqrt(hamon::complex<T>(-3.0, 1.5));
-		EXPECT_NEAR( 0.42077426623409642, (double)x.real(), error);
-		EXPECT_NEAR( 1.7824283949502271,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::sqrt(hamon::complex<T>(-2.0, -1.0));
-		EXPECT_NEAR( 0.34356074972251244, (double)x.real(), error);
-		EXPECT_NEAR(-1.4553466902253549,  (double)x.imag(), error);
-	}
-
-	// sqrt(conj(z)) == conj(sqrt(z))
-	{
-		hamon::complex<T> z{1.0, 2.0};
-		EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
-	}
-	{
-		hamon::complex<T> z{1.0, -2.0};
-		EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
-	}
-	{
-		hamon::complex<T> z{-2.5, 4.5};
-		EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
-	}
-	{
-		hamon::complex<T> z{-2.5, -4.5};
-		EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
-	}
-#else
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::sqrt(hamon::complex<T>(1.0, 2.0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.272019649514069,   (double)x.real(), error);
@@ -171,7 +131,6 @@ void test()
 
 	// If z is (NaN,NaN), the result is (NaN,NaN)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(nan, nan), hamon::sqrt(hamon::complex<T>(nan, nan))));
-#endif
 }
 
 GTEST_TEST(ComplexTest, SqrtTest)

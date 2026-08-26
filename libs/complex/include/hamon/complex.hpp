@@ -16,7 +16,6 @@
 #include <hamon/complex/atan.hpp>
 #include <hamon/complex/atanh.hpp>
 #include <hamon/complex/complex.hpp>
-#include <hamon/complex/config.hpp>
 #include <hamon/complex/conj.hpp>
 #include <hamon/complex/cos.hpp>
 #include <hamon/complex/cosh.hpp>

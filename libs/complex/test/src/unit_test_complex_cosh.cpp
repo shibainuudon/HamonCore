@@ -50,67 +50,6 @@ void test()
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
-#if defined(HAMON_USE_STD_COMPLEX)
-
-	{
-		auto x = hamon::cosh(hamon::complex<T>(1.0, 2.0));
-		EXPECT_NEAR(-0.64214812471551996, (double)x.real(), error);
-		EXPECT_NEAR( 1.0686074213827783,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::cosh(hamon::complex<T>(-2.5, 1.5));
-		EXPECT_NEAR( 0.433780997607703,  (double)x.real(), error);
-		EXPECT_NEAR(-6.0350486377665717, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::cosh(hamon::complex<T>(3.0, -1.5));
-		EXPECT_NEAR( 0.71215823691759994, (double)x.real(), error);
-		EXPECT_NEAR(-9.9927800165178322,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::cosh(hamon::complex<T>(-1.5, -3.5));
-		EXPECT_NEAR(-2.2029297154417082,  (double)x.real(), error);
-		EXPECT_NEAR(-0.74691551991135496, (double)x.imag(), error);
-	}
-
-	// cosh(conj(z)) == conj(cosh(z))
-	{
-		hamon::complex<T> z{1.0, 2.5};
-		EXPECT_TRUE((complex_near(hamon::cosh(hamon::conj(z)), hamon::conj(hamon::cosh(z)), error)));
-	}
-	{
-		hamon::complex<T> z{2.0, -2.5};
-		EXPECT_TRUE((complex_near(hamon::cosh(hamon::conj(z)), hamon::conj(hamon::cosh(z)), error)));
-	}
-	{
-		hamon::complex<T> z{-2.5, 1.5};
-		EXPECT_TRUE((complex_near(hamon::cosh(hamon::conj(z)), hamon::conj(hamon::cosh(z)), error)));
-	}
-	{
-		hamon::complex<T> z{-1.5, -3.5};
-		EXPECT_TRUE((complex_near(hamon::cosh(hamon::conj(z)), hamon::conj(hamon::cosh(z)), error)));
-	}
-
-	// cosh(z) == cosh(-z)
-	{
-		hamon::complex<T> z{1.5, 2.0};
-		EXPECT_TRUE((complex_eq(hamon::cosh(z), hamon::cosh(-z))));
-	}
-	{
-		hamon::complex<T> z{-1.5, 2.5};
-		EXPECT_TRUE((complex_eq(hamon::cosh(z), hamon::cosh(-z))));
-	}
-	{
-		hamon::complex<T> z{3.5, -2.5};
-		EXPECT_TRUE((complex_eq(hamon::cosh(z), hamon::cosh(-z))));
-	}
-	{
-		hamon::complex<T> z{-2.5, -1.5};
-		EXPECT_TRUE((complex_eq(hamon::cosh(z), hamon::cosh(-z))));
-	}
-
-#else
-
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::cosh(hamon::complex<T>(1.0, 2.0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.64214812471551996, (double)x.real(), error);
@@ -230,8 +169,6 @@ void test()
 
 	// If z is (NaN,NaN), the result is (NaN,NaN)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(nan, nan), hamon::cosh(hamon::complex<T>(nan, nan))));
-
-#endif
 }
 
 GTEST_TEST(ComplexTest, CoshTest)

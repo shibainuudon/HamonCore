@@ -7,21 +7,6 @@
 #ifndef HAMON_COMPLEX_COMPLEX_HPP
 #define HAMON_COMPLEX_COMPLEX_HPP
 
-#include <hamon/complex/config.hpp>
-
-#if defined(HAMON_USE_STD_COMPLEX)
-
-#include <complex>
-
-namespace hamon
-{
-
-using std::complex;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -659,8 +644,6 @@ struct tuple_element<I, hamon::complex<T>>
 };
 
 }	// namespace std
-
-#endif
 
 #include <hamon/config.hpp>
 

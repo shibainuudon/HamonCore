@@ -50,67 +50,6 @@ void test()
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
-#if defined(HAMON_USE_STD_COMPLEX)
-
-	{
-		auto x = hamon::atanh(hamon::complex<T>(1.0, 2.0));
-		EXPECT_NEAR( 0.17328679513998629, (double)x.real(), error);
-		EXPECT_NEAR( 1.1780972450961724,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::atanh(hamon::complex<T>(-2.5, 1.5));
-		EXPECT_NEAR(-0.29251781316256364, (double)x.real(), error);
-		EXPECT_NEAR( 1.3805431382387141,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::atanh(hamon::complex<T>(3.0, -1.5));
-		EXPECT_NEAR( 0.2678959040700476, (double)x.real(), error);
-		EXPECT_NEAR(-1.4284311075335405, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::atanh(hamon::complex<T>(-4.5, -3.5));
-		EXPECT_NEAR(-0.13770773959492247, (double)x.real(), error);
-		EXPECT_NEAR(-1.4614618538579256,  (double)x.imag(), error);
-	}
-
-	// atanh(conj(z)) == conj(atanh(z))
-	{
-		hamon::complex<T> z{1.0, 2.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(hamon::conj(z)), hamon::conj(hamon::atanh(z)), error)));
-	}
-	{
-		hamon::complex<T> z{2.0, -2.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(hamon::conj(z)), hamon::conj(hamon::atanh(z)), error)));
-	}
-	{
-		hamon::complex<T> z{-2.5, 4.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(hamon::conj(z)), hamon::conj(hamon::atanh(z)), error)));
-	}
-	{
-		hamon::complex<T> z{-1.5, -3.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(hamon::conj(z)), hamon::conj(hamon::atanh(z)), error)));
-	}
-
-	// atanh(-z) == -atanh(z)
-	{
-		hamon::complex<T> z{1.5, 2.0};
-		EXPECT_TRUE((complex_near(hamon::atanh(-z), -hamon::atanh(z), error)));
-	}
-	{
-		hamon::complex<T> z{-1.5, 2.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(-z), -hamon::atanh(z), error)));
-	}
-	{
-		hamon::complex<T> z{3.5, -2.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(-z), -hamon::atanh(z), error)));
-	}
-	{
-		hamon::complex<T> z{-2.5, -1.5};
-		EXPECT_TRUE((complex_near(hamon::atanh(-z), -hamon::atanh(z), error)));
-	}
-
-#else
-
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::atanh(hamon::complex<T>(1.0, 2.0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.17328679513998629, (double)x.real(), error);
@@ -213,8 +152,6 @@ void test()
 
 	// If z is (NaN,NaN), the result is (NaN,NaN)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(nan, nan), hamon::atanh(hamon::complex<T>(nan, nan))));
-
-#endif
 }
 
 GTEST_TEST(ComplexTest, AtanhTest)

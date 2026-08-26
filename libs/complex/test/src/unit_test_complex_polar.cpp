@@ -53,57 +53,6 @@ void test()
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
-#if defined(HAMON_USE_STD_COMPLEX)
-	// hamon::polar(1, 0°) == hamon::complex( 1,  0)
-	{
-		auto x = hamon::polar(T{1}, half_pi * 0);
-		EXPECT_NEAR(1.0, (double)x.real(), error);
-		EXPECT_NEAR(0.0, (double)x.imag(), error);
-	}
-	// hamon::polar(1, 90°) == hamon::complex( 0,  1)
-	{
-		auto x = hamon::polar(T{1}, half_pi * 1);
-		EXPECT_NEAR( 0.0, (double)x.real(), error);
-		EXPECT_NEAR( 1.0, (double)x.imag(), error);
-	}
-	// hamon::polar(1, 180°) == hamon::complex(-1,  0)
-	{
-		auto x = hamon::polar(T{1}, half_pi * 2);
-		EXPECT_NEAR(-1.0, (double)x.real(), error);
-		EXPECT_NEAR( 0.0, (double)x.imag(), error);
-	}
-	// hamon::polar(1, 270°) == hamon::complex( 0, -1)
-	{
-		auto x = hamon::polar(T{1}, half_pi * 3);
-		EXPECT_NEAR( 0.0, (double)x.real(), error);
-		EXPECT_NEAR(-1.0, (double)x.imag(), error);
-	}
-
-	// hamon::polar(2, 0°) == hamon::complex( 2,  0)
-	{
-		auto x = hamon::polar(T{2});
-		EXPECT_NEAR(2.0, (double)x.real(), error);
-		EXPECT_NEAR(0.0, (double)x.imag(), error);
-	}
-	// hamon::polar(3, 90°) == hamon::complex( 0,  3)
-	{
-		auto x = hamon::polar(T{3}, half_pi * 1);
-		EXPECT_NEAR( 0.0, (double)x.real(), error);
-		EXPECT_NEAR( 3.0, (double)x.imag(), error);
-	}
-	// hamon::polar(4, 180°) == hamon::complex(-4,  0)
-	{
-		auto x = hamon::polar(T{4}, half_pi * 2);
-		EXPECT_NEAR(-4.0, (double)x.real(), error);
-		EXPECT_NEAR( 0.0, (double)x.imag(), error);
-	}
-	// hamon::polar(5, 270°) == hamon::complex( 0, -5)
-	{
-		auto x = hamon::polar(T{5}, half_pi * 3);
-		EXPECT_NEAR( 0.0, (double)x.real(), error);
-		EXPECT_NEAR(-5.0, (double)x.imag(), error);
-	}
-#else
 	// hamon::polar(1, 0°) == hamon::complex( 1,  0)
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::polar(T{1}, half_pi * 0);
@@ -153,7 +102,6 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0, (double)x.real(), error);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-5.0, (double)x.imag(), error);
 	}
-#endif
 }
 
 GTEST_TEST(ComplexTest, PolarTest)

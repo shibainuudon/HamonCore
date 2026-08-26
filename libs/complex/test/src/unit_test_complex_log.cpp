@@ -50,46 +50,6 @@ void test()
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
-#if defined(HAMON_USE_STD_COMPLEX)
-	{
-		auto x = hamon::log(hamon::complex<T>(1.0, 2.0));
-		EXPECT_NEAR( 0.80471895621705014, (double)x.real(), error);
-		EXPECT_NEAR( 1.1071487177940904,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::log(hamon::complex<T>(1.5, -1.5));
-		EXPECT_NEAR( 0.75203869838813697, (double)x.real(), error);
-		EXPECT_NEAR(-0.78539816339744828, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::log(hamon::complex<T>(-3.0, 1.5));
-		EXPECT_NEAR(1.2101840643252146, (double)x.real(), error);
-		EXPECT_NEAR(2.677945044588987,  (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::log(hamon::complex<T>(-1.5, -2.5));
-		EXPECT_NEAR( 1.0700330817481354, (double)x.real(), error);
-		EXPECT_NEAR(-2.1112158270654806, (double)x.imag(), error);
-	}
-
-	// log(conj(z)) == conj(log(z))
-	{
-		hamon::complex<T> z{1.5, 2.0};
-		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
-	}
-	{
-		hamon::complex<T> z{1.5, -2.0};
-		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
-	}
-	{
-		hamon::complex<T> z{-2.5, 4.5};
-		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
-	}
-	{
-		hamon::complex<T> z{-2.5, -3.5};
-		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
-	}
-#else
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::log(hamon::complex<T>(1.0, 2.0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.80471895621705014, (double)x.real(), error);
@@ -176,7 +136,6 @@ void test()
 
 	// If z is (NaN,NaN), the result is (NaN,NaN)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(nan, nan), hamon::log(hamon::complex<T>(nan, nan))));
-#endif
 }
 
 GTEST_TEST(ComplexTest, LogTest)

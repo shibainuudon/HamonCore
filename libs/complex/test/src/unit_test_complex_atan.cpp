@@ -47,28 +47,6 @@ void test()
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
-#if defined(HAMON_USE_STD_COMPLEX)
-	{
-		auto x = hamon::atan(hamon::complex<T>(1.0, 2.0));
-		EXPECT_NEAR( 1.3389725222944935,  (double)x.real(), error);
-		EXPECT_NEAR( 0.40235947810852507, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::atan(hamon::complex<T>(-2.5, 1.5));
-		EXPECT_NEAR(-1.2767950250211129,  (double)x.real(), error);
-		EXPECT_NEAR( 0.16348161685166601, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::atan(hamon::complex<T>(3.0, -1.5));
-		EXPECT_NEAR( 1.3060015274038583,  (double)x.real(), error);
-		EXPECT_NEAR(-0.12498898788227171, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::atan(hamon::complex<T>(-4.5, -3.5));
-		EXPECT_NEAR(-1.4316464972923408,  (double)x.real(), error);
-		EXPECT_NEAR(-0.10603931028007922, (double)x.imag(), error);
-	}
-#else
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::atan(hamon::complex<T>(1.0, 2.0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.3389725222944935,  (double)x.real(), error);
@@ -89,7 +67,6 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.4316464972923408,  (double)x.real(), error);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.10603931028007922, (double)x.imag(), error);
 	}
-#endif
 }
 
 GTEST_TEST(ComplexTest, AtanTest)

@@ -74,49 +74,6 @@ void test()
 	HAMON_CXX11_CONSTEXPR double error1 = get_error<T1>();
 	HAMON_CXX11_CONSTEXPR double error2 = get_error<T2>();
 	
-#if defined(HAMON_USE_STD_COMPLEX)
-
-	{
-		auto x = hamon::pow(hamon::complex<T1>(1, 2), hamon::complex<T2>(3, 4));
-		EXPECT_NEAR(0.12900959407446694,  (double)x.real(), error);
-		EXPECT_NEAR(0.033924092905170011, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::pow(hamon::complex<T1>(-1.0, +0.0), T2{0.5});
-		EXPECT_NEAR( 0.0, (double)x.real(), error);
-		EXPECT_NEAR( 1.0, (double)x.imag(), error);
-	}
-	//{
-	//	auto x = hamon::pow(hamon::complex<T1>(-1.0, -0.0), T2{0.5});
-	//	EXPECT_NEAR( 0.0, (double)x.real(), error);
-	//	EXPECT_NEAR(-1.0, (double)x.imag(), error);
-	//}
-	{
-		auto x = hamon::pow(T1{2}, hamon::complex<T2>{-3, 4});
-		EXPECT_NEAR(-0.11658588460450894,  (double)x.real(), error);
-		EXPECT_NEAR( 0.045085823836147648, (double)x.imag(), error);
-	}
-	{
-		auto x = hamon::pow(hamon::complex<T1>(1, 2), int{2});
-		EXPECT_NEAR(-3.0, (double)x.real(), error1);
-		EXPECT_NEAR( 4.0, (double)x.imag(), error1);
-	}
-	{
-		auto x = hamon::pow(int{3}, hamon::complex<T2>{1.5, 2.5});
-		EXPECT_NEAR(-4.7959069906319129, (double)x.real(), error2);
-		EXPECT_NEAR( 1.9998190261141024, (double)x.imag(), error2);
-	}
-
-	EXPECT_EQ(
-		hamon::pow(hamon::complex<T1>(1, 2), hamon::complex<T2>(3, 0)),
-		hamon::pow(hamon::complex<T1>(1, 2), T2(3)));
-
-	EXPECT_EQ(
-		hamon::pow(hamon::complex<T1>(2, 0), hamon::complex<T2>(3, 4)),
-		hamon::pow(T1(2),                    hamon::complex<T2>(3, 4)));
-
-#else
-
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::pow(hamon::complex<T1>(1, 2), hamon::complex<T2>(3, 4));
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.12900959407446694,  (double)x.real(), error);
@@ -155,8 +112,6 @@ void test()
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(
 		hamon::pow(hamon::complex<T1>(2, 0), hamon::complex<T2>(3, 4)),
 		hamon::pow(T1(2),                    hamon::complex<T2>(3, 4)));
-
-#endif
 }
 
 GTEST_TEST(ComplexTest, PowTest)
