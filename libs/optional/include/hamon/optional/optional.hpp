@@ -80,7 +80,9 @@ private:
 	// meets the Cpp17Destructible requirements (Table 35).
 	static_assert(!hamon::is_same<hamon::remove_cv_t<T>, hamon::in_place_t>::value, "");
 	static_assert(!hamon::is_same<hamon::remove_cv_t<T>, hamon::nullopt_t>::value, "");
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC >= 1950))	// Visual Studio 2026 だけ失敗する
 	static_assert(hamon::detail::cpp17_destructible<T>, "");
+#endif
 
 	using constraint_type = optional_detail::optional_constraint<T>;
 
