@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_USES_ALLOCATOR_CONSTRUCTION_ARGS_HPP
 #define HAMON_MEMORY_USES_ALLOCATOR_CONSTRUCTION_ARGS_HPP
 
-#include <memory>
-
-#if 0
-
-namespace hamon
-{
-
-using std::uses_allocator_construction_args;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/detail/uses_allocator_construction_type.hpp>
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
@@ -321,7 +308,5 @@ HAMON_DECLTYPE_RETURN(
 }	// namespace hamon
 
 #include <hamon/memory/make_obj_using_allocator.hpp>
-
-#endif
 
 #endif // HAMON_MEMORY_USES_ALLOCATOR_CONSTRUCTION_ARGS_HPP

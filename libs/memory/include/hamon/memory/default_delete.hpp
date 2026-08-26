@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_DEFAULT_DELETE_HPP
 #define HAMON_MEMORY_DEFAULT_DELETE_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_DEFAULT_DELETE)
-
-namespace hamon
-{
-
-using std::default_delete;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/config.hpp>
@@ -81,7 +68,5 @@ struct default_delete<T[]>
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_DEFAULT_DELETE_HPP

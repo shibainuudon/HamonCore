@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_GET_DELETER_HPP
 #define HAMON_MEMORY_GET_DELETER_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_PTR)
-
-namespace hamon
-{
-
-using std::get_deleter;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/detail/sp_access.hpp>
 #include <hamon/config.hpp>
@@ -36,7 +23,5 @@ get_deleter(shared_ptr<T> const& p) noexcept
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_GET_DELETER_HPP

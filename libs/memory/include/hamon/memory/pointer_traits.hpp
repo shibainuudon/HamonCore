@@ -7,24 +7,6 @@
 #ifndef HAMON_MEMORY_POINTER_TRAITS_HPP
 #define HAMON_MEMORY_POINTER_TRAITS_HPP
 
-#include <hamon/config.hpp>
-#include <memory>
-
-#if defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 201811L) &&	\
-	0	// 標準ライブラリが、"LWG3545: std::pointer_traits should be SFINAE-friendly" を実装しているかどうか判定するのが難しいので、常に自前の実装を使う
-
-#define HAMON_USE_STD_POINTER_TRAITS
-#define HAMON_POINTER_TRAITS_NAMESPACE std
-
-namespace hamon
-{
-
-using std::pointer_traits;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/detail/ptr_traits_elem.hpp>
 #include <hamon/memory/detail/ptr_traits_diff.hpp>
@@ -35,7 +17,6 @@ using std::pointer_traits;
 #include <hamon/utility/declval.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 
-#define HAMON_POINTER_TRAITS_NAMESPACE hamon
 
 namespace hamon
 {
@@ -108,7 +89,5 @@ public:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_POINTER_TRAITS_HPP

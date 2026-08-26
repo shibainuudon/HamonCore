@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_UNINITIALIZED_CONSTRUCT_USING_ALLOCATOR_HPP
 #define HAMON_MEMORY_UNINITIALIZED_CONSTRUCT_USING_ALLOCATOR_HPP
 
-#include <memory>
-
-#if 0
-
-namespace hamon
-{
-
-using std::uninitialized_construct_using_allocator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/uses_allocator_construction_args.hpp>
 #include <hamon/tuple/apply.hpp>
@@ -57,7 +44,5 @@ constexpr T* uninitialized_construct_using_allocator(T* p, const Alloc& alloc, A
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_UNINITIALIZED_CONSTRUCT_USING_ALLOCATOR_HPP

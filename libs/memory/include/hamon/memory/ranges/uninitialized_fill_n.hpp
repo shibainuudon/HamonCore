@@ -7,23 +7,6 @@
 #ifndef HAMON_MEMORY_RANGES_UNINITIALIZED_FILL_N_HPP
 #define HAMON_MEMORY_RANGES_UNINITIALIZED_FILL_N_HPP
 
-#include <hamon/config.hpp>
-#include <memory>
-
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::uninitialized_fill_n;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
@@ -33,6 +16,7 @@ using std::ranges::uninitialized_fill_n;
 #include <hamon/memory/ranges/detail/nothrow_forward_iterator.hpp>
 #include <hamon/memory/ranges/uninitialized_fill.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -75,7 +59,5 @@ detail::uninitialized_fill_n_fn uninitialized_fill_n{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RANGES_UNINITIALIZED_FILL_N_HPP

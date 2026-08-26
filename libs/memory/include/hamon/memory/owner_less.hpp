@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_OWNER_LESS_HPP
 #define HAMON_MEMORY_OWNER_LESS_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_PTR)
-
-namespace hamon
-{
-
-using std::owner_less;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/weak_ptr.hpp>
 #include <hamon/config.hpp>
@@ -120,7 +107,5 @@ struct owner_less<void>
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_OWNER_LESS_HPP

@@ -7,26 +7,10 @@
 #ifndef HAMON_MEMORY_RANGES_DESTROY_AT_HPP
 #define HAMON_MEMORY_RANGES_DESTROY_AT_HPP
 
-#include <hamon/config.hpp>
-#include <memory>
-
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::destroy_at;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/memory/destroy_at.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -60,7 +44,5 @@ detail::destroy_at_fn destroy_at{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RANGES_DESTROY_AT_HPP

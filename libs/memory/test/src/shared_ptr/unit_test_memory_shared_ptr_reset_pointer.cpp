@@ -54,7 +54,6 @@ static_assert(!is_invocable_reset<hamon::shared_ptr<int> const, int*>::value, ""
 static_assert(!is_invocable_reset<hamon::shared_ptr<int[]> const, int*>::value, "");
 static_assert(!is_invocable_reset<hamon::shared_ptr<int[2]> const, int*>::value, "");
 
-#if !defined(HAMON_USE_STD_SHARED_PTR)
 static_assert(!is_invocable_reset<hamon::shared_ptr<int>, int const*>::value, "");
 static_assert( is_invocable_reset<hamon::shared_ptr<int const>, int*>::value, "");
 static_assert( is_invocable_reset<hamon::shared_ptr<int const>, int const*>::value, "");
@@ -98,7 +97,6 @@ static_assert(!is_invocable_reset<hamon::shared_ptr<void>, void*>::value, "");
 static_assert( is_invocable_reset<hamon::shared_ptr<void>, int*>::value, "");
 static_assert( is_invocable_reset<hamon::shared_ptr<void>, Base*>::value, "");
 static_assert( is_invocable_reset<hamon::shared_ptr<void>, Derived*>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

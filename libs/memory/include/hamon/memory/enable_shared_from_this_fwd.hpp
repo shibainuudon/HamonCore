@@ -7,21 +7,11 @@
 #ifndef HAMON_MEMORY_ENABLE_SHARED_FROM_THIS_FWD_HPP
 #define HAMON_MEMORY_ENABLE_SHARED_FROM_THIS_FWD_HPP
 
-#include <hamon/memory/config.hpp>
-
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_SHARED_PTR)
-
-using std::enable_shared_from_this;
-
-#else
-
 template <typename T>
 class enable_shared_from_this;
-
-#endif
 
 }	// namespace hamon
 

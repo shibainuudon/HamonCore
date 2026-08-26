@@ -33,9 +33,8 @@ bool test()
 		auto p = new int[3]{1,2,3};
 		hamon::unique_ptr<int[]> up(p);
 		static_assert( hamon::is_same<int&, decltype(up[0])>::value, "");
-#if !defined(HAMON_USE_STD_UNIQUE_PTR)
 		static_assert( noexcept(up[0]), "");
-#endif
+
 		VERIFY(up[0] == 1);
 		VERIFY(up[1] == 2);
 		VERIFY(up[2] == 3);
@@ -44,9 +43,8 @@ bool test()
 		auto p = new int[3]{1,2,3};
 		hamon::unique_ptr<int[]> const up(p);
 		static_assert( hamon::is_same<int&, decltype(up[0])>::value, "");
-#if !defined(HAMON_USE_STD_UNIQUE_PTR)
 		static_assert( noexcept(up[0]), "");
-#endif
+
 		VERIFY(up[0] == 1);
 		VERIFY(up[1] == 2);
 		VERIFY(up[2] == 3);
@@ -55,9 +53,8 @@ bool test()
 		auto p = new int[3]{1,2,3};
 		hamon::unique_ptr<int const[]> up(p);
 		static_assert( hamon::is_same<int const&, decltype(up[0])>::value, "");
-#if !defined(HAMON_USE_STD_UNIQUE_PTR)
 		static_assert( noexcept(up[0]), "");
-#endif
+
 		VERIFY(up[0] == 1);
 		VERIFY(up[1] == 2);
 		VERIFY(up[2] == 3);

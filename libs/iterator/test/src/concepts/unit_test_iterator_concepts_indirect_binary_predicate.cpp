@@ -9,7 +9,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 #define HAMON_INDIRECT_BINARY_PREDICATE_TEST(B, ...)	\
 	static_assert(B == hamon::indirect_binary_predicate<__VA_ARGS__>, "")
@@ -62,7 +61,7 @@ HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, int[]);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, int[2]);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, void*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, hamon::unique_ptr<int>);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, std::shared_ptr<int>);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, hamon::shared_ptr<int>);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       int*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       hamon::vector<int>::const_iterator);

@@ -25,7 +25,6 @@ namespace shared_ptr_test
 namespace assign_unique_ptr_test
 {
 
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_DINKUMWARE))
 static_assert( hamon::is_assignable<hamon::shared_ptr<int>, hamon::unique_ptr<int      > &&>::value, "");
 static_assert(!hamon::is_assignable<hamon::shared_ptr<int>, hamon::unique_ptr<int const> &&>::value, "");
 static_assert(!hamon::is_assignable<hamon::shared_ptr<int>, hamon::unique_ptr<int      []> &&>::value, "");
@@ -67,7 +66,6 @@ static_assert(!hamon::is_assignable<hamon::shared_ptr<int const[3]>, hamon::uniq
 static_assert(!hamon::is_assignable<hamon::shared_ptr<int const[3]>, hamon::unique_ptr<int const[]> &&>::value, "");
 static_assert(!hamon::is_assignable<hamon::shared_ptr<int const[3]>, hamon::unique_ptr<int      [3]> &&>::value, "");
 static_assert(!hamon::is_assignable<hamon::shared_ptr<int const[3]>, hamon::unique_ptr<int const[3]> &&>::value, "");
-#endif
 
 static_assert( hamon::is_assignable<hamon::shared_ptr<int>, hamon::unique_ptr<int> &&>::value, "");
 static_assert( hamon::is_assignable<hamon::shared_ptr<int const>, hamon::unique_ptr<int> &&>::value, "");

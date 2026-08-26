@@ -99,21 +99,13 @@ GTEST_TEST(MemoryTest, AddressofTest)
 	}
 	{
 		HAMON_CONSTEXPR B b {};
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(0, func(&b));
-#if defined(HAMON_USE_STD_ADDRESSOF)
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(2, func(hamon::addressof(b)));
-#else
-		                      EXPECT_EQ(2, func(hamon::addressof(b)));
-#endif
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0, func(&b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, func(hamon::addressof(b)));
 	}
 	{
 		HAMON_CONSTEXPR C c {};
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(0, func(&c));
-#if defined(HAMON_USE_STD_ADDRESSOF)
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(3, func(hamon::addressof(c)));
-#else
-		                      EXPECT_EQ(3, func(hamon::addressof(c)));
-#endif
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0, func(&c));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(3, func(hamon::addressof(c)));
 	}
 }
 

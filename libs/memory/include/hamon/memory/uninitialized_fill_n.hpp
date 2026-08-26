@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_UNINITIALIZED_FILL_N_HPP
 #define HAMON_MEMORY_UNINITIALIZED_FILL_N_HPP
 
-#if 0
-
-#include <memory>
-
-namespace hamon
-{
-
-using std::uninitialized_fill_n;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/detail/uninitialized_fill_n_impl.hpp>
 
 namespace hamon
@@ -35,7 +22,5 @@ uninitialized_fill_n(NoThrowForwardIterator first, Size n, T const& x)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_UNINITIALIZED_FILL_N_HPP

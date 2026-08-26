@@ -17,7 +17,7 @@
 #include <list>
 #include <locale>
 #include <map>
-#include <memory>
+//#include <memory>
 #include <mutex>
 #include <ostream>
 #include <random>

@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_ALLOCATE_SHARED_HPP
 #define HAMON_MEMORY_ALLOCATE_SHARED_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_PTR)
-
-namespace hamon
-{
-
-using std::allocate_shared;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/detail/sp_access.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_md.hpp>
@@ -85,7 +72,5 @@ allocate_shared(A const& a, hamon::remove_extent_t<T> const& u)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_ALLOCATE_SHARED_HPP

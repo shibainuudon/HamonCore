@@ -24,7 +24,6 @@ namespace weak_ptr_test
 namespace assign_copy_conv_test
 {
 
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_DINKUMWARE))
 static_assert( hamon::is_assignable<hamon::weak_ptr<int>, hamon::weak_ptr<int      > const&>::value, "");
 static_assert(!hamon::is_assignable<hamon::weak_ptr<int>, hamon::weak_ptr<int const> const&>::value, "");
 static_assert(!hamon::is_assignable<hamon::weak_ptr<int>, hamon::weak_ptr<int      []> const&>::value, "");
@@ -66,7 +65,6 @@ static_assert(!hamon::is_assignable<hamon::weak_ptr<int const[3]>, hamon::weak_p
 static_assert(!hamon::is_assignable<hamon::weak_ptr<int const[3]>, hamon::weak_ptr<int const[]> const&>::value, "");
 static_assert( hamon::is_assignable<hamon::weak_ptr<int const[3]>, hamon::weak_ptr<int      [3]> const&>::value, "");
 static_assert( hamon::is_assignable<hamon::weak_ptr<int const[3]>, hamon::weak_ptr<int const[3]> const&>::value, "");
-#endif
 
 static_assert( hamon::is_nothrow_assignable<hamon::weak_ptr<int const>, hamon::weak_ptr<int> const&>::value, "");
 static_assert( hamon::is_nothrow_assignable<hamon::weak_ptr<int[]>, hamon::weak_ptr<int[3]> const&>::value, "");

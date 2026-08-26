@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_START_LIFETIME_AS_HPP
 #define HAMON_MEMORY_START_LIFETIME_AS_HPP
 
-#include <memory>
-
-#if defined(__cpp_lib_start_lifetime_as) && (__cpp_lib_start_lifetime_as >= 202207L)
-
-namespace hamon
-{
-
-using std::start_lifetime_as;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/new/launder.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -87,7 +74,5 @@ T const volatile* start_lifetime_as(void const volatile* p) noexcept
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_START_LIFETIME_AS_HPP

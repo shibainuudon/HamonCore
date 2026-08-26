@@ -8,7 +8,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 #include "iterator_test.hpp"
 
 #define HAMON_WEAKLY_INCREMENTABLE_TEST(B, ...)	\
@@ -57,7 +56,7 @@ HAMON_WEAKLY_INCREMENTABLE_TEST(false, void       volatile** const);
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, void const volatile** const);
 
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, hamon::unique_ptr<int>);
-HAMON_WEAKLY_INCREMENTABLE_TEST(false, std::shared_ptr<int>);
+HAMON_WEAKLY_INCREMENTABLE_TEST(false, hamon::shared_ptr<int>);
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, hamon::vector<int>);
 HAMON_WEAKLY_INCREMENTABLE_TEST(true,  hamon::vector<int>::iterator);
 HAMON_WEAKLY_INCREMENTABLE_TEST(true,  hamon::vector<int>::const_iterator);

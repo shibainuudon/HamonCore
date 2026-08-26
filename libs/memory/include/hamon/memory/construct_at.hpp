@@ -7,26 +7,11 @@
 #ifndef HAMON_MEMORY_CONSTRUCT_AT_HPP
 #define HAMON_MEMORY_CONSTRUCT_AT_HPP
 
-#include <memory>
-
-#if defined(__cpp_lib_constexpr_dynamic_alloc) && (__cpp_lib_constexpr_dynamic_alloc >= 201907)
-
-// construct_at が constexpr であることを定義
-#define	HAMON_HAS_CONSTEXPR_CONSTRUCT_AT
-
-namespace hamon
-{
-
-using std::construct_at;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/detail/voidify.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_trivially_destructible.hpp>
 #include <hamon/type_traits/is_trivially_move_assignable.hpp>
 #include <hamon/type_traits/is_trivially_move_constructible.hpp>
@@ -35,6 +20,10 @@ using std::construct_at;
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
+
+#if HAMON_CXX_STANDARD >= 20
+#include <memory>	// std::construct_at
+#endif
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -95,13 +84,21 @@ HAMON_CXX14_CONSTEXPR T*
 construct_at(T* location, Args&&... args) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 	hamon::detail::construct_at_impl(hamon::detail::overload_priority<2>{}, location, hamon::forward<Args>(args)...))
 {
+#if defined(__cpp_lib_constexpr_dynamic_alloc) && (__cpp_lib_constexpr_dynamic_alloc >= 201907)
+	if (hamon::is_constant_evaluated())
+	{
+		// std::construct_at はコンパイラに特別扱いされてconstexprになっているため、
+		// 自前実装はconstexprにすることができない。
+		// (C++26 で constexpr placement new が採用され、自前実装でもconstexprにすることができるようになった)
+		return std::construct_at(location, hamon::forward<Args>(args)...);
+	}
+#endif
+
 	return hamon::detail::construct_at_impl(hamon::detail::overload_priority<2>{}, location, hamon::forward<Args>(args)...);
 }
 
 }	// namespace hamon
 
 HAMON_WARNING_POP()
-
-#endif
 
 #endif // HAMON_MEMORY_CONSTRUCT_AT_HPP

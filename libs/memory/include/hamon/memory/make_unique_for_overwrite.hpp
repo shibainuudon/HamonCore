@@ -8,20 +8,6 @@
 #define HAMON_MEMORY_MAKE_UNIQUE_FOR_OVERWRITE_HPP
 
 #include <hamon/memory/unique_ptr.hpp>
-#include <memory>
-
-#if defined(HAMON_USE_STD_UNIQUE_PTR) && \
-	defined(__cpp_lib_smart_ptr_for_overwrite) && (__cpp_lib_smart_ptr_for_overwrite >= 202002L)
-
-namespace hamon
-{
-
-using std::make_unique_for_overwrite;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
@@ -58,7 +44,5 @@ hamon::enable_if_t<hamon::is_bounded_array<T>::value>	// [unique.ptr.create]/10
 make_unique_for_overwrite(Args&&...) = delete;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_MAKE_UNIQUE_FOR_OVERWRITE_HPP

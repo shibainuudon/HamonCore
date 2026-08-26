@@ -52,9 +52,7 @@ static_assert( hamon::is_constructible<hamon::shared_ptr<int>, int*, D1>::value,
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int>, int*, D2>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int>, int const*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<int const>, int*, D1>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int>, int*, D3>::value, "");
-#endif
 static_assert( hamon::is_constructible<hamon::shared_ptr<Base>, Base*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<Base>, Derived*, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<Derived>, Base*, D1>::value, "");
@@ -65,31 +63,23 @@ static_assert( hamon::is_constructible<hamon::shared_ptr<int[]>, int*, D1>::valu
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[]>, int*, D2>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[]>, int const*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<int const[]>, int*, D1>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[]>, int*, D3>::value, "");
-#endif
 static_assert( hamon::is_constructible<hamon::shared_ptr<Base[]>, Base*, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<Base[]>, Derived*, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<Derived[]>, Base*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<Derived[]>, Derived*, D1>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_DINKUMWARE))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[]>, void*, D1>::value, "");
-#endif
 
 static_assert( hamon::is_constructible<hamon::shared_ptr<int[2]>, int*, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[2]>, int*, D2>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[2]>, int const*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<int const[2]>, int*, D1>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[2]>, int*, D3>::value, "");
-#endif
 static_assert( hamon::is_constructible<hamon::shared_ptr<Base[2]>, Base*, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<Base[2]>, Derived*, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<Derived[2]>, Base*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<Derived[2]>, Derived*, D1>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_DINKUMWARE))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[2]>, void*, D1>::value, "");
-#endif
 
 static_assert( hamon::is_constructible<hamon::shared_ptr<void>, void*, D1>::value, "");
 static_assert( hamon::is_constructible<hamon::shared_ptr<void>, int*, D1>::value, "");

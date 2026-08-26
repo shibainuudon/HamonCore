@@ -8,7 +8,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 #define HAMON_INDIRECTLY_COMPARABLE_TEST(B, ...)	\
 	static_assert(B == hamon::indirectly_comparable<__VA_ARGS__>, "")
@@ -48,7 +47,7 @@ HAMON_INDIRECTLY_COMPARABLE_TEST(false, int*, int&&,                            
 HAMON_INDIRECTLY_COMPARABLE_TEST(false, int*, int[],                            bool(*)(int, int));
 HAMON_INDIRECTLY_COMPARABLE_TEST(false, int*, int[2],                           bool(*)(int, int));
 HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, hamon::unique_ptr<int>,           bool(*)(int, int));
-HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, std::shared_ptr<int>,             bool(*)(int, int));
+HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, hamon::shared_ptr<int>,             bool(*)(int, int));
 HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, hamon::vector<int>::iterator,       bool(*)(int, int));
 HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, hamon::vector<int>::const_iterator, bool(*)(int, int));
 

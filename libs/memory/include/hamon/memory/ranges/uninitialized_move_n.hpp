@@ -7,24 +7,6 @@
 #ifndef HAMON_MEMORY_RANGES_UNINITIALIZED_MOVE_N_HPP
 #define HAMON_MEMORY_RANGES_UNINITIALIZED_MOVE_N_HPP
 
-#include <hamon/config.hpp>
-#include <memory>
-
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::uninitialized_move_n_result;
-using std::ranges::uninitialized_move_n;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -39,6 +21,7 @@ using std::ranges::uninitialized_move_n;
 #include <hamon/memory/ranges/uninitialized_move.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -87,7 +70,5 @@ detail::uninitialized_move_n_fn uninitialized_move_n{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RANGES_UNINITIALIZED_MOVE_N_HPP

@@ -10,10 +10,6 @@
 #include <hamon/memory/shared_ptr_fwd.hpp>
 #include <hamon/memory/weak_ptr_fwd.hpp>
 #include <hamon/memory/enable_shared_from_this_fwd.hpp>
-#include <hamon/memory/config.hpp>
-
-#if !defined(HAMON_USE_STD_SHARED_PTR)
-
 #include <hamon/memory/bad_weak_ptr.hpp>
 #include <hamon/memory/default_delete.hpp>
 #include <hamon/memory/unique_ptr.hpp>
@@ -811,7 +807,5 @@ struct is_specialization_of_shared_ptr<hamon::shared_ptr<T>>
 
 }	// namespace detail
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_SHARED_PTR_HPP

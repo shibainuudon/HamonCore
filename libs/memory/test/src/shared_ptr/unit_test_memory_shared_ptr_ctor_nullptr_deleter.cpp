@@ -44,27 +44,19 @@ struct D3
 
 static_assert( hamon::is_constructible<hamon::shared_ptr<int>, hamon::nullptr_t, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int>, hamon::nullptr_t, D2>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int>, hamon::nullptr_t, D3>::value, "");
-#endif
 
 static_assert( hamon::is_constructible<hamon::shared_ptr<int[]>, hamon::nullptr_t, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[]>, hamon::nullptr_t, D2>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[]>, hamon::nullptr_t, D3>::value, "");
-#endif
 
 static_assert( hamon::is_constructible<hamon::shared_ptr<int[3]>, hamon::nullptr_t, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[3]>, hamon::nullptr_t, D2>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<int[3]>, hamon::nullptr_t, D3>::value, "");
-#endif
 
 static_assert( hamon::is_constructible<hamon::shared_ptr<void>, hamon::nullptr_t, D1>::value, "");
 static_assert(!hamon::is_constructible<hamon::shared_ptr<void>, hamon::nullptr_t, D2>::value, "");
-#if !(defined(HAMON_USE_STD_SHARED_PTR) && defined(HAMON_STDLIB_LIBSTDCPP3))
 static_assert(!hamon::is_constructible<hamon::shared_ptr<void>, hamon::nullptr_t, D3>::value, "");
-#endif
 
 static_assert(!hamon::is_nothrow_constructible<hamon::shared_ptr<int>, hamon::nullptr_t, D1>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::shared_ptr<int[]>, hamon::nullptr_t, D1>::value, "");

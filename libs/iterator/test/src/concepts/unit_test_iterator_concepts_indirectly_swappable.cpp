@@ -8,7 +8,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 #define HAMON_INDIRECTLY_SWAPPABLE_TEST(B, ...)	\
 	static_assert(B == hamon::indirectly_swappable<__VA_ARGS__>, "")
@@ -68,7 +67,7 @@ HAMON_INDIRECTLY_SWAPPABLE_TEST(false, int*, int[]);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(false, int*, int[2]);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(false, int*, void*);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  int*, hamon::unique_ptr<int>);
-HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  int*, std::shared_ptr<int>);
+HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  int*, hamon::shared_ptr<int>);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  hamon::vector<int>::iterator,       int*);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
 //HAMON_INDIRECTLY_SWAPPABLE_TEST(false, hamon::vector<int>::iterator,       hamon::vector<int>::const_iterator);

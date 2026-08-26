@@ -7,7 +7,6 @@
 #ifndef HAMON_STRING_CONFIG_HPP
 #define HAMON_STRING_CONFIG_HPP
 
-#include <hamon/memory/config.hpp>
 #include <hamon/config.hpp>
 #include <string>
 
@@ -21,7 +20,7 @@
 #  define HAMON_USE_STD_CHAR_TRAITS
 #endif
 
-#if	defined(HAMON_USE_STD_ALLOCATOR) && \
+#if	0/*defined(HAMON_USE_STD_ALLOCATOR)*/ && \
 	defined(__cpp_lib_string_udls)                 && (__cpp_lib_string_udls                 >= 201304) &&	\
 	defined(__cpp_lib_starts_ends_with)            && (__cpp_lib_starts_ends_with            >= 201711) &&	\
 	defined(__cpp_lib_string_view)                 && (__cpp_lib_string_view                 >= 201803) &&	\

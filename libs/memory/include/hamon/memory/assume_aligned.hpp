@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_ASSUME_ALIGNED_HPP
 #define HAMON_MEMORY_ASSUME_ALIGNED_HPP
 
-#include <memory>
-
-#if defined(__cpp_lib_assume_aligned) && (__cpp_lib_assume_aligned >= 201811L)
-
-namespace hamon
-{
-
-using std::assume_aligned;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -44,7 +31,5 @@ assume_aligned(T* ptr) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_ASSUME_ALIGNED_HPP

@@ -51,9 +51,7 @@ bool test()
 	{
 		auto p = new int[5]{1,2,3,4,5};
 		hamon::shared_ptr<int[5]> const sp(p);
-#if !defined(HAMON_USE_STD_SHARED_PTR)
 		static_assert(noexcept(sp[0]), "");
-#endif
 		static_assert(hamon::is_same<decltype(sp[0]), int&>::value, "");
 		VERIFY(sp[0] == 1);
 		VERIFY(sp[1] == 2);
@@ -73,9 +71,7 @@ bool test()
 	{
 		auto p = new int[3]{3,1,4};
 		hamon::shared_ptr<int const[]> sp(p);
-#if !defined(HAMON_USE_STD_SHARED_PTR)
 		static_assert(noexcept(sp[0]), "");
-#endif
 		static_assert(hamon::is_same<decltype(sp[0]), int const&>::value, "");
 		VERIFY(sp[0] == 3);
 		VERIFY(sp[1] == 1);

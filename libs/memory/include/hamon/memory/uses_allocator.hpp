@@ -15,7 +15,7 @@ namespace hamon
 
 // [allocator.uses], uses_allocator
 template <typename T, typename Alloc>
-struct uses_allocator : public std::uses_allocator<T, Alloc> {};
+struct uses_allocator : public std::uses_allocator<T, Alloc> {};	// TODO std::uses_allocator を使わないようにする？
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

@@ -13,7 +13,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -24,7 +23,7 @@ namespace unique_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-bool pred1(const std::shared_ptr<int>& x, const std::shared_ptr<int>& y)
+bool pred1(const hamon::shared_ptr<int>& x, const hamon::shared_ptr<int>& y)
 {
 	return *x == *y;
 }
@@ -80,7 +79,7 @@ GTEST_TEST(AlgorithmTest, UniqueTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UniqueTest2());
 
 	{
-		hamon::vector<std::shared_ptr<int>> a;
+		hamon::vector<hamon::shared_ptr<int>> a;
 		a.emplace_back(new int(1));
 		a.emplace_back(new int(4));
 		a.emplace_back(new int(4));

@@ -7,24 +7,6 @@
 #ifndef HAMON_MEMORY_RANGES_DESTROY_HPP
 #define HAMON_MEMORY_RANGES_DESTROY_HPP
 
-#include <hamon/config.hpp>
-#include <memory>
-
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20) &&	\
-	!defined(HAMON_STDLIB_LIBCPP)	/* libc++ の ranges::destroy は first と last が違う型の場合に対応していない*/
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::destroy;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
@@ -37,6 +19,7 @@ using std::ranges::destroy;
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -85,7 +68,5 @@ detail::destroy_fn destroy{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RANGES_DESTROY_HPP

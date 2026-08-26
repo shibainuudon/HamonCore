@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_MAKE_OBJ_USING_ALLOCATOR_HPP
 #define HAMON_MEMORY_MAKE_OBJ_USING_ALLOCATOR_HPP
 
-#include <memory>
-
-#if 0
-
-namespace hamon
-{
-
-using std::make_obj_using_allocator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/uses_allocator_construction_args.hpp>
 #include <hamon/tuple/make_from_tuple.hpp>
 #include <hamon/utility/forward.hpp>
@@ -39,7 +26,5 @@ make_obj_using_allocator(Alloc const& alloc, Args&&... args)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_MAKE_OBJ_USING_ALLOCATOR_HPP

@@ -7,20 +7,6 @@
 #ifndef HAMON_MEMORY_OUT_PTR_T_HPP
 #define HAMON_MEMORY_OUT_PTR_T_HPP
 
-#include <memory>
-
-//#if defined(__cpp_lib_out_ptr) && (__cpp_lib_out_ptr >= 202311L)	// P2833R2 は Free standing 指定だけ
-#if defined(__cpp_lib_out_ptr) && (__cpp_lib_out_ptr >= 202106L)
-
-namespace hamon
-{
-
-using std::out_ptr_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/detail/pointer_of_or.hpp>
 #include <hamon/memory/detail/is_specialization_of_shared_ptr.hpp>
@@ -154,7 +140,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_OUT_PTR_T_HPP

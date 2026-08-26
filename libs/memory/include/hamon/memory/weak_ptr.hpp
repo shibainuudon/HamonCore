@@ -8,10 +8,6 @@
 #define HAMON_MEMORY_WEAK_PTR_HPP
 
 #include <hamon/memory/weak_ptr_fwd.hpp>
-#include <hamon/memory/config.hpp>
-
-#if !defined(HAMON_USE_STD_SHARED_PTR)
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/detail/sp_compatible.hpp>
 #include <hamon/memory/detail/sp_ref_count.hpp>
@@ -288,7 +284,5 @@ swap(weak_ptr<T>& a, weak_ptr<T>& b) noexcept
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_WEAK_PTR_HPP

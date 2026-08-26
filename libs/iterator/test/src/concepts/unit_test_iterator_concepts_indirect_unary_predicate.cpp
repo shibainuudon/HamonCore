@@ -9,7 +9,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 #define HAMON_INDIRECT_UNARY_PREDICATE_TEST(B, ...)	\
 	static_assert(B == hamon::indirect_unary_predicate<__VA_ARGS__>, " ")
@@ -52,7 +51,7 @@ HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int), int const&&);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int), int[]);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int), int[3]);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), hamon::unique_ptr<int>);
-HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), std::shared_ptr<int>);
+HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), hamon::shared_ptr<int>);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), hamon::vector<int>::iterator);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), hamon::vector<int>::const_iterator);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, void(*)(int), int*);

@@ -8,7 +8,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 #include <iterator>
 #include "iterator_test.hpp"
 

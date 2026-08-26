@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_UNINITIALIZED_COPY_N_HPP
 #define HAMON_MEMORY_UNINITIALIZED_COPY_N_HPP
 
-#if 0
-
-#include <memory>
-
-namespace hamon
-{
-
-using std::uninitialized_copy_n;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
 
 namespace hamon
@@ -35,7 +22,5 @@ uninitialized_copy_n(InputIterator first, Size n, NoThrowForwardIterator  result
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_UNINITIALIZED_COPY_N_HPP

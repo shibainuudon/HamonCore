@@ -7,6 +7,7 @@
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/memory/default_delete.hpp>
 #include <hamon/memory/unique_ptr.hpp>
+#include <hamon/memory/shared_ptr.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
@@ -14,7 +15,6 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/cstddef.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "constexpr_test.hpp"
 
 namespace hamon_memory_test
@@ -153,8 +153,8 @@ GTEST_TEST(MemoryTest, PointerTraitsTest)
 	static_assert(hamon::is_same<hamon::pointer_traits<int*>::pointer, int*>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<const float*>::pointer, const float*>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<void*>::pointer, void*>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<int>>::pointer, std::shared_ptr<int>>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<void>>::pointer, std::shared_ptr<void>>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<int>>::pointer, hamon::shared_ptr<int>>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<void>>::pointer, hamon::shared_ptr<void>>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<char>>::pointer, hamon::unique_ptr<char>>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<void>>::pointer, hamon::unique_ptr<void>>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<ConstPtr<char>>::pointer, ConstPtr<char>>::value, "");
@@ -166,8 +166,8 @@ GTEST_TEST(MemoryTest, PointerTraitsTest)
 	static_assert(hamon::is_same<hamon::pointer_traits<int*>::element_type, int>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<const float*>::element_type, const float>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<void*>::element_type, void>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<int>>::element_type, int>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<void>>::element_type, void>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<int>>::element_type, int>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<void>>::element_type, void>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<char>>::element_type, char>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<void>>::element_type, void>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<ConstPtr<char>>::element_type, char const>::value, "");
@@ -179,8 +179,8 @@ GTEST_TEST(MemoryTest, PointerTraitsTest)
 	static_assert(hamon::is_same<hamon::pointer_traits<int*>::difference_type, hamon::ptrdiff_t>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<const float*>::difference_type, hamon::ptrdiff_t>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<void*>::difference_type, hamon::ptrdiff_t>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<int>>::difference_type, hamon::ptrdiff_t>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<void>>::difference_type, hamon::ptrdiff_t>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<int>>::difference_type, hamon::ptrdiff_t>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<void>>::difference_type, hamon::ptrdiff_t>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<char>>::difference_type, hamon::ptrdiff_t>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<void>>::difference_type, hamon::ptrdiff_t>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<ConstPtr<char>>::difference_type, unsigned int>::value, "");
@@ -192,8 +192,8 @@ GTEST_TEST(MemoryTest, PointerTraitsTest)
 	static_assert(hamon::is_same<hamon::pointer_traits<int*>::template rebind<const char>, const char*>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<const float*>::template rebind<void>, void*>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<void*>::template rebind<int>, int*>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<int>>::template rebind<float>, std::shared_ptr<float>>::value, "");
-	static_assert(hamon::is_same<hamon::pointer_traits<std::shared_ptr<void>>::template rebind<int>, std::shared_ptr<int>>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<int>>::template rebind<float>, hamon::shared_ptr<float>>::value, "");
+	static_assert(hamon::is_same<hamon::pointer_traits<hamon::shared_ptr<void>>::template rebind<int>, hamon::shared_ptr<int>>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<int>>::template rebind<float>, hamon::unique_ptr<float, hamon::default_delete<int>>>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<hamon::unique_ptr<void>>::template rebind<float>, hamon::unique_ptr<float, hamon::default_delete<void>>>::value, "");
 	static_assert(hamon::is_same<hamon::pointer_traits<ConstPtr<int>>::template rebind<const char>, ConstPtr<char>>::value, "");

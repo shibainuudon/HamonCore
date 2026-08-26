@@ -173,37 +173,6 @@ struct optional_dtor<T, true, true>
 };
 #endif
 
-template <typename T, typename = void>
-struct construct_impl
-{
-	template <typename... Args>
-	static HAMON_CXX14_CONSTEXPR void
-	invoke(T& obj, Args&&... args)
-	{
-		hamon::construct_at(
-			hamon::addressof(obj),
-			hamon::forward<Args>(args)...);
-	}
-};
-
-// construct_at()はC++20以降でのみconstexpr。
-// C++17までの場合でも、できるだけconstexprにするように頑張る。
-#if !defined(HAMON_HAS_CONSTEXPR_CONSTRUCT_AT)
-template <typename T>
-struct construct_impl<T, hamon::enable_if_t<
-	hamon::is_default_constructible<T>::value &&
-	hamon::is_move_assignable<T>::value &&
-	hamon::is_trivially_destructible<T>::value>>
-{
-	template <typename... Args>
-	static HAMON_CXX14_CONSTEXPR void
-	invoke(T& obj, Args&&... args)
-	{
-		obj = T(hamon::forward<Args>(args)...);
-	}
-};
-#endif
-
 template <typename T>
 struct optional_impl
 	: public optional_detail::optional_dtor<T>
@@ -215,8 +184,8 @@ struct optional_impl
 	HAMON_CXX14_CONSTEXPR void
 	construct(Args&&... args)
 	{
-		construct_impl<T>::invoke(
-			this->m_value,
+		hamon::construct_at(
+			hamon::addressof(this->m_value),
 			hamon::forward<Args>(args)...);
 		this->m_has_value = true;
 	}

@@ -7,23 +7,6 @@
 #ifndef HAMON_MEMORY_RANGES_DESTROY_N_HPP
 #define HAMON_MEMORY_RANGES_DESTROY_N_HPP
 
-#include <hamon/config.hpp>
-#include <memory>
-
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::destroy_n;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
@@ -34,6 +17,7 @@ using std::ranges::destroy_n;
 #include <hamon/memory/ranges/detail/nothrow_input_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -72,7 +56,5 @@ detail::destroy_n_fn destroy_n{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RANGES_DESTROY_N_HPP

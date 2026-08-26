@@ -7,23 +7,7 @@
 #ifndef HAMON_MEMORY_ADDRESSOF_HPP
 #define HAMON_MEMORY_ADDRESSOF_HPP
 
-#include <memory>
-
-#if defined(__cpp_lib_addressof_constexpr) && (__cpp_lib_addressof_constexpr >= 201603)
-
-#define	HAMON_USE_STD_ADDRESSOF
-
-namespace hamon
-{
-
-using std::addressof;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/detail/addressof_impl.hpp>
-#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -39,9 +23,13 @@ namespace hamon
  *	(C++17以降はstd::addressofがconstexprになるのでconstexprにできる)
  */
 template <typename T>
-HAMON_CONSTEXPR T* addressof(T& r) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T* addressof(T& r) HAMON_NOEXCEPT
 {
-	return detail::addressof_impl<hamon::remove_cv_t<T>>::get(r);
+#if HAMON_HAS_BUILTIN(__builtin_addressof) || defined(HAMON_MSVC)
+	return __builtin_addressof(r);
+#else
+	return detail::addressof_impl(r);
+#endif
 }
 
 // [specialized.addressof], addressof
@@ -49,7 +37,5 @@ template <typename T>
 const T* addressof(const T&&) = delete;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_ADDRESSOF_HPP

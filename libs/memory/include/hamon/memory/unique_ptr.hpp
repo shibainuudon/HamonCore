@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_UNIQUE_PTR_HPP
 #define HAMON_MEMORY_UNIQUE_PTR_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_UNIQUE_PTR)
-
-namespace hamon
-{
-
-using std::unique_ptr;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/default_delete.hpp>
 #include <hamon/compare/compare_three_way.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
@@ -850,7 +837,5 @@ struct hash<unique_ptr<T, D>>;
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_UNIQUE_PTR_HPP

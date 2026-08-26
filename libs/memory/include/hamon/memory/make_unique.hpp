@@ -8,20 +8,6 @@
 #define HAMON_MEMORY_MAKE_UNIQUE_HPP
 
 #include <hamon/memory/unique_ptr.hpp>
-#include <memory>
-
-#if defined(HAMON_USE_STD_UNIQUE_PTR) && \
-	defined(__cpp_lib_make_unique) && (__cpp_lib_make_unique >= 201304)
-
-namespace hamon
-{
-
-using std::make_unique;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
@@ -59,7 +45,5 @@ hamon::enable_if_t<hamon::is_bounded_array<T>::value>	// [unique.ptr.create]/5
 make_unique(Args&&...) = delete;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_MAKE_UNIQUE_HPP

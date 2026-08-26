@@ -8,6 +8,7 @@
 #define HAMON_MEMORY_DETAIL_ADDRESSOF_IMPL_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -49,10 +50,10 @@ struct is_address_op_overloaded
 {};
 
 template <typename T, bool = is_address_op_overloaded<T>::value>
-struct addressof_impl;
+struct addressof_impl_helper;
 
 template <typename T>
-struct addressof_impl<T, true>
+struct addressof_impl_helper<T, true>
 {
 	template <typename U>
 	static U* get(U& t) HAMON_NOEXCEPT
@@ -64,14 +65,20 @@ struct addressof_impl<T, true>
 };
 
 template <typename T>
-struct addressof_impl<T, false>
+struct addressof_impl_helper<T, false>
 {
 	template <typename U>
-	static HAMON_CONSTEXPR U* get(U& t) HAMON_NOEXCEPT
+	static HAMON_CXX11_CONSTEXPR U* get(U& t) HAMON_NOEXCEPT
 	{
 		return &t;
 	}
 };
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T* addressof_impl(T& r) HAMON_NOEXCEPT
+{
+	return detail::addressof_impl_helper<hamon::remove_cv_t<T>>::get(r);
+}
 
 }	// namespace detail
 

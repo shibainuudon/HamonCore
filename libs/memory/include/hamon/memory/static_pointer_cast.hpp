@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_STATIC_POINTER_CAST_HPP
 #define HAMON_MEMORY_STATIC_POINTER_CAST_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_PTR)
-
-namespace hamon
-{
-
-using std::static_pointer_cast;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -48,7 +35,5 @@ static_pointer_cast(hamon::shared_ptr<U>&& r) noexcept
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_STATIC_POINTER_CAST_HPP

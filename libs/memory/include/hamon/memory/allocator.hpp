@@ -7,21 +7,6 @@
 #ifndef HAMON_MEMORY_ALLOCATOR_HPP
 #define HAMON_MEMORY_ALLOCATOR_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_ALLOCATOR)
-
-#include <memory>
-
-namespace hamon
-{
-
-using std::allocator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/memory/allocation_result.hpp>
@@ -30,6 +15,7 @@ using std::allocator;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <memory>	// std::allocator
 
 namespace hamon
 {
@@ -117,7 +103,5 @@ operator!=(allocator<T> const& lhs, allocator<U> const& rhs) noexcept
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_ALLOCATOR_HPP

@@ -89,7 +89,7 @@ private:
 
 }	// namespace hamon_memory_test
 
-namespace HAMON_POINTER_TRAITS_NAMESPACE
+namespace hamon
 {
 
 template<>
@@ -112,7 +112,7 @@ struct pointer_traits<hamon_memory_test::to_address_test::P4>
 	}
 };
 
-}	// namespace HAMON_POINTER_TRAITS_NAMESPACE
+}	// namespace hamon
 
 namespace hamon_memory_test
 {

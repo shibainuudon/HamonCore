@@ -8,10 +8,6 @@
 #define HAMON_MEMORY_ENABLE_SHARED_FROM_THIS_HPP
 
 #include <hamon/memory/enable_shared_from_this_fwd.hpp>
-#include <hamon/memory/config.hpp>
-
-#if !defined(HAMON_USE_STD_SHARED_PTR)
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/weak_ptr.hpp>
 #include <hamon/config.hpp>
@@ -77,7 +73,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_ENABLE_SHARED_FROM_THIS_HPP

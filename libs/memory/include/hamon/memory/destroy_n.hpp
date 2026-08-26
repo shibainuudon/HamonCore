@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_DESTROY_N_HPP
 #define HAMON_MEMORY_DESTROY_N_HPP
 
-#include <memory>
-
-#if defined(__cpp_lib_raw_memory_algorithms) && (__cpp_lib_raw_memory_algorithms >= 201606)
-
-namespace hamon
-{
-
-using std::destroy_n;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -78,7 +65,5 @@ destroy_n(NoThrowForwardIterator first, Size n)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_DESTROY_N_HPP

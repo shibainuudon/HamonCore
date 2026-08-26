@@ -7,20 +7,6 @@
 #ifndef HAMON_MEMORY_MAKE_SHARED_HPP
 #define HAMON_MEMORY_MAKE_SHARED_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_PTR) && \
-	defined(__cpp_lib_shared_ptr_arrays) && (__cpp_lib_shared_ptr_arrays >= 201707L)
-
-namespace hamon
-{
-
-using std::make_shared;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/detail/sp_access.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_md.hpp>
@@ -86,7 +72,5 @@ make_shared(hamon::remove_extent_t<T> const& u)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_MAKE_SHARED_HPP

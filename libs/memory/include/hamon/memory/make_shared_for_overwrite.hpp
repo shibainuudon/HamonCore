@@ -7,20 +7,6 @@
 #ifndef HAMON_MEMORY_MAKE_SHARED_FOR_OVERWRITE_HPP
 #define HAMON_MEMORY_MAKE_SHARED_FOR_OVERWRITE_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_PTR) && \
-	defined(__cpp_lib_smart_ptr_for_overwrite) && (__cpp_lib_smart_ptr_for_overwrite >= 202002L)
-
-namespace hamon
-{
-
-using std::make_shared_for_overwrite;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/detail/sp_access.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -48,7 +34,5 @@ make_shared_for_overwrite(hamon::size_t N)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_MAKE_SHARED_FOR_OVERWRITE_HPP
