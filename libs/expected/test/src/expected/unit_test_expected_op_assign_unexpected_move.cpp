@@ -72,7 +72,6 @@ static_assert(!hamon::is_assignable<hamon::expected<MaybeNoexcept<false, false>,
 
 // test noexcept
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 template <bool CtorNoexcept, bool AssignNoexcept>
 struct MaybeNoexcept2
 {
@@ -89,7 +88,6 @@ static_assert( hamon::is_nothrow_assignable<hamon::expected<int, MaybeNoexcept2<
 static_assert(!hamon::is_nothrow_assignable<hamon::expected<int, MaybeNoexcept2<true, false>>&, hamon::unexpected<int>&&>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::expected<int, MaybeNoexcept2<false, true>>&, hamon::unexpected<int>&&>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::expected<int, MaybeNoexcept2<false, false>>&, hamon::unexpected<int>&&>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

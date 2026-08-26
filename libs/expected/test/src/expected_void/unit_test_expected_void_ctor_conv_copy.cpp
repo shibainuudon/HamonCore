@@ -88,7 +88,6 @@ static_assert(!hamon::is_convertible<const hamon::expected<void, int>&, hamon::e
 
 // test noexcept
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 template <typename T>
 struct NothrowCtorFrom
 {
@@ -98,7 +97,6 @@ struct NothrowCtorFrom
 
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, CtorFrom<int>>, const hamon::expected<void, int>&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::expected<void, NothrowCtorFrom<int>>, const hamon::expected<void, int>&>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

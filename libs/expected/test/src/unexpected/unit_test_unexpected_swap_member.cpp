@@ -44,9 +44,7 @@ struct NoThrowSwappable
 	friend void swap(NoThrowSwappable&, NoThrowSwappable&) noexcept;
 };
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(HasMemberSwap<NonSwappable>::value, "");
-#endif
 static_assert(HasMemberSwap<Swappable>::value, "");
 static_assert(HasMemberSwap<NoThrowSwappable>::value, "");
 

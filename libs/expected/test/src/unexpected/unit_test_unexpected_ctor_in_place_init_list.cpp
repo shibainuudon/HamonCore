@@ -43,10 +43,8 @@ struct Error
 // Test Constraints:
 static_assert( hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg const&>::value, "");
 static_assert( hamon::is_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg &&>::value, "");
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(!hamon::is_nothrow_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::unexpected<Error>, hamon::in_place_t, hamon::initializer_list<int>, Arg &&>::value, "");
-#endif
 
 // !is_constructible_v<E, initializer_list<U>&, Args...>
 struct Foo {};

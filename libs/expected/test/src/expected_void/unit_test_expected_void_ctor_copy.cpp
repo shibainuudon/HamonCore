@@ -65,14 +65,12 @@ static_assert( hamon::is_copy_constructible<hamon::expected<void, NothrowCopyCon
 static_assert( hamon::is_copy_constructible<hamon::expected<void, TriviallyCopyConstructible>>::value, "");
 static_assert( hamon::is_copy_constructible<hamon::expected<void, ExplicitlyCopyConstructible>>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert( hamon::is_nothrow_copy_constructible<hamon::expected<void, int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<void, CopyConstructible>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<void, NonCopyConstructible>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<hamon::expected<void, NothrowCopyConstructible>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<hamon::expected<void, TriviallyCopyConstructible>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<void, ExplicitlyCopyConstructible>>::value, "");
-#endif
 
 static_assert( hamon::is_trivially_copy_constructible<hamon::expected<void, int>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::expected<void, CopyConstructible>>::value, "");

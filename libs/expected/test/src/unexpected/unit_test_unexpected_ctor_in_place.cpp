@@ -26,18 +26,14 @@ namespace ctor_in_place_test
 
 // Test Constraints:
 static_assert(hamon::is_constructible<hamon::unexpected<int>, hamon::in_place_t, int>::value, "");
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(hamon::is_nothrow_constructible<hamon::unexpected<int>, hamon::in_place_t, int>::value, "");
-#endif
 
 struct CstrFromInt
 {
 	CstrFromInt(int);
 };
 static_assert(hamon::is_constructible<hamon::unexpected<CstrFromInt>, hamon::in_place_t, int>::value, "");
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(!hamon::is_nothrow_constructible<hamon::unexpected<CstrFromInt>, hamon::in_place_t, int>::value, "");
-#endif
 
 // !is_constructible_v<E, Args...>
 struct Foo {};

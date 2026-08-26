@@ -8,10 +8,6 @@
 #define HAMON_EXPECTED_EXPECTED_HPP
 
 #include <hamon/expected/expected_fwd.hpp>
-#include <hamon/expected/config.hpp>
-
-#if !defined(HAMON_USE_STD_EXPECTED)
-
 #include <hamon/expected/detail/expected_base.hpp>
 #include <hamon/expected/detail/expected_void_base.hpp>
 #include <hamon/expected/detail/is_specialization_of_expected.hpp>
@@ -2333,7 +2329,5 @@ public:
 }	// namespace hamon
 
 HAMON_WARNING_POP()
-
-#endif
 
 #endif // HAMON_EXPECTED_EXPECTED_HPP

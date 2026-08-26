@@ -26,18 +26,14 @@ namespace ctor_err_test
 
 // Test Constraints:
 static_assert(hamon::is_constructible<hamon::unexpected<int>, int>::value, "");
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(hamon::is_nothrow_constructible<hamon::unexpected<int>, int>::value, "");
-#endif
 
 struct CstrFromInt
 {
 	CstrFromInt(int);
 };
 static_assert(hamon::is_constructible<hamon::unexpected<CstrFromInt>, int>::value, "");
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(!hamon::is_nothrow_constructible<hamon::unexpected<CstrFromInt>, int>::value, "");
-#endif
 
 // is_same_v<remove_cvref_t<Err>, unexpected>
 struct CstrFromUnexpected

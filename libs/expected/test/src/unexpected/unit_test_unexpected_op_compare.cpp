@@ -30,10 +30,8 @@ HAMON_CXX14_CONSTEXPR bool test()
 	static_assert(hamon::is_same<decltype(unex1 == unex1), bool>::value, "");
 	static_assert(hamon::is_same<decltype(unex1 != unex1), bool>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 	static_assert(noexcept(unex1 == unex1), "");
 	static_assert(noexcept(unex1 != unex1), "");
-#endif
 
 	VERIFY( (unex1 == unex1));
 	VERIFY(!(unex1 == unex2));
@@ -63,10 +61,8 @@ HAMON_CXX14_CONSTEXPR bool test2()
 	static_assert(hamon::is_same<decltype(unex1 == unex4), bool>::value, "");
 	static_assert(hamon::is_same<decltype(unex1 != unex4), bool>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 	static_assert(!noexcept(unex1 == unex4), "");
 	static_assert(!noexcept(unex1 != unex4), "");
-#endif
 
 	VERIFY( (unex1 == unex1));
 	VERIFY(!(unex1 == unex2));

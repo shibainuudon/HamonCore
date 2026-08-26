@@ -87,13 +87,11 @@ static_assert( hamon::is_constructible<hamon::expected<void, NothrowMoveConstruc
 static_assert( hamon::is_constructible<hamon::expected<void, TriviallyMoveConstructible>, hamon::unexpected<TriviallyMoveConstructible>&&>::value, "");
 static_assert( hamon::is_constructible<hamon::expected<void, ExplicitlyMoveConstructible>, hamon::unexpected<ExplicitlyMoveConstructible>&&>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, MoveConstructible>, hamon::unexpected<MoveConstructible>&&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, NonMoveConstructible>, hamon::unexpected<NonMoveConstructible>&&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::expected<void, NothrowMoveConstructible>, hamon::unexpected<NothrowMoveConstructible>&&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::expected<void, TriviallyMoveConstructible>, hamon::unexpected<TriviallyMoveConstructible>&&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, ExplicitlyMoveConstructible>, hamon::unexpected<ExplicitlyMoveConstructible>&&>::value, "");
-#endif
 
 static_assert( hamon::is_implicitly_constructible<hamon::expected<void, MoveConstructible>, hamon::unexpected<MoveConstructible>&&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::expected<void, NonMoveConstructible>, hamon::unexpected<NonMoveConstructible>&&>::value, "");

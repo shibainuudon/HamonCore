@@ -22,7 +22,6 @@ namespace hamon_expected_test
 namespace value_or_test
 {
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 template <bool CopyNoexcept, bool ConvNoexcept>
 struct S1
 {
@@ -48,19 +47,17 @@ static_assert( noexcept(hamon::declval<hamon::expected<S2<true, true>, int>&&>()
 static_assert(!noexcept(hamon::declval<hamon::expected<S2<true, false>, int>&&>().value_or(hamon::declval<int>())), "");
 static_assert(!noexcept(hamon::declval<hamon::expected<S2<false, true>, int>&&>().value_or(hamon::declval<int>())), "");
 static_assert(!noexcept(hamon::declval<hamon::expected<S2<false, false>, int>&&>().value_or(hamon::declval<int>())), "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename E>
 HAMON_CXX14_CONSTEXPR bool test()
 {
-#if !defined(HAMON_USE_STD_EXPECTED)
 	static_assert( noexcept(hamon::declval<hamon::expected<T, E> &      >().value_or(hamon::declval<T>())), "");
 	static_assert( noexcept(hamon::declval<hamon::expected<T, E> const& >().value_or(hamon::declval<T>())), "");
 	static_assert( noexcept(hamon::declval<hamon::expected<T, E> &&     >().value_or(hamon::declval<T>())), "");
 	static_assert( noexcept(hamon::declval<hamon::expected<T, E> const&&>().value_or(hamon::declval<T>())), "");
-#endif
+
 	{
 		hamon::expected<T, E> const e{hamon::in_place, T{1}};
 		auto&& x = e.value_or(T{10});

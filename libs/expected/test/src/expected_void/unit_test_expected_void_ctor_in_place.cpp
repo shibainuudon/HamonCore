@@ -41,14 +41,12 @@ static_assert(!hamon::is_constructible<hamon::expected<void, S1>, hamon::in_plac
 static_assert( hamon::is_constructible<hamon::expected<void, S2>, hamon::in_place_t>::value, "");
 static_assert(!hamon::is_constructible<hamon::expected<void, S2>, hamon::in_place_t, int>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert( hamon::is_nothrow_constructible<hamon::expected<void, int>, hamon::in_place_t>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, int>, hamon::in_place_t, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::expected<void, S1>, hamon::in_place_t>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, S1>, hamon::in_place_t, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::expected<void, S2>, hamon::in_place_t>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<void, S2>, hamon::in_place_t, int>::value, "");
-#endif
 
 static_assert(!hamon::is_implicitly_constructible<hamon::expected<void, int>, hamon::in_place_t>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::expected<void, int>, hamon::in_place_t, int>::value, "");

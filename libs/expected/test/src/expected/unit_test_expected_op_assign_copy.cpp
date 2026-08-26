@@ -83,14 +83,12 @@ struct CopyAssignMayThrow
 };
 
 // Test noexcept
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(hamon::is_nothrow_copy_assignable<hamon::expected<int, int>>::value, "");
 
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::expected<CopyAssignMayThrow, int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::expected<CopyCtorMayThrow, int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::expected<int, CopyAssignMayThrow>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::expected<int, CopyCtorMayThrow>>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

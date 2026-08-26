@@ -65,7 +65,6 @@ static_assert(!hamon::is_constructible<hamon::expected<int, S3>, hamon::unexpect
 static_assert( hamon::is_constructible<hamon::expected<int, S3>, hamon::unexpect_t, int, int>::value, "");
 static_assert(!hamon::is_constructible<hamon::expected<int, S3>, hamon::unexpect_t, int, int, int>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert( hamon::is_nothrow_constructible<hamon::expected<S1, int>, hamon::unexpect_t>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::expected<S1, int>, hamon::unexpect_t, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<S1, int>, hamon::unexpect_t, int, int>::value, "");
@@ -91,7 +90,6 @@ static_assert(!hamon::is_nothrow_constructible<hamon::expected<int, S3>, hamon::
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<int, S3>, hamon::unexpect_t, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<int, S3>, hamon::unexpect_t, int, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::expected<int, S3>, hamon::unexpect_t, int, int, int>::value, "");
-#endif
 
 static_assert(!hamon::is_implicitly_constructible<hamon::expected<S1, int>, hamon::unexpect_t>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::expected<S1, int>, hamon::unexpect_t, int>::value, "");

@@ -60,11 +60,9 @@ struct CopyAssignMayThrow
 };
 
 // Test noexcept
-#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert( hamon::is_nothrow_copy_assignable<hamon::expected<void, int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::expected<void, CopyAssignMayThrow>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::expected<void, CopyCtorMayThrow>>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

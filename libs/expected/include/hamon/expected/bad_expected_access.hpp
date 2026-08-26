@@ -7,21 +7,6 @@
 #ifndef HAMON_EXPECTED_BAD_EXPECTED_ACCESS_HPP
 #define HAMON_EXPECTED_BAD_EXPECTED_ACCESS_HPP
 
-#include <hamon/expected/config.hpp>
-
-#if defined(HAMON_USE_STD_EXPECTED)
-
-#include <expected>
-
-namespace hamon
-{
-
-using std::bad_expected_access;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/utility/forward.hpp>
@@ -125,7 +110,5 @@ HAMON_WARNING_POP()
 }	// namespace detail
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_EXPECTED_BAD_EXPECTED_ACCESS_HPP

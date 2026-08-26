@@ -47,9 +47,6 @@ struct NothrowComparable
 	bool operator==(NothrowComparable const&) const noexcept;
 };
 
-#if !defined(HAMON_USE_STD_EXPECTED) || \
-	(defined(__cpp_lib_constrained_equality) && (__cpp_lib_constrained_equality >= 202411L))
-
 template <typename T, typename U, typename = void, typename = void, typename = void, typename = void>
 struct can_compare
 	: hamon::false_type{};
@@ -73,9 +70,6 @@ static_assert(!can_compare<hamon::expected<int, NonConvertibleToBool>, hamon::un
 static_assert( can_compare<hamon::expected<NonComparable, int>, hamon::unexpected<int>>::value, "");
 static_assert( can_compare<hamon::expected<NonComparable, int>, hamon::unexpected<ComparableWithInt>>::value, "");
 
-#endif
-
-#if !defined(HAMON_USE_STD_EXPECTED)
 template <typename T, typename U>
 using nothrow_compare = hamon::bool_constant<
 	noexcept(hamon::declval<T const&>() == hamon::declval<U const&>()) &&
@@ -87,7 +81,6 @@ static_assert(!nothrow_compare<hamon::expected<Comparable,        Comparable>,  
 static_assert( nothrow_compare<hamon::expected<Comparable,        NothrowComparable>, hamon::unexpected<NothrowComparable>>::value, "");
 static_assert(!nothrow_compare<hamon::expected<NothrowComparable, Comparable>,        hamon::unexpected<Comparable>>::value, "");
 static_assert( nothrow_compare<hamon::expected<NothrowComparable, NothrowComparable>, hamon::unexpected<NothrowComparable>>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -97,10 +90,8 @@ HAMON_CXX14_CONSTEXPR bool test()
 	hamon::expected<T, E> e1{hamon::in_place, T{10}};
 	hamon::expected<T, E> e2{hamon::unexpect, E{20}};
 
-#if !defined(HAMON_USE_STD_EXPECTED)
 	static_assert( noexcept(e1 == hamon::unexpected<E>{E{0}}), "");
 	static_assert( noexcept(e1 != hamon::unexpected<E>{E{0}}), "");
-#endif
 
 	VERIFY(!(e1 == hamon::unexpected<E>{E{10}}));
 	VERIFY(!(e1 == hamon::unexpected<E>{E{20}}));

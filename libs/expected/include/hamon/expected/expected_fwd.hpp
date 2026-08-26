@@ -7,20 +7,7 @@
 #ifndef HAMON_EXPECTED_EXPECTED_FWD_HPP
 #define HAMON_EXPECTED_EXPECTED_FWD_HPP
 
-#include <hamon/expected/config.hpp>
-
-#if defined(HAMON_USE_STD_EXPECTED)
-
-#include <expected>
-
-namespace hamon
-{
-
-using std::expected;
-
-}	// namespace hamon
-
-#else
+#include <hamon/config.hpp>
 
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 #include <hamon/type_traits/is_void.hpp>
@@ -38,7 +25,5 @@ template <typename T, typename E
 class expected;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_EXPECTED_EXPECTED_FWD_HPP

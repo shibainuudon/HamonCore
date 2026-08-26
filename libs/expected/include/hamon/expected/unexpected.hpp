@@ -8,10 +8,6 @@
 #define HAMON_EXPECTED_UNEXPECTED_HPP
 
 #include <hamon/expected/unexpected_fwd.hpp>
-#include <hamon/expected/config.hpp>
-
-#if !defined(HAMON_USE_STD_EXPECTED)
-
 #include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -160,7 +156,5 @@ unexpected(E) -> unexpected<E>;
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_EXPECTED_UNEXPECTED_HPP
