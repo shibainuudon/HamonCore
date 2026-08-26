@@ -1205,52 +1205,41 @@ inline namespace literals
 inline namespace string_view_literals
 {
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
-#if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 170000)
-HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-literal-operator")
-#endif
-#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 150000)
-HAMON_WARNING_DISABLE_GCC("-Wdeprecated-literal-operator")
-#endif
-
 // [string.view.literals], suffix for basic_string_view literals
 
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char>
-operator"" _sv(char const* str, hamon::size_t len) HAMON_NOEXCEPT
+operator""_sv(char const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char>{str, len};
 }
 
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<wchar_t>
-operator"" _sv(wchar_t const* str, hamon::size_t len) HAMON_NOEXCEPT
+operator""_sv(wchar_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<wchar_t>{str, len};
 }
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char8_t>
-operator"" _sv(char8_t const* str, hamon::size_t len) HAMON_NOEXCEPT
+operator""_sv(char8_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char8_t>{str, len};
 }
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char16_t>
-operator"" _sv(char16_t const* str, hamon::size_t len) HAMON_NOEXCEPT
+operator""_sv(char16_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char16_t>{str, len};
 }
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char32_t>
-operator"" _sv(char32_t const* str, hamon::size_t len) HAMON_NOEXCEPT
+operator""_sv(char32_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char32_t>{str, len};
 }
 #endif
-
-HAMON_WARNING_POP()
 
 }	// namespace string_literals
 }	// namespace literals
