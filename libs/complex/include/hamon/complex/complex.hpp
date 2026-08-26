@@ -673,55 +673,44 @@ inline namespace literals
 inline namespace complex_literals
 {
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
-#if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 170000)
-HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-literal-operator")
-#endif
-#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 150000)
-HAMON_WARNING_DISABLE_GCC("-Wdeprecated-literal-operator")
-#endif
-
 // アンダースコアで始まらないユーザー定義リテラルのサフィックス名は、
 // 標準C++の将来の拡張のために予約されている。
 
-HAMON_CXX11_CONSTEXPR hamon::complex<long double> operator"" _il(long double d)
+HAMON_CXX11_CONSTEXPR hamon::complex<long double> operator""_il(long double d)
 {
 	// [complex.literals]/2
 	return {0.0L, static_cast<long double>(d)};
 }
 
-HAMON_CXX11_CONSTEXPR hamon::complex<long double> operator"" _il(unsigned long long d)
+HAMON_CXX11_CONSTEXPR hamon::complex<long double> operator""_il(unsigned long long d)
 {
 	// [complex.literals]/2
 	return {0.0L, static_cast<long double>(d)};
 }
 
-HAMON_CXX11_CONSTEXPR hamon::complex<double> operator"" _i(long double d)
+HAMON_CXX11_CONSTEXPR hamon::complex<double> operator""_i(long double d)
 {
 	// [complex.literals]/3
 	return {0.0, static_cast<double>(d)};
 }
 
-HAMON_CXX11_CONSTEXPR hamon::complex<double> operator"" _i(unsigned long long d)
+HAMON_CXX11_CONSTEXPR hamon::complex<double> operator""_i(unsigned long long d)
 {
 	// [complex.literals]/3
 	return {0.0, static_cast<double>(d)};
 }
 
-HAMON_CXX11_CONSTEXPR hamon::complex<float> operator"" _if(long double d)
+HAMON_CXX11_CONSTEXPR hamon::complex<float> operator""_if(long double d)
 {
 	// [complex.literals]/4
 	return {0.0f, static_cast<float>(d)};
 }
 
-HAMON_CXX11_CONSTEXPR hamon::complex<float> operator"" _if(unsigned long long d)
+HAMON_CXX11_CONSTEXPR hamon::complex<float> operator""_if(unsigned long long d)
 {
 	// [complex.literals]/4
 	return {0.0f, static_cast<float>(d)};
 }
-
-HAMON_WARNING_POP()
 
 }	// inline namespace complex_literals
 }	// inline namespace literals
