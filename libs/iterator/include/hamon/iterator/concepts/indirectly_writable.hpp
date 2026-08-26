@@ -7,24 +7,16 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_INDIRECTLY_WRITABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_WRITABLE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/iter_reference_t.hpp>
-#include <hamon/utility/forward.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/utility/forward.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::indirectly_writable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Out, typename T>
 HAMON_CONCEPT_OR_BOOL indirectly_writable =

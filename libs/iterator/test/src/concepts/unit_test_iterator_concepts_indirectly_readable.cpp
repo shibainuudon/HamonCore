@@ -49,7 +49,7 @@ HAMON_INDIRECTLY_READABLE_TEST(true,  void       volatile** const);
 HAMON_INDIRECTLY_READABLE_TEST(true,  void const volatile** const);
 
 HAMON_INDIRECTLY_READABLE_TEST(true,  hamon::unique_ptr<int>);
-HAMON_INDIRECTLY_READABLE_TEST(true,  std::shared_ptr<int>);
+HAMON_INDIRECTLY_READABLE_TEST(true,  hamon::shared_ptr<int>);
 HAMON_INDIRECTLY_READABLE_TEST(false, hamon::vector<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  hamon::vector<int>::iterator);
 HAMON_INDIRECTLY_READABLE_TEST(true,  hamon::vector<int>::const_iterator);

@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_ITER_DIFFERENCE_T_HPP
 #define HAMON_ITERATOR_ITER_DIFFERENCE_T_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::iter_difference_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/detail/is_iterator_traits_primary.hpp>
@@ -46,7 +33,5 @@ template <typename T>
 using iter_difference_t = detail::iter_difference_t_impl<hamon::remove_cvref_t<T>>;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_ITER_DIFFERENCE_T_HPP

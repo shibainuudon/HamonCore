@@ -12,6 +12,9 @@
 namespace hamon
 {
 
+// TODO
+//struct bidirectional_iterator_tag : public hamon::forward_iterator_tag {};
+
 using std::bidirectional_iterator_tag;
 
 }	// namespace hamon

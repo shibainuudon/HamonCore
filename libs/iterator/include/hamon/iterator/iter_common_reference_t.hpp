@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_ITER_COMMON_REFERENCE_T_HPP
 #define HAMON_ITERATOR_ITER_COMMON_REFERENCE_T_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::iter_common_reference_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/detail/indirect_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
@@ -37,7 +24,5 @@ using iter_common_reference_t =
 	hamon::common_reference_t<hamon::iter_reference_t<T>, hamon::detail::indirect_value_t<T>>;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_ITER_COMMON_REFERENCE_T_HPP

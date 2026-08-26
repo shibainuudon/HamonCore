@@ -7,22 +7,6 @@
 #ifndef HAMON_ITERATOR_RANGES_NEXT_HPP
 #define HAMON_ITERATOR_RANGES_NEXT_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::next;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/ranges/advance.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
@@ -188,7 +172,5 @@ next(It it, hamon::iter_difference_t<It> n, Sent bound)
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_RANGES_NEXT_HPP

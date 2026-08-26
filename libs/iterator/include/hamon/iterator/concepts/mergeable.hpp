@@ -7,29 +7,21 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_MERGEABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_MERGEABLE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/functional/ranges/less.hpp>
-#include <hamon/functional/identity.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/concepts/input_iterator.hpp>
-#include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
+#include <hamon/iterator/concepts/input_iterator.hpp>
+#include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/functional/identity.hpp>
+#include <hamon/functional/ranges/less.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::mergeable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <
 	typename I1,

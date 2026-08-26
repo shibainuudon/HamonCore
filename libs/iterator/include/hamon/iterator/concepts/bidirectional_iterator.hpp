@@ -7,28 +7,20 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_BIDIRECTIONAL_ITERATOR_HPP
 #define HAMON_ITERATOR_CONCEPTS_BIDIRECTIONAL_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::bidirectional_iterator;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if  defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 HAMON_CONCEPT_OR_BOOL bidirectional_iterator =

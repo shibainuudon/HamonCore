@@ -215,9 +215,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		using Sent = hamon::move_sentinel<int>;
 		static_assert(!hamon::is_convertible<int, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, int>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, int>::value, "");
-#endif
+
 		Sent m(42);
 		VERIFY(m.base() == 42);
 	}
@@ -227,9 +226,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		using Sent = hamon::move_sentinel<int*>;
 		static_assert(!hamon::is_convertible<int*, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, int*>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, int*>::value, "");
-#endif
+
 		int i = 42;
 		Sent m(&i);
 		VERIFY(m.base() == &i);
@@ -245,9 +243,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		using Sent = hamon::move_sentinel<S>;
 		static_assert(!hamon::is_convertible<S, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, S>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, S>::value, "");
-#endif
+
 		Sent m(S(42));
 		VERIFY(m.base().i == 42);
 	}
@@ -263,9 +260,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		using Sent = hamon::move_sentinel<S>;
 		static_assert(!hamon::is_convertible<S, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, S>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, S>::value, "");
-#endif
 	}
 	{
 		struct S
@@ -278,9 +273,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		using Sent = hamon::move_sentinel<S>;
 		static_assert(!hamon::is_convertible<S, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, S>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert(!hamon::is_nothrow_constructible<Sent, S>::value, "");
-#endif
 	}
 
 	return true;
@@ -305,12 +298,11 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 {
 	// Constructing from an lvalue.
 	{
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<
 			hamon::move_sentinel<long>,
 			hamon::move_sentinel<int> const&
 		>::value, "");
-#endif
+
 		hamon::move_sentinel<int> m(42);
 		hamon::move_sentinel<long> m2 = m;
 		VERIFY(m2.base() == 42L);
@@ -318,12 +310,11 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 
 	// Constructing from an rvalue.
 	{
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<
 			hamon::move_sentinel<long>,
 			hamon::move_sentinel<int>&&
 		>::value, "");
-#endif
+
 		hamon::move_sentinel<long> m2 = hamon::move_sentinel<int>(43);
 		VERIFY(m2.base() == 43L);
 	}
@@ -346,9 +337,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
 		static_assert( hamon::is_constructible<Sent2, Sent1 const&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent2, Sent1 const&>::value, "");
-#endif
 	}
 	{
 		struct S1
@@ -368,9 +357,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
 		static_assert( hamon::is_constructible<Sent2, Sent1 const&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert(!hamon::is_nothrow_constructible<Sent2, Sent1 const&>::value, "");
-#endif
 	}
 
 	// SFINAE checks.
@@ -408,11 +395,9 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		static_assert( hamon::is_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> const&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> const&>::value, "");
-#endif
 	}
 
 	// Assigning from an rvalue.
@@ -423,11 +408,9 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		static_assert( hamon::is_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> &&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> &&>::value, "");
-#endif
 	}
 
 	{
@@ -449,9 +432,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
 		static_assert( hamon::is_assignable<Sent2&, Sent1 const&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
-#endif
 	}
 	{
 		struct S1
@@ -472,9 +453,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
 		static_assert( hamon::is_assignable<Sent2&, Sent1 const&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert(!hamon::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
-#endif
 	}
 
 	// SFINAE checks.
@@ -620,12 +599,10 @@ static_assert(!hamon::is_detected<HasGe, hamon::move_iterator<int*>, hamon::move
 static_assert(!hamon::is_detected<HasGe, hamon::move_sentinel<int*>, hamon::move_iterator<int*>>::value, "");
 static_assert(!hamon::is_detected<HasGe, hamon::move_sentinel<int*>, hamon::move_sentinel<int*>>::value, "");
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<int*>>() == hamon::declval<hamon::move_sentinel<int*>>());
 HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<int*>>() != hamon::declval<hamon::move_sentinel<int*>>());
 HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_sentinel<int*>>() == hamon::declval<hamon::move_iterator<int*>>());
 HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_sentinel<int*>>() != hamon::declval<hamon::move_iterator<int*>>());
-#endif
 
 template <bool Noexcept, typename Iterator>
 struct MayThrowSentinel
@@ -679,7 +656,6 @@ GTEST_TEST(MoveSentinelTest, OperatorTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(OperatorTest<random_access_iterator_wrapper<char>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(OperatorTest<contiguous_iterator_wrapper<char>>());
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = int*;
 		using Sent = MayThrowSentinel<true, Iter>;
@@ -700,7 +676,6 @@ GTEST_TEST(MoveSentinelTest, OperatorTest)
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent const&>() == hamon::declval<MoveIter const&>());
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent const&>() != hamon::declval<MoveIter const&>());
 	}
-#endif
 }
 
 template <typename Iter>
@@ -778,7 +753,6 @@ GTEST_TEST(MoveSentinelTest, OperatorMinusTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(OperatorMinusTest<int*>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(OperatorMinusTest<int const*>());
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<int*>>() - hamon::declval<hamon::move_sentinel<int*>>());
 	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_sentinel<int*>>() - hamon::declval<hamon::move_iterator<int*>>());
 
@@ -814,7 +788,6 @@ GTEST_TEST(MoveSentinelTest, OperatorMinusTest)
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - hamon::declval<MoveSent>());
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent>() - hamon::declval<MoveIter>());
 	}
-#endif
 }
 
 #undef VERIFY

@@ -7,25 +7,16 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_INDIRECTLY_COMPARABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_COMPARABLE_HPP
 
-#include <hamon/iterator/config.hpp>
+#include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
-#include <hamon/iterator/projected.hpp>
-#include <hamon/functional/identity.hpp>
-#endif
-
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::indirectly_comparable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <
 	typename I1,

@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_EMPTY_HPP
 #define HAMON_ITERATOR_EMPTY_HPP
 
-#include <iterator>
-
-#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411) && \
-	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
-
-namespace hamon
-{
-
-using std::empty;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/config.hpp>
@@ -48,7 +34,7 @@ empty(T const (&)[N]) HAMON_NOEXCEPT
 }
 
 #if !(defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L))
-
+// C++26 で initializer_list にメンバ関数 empty() が追加されたため、このオーバーロードは不要になった
 template <typename E>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 empty(hamon::initializer_list<E> il) HAMON_NOEXCEPT
@@ -59,7 +45,5 @@ empty(hamon::initializer_list<E> il) HAMON_NOEXCEPT
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_EMPTY_HPP

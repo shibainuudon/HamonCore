@@ -7,33 +7,25 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_SIZED_SENTINEL_FOR_HPP
 #define HAMON_ITERATOR_CONCEPTS_SIZED_SENTINEL_FOR_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/disable_sized_sentinel_for.hpp>
+#include <hamon/iterator/concepts/sentinel_for.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::sized_sentinel_for;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Sent, typename Iter>
 HAMON_CONCEPT_OR_BOOL sized_sentinel_for =
 	hamon::sentinel_for<Sent, Iter> &&
-	!HAMON_DISABLE_SIZED_SENTINEL_FOR(hamon::remove_cv_t<Sent>, hamon::remove_cv_t<Iter>) &&
+	!hamon::disable_sized_sentinel_for<hamon::remove_cv_t<Sent>, hamon::remove_cv_t<Iter>> &&
 	requires(Iter const& i, Sent const& s)
 	{
 		{ s - i } -> hamon::same_as<hamon::iter_difference_t<Iter>>;
@@ -52,7 +44,7 @@ private:
 	template <typename S2, typename I2,
 		typename = hamon::enable_if_t<hamon::sentinel_for<S2, I2>>,
 		typename = hamon::enable_if_t<
-			!HAMON_DISABLE_SIZED_SENTINEL_FOR(hamon::remove_cv_t<S2>, hamon::remove_cv_t<I2>)>,
+			!hamon::disable_sized_sentinel_for<hamon::remove_cv_t<S2>, hamon::remove_cv_t<I2>>>,
 		typename D1 = decltype(hamon::declval<S2 const&>() - hamon::declval<I2 const&>()),
 		typename D2 = decltype(hamon::declval<I2 const&>() - hamon::declval<S2 const&>()),
 		typename D3 = hamon::iter_difference_t<I2>,

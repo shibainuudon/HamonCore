@@ -16,7 +16,6 @@
 #include <hamon/config.hpp>
 #include <streambuf>
 #include <iterator>
-#include <memory>
 
 #define HAMON_PERMUTABLE_TEST(B, ...)	\
 	static_assert(B == hamon::permutable<__VA_ARGS__>, "")
@@ -50,7 +49,7 @@ HAMON_PERMUTABLE_TEST(true,  hamon::vector<int>::iterator);
 HAMON_PERMUTABLE_TEST(false, hamon::vector<int>::const_iterator);
 HAMON_PERMUTABLE_TEST(false, std::istreambuf_iterator<char>);
 HAMON_PERMUTABLE_TEST(false, std::ostreambuf_iterator<char>);
-HAMON_PERMUTABLE_TEST(false, std::shared_ptr<int>);
+HAMON_PERMUTABLE_TEST(false, hamon::shared_ptr<int>);
 HAMON_PERMUTABLE_TEST(false, hamon::unique_ptr<int>);
 
 }	// namespace permutable_test

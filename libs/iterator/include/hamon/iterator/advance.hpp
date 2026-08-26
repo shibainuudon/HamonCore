@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_ADVANCE_HPP
 #define HAMON_ITERATOR_ADVANCE_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR)
-
-namespace hamon
-{
-
-using std::advance;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -89,7 +76,5 @@ advance(InputIterator& it, Distance n)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_ADVANCE_HPP

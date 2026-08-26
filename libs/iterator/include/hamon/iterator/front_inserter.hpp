@@ -8,21 +8,6 @@
 #define HAMON_ITERATOR_FRONT_INSERTER_HPP
 
 #include <hamon/iterator/front_insert_iterator.hpp>
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR)
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::front_inserter;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -40,7 +25,5 @@ front_inserter(Container& x) HAMON_NOEXCEPT	// noexcept as an extension
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_FRONT_INSERTER_HPP

@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_REND_HPP
 #define HAMON_ITERATOR_REND_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR) && \
-	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
-
-namespace hamon
-{
-
-using std::rend;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -66,7 +52,5 @@ rend(hamon::initializer_list<E> il) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_REND_HPP

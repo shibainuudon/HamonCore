@@ -57,13 +57,16 @@ struct TestIterator
 }	// namespace reverse_iterator_test
 }	// namespace hamon_iterator_test
 
-namespace HAMON_DISABLE_SIZED_SENTINEL_FOR_NAMESPACE
+namespace hamon
 {
 
 template <typename T>
-HAMON_SPECIALIZE_DISABLE_SIZED_SENTINEL_FOR(true,
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+bool disable_sized_sentinel_for<
 	hamon_iterator_test::reverse_iterator_test::sized_sentinel_for_test::TestIterator<T>,
-	hamon_iterator_test::reverse_iterator_test::sized_sentinel_for_test::TestIterator<T>);
+	hamon_iterator_test::reverse_iterator_test::sized_sentinel_for_test::TestIterator<T>
+> = true;
+
 }
 
 namespace hamon_iterator_test {

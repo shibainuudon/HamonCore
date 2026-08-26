@@ -43,8 +43,10 @@ struct Iter2
 }	// namespace reverse_iterator_test
 }	// namespace hamon_iterator_test
 
+namespace hamon {
+
 template <>
-struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+struct iterator_traits<
 	hamon_iterator_test::reverse_iterator_test::typedefs_test::Iter1>
 {
 	using iterator_category = hamon::contiguous_iterator_tag;
@@ -54,7 +56,7 @@ struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
 };
 
 template <>
-struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+struct iterator_traits<
 	hamon_iterator_test::reverse_iterator_test::typedefs_test::Iter2>
 {
 	using iterator_category = hamon::input_iterator_tag;
@@ -62,6 +64,8 @@ struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
 	using value_type = char;
 	using pointer = int;
 };
+
+}	// namespace hamon
 
 namespace hamon_iterator_test {
 namespace reverse_iterator_test {

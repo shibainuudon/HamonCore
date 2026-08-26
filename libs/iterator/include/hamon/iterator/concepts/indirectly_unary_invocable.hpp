@@ -7,31 +7,23 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_INDIRECTLY_UNARY_INVOCABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_UNARY_INVOCABLE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/detail/indirect_value_t.hpp>
-#include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
+#include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/invocable.hpp>
-#include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/type_traits/invoke_result.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/type_traits/invoke_result.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::indirectly_unary_invocable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I>
 HAMON_CONCEPT_OR_BOOL indirectly_unary_invocable =

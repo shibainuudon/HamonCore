@@ -19,7 +19,6 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "iterator_test.hpp"
 #include "constexpr_test.hpp"
 

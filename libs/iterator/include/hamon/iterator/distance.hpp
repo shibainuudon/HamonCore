@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_DISTANCE_HPP
 #define HAMON_ITERATOR_DISTANCE_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR)
-
-namespace hamon
-{
-
-using std::distance;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -63,7 +50,5 @@ distance(InputIterator first, InputIterator last)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_DISTANCE_HPP

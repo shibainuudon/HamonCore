@@ -7,21 +7,6 @@
 #ifndef HAMON_ITERATOR_COMMON_ITERATOR_HPP
 #define HAMON_ITERATOR_COMMON_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-#define HAMON_USE_STD_COMMON_ITERATOR
-
-namespace hamon
-{
-
-using std::common_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/indirectly_swappable.hpp>
@@ -629,7 +614,5 @@ struct iterator_traits<
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_COMMON_ITERATOR_HPP

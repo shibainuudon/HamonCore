@@ -37,9 +37,11 @@ struct my_iterator_2
 }	// namespace iter_value_t_test
 }	// namespace hamon_iterator_test
 
+namespace hamon {
+
 // indirectly_readable_traits<my_iterator_1> の特殊化
 template <>
-struct HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE::indirectly_readable_traits<
+struct indirectly_readable_traits<
 	hamon_iterator_test::iter_value_t_test::my_iterator_1>
 {
 	using value_type = long const;
@@ -47,11 +49,13 @@ struct HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE::indirectly_readable_traits<
 
 // iterator_traits<my_iterator_2> の特殊化
 template <>
-struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+struct iterator_traits<
 	hamon_iterator_test::iter_value_t_test::my_iterator_2>
 {
 	using value_type = char const;
 };
+
+}	// namespace hamon
 
 namespace hamon_iterator_test {
 namespace iter_value_t_test {

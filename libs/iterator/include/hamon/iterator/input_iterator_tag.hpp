@@ -12,6 +12,9 @@
 namespace hamon
 {
 
+// TODO
+//struct input_iterator_tag {};
+
 using std::input_iterator_tag;
 
 }	// namespace hamon

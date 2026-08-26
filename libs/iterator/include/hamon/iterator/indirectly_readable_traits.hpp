@@ -7,21 +7,6 @@
 #ifndef HAMON_ITERATOR_INDIRECTLY_READABLE_TRAITS_HPP
 #define HAMON_ITERATOR_INDIRECTLY_READABLE_TRAITS_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-#define HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE  std
-
-namespace hamon
-{
-
-using std::indirectly_readable_traits;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/detail/has_member_value_type.hpp>
 #include <hamon/iterator/detail/has_member_element_type.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -30,8 +15,6 @@ using std::indirectly_readable_traits;
 #include <hamon/type_traits/remove_extent.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_object.hpp>
-
-#define HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE  hamon
 
 namespace hamon
 {
@@ -98,7 +81,5 @@ struct indirectly_readable_traits<I const>
 	: public indirectly_readable_traits<I> {};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_INDIRECTLY_READABLE_TRAITS_HPP

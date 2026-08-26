@@ -11,6 +11,7 @@
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
+#include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -21,7 +22,6 @@
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <utility>	// pair
-#include <iterator>
 
 namespace hamon_iterator_test
 {
@@ -161,7 +161,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it5>::difference_type,   ham
 static_assert(hamon::is_same<hamon::iterator_traits<it5>::pointer,           int*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it5>::reference,         int&>::value, "");
 
-using it6 = std::reverse_iterator<int*>;
+using it6 = hamon::reverse_iterator<int*>;
 static_assert(!has_iterator_concept<hamon::iterator_traits<it6>>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::value_type,        int>::value, "");

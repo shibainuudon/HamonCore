@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_CEND_HPP
 #define HAMON_ITERATOR_CEND_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR)
-
-namespace hamon
-{
-
-using std::cend;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/end.hpp>
 #include <hamon/config.hpp>
 
@@ -39,7 +26,5 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::end(c))
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_CEND_HPP

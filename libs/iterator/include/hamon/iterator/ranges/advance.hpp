@@ -7,22 +7,6 @@
 #ifndef HAMON_ITERATOR_RANGES_ADVANCE_HPP
 #define HAMON_ITERATOR_RANGES_ADVANCE_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::advance;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -248,7 +232,5 @@ advance(It& it, hamon::iter_difference_t<It> n, Sent bound)
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_RANGES_ADVANCE_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_ITERATOR_FRONT_INSERT_ITERATOR_HPP
 #define HAMON_ITERATOR_FRONT_INSERT_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR)
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::front_insert_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -94,8 +79,7 @@ public:
 		return *this;
 	}
 };
-}	// namespace hamon
 
-#endif
+}	// namespace hamon
 
 #endif // HAMON_ITERATOR_FRONT_INSERT_ITERATOR_HPP

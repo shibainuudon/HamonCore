@@ -7,27 +7,19 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_SORTABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_SORTABLE_HPP
 
-#include <hamon/iterator/config.hpp>
+#include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
+#include <hamon/iterator/concepts/permutable.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/concepts/permutable.hpp>
-#include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
-#include <hamon/iterator/projected.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::sortable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <
 	typename Iter,

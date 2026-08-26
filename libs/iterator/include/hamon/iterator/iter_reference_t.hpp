@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_ITER_REFERENCE_T_HPP
 #define HAMON_ITERATOR_ITER_REFERENCE_T_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::iter_reference_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/detail/dereferenceable.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -33,7 +20,5 @@ template <HAMON_CONSTRAINT(detail::dereferenceable, I)>
 using iter_reference_t = decltype(*hamon::declval<I&>());
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_ITER_REFERENCE_T_HPP

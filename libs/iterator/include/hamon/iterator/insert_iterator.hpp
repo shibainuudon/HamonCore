@@ -7,24 +7,6 @@
 #ifndef HAMON_ITERATOR_INSERT_ITERATOR_HPP
 #define HAMON_ITERATOR_INSERT_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR) && \
-	!defined(HAMON_APPLE_CLANG)	// apple clang の insert_iterator はコンパイルエラーになる
-
-#define HAMON_USE_STD_INSERT_ITERATOR
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::insert_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -106,7 +88,5 @@ public:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_INSERT_ITERATOR_HPP

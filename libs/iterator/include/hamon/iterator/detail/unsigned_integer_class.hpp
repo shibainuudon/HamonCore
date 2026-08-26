@@ -25,15 +25,23 @@ template <>
 struct unsigned_integer_class<hamon::detail::max_size_type>
 	: public hamon::true_type {};
 
+}	// namespace detail
+}	// namespace hamon
+
 #if defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_HAS_CXX20_CONCEPTS)
+
+#include <__msvc_int128.hpp>
+
+namespace hamon {
+namespace detail {
 
 template <>
 struct unsigned_integer_class<std::_Unsigned128>
 	: public hamon::true_type {};
 
-#endif
-
 }	// namespace detail
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_ITERATOR_DETAIL_UNSIGNED_INTEGER_CLASS_HPP

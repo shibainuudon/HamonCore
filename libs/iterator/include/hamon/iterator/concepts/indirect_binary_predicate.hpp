@@ -7,29 +7,21 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_INDIRECT_BINARY_PREDICATE_HPP
 #define HAMON_ITERATOR_CONCEPTS_INDIRECT_BINARY_PREDICATE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/detail/indirect_value_t.hpp>
-#include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
+#include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/predicate.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::indirect_binary_predicate;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I1, typename I2>
 HAMON_CONCEPT_OR_BOOL indirect_binary_predicate =

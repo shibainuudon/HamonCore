@@ -7,27 +7,19 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_WEAKLY_INCREMENTABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_WEAKLY_INCREMENTABLE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/detail/is_signed_integer_like.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::weakly_incrementable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 HAMON_CONCEPT_OR_BOOL weakly_incrementable =

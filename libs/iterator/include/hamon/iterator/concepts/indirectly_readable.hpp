@@ -7,29 +7,21 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_INDIRECTLY_READABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_READABLE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
-#include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::indirectly_readable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 namespace detail
 {

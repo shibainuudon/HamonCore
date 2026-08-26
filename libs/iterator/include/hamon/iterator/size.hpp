@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_SIZE_HPP
 #define HAMON_ITERATOR_SIZE_HPP
 
-#include <iterator>
-
-#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411) && \
-	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
-
-namespace hamon
-{
-
-using std::size;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
@@ -47,7 +33,5 @@ size(T const (&)[N]) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_SIZE_HPP

@@ -7,35 +7,27 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_CONTIGUOUS_ITERATOR_HPP
 #define HAMON_ITERATOR_CONCEPTS_CONTIGUOUS_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
+#include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/memory/to_address.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::contiguous_iterator;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 HAMON_CONCEPT_OR_BOOL contiguous_iterator =

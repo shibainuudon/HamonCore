@@ -7,29 +7,21 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_FORWARD_ITERATOR_HPP
 #define HAMON_ITERATOR_CONCEPTS_FORWARD_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/incrementable.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::forward_iterator;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 HAMON_CONCEPT_OR_BOOL forward_iterator =

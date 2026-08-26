@@ -7,25 +7,17 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_INDIRECTLY_COPYABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_COPYABLE_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::indirectly_copyable;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename In, typename Out>
 HAMON_CONCEPT_OR_BOOL indirectly_copyable =

@@ -8,20 +8,6 @@
 #define HAMON_ITERATOR_INSERTER_HPP
 
 #include <hamon/iterator/insert_iterator.hpp>
-
-#if defined(HAMON_USE_STD_INSERT_ITERATOR)
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::inserter;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/config.hpp>
 
@@ -41,7 +27,5 @@ inserter(Container& x, hamon::ranges::iterator_t<Container> i)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_INSERTER_HPP

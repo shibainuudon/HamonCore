@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_MAKE_CONST_SENTINEL_HPP
 #define HAMON_ITERATOR_MAKE_CONST_SENTINEL_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::make_const_sentinel;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/const_sentinel.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/semiregular.hpp>
@@ -38,7 +25,5 @@ HAMON_NOEXCEPT_IF(hamon::is_nothrow_convertible<S, hamon::const_sentinel<S>>::va
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_MAKE_CONST_SENTINEL_HPP

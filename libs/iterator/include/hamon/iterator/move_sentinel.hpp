@@ -7,21 +7,6 @@
 #ifndef HAMON_ITERATOR_MOVE_SENTINEL_HPP
 #define HAMON_ITERATOR_MOVE_SENTINEL_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::move_sentinel;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
@@ -86,7 +71,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_MOVE_SENTINEL_HPP

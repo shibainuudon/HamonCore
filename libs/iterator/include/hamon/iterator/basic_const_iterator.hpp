@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_BASIC_CONST_ITERATOR_HPP
 #define HAMON_ITERATOR_BASIC_CONST_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::basic_const_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
@@ -758,7 +745,5 @@ struct common_type<hamon::basic_const_iterator<T>, hamon::basic_const_iterator<U
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_BASIC_CONST_ITERATOR_HPP

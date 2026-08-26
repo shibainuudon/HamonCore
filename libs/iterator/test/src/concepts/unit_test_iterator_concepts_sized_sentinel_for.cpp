@@ -9,7 +9,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 #include <iterator>
 
 #define HAMON_SIZED_SENTINEL_FOR_TEST(B, ...)	\
@@ -29,7 +28,7 @@ HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               int    
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               int const* const);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               void*);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::unique_ptr<int>);
-HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::shared_ptr<int>);
+HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::shared_ptr<int>);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::iterator);
 HAMON_SIZED_SENTINEL_FOR_TEST(true,  hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::const_iterator);
@@ -104,12 +103,14 @@ struct Z
 
 }	// namespace hamon_iterator_test
 
-namespace HAMON_DISABLE_SIZED_SENTINEL_FOR_NAMESPACE {
+namespace hamon {
 
 template <>
-HAMON_SPECIALIZE_DISABLE_SIZED_SENTINEL_FOR(true,
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+bool disable_sized_sentinel_for<
 	hamon_iterator_test::sized_sentinel_for_test::Sentinel,
-	hamon_iterator_test::sized_sentinel_for_test::Z);
+	hamon_iterator_test::sized_sentinel_for_test::Z
+> = true;
 
 }
 

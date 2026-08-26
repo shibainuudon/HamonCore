@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_UNREACHABLE_SENTINEL_T_HPP
 #define HAMON_ITERATOR_UNREACHABLE_SENTINEL_T_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::unreachable_sentinel_t;
-using std::unreachable_sentinel;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
@@ -63,7 +49,5 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR
 unreachable_sentinel_t unreachable_sentinel{};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_UNREACHABLE_SENTINEL_T_HPP

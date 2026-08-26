@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_INDIRECT_RESULT_T_HPP
 #define HAMON_ITERATOR_INDIRECT_RESULT_T_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirect_result_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/concepts/invocable.hpp>
@@ -76,7 +63,5 @@ using indirect_result_t = typename detail::indirect_result_t_impl<F, detail::typ
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_INDIRECT_RESULT_T_HPP

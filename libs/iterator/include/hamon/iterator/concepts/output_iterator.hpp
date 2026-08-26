@@ -7,25 +7,17 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_OUTPUT_ITERATOR_HPP
 #define HAMON_ITERATOR_CONCEPTS_OUTPUT_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
-#include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
-#include <hamon/utility/forward.hpp>
+#include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/utility/forward.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-using std::output_iterator;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter, typename T>
 HAMON_CONCEPT_OR_BOOL output_iterator =

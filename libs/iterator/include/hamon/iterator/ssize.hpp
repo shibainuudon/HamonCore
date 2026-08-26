@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_SSIZE_HPP
 #define HAMON_ITERATOR_SSIZE_HPP
 
-#include <iterator>
-
-#if defined(__cpp_lib_ssize) && (__cpp_lib_ssize >= 201902) && \
-	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
-
-namespace hamon
-{
-
-using std::ssize;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/make_signed.hpp>
@@ -54,7 +40,5 @@ ssize(T const(&)[N]) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_SSIZE_HPP

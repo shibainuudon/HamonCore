@@ -8,7 +8,6 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 #include <iterator>
 
 #define HAMON_SENTINEL_FOR_TEST(B, ...)	\
@@ -28,7 +27,7 @@ HAMON_SENTINEL_FOR_TEST(false, int*,                               int      * co
 HAMON_SENTINEL_FOR_TEST(false, int*,                               int const* const);
 HAMON_SENTINEL_FOR_TEST(false, int*,                               void*);
 HAMON_SENTINEL_FOR_TEST(false, int*,                               hamon::unique_ptr<int>);
-HAMON_SENTINEL_FOR_TEST(false, int*,                               std::shared_ptr<int>);
+HAMON_SENTINEL_FOR_TEST(false, int*,                               hamon::shared_ptr<int>);
 HAMON_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::iterator);
 HAMON_SENTINEL_FOR_TEST(true,  hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
 HAMON_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::const_iterator);

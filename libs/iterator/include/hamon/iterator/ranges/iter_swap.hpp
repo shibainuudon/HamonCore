@@ -7,22 +7,6 @@
 #ifndef HAMON_ITERATOR_RANGES_ITER_SWAP_HPP
 #define HAMON_ITERATOR_RANGES_ITER_SWAP_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::iter_swap;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
@@ -158,7 +142,5 @@ iter_swap_detail::iter_swap_fn iter_swap{};
 }	// namespace hamon
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
-#endif
 
 #endif // HAMON_ITERATOR_RANGES_ITER_SWAP_HPP

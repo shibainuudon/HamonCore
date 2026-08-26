@@ -12,7 +12,6 @@
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/string.hpp>
-#include <iterator>
 #include <gtest/gtest.h>
 
 #define ASSERT_SAME_TYPE(...) \

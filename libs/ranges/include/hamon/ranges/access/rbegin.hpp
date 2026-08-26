@@ -7,21 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_RBEGIN_HPP
 #define HAMON_RANGES_ACCESS_RBEGIN_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/iterator/reverse_iterator.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && defined(HAMON_USE_STD_REVERSE_ITERATOR)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::rbegin;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/detail/has_member_rbegin.hpp>
 #include <hamon/ranges/detail/has_adl_rbegin.hpp>
@@ -31,6 +16,7 @@ using std::ranges::rbegin;
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
+#include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -97,7 +83,5 @@ detail::rbegin_fn rbegin{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_RBEGIN_HPP

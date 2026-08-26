@@ -7,22 +7,6 @@
 #ifndef HAMON_ITERATOR_RANGES_PREV_HPP
 #define HAMON_ITERATOR_RANGES_PREV_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::prev;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -59,7 +43,5 @@ prev(It it, hamon::iter_difference_t<It> n, It bound)
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_RANGES_PREV_HPP

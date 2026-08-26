@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_PREV_HPP
 #define HAMON_ITERATOR_PREV_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR)
-
-namespace hamon
-{
-
-using std::prev;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/advance.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -65,7 +52,5 @@ prev(BidirectionalIterator const& it, Distance n = 1)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_PREV_HPP

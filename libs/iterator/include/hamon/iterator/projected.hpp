@@ -7,19 +7,6 @@
 #ifndef HAMON_ITERATOR_PROJECTED_HPP
 #define HAMON_ITERATOR_PROJECTED_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::projected;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/indirect_result_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
@@ -89,7 +76,5 @@ struct indirect_value_impl<hamon::projected<I, Proj>>
 }	// namespace detail
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_PROJECTED_HPP

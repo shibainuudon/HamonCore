@@ -13,6 +13,8 @@
 namespace hamon
 {
 
+// TODO
+
 #if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911)
 using std::contiguous_iterator_tag;
 #else

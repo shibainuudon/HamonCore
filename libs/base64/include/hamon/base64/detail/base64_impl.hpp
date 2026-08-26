@@ -14,7 +14,6 @@
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
-#include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -269,11 +268,7 @@ public:
 	 *	@param	result
 	 */
 	template <
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINT(hamon::contiguous_iterator, InputIterator),
-#else
 		HAMON_CONSTRAINT(hamon::random_access_iterator, InputIterator),
-#endif
 		HAMON_CONSTRAINT(hamon::sized_sentinel_for, InputIterator, Sentinel),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutputIterator)
 	>
@@ -302,11 +297,7 @@ public:
 	 *	@param	result
 	 */
 	template <
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINT(hamon::ranges::contiguous_range, Range),
-#else
 		HAMON_CONSTRAINT(hamon::ranges::random_access_range, Range),
-#endif
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutputIterator)
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -328,11 +319,7 @@ public:
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, InputIterator),
 		HAMON_CONSTRAINT(hamon::sentinel_for, InputIterator, Sentinel),
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
-#else
 		HAMON_CONSTRAINT(hamon::random_access_iterator, OutputIterator)
-#endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
@@ -360,11 +347,7 @@ public:
 	 */
 	template <
 		HAMON_CONSTRAINT(hamon::ranges::input_range, Range),
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
-#else
 		HAMON_CONSTRAINT(hamon::random_access_iterator, OutputIterator)
-#endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
@@ -380,11 +363,7 @@ public:
 	 */
 	template <
 		typename Result,
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINT(hamon::contiguous_iterator, Iterator),
-#else
 		HAMON_CONSTRAINT(hamon::random_access_iterator, Iterator),
-#endif
 		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
 	static Result encode(Iterator first, Sentinel last)

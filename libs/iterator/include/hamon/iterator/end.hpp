@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_END_HPP
 #define HAMON_ITERATOR_END_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_ITERATOR) && \
-	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
-
-namespace hamon
-{
-
-using std::end;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
@@ -56,7 +42,5 @@ end(T (&a)[N]) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_END_HPP

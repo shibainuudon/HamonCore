@@ -7,22 +7,6 @@
 #ifndef HAMON_ITERATOR_RANGES_ITER_MOVE_HPP
 #define HAMON_ITERATOR_RANGES_ITER_MOVE_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::iter_move;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/detail/dereferenceable.hpp>
 #include <hamon/iterator/concepts/detail/is_void_pointer.hpp>
@@ -110,7 +94,5 @@ iter_move_detail::iter_move_fn iter_move{};
 }	// namespace hamon
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
-#endif
 
 #endif // HAMON_ITERATOR_RANGES_ITER_MOVE_HPP

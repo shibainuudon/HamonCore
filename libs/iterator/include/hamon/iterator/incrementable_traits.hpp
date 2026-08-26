@@ -7,21 +7,6 @@
 #ifndef HAMON_ITERATOR_INCREMENTABLE_TRAITS_HPP
 #define HAMON_ITERATOR_INCREMENTABLE_TRAITS_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-#define HAMON_INCREMENTABLE_TRAITS_NAMESPACE  std
-
-namespace hamon
-{
-
-using std::incrementable_traits;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/detail/has_member_difference_type.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -29,8 +14,6 @@ using std::incrementable_traits;
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/make_signed.hpp>
 #include <hamon/utility/declval.hpp>
-
-#define HAMON_INCREMENTABLE_TRAITS_NAMESPACE  hamon
 
 namespace hamon
 {
@@ -85,7 +68,5 @@ struct incrementable_traits<I const>
 	: public incrementable_traits<I> {};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_INCREMENTABLE_TRAITS_HPP

@@ -71,7 +71,7 @@ struct TestIterator1
 }	// namespace hamon_iterator_test
 
 template <typename T>
-struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+struct hamon::iterator_traits<
 	hamon_iterator_test::common_iterator_test::iterator_traits_test::TestIterator1<T>>
 {
 	using iterator_concept = hamon::forward_iterator_tag;

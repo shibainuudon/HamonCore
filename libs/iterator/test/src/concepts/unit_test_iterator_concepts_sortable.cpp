@@ -15,7 +15,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
-#include <memory>
 
 #define HAMON_SORTABLE_TEST(B, ...)	\
 	static_assert(B == hamon::sortable<__VA_ARGS__>, "")
@@ -78,7 +77,7 @@ HAMON_SORTABLE_TEST(true,  hamon::vector<int>::iterator);
 HAMON_SORTABLE_TEST(false, hamon::vector<int>::const_iterator);
 HAMON_SORTABLE_TEST(false, std::istreambuf_iterator<char>);
 HAMON_SORTABLE_TEST(false, std::ostreambuf_iterator<char>);
-HAMON_SORTABLE_TEST(false, std::shared_ptr<int>);
+HAMON_SORTABLE_TEST(false, hamon::shared_ptr<int>);
 HAMON_SORTABLE_TEST(false, hamon::unique_ptr<int>);
 
 }	// namespace sortable_test

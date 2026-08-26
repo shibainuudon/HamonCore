@@ -15,7 +15,6 @@
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon_iterator_test
 {

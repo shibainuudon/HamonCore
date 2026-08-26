@@ -9,7 +9,6 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
-#include <iterator>
 
 namespace hamon_ranges_test
 {

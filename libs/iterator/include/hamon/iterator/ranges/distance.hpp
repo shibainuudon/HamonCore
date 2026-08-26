@@ -7,22 +7,6 @@
 #ifndef HAMON_ITERATOR_RANGES_DISTANCE_HPP
 #define HAMON_ITERATOR_RANGES_DISTANCE_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::distance;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -126,7 +110,5 @@ distance(Range&& r)
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_RANGES_DISTANCE_HPP

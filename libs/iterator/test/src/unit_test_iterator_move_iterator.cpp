@@ -36,7 +36,6 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"
@@ -198,8 +197,6 @@ GTEST_TEST(MoveIteratorTest, TypesTest)
 struct Base {};
 struct Derived : Base {};
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-
 struct NoDefaultCtr : public input_iterator_wrapper<int>
 {
 	NoDefaultCtr() = delete;
@@ -215,8 +212,6 @@ struct ThrowDefaultCtr : public input_iterator_wrapper<int>
 
 static_assert( hamon::is_default_constructible<hamon::move_iterator<ThrowDefaultCtr>>::value, "");
 static_assert(!hamon::is_nothrow_default_constructible<hamon::move_iterator<ThrowDefaultCtr>>::value, "");
-
-#endif
 
 template <typename Iter>
 inline HAMON_CXX14_CONSTEXPR bool CtorDefaultTest()
@@ -351,10 +346,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterTest()
 	static_assert(!hamon::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
 	static_assert(!hamon::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
 	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
-#endif
 
 	// explicitly constructible
 	static_assert(!hamon::is_implicitly_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
@@ -383,9 +376,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterMoveOnlyTest()
 	static_assert(!hamon::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
 	static_assert(!hamon::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
-#endif
 
 	// explicitly constructible
 	static_assert(!hamon::is_implicitly_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
@@ -401,7 +392,6 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterMoveOnlyTest()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 template <bool Noexcept, typename T, template <typename> class IteratorWrapper>
 struct MayThrowMoveCtor : public IteratorWrapper<T>
 {
@@ -412,8 +402,6 @@ public:
 	HAMON_CXX14_CONSTEXPR MayThrowMoveCtor(MayThrowMoveCtor const&) = default;
 	HAMON_CXX14_CONSTEXPR MayThrowMoveCtor(MayThrowMoveCtor && other) noexcept(Noexcept);
 };
-
-#endif
 
 GTEST_TEST(MoveIteratorTest, CtorIterTest)
 {
@@ -431,7 +419,6 @@ GTEST_TEST(MoveIteratorTest, CtorIterTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorIterMoveOnlyTest<move_only_random_access_iterator_wrapper<char>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorIterMoveOnlyTest<move_only_contiguous_iterator_wrapper<char>>());
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowMoveCtor<true, int, input_iterator_wrapper>;
 		static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
@@ -442,7 +429,6 @@ GTEST_TEST(MoveIteratorTest, CtorIterTest)
 		static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
 		static_assert(!hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
 	}
-#endif
 }
 
 template <template <typename> class IteratorWrapper>
@@ -464,7 +450,6 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 template <bool Noexcept, typename T, template <typename> class IteratorWrapper>
 struct MayThrowConvCtor : public IteratorWrapper<T>
 {
@@ -480,7 +465,6 @@ public:
 	MayThrowConvCtor(MayThrowConvCtor<Noexcept, U, IteratorWrapper> const& u)
 		 noexcept(Noexcept);
 };
-#endif
 
 GTEST_TEST(MoveIteratorTest, CtorConvertTest)
 {
@@ -493,9 +477,7 @@ GTEST_TEST(MoveIteratorTest, CtorConvertTest)
 	static_assert( hamon::is_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*> const&>::value, "");
 	static_assert(!hamon::is_constructible<hamon::move_iterator<Derived*>, hamon::move_iterator<Base*> const&>::value, "");
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*>>::value, "");
-#endif
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorConvertTest<convertible_input_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorConvertTest<convertible_forward_iterator_wrapper>());
@@ -503,7 +485,6 @@ GTEST_TEST(MoveIteratorTest, CtorConvertTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorConvertTest<convertible_random_access_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorConvertTest<convertible_contiguous_iterator_wrapper>());
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter1 = MayThrowConvCtor<true, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowConvCtor<true, Derived, input_iterator_wrapper>;
@@ -516,7 +497,6 @@ GTEST_TEST(MoveIteratorTest, CtorConvertTest)
 		static_assert( hamon::is_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
 		static_assert(!hamon::is_nothrow_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
 	}
-#endif
 }
 
 GTEST_TEST(MoveIteratorTest, CtorCTADTest)
@@ -610,7 +590,6 @@ inline HAMON_CXX14_CONSTEXPR bool MoveAssignTest()
 	return true;
 }
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 template <bool Noexcept, typename T, template <typename> class IteratorWrapper>
 struct MayThrowAssign : public IteratorWrapper<T>
 {
@@ -636,7 +615,6 @@ public:
 	MayThrowAssign& operator=(MayThrowAssign<Noexcept, U, IteratorWrapper> const& u)
 		noexcept(Noexcept);
 };
-#endif
 
 GTEST_TEST(MoveIteratorTest, AssignTest)
 {
@@ -671,7 +649,6 @@ GTEST_TEST(MoveIteratorTest, AssignTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MoveAssignTest<move_only_random_access_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MoveAssignTest<move_only_contiguous_iterator_wrapper>());
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter1 = MayThrowAssign<true, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowAssign<true, Derived, input_iterator_wrapper>;
@@ -684,7 +661,6 @@ GTEST_TEST(MoveIteratorTest, AssignTest)
 		static_assert( hamon::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 		static_assert(!hamon::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 	}
-#endif
 }
 
 template <template <typename> class IteratorWrapper>
@@ -731,7 +707,6 @@ GTEST_TEST(MoveIteratorTest, BaseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BaseTest<random_access_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BaseTest<contiguous_iterator_wrapper>());
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowMoveCtor<true, int, input_iterator_wrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
@@ -746,7 +721,6 @@ GTEST_TEST(MoveIteratorTest, BaseTest)
 		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter const&>().base());
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter &&>().base());
 	}
-#endif
 }
 
 struct MoveOnlyObject
@@ -806,55 +780,43 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorStarTest()
 		int n = 3;
 		int* p = &n;
 		hamon::move_iterator<int*> it{p};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(*it);
-#endif
 		VERIFY(*it == 3);
 	}
 	{
 		const char *p = "123456789";
 		hamon::move_iterator<const char*> it1(p);
 		hamon::move_iterator<const char*> it2(p+1);
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(*it1);
 		HAMON_ASSERT_NOEXCEPT_TRUE(*it2);
-#endif
 		VERIFY(*it1 == p[0]);
 		VERIFY(*it2 == p[1]);
 	}
 	{
 		MoveOnlyObject o(42);
 		hamon::move_iterator<MoveOnlyObject*> it{&o};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(*it);
-#endif
 		auto o2 = *it;
 		VERIFY(o2.m_value == 42);
 	}
 	{
 		int n = 3;
 		hamon::move_iterator<move_only_input_iterator_wrapper<int>> it{&n};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_FALSE(*it);
-#endif
 		VERIFY(*it == 3);
 	}
 	{
 		using Iter = IterMoveOnly<true, int, input_iterator_wrapper>;
 		int n = 4;
 		hamon::move_iterator<Iter> it{&n};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(*it);
-#endif
 		VERIFY(*it == 4);
 	}
 	{
 		using Iter = IterMoveOnly<false, int, input_iterator_wrapper>;
 		int n = 4;
 		hamon::move_iterator<Iter> it{&n};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_FALSE(*it);
-#endif
 		VERIFY(*it == 4);
 	}
 
@@ -871,9 +833,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorIndexTest()
 	{
 		int a[] = {1, 2, 3};
 		hamon::move_iterator<int*> it{a};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it[0]);
-#endif
 		VERIFY(it[0] == 1);
 		VERIFY(it[1] == 2);
 		VERIFY(it[2] == 3);
@@ -887,9 +847,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorIndexTest()
 			{7},
 		};
 		hamon::move_iterator<MoveOnlyObject*> it{a};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it[0]);
-#endif
 		VERIFY(it[0].m_value == 4);
 		VERIFY(it[1].m_value == 5);
 		VERIFY(it[2].m_value == 6);
@@ -898,9 +856,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorIndexTest()
 	{
 		int a[] = {0, 2, 4, 6, 8};
 		hamon::move_iterator<move_only_random_access_iterator_wrapper<int>> it{a};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_FALSE(it[0]);
-#endif
 		VERIFY(it[0] == 0);
 		VERIFY(it[1] == 2);
 		VERIFY(it[2] == 4);
@@ -911,9 +867,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorIndexTest()
 		using Iter = IterMoveOnly<true, int, random_access_iterator_wrapper>;
 		int a[] = {41,42};
 		hamon::move_iterator<Iter> it{a};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it[0]);
-#endif
 		VERIFY(it[0] == 41);
 		VERIFY(it[1] == 42);
 	}
@@ -921,9 +875,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorIndexTest()
 		using Iter = IterMoveOnly<false, int, random_access_iterator_wrapper>;
 		int a[] = {41,42};
 		hamon::move_iterator<Iter> it{a};
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_FALSE(it[0]);
-#endif
 		VERIFY(it[0] == 41);
 		VERIFY(it[1] == 42);
 	}
@@ -960,7 +912,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreIncrementTest()
 		VERIFY(base(r.base()) == a+1);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowIncrement<true, true, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(++hamon::declval<hamon::move_iterator<Iter>>());
@@ -977,7 +928,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreIncrementTest()
 		using Iter = MayThrowIncrement<false, false, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(++hamon::declval<hamon::move_iterator<Iter>>());
 	}
-#endif
 
 	return true;
 }
@@ -1006,7 +956,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest()
 		VERIFY(base(r.base()) == a);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowIncrement<true, true, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()++);
@@ -1023,7 +972,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest()
 		using Iter = MayThrowIncrement<false, false, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
-#endif
 
 	return true;
 }
@@ -1042,7 +990,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest2()
 		VERIFY(base(it.base()) == a+1);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowIncrement<true, true, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()++);
@@ -1059,7 +1006,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest2()
 		using Iter = MayThrowIncrement<false, false, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
-#endif
+
 	return true;
 }
 
@@ -1095,7 +1042,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreDecrementTest()
 		VERIFY(base(r.base()) == a+2);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowDecrement<true, true, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(--hamon::declval<hamon::move_iterator<Iter>>());
@@ -1112,7 +1058,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreDecrementTest()
 		using Iter = MayThrowDecrement<false, false, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(--hamon::declval<hamon::move_iterator<Iter>>());
 	}
-#endif
 
 	return true;
 }
@@ -1140,7 +1085,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostDecrementTest()
 		VERIFY(base(r.base()) == a+3);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowDecrement<true, true, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()--);
@@ -1157,7 +1101,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostDecrementTest()
 		using Iter = MayThrowDecrement<false, false, int, IteratorWrapper>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()--);
 	}
-#endif
 
 	return true;
 }
@@ -1205,7 +1148,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusTest()
 		VERIFY(base(it.base()) == a);
 		VERIFY(base(r.base()) == a+3);
 	}
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowPlus<true, true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
@@ -1230,7 +1172,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusTest()
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() + 1);
 		HAMON_ASSERT_NOEXCEPT_FALSE(1 + hamon::declval<MoveIter>());
 	}
-#endif
 
 	return true;
 }
@@ -1247,10 +1188,10 @@ GTEST_TEST(MoveIteratorTest, OperatorPlusTest)
 		int a[] = {1,2,3,4,5};
 		hamon::move_iterator<int*> it{a};
 		static_assert(hamon::is_same<decltype(it + 1), hamon::move_iterator<int*>>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
+
 		HAMON_ASSERT_NOEXCEPT_TRUE(it + 1);
 		HAMON_ASSERT_NOEXCEPT_TRUE(1 + it);
-#endif
+
 		auto r = it + 2;
 		EXPECT_TRUE(base(it.base()) == a);
 		EXPECT_TRUE(base(r.base()) == a+2);
@@ -1279,7 +1220,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusAssignTest()
 		VERIFY(base(r.base()) == a+2);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowNext<true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
@@ -1290,7 +1230,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusAssignTest()
 		using MoveIter = hamon::move_iterator<Iter>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter&>() += 1);
 	}
-#endif
 
 	return true;
 }
@@ -1307,9 +1246,9 @@ GTEST_TEST(MoveIteratorTest, OperatorPlusAssignTest)
 		int a[] = {1,2,3,4,5};
 		hamon::move_iterator<int*> it{a};
 		static_assert(hamon::is_same<decltype(it += 2), hamon::move_iterator<int*>&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
+
 		HAMON_ASSERT_NOEXCEPT_TRUE(it += 1);
-#endif
+
 		EXPECT_TRUE(base(it.base()) == a);
 		auto r = (it += 2);
 		EXPECT_TRUE(base(it.base()) == a+2);
@@ -1343,7 +1282,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusTest()
 		VERIFY(base(r.base()) == a+1);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowMinus<true, true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
@@ -1364,7 +1302,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusTest()
 		using MoveIter = hamon::move_iterator<Iter>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - 1);
 	}
-#endif
 
 	return true;
 }
@@ -1381,9 +1318,9 @@ GTEST_TEST(MoveIteratorTest, OperatorMinusTest)
 	{
 		hamon::move_iterator<int*> it{a+3};
 		static_assert(hamon::is_same<decltype(it - 1), hamon::move_iterator<int*>>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
+
 		HAMON_ASSERT_NOEXCEPT_TRUE(it - 1);
-#endif
+
 		auto r = it - 1;
 		EXPECT_TRUE(base(it.base()) == a+3);
 		EXPECT_TRUE(base(r.base()) == a+2);
@@ -1415,7 +1352,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorSubtractTest()
 		VERIFY(n == 2);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter1 = MayThrowSubtract<true, int, IteratorWrapper>;
 		using Iter2 = MayThrowSubtract<true, int, IteratorWrapper>;
@@ -1444,7 +1380,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorSubtractTest()
 		using MoveIter2 = hamon::move_iterator<Iter2>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1>() - hamon::declval<MoveIter2>());
 	}
-#endif
 
 	return true;
 }
@@ -1462,9 +1397,9 @@ GTEST_TEST(MoveIteratorTest, OperatorSubtractTest)
 		hamon::move_iterator<int*> it1{a+3};
 		hamon::move_iterator<int*> it2{a+1};
 		static_assert(hamon::is_same<decltype(it1 - it2), hamon::ptrdiff_t>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
+
 		HAMON_ASSERT_NOEXCEPT_TRUE(it1 - it2);
-#endif
+
 		auto n = it1 - it2;
 		EXPECT_TRUE(n == 2);
 	}
@@ -1472,9 +1407,9 @@ GTEST_TEST(MoveIteratorTest, OperatorSubtractTest)
 		hamon::move_iterator<int*> it1{a+3};
 		hamon::move_iterator<int const*> it2{a+1};
 		static_assert(hamon::is_same<decltype(it1 - it2), hamon::ptrdiff_t>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
+
 		HAMON_ASSERT_NOEXCEPT_TRUE(it1 - it2);
-#endif
+
 		auto n = it1 - it2;
 		EXPECT_TRUE(n == 2);
 	}
@@ -1501,7 +1436,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusAssignTest()
 		VERIFY(base(r.base()) == a+1);
 	}
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowPrev<true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
@@ -1512,7 +1446,6 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusAssignTest()
 		using MoveIter = hamon::move_iterator<Iter>;
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter&>() -= 1);
 	}
-#endif
 
 	return true;
 }
@@ -1529,9 +1462,9 @@ GTEST_TEST(MoveIteratorTest, OperatorMinusAssignTest)
 		int a[] = {1,2,3,4,5};
 		hamon::move_iterator<int*> it{a+3};
 		static_assert(hamon::is_same<decltype(it -= 2), hamon::move_iterator<int*>&>::value, "");
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
+
 		HAMON_ASSERT_NOEXCEPT_TRUE(it -= 1);
-#endif
+
 		EXPECT_TRUE(base(it.base()) == a+3);
 		auto r = (it -= 2);
 		EXPECT_TRUE(base(it.base()) == a+1);
@@ -1614,7 +1547,6 @@ GTEST_TEST(MoveIteratorTest, OperatorEqNeTest)
 	static_assert( hamon::is_detected<HasNe, hamon::move_iterator<random_access_iterator_wrapper<int>>, hamon::move_iterator<random_access_iterator_wrapper<int>>>::value, "");
 	static_assert( hamon::is_detected<HasNe, hamon::move_iterator<contiguous_iterator_wrapper<int>>,    hamon::move_iterator<contiguous_iterator_wrapper<int>>>::value, "");
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using MoveIter = hamon::move_iterator<int*>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() == hamon::declval<MoveIter const&>());
@@ -1652,7 +1584,6 @@ GTEST_TEST(MoveIteratorTest, OperatorEqNeTest)
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() == hamon::declval<MoveIter2 const&>());
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() != hamon::declval<MoveIter2 const&>());
 	}
-#endif
 }
 
 template <typename Iter>
@@ -1797,7 +1728,6 @@ GTEST_TEST(MoveIteratorTest, OperatorLtGtTest)
 	static_assert(!hamon::is_detected<HasGe, hamon::move_iterator<int*>, hamon::move_iterator<char*>>::value, "");
 #endif
 
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using MoveIter = hamon::move_iterator<int*>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() <  hamon::declval<MoveIter const&>());
@@ -1845,7 +1775,6 @@ GTEST_TEST(MoveIteratorTest, OperatorLtGtTest)
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <= hamon::declval<MoveIter2 const&>());
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >= hamon::declval<MoveIter2 const&>());
 	}
-#endif
 }
 
 template <typename Iter>
@@ -1888,12 +1817,10 @@ GTEST_TEST(MoveIteratorTest, OperatorSpaceshipTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(OperatorSpaceshipTest<int const*>());
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-#if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using MoveIter = hamon::move_iterator<int*>;
 		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() <=> hamon::declval<MoveIter const&>());
 	}
-#endif
 #endif
 }
 

@@ -39,9 +39,11 @@ struct my_iterator_2
 }	// namespace iter_difference_t_test
 }	// namespace hamon_iterator_test
 
+namespace hamon {
+
 // incrementable_traits<my_iterator_1> の特殊化
 template <>
-struct HAMON_INCREMENTABLE_TRAITS_NAMESPACE::incrementable_traits<
+struct incrementable_traits<
 	hamon_iterator_test::iter_difference_t_test::my_iterator_1>
 {
 	using difference_type = unsigned int;
@@ -49,11 +51,13 @@ struct HAMON_INCREMENTABLE_TRAITS_NAMESPACE::incrementable_traits<
 
 // iterator_traits<my_iterator_2> の特殊化
 template <>
-struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+struct iterator_traits<
 	hamon_iterator_test::iter_difference_t_test::my_iterator_2>
 {
 	using difference_type = signed short;
 };
+
+}	// namespace hamon
 
 namespace hamon_iterator_test {
 namespace iter_difference_t_test {

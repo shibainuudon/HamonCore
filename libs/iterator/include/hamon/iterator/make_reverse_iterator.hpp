@@ -8,20 +8,6 @@
 #define HAMON_ITERATOR_MAKE_REVERSE_ITERATOR_HPP
 
 #include <hamon/iterator/reverse_iterator.hpp>
-#include <iterator>
-
-#if defined(HAMON_USE_STD_REVERSE_ITERATOR) && \
-    defined(__cpp_lib_make_reverse_iterator) && (__cpp_lib_make_reverse_iterator >= 201402)
-
-namespace hamon
-{
-
-using std::make_reverse_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/config.hpp>
 
@@ -38,7 +24,5 @@ HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iterator>::value)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_MAKE_REVERSE_ITERATOR_HPP

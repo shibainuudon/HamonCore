@@ -7,26 +7,12 @@
 #ifndef HAMON_RANGES_ACCESS_CRBEGIN_HPP
 #define HAMON_RANGES_ACCESS_CRBEGIN_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/iterator/reverse_iterator.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && defined(HAMON_USE_STD_REVERSE_ITERATOR)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::crbegin;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/possibly_const_range.hpp>
 #include <hamon/ranges/rbegin.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/const_iterator.hpp>
+#include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -64,7 +50,5 @@ detail::crbegin_fn crbegin{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_CRBEGIN_HPP

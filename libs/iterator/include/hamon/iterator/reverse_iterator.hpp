@@ -7,25 +7,6 @@
 #ifndef HAMON_ITERATOR_REVERSE_ITERATOR_HPP
 #define HAMON_ITERATOR_REVERSE_ITERATOR_HPP
 
-//#include <hamon/concepts/config.hpp>
-
-#if (HAMON_CXX_STANDARD >= 17) && 0/*defined(HAMON_USE_STD_CONCEPTS)*/ && defined(HAMON_USE_STD_RANGES_ITERATOR)
-#    define HAMON_USE_STD_REVERSE_ITERATOR
-#endif
-
-#if defined(HAMON_USE_STD_REVERSE_ITERATOR)
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::reverse_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_swappable.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -465,20 +446,20 @@ using disable_sized_sentinel_for_helper = T;
 
 }	// namespace hamon
 
-namespace HAMON_DISABLE_SIZED_SENTINEL_FOR_NAMESPACE
+namespace hamon
 {
 
 template <typename Iterator1, typename Iterator2>
 //	requires (!hamon::sized_sentinel_for<Iterator1, Iterator2>)
-HAMON_SPECIALIZE_DISABLE_SIZED_SENTINEL_FOR(true,
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+bool disable_sized_sentinel_for<
 	hamon::reverse_iterator<Iterator1>,
 	hamon::reverse_iterator_detail::disable_sized_sentinel_for_helper<
 		hamon::reverse_iterator<Iterator2>,
 		hamon::enable_if_t<!hamon::sized_sentinel_for<Iterator1, Iterator2>>
-	>);
+	>
+> = true;
 
-}	// namespace HAMON_DISABLE_SIZED_SENTINEL_FOR_NAMESPACE
-
-#endif
+}	// namespace hamon
 
 #endif // HAMON_ITERATOR_REVERSE_ITERATOR_HPP

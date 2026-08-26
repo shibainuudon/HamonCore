@@ -8,22 +8,8 @@
 #define HAMON_ITERATOR_MAKE_MOVE_ITERATOR_HPP
 
 #include <hamon/iterator/move_iterator.hpp>
-#include <hamon/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-#include <iterator>
-
-namespace hamon
-{
-
-using std::make_move_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -37,7 +23,5 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::move_iterator<Iterator>(hamon::move(it)))
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_MAKE_MOVE_ITERATOR_HPP

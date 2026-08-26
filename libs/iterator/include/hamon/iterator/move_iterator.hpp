@@ -7,24 +7,6 @@
 #ifndef HAMON_ITERATOR_MOVE_ITERATOR_HPP
 #define HAMON_ITERATOR_MOVE_ITERATOR_HPP
 
-#include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR) && \
-	defined(__cpp_lib_move_iterator_concept) && (__cpp_lib_move_iterator_concept >= 202207L)
-
-#include <iterator>
-
-namespace hamon
-{
-
-#define HAMON_USE_STD_MOVE_ITERATOR
-
-using std::move_iterator;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/move_sentinel.hpp>
@@ -454,7 +436,5 @@ requires requires { { x.base() + n } -> hamon::same_as<Iter>; }
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_MOVE_ITERATOR_HPP

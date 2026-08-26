@@ -7,20 +7,6 @@
 #ifndef HAMON_ITERATOR_DATA_HPP
 #define HAMON_ITERATOR_DATA_HPP
 
-#include <iterator>
-
-#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411) && \
-	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
-
-namespace hamon
-{
-
-using std::data;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/config.hpp>
@@ -57,7 +43,7 @@ data(T (&a)[N]) HAMON_NOEXCEPT
 }
 
 #if !(defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L))
-
+// C++26 で initializer_list にメンバ関数 data() が追加されたため、このオーバーロードは不要になった
 template <typename E>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR const E*
 data(hamon::initializer_list<E> il) HAMON_NOEXCEPT
@@ -68,7 +54,5 @@ data(hamon::initializer_list<E> il) HAMON_NOEXCEPT
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_ITERATOR_DATA_HPP
