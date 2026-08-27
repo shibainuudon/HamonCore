@@ -57,14 +57,12 @@ static_assert(!hamon::is_constructible<hamon::optional<X>, hamon::in_place_t, ha
 static_assert(!hamon::is_constructible<hamon::optional<Y>, hamon::in_place_t, hamon::initializer_list<int>>::value, "");
 static_assert( hamon::is_constructible<hamon::optional<Y>, hamon::in_place_t, hamon::initializer_list<int>, int>::value, "");
 
-#if !defined(HAMON_USE_STD_OPTIONAL)
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<X>, hamon::in_place_t, hamon::initializer_list<int>>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<Y>, hamon::in_place_t, hamon::initializer_list<int>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::optional<Noexcept1>, hamon::in_place_t, hamon::initializer_list<int>>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<Noexcept1>, hamon::in_place_t, hamon::initializer_list<int>, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<Noexcept2>, hamon::in_place_t, hamon::initializer_list<int>>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::optional<Noexcept2>, hamon::in_place_t, hamon::initializer_list<int>, int>::value, "");
-#endif
 
 GTEST_TEST(OptionalTest, CtorInPlaceInitListArgsTest)
 {

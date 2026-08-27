@@ -62,12 +62,10 @@ static_assert(!hamon::is_implicitly_constructible<hamon::optional<Explicit>, ham
 static_assert( hamon::is_implicitly_constructible<hamon::optional<Implicit>, hamon::optional<int> &&>::value, "");
 static_assert( hamon::is_implicitly_constructible<hamon::optional<NoThrow>,  hamon::optional<int> &&>::value, "");
 
-#if !defined(HAMON_USE_STD_OPTIONAL)
 static_assert( hamon::is_nothrow_constructible<hamon::optional<int>,      hamon::optional<int> &&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<Explicit>, hamon::optional<int> &&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<Implicit>, hamon::optional<int> &&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::optional<NoThrow>,  hamon::optional<int> &&>::value, "");
-#endif
 
 GTEST_TEST(OptionalTest, CtorOptionalMoveTest)
 {

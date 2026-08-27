@@ -7,21 +7,6 @@
 #ifndef HAMON_OPTIONAL_MAKE_OPTIONAL_HPP
 #define HAMON_OPTIONAL_MAKE_OPTIONAL_HPP
 
-#include <hamon/optional/config.hpp>
-
-#if defined(HAMON_USE_STD_OPTIONAL)
-
-#include <optional>
-
-namespace hamon
-{
-
-using std::make_optional;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/optional/optional.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/decay.hpp>
@@ -57,7 +42,5 @@ make_optional(hamon::initializer_list<U> il, Args&&... args)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_OPTIONAL_MAKE_OPTIONAL_HPP

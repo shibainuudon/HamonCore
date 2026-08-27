@@ -7,21 +7,6 @@
 #ifndef HAMON_OPTIONAL_OPTIONAL_HPP
 #define HAMON_OPTIONAL_OPTIONAL_HPP
 
-#include <hamon/optional/config.hpp>
-
-#if defined(HAMON_USE_STD_OPTIONAL)
-
-#include <optional>
-
-namespace hamon
-{
-
-using std::optional;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/optional/optional_fwd.hpp>
 #include <hamon/optional/nullopt.hpp>
 #include <hamon/optional/bad_optional_access.hpp>
@@ -1100,7 +1085,5 @@ struct hash<hamon::optional<T>>
 {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_OPTIONAL_OPTIONAL_HPP

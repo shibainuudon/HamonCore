@@ -58,11 +58,9 @@ static_assert( hamon::is_copy_constructible<hamon::optional<Copyable>>::value, "
 static_assert(!hamon::is_copy_constructible<hamon::optional<NonCopyable>>::value, "");
 
 // extension
-#if !defined(HAMON_USE_STD_OPTIONAL)
 static_assert( hamon::is_nothrow_copy_constructible<hamon::optional<int>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<hamon::optional<NothrowCopyable>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::optional<Copyable>>::value, "");
-#endif
 
 static_assert( hamon::is_trivially_copy_constructible<hamon::optional<int>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::optional<TriviallyCopyable>>::value, "");

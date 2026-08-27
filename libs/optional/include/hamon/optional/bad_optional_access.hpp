@@ -7,21 +7,6 @@
 #ifndef HAMON_OPTIONAL_BAD_OPTIONAL_ACCESS_HPP
 #define HAMON_OPTIONAL_BAD_OPTIONAL_ACCESS_HPP
 
-#include <hamon/optional/config.hpp>
-
-#if defined(HAMON_USE_STD_OPTIONAL)
-
-#include <optional>
-
-namespace hamon
-{
-
-using std::bad_optional_access;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 #include <exception>
 
@@ -43,7 +28,5 @@ public:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_OPTIONAL_BAD_OPTIONAL_ACCESS_HPP

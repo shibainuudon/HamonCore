@@ -40,11 +40,9 @@ static_assert(!hamon::is_constructible<hamon::optional<S>,   hamon::in_place_t, 
 static_assert( hamon::is_constructible<hamon::optional<Noexcept>, hamon::in_place_t, int>::value, "");
 static_assert( hamon::is_constructible<hamon::optional<NotNoexcept>, hamon::in_place_t, int>::value, "");
 
-#if !defined(HAMON_USE_STD_OPTIONAL)
 static_assert( hamon::is_nothrow_constructible<hamon::optional<int>, hamon::in_place_t, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::optional<Noexcept>, hamon::in_place_t, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::optional<NotNoexcept>, hamon::in_place_t, int>::value, "");
-#endif
 
 GTEST_TEST(OptionalTest, CtorInPlaceArgsTest)
 {

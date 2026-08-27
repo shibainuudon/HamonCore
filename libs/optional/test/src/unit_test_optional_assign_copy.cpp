@@ -133,13 +133,11 @@ static_assert(!hamon::is_trivially_copy_assignable<hamon::optional<NonTrivialCop
 static_assert(!hamon::is_trivially_copy_assignable<hamon::optional<NonTrivialDtor>>::value, "");
 
 // extension
-#if !defined(HAMON_USE_STD_OPTIONAL)
 static_assert( hamon::is_nothrow_copy_assignable<hamon::optional<int>>::value, "");
 static_assert( hamon::is_nothrow_copy_assignable<hamon::optional<Nothrow>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::optional<MayThrowCopyCtor>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::optional<MayThrowCopyAssign>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::optional<MayThrow>>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
