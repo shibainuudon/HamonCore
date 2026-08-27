@@ -57,7 +57,7 @@ HAMON_CXX11_CONSTEXPR T
 lgamma_unchecked_ct_3(T x, T y)
 {
 	return x < 0 ?
-		hamon::log(hamon::numbers::pi_fn<T>() / hamon::fabs(x * hamon::sin(x * hamon::numbers::pi_fn<T>()))) - y :
+		hamon::log(hamon::numbers::pi_v<T> / hamon::fabs(x * hamon::sin(x * hamon::numbers::pi_v<T>))) - y :
 		y;
 }
 

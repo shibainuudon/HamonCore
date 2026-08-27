@@ -33,7 +33,7 @@ TYPED_TEST(AngleTest, AccuracyTest)
 	using radians = hamon::units::radians<T>;
 	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_v<T>;
 
 	HAMON_CXX11_CONSTEXPR double error = angle_accuracy<T>::get();
 
@@ -70,7 +70,7 @@ TYPED_TEST(AngleTest, SinTest)
 	using radians = hamon::units::radians<T>;
 	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_v<T>;
 
 	HAMON_CXX11_CONSTEXPR double error = angle_error<T>::get();
 
@@ -109,7 +109,7 @@ TYPED_TEST(AngleTest, CosTest)
 	using radians = hamon::units::radians<T>;
 	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_v<T>;
 
 	HAMON_CXX11_CONSTEXPR double error = angle_error<T>::get();
 
@@ -148,7 +148,7 @@ TYPED_TEST(AngleTest, TanTest)
 	using radians = hamon::units::radians<T>;
 	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_v<T>;
 
 	HAMON_CXX11_CONSTEXPR double error = angle_error<T>::get();
 

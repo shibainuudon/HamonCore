@@ -38,7 +38,7 @@ void LogTestFloat()
 
 	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T, float>::value ? 1e-5 : 1e-14;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.0, (double)hamon::log(hamon::numbers::e_fn<T>()), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.0, (double)hamon::log(hamon::numbers::e_v<T>), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-4.6051701859880913680359829093687284152022029772575, (double)hamon::log(T(0.01)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-3.9120230054281460586187507879105518471267028428973, (double)hamon::log(T(0.02)), error);

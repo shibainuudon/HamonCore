@@ -63,7 +63,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 log_unchecked_ct_1(T x) HAMON_NOEXCEPT
 {
-	return !(x > hamon::numbers::sqrt2_fn<T>()) ?
+	return !(x > hamon::numbers::sqrt2_v<T>) ?
 		log_unchecked_ct_2(x - T(1), 1, max_factorial<T>() + 1) :
 		T(2) * log_unchecked_ct_1(hamon::sqrt(x));
 }

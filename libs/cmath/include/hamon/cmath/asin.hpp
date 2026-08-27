@@ -78,7 +78,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 asin_impl_tail(T x) HAMON_NOEXCEPT
 {
-	return (hamon::numbers::pi_fn<T>() / 2) + hamon::sqrt(T(1) - x) *
+	return (hamon::numbers::pi_v<T> / 2) + hamon::sqrt(T(1) - x) *
 		(((((((((((((
 			T(-0.0000121189820098929624806)) * x +
 			T( 0.0001307564187657962919394)) * x +

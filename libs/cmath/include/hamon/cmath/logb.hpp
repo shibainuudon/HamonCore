@@ -50,8 +50,8 @@ HAMON_CXX11_CONSTEXPR T
 log_a(T x, T y)
 {
 	return
-		x ==  2 ? hamon::log(y) / hamon::numbers::ln2_fn<T>() :
-		x == 10 ? hamon::log(y) / hamon::numbers::ln10_fn<T>() :
+		x ==  2 ? hamon::log(y) / hamon::numbers::ln2_v<T> :
+		x == 10 ? hamon::log(y) / hamon::numbers::ln10_v<T> :
 		hamon::log(y) / hamon::log(x);
 }
 

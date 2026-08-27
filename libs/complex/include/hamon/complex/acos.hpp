@@ -31,7 +31,7 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
 acos_unchecked(complex<T> const& x,
 	complex<T> i = {0, 1},
-	T pi = hamon::numbers::pi_fn<T>()) HAMON_NOEXCEPT
+	T pi = hamon::numbers::pi_v<T>) HAMON_NOEXCEPT
 {
 	// [complex.transcendentals]/1
 	return (pi / 2) + i * hamon::log(i * x + hamon::sqrt(T(1) - (x * x)));
@@ -40,7 +40,7 @@ acos_unchecked(complex<T> const& x,
 template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
 acos_impl(T x, T y,
-	T pi = hamon::numbers::pi_fn<T>(),
+	T pi = hamon::numbers::pi_v<T>,
 	T nan = hamon::numeric_limits<T>::quiet_NaN(),
 	T inf = hamon::numeric_limits<T>::infinity()) HAMON_NOEXCEPT
 {

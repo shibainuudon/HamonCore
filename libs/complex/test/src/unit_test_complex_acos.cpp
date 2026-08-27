@@ -48,7 +48,7 @@ void test()
 {
 	static_assert(hamon::is_same<decltype(hamon::acos(hamon::complex<T>{})), hamon::complex<T>>::value, "");
 
-	HAMON_CXX11_CONSTEXPR T pi = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR T pi = hamon::numbers::pi_v<T>;
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 

@@ -52,7 +52,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 exp2_unchecked_ct(T x) HAMON_NOEXCEPT
 {
-	return hamon::exp(x * hamon::numbers::ln2_fn<T>());
+	return hamon::exp(x * hamon::numbers::ln2_v<T>);
 }
 
 template <typename T>

@@ -32,7 +32,7 @@ void RadiansToDegreesTestFloat(void)
 {
 	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto pi  = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto pi  = hamon::numbers::pi_v<T>;
 	
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(   0.0), hamon::radians_to_degrees(pi * T( 0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(  90.0), hamon::radians_to_degrees(pi * T( 0.5)));

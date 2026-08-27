@@ -51,7 +51,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 acos_unchecked_ct(T x) HAMON_NOEXCEPT
 {
-	return (hamon::numbers::pi_fn<T>() / 2) - hamon::asin(x);
+	return (hamon::numbers::pi_v<T> / 2) - hamon::asin(x);
 }
 
 template <typename T>

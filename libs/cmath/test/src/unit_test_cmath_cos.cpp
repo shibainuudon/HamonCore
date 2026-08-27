@@ -52,8 +52,8 @@ void CosTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.98999249660044545727157279473126130239367909661559, (double)hamon::cos(T( 3.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.93645668729079633769865762667176046301995776578196, (double)hamon::cos(T( 3.5)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.0, (double)hamon::cos( hamon::numbers::pi_fn<T>()), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.0, (double)hamon::cos(-hamon::numbers::pi_fn<T>()), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.0, (double)hamon::cos( hamon::numbers::pi_v<T>), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.0, (double)hamon::cos(-hamon::numbers::pi_v<T>), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::cos(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::cos(T(-0.0)));

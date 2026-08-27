@@ -25,7 +25,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 degrees_to_radians_unchecked(T x) HAMON_NOEXCEPT
 {
-	return x * hamon::numbers::pi_fn<T>() / 180;
+	return x * hamon::numbers::pi_v<T> / 180;
 }
 
 template <typename FloatType>

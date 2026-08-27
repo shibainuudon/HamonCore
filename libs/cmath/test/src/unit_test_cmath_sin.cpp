@@ -52,8 +52,8 @@ void SinTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.14112000805986722210074480280811027984693326425227, (double)hamon::sin(T( 3.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.35078322768961984812036880004363558508498173594058, (double)hamon::sin(T( 3.5)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::sin( hamon::numbers::pi_fn<T>()), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::sin(-hamon::numbers::pi_fn<T>()), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::sin( hamon::numbers::pi_v<T>), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::sin(-hamon::numbers::pi_v<T>), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::sin(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::sin(T(-0.0)));

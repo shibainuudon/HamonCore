@@ -66,7 +66,7 @@ inline HAMON_CXX11_CONSTEXPR T
 cos_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return T(1) + cos_unchecked_ct_1(
-		pow2(hamon::fmod(x, hamon::numbers::pi_fn<T>() * 2)),
+		pow2(hamon::fmod(x, hamon::numbers::pi_v<T> * 2)),
 		1, max_factorial<T>() / 2 + 1);
 }
 

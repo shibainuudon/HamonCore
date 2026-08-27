@@ -52,7 +52,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 sin_unchecked_ct(T x) HAMON_NOEXCEPT
 {
-	return -cos_unchecked(x + hamon::numbers::pi_fn<T>() / 2);
+	return -cos_unchecked(x + hamon::numbers::pi_v<T> / 2);
 }
 
 template <typename T>

@@ -69,8 +69,8 @@ void TanTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.1425465430742778052956354105339134932260922849018,  (double)hamon::tan(T(-3.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.37458564015859466633051257998914738845088228428926, (double)hamon::tan(T(-3.5)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::tan( hamon::numbers::pi_fn<T>()), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::tan(-hamon::numbers::pi_fn<T>()), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::tan( hamon::numbers::pi_v<T>), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::tan(-hamon::numbers::pi_v<T>), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::tan(T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::tan(T(-0.0))));

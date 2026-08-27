@@ -71,7 +71,7 @@ bessel_jn(T nu, T x, T& Jnu, T& Nnu, T& Jpnu, T& Npnu)
 	const T mu2 = mu * mu;
 	const T xi = T(1) / x;
 	const T xi2 = T(2) * xi;
-	T w = xi2 / hamon::numbers::pi_fn<T>();
+	T w = xi2 / hamon::numbers::pi_v<T>;
 	int isign = 1;
 	T h = nu * xi;
 	if (h < fp_min)
@@ -135,20 +135,20 @@ bessel_jn(T nu, T x, T& Jnu, T& Nnu, T& Jpnu, T& Npnu)
 	if (x < x_min)
 	{
 		const T x2 = x / T(2);
-		const T pimu = hamon::numbers::pi_fn<T>() * mu;
+		const T pimu = hamon::numbers::pi_v<T> * mu;
 		T fact1 = (hamon::abs(pimu) < eps ? T(1) : pimu / hamon::sin(pimu));
 		T d = -hamon::log(x2);
 		T e = mu * d;
 		T fact2 = (hamon::abs(e) < eps ? T(1) : hamon::sinh(e) / e);
 		T gam1, gam2, gampl, gammi;
 		hamon::detail::gamma_temme(mu, gam1, gam2, gampl, gammi);
-		T ff = (T(2) / hamon::numbers::pi_fn<T>()) * fact1 * (gam1 * hamon::cosh(e) + gam2 * fact2 * d);
+		T ff = (T(2) / hamon::numbers::pi_v<T>) * fact1 * (gam1 * hamon::cosh(e) + gam2 * fact2 * d);
 		e = hamon::exp(e);
-		T p = e / (hamon::numbers::pi_fn<T>() * gampl);
-		T q = T(1) / (e * hamon::numbers::pi_fn<T>() * gammi);
+		T p = e / (hamon::numbers::pi_v<T> * gampl);
+		T q = T(1) / (e * hamon::numbers::pi_v<T> * gammi);
 		const T pimu2 = pimu / T(2);
 		T fact3 = (hamon::abs(pimu2) < eps ? T(1) : hamon::sin(pimu2) / pimu2);
-		T r = hamon::numbers::pi_fn<T>() * pimu2 * fact3 * fact3;
+		T r = hamon::numbers::pi_v<T> * pimu2 * fact3 * fact3;
 		T c = T(1);
 		d = -x2 * x2;
 		T sum = ff + r * q;

@@ -49,7 +49,7 @@ void test()
 {
 	static_assert(hamon::is_same<decltype(hamon::polar(T{}, T{})), hamon::complex<T>>::value, "");
 
-	HAMON_CXX11_CONSTEXPR T half_pi = hamon::numbers::pi_fn<T>() / 2;
+	HAMON_CXX11_CONSTEXPR T half_pi = hamon::numbers::pi_v<T> / 2;
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 

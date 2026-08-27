@@ -52,7 +52,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 log10_unchecked_ct(T x) HAMON_NOEXCEPT
 {
-	return hamon::log(x) / hamon::numbers::ln10_fn<T>();
+	return hamon::log(x) / hamon::numbers::ln10_v<T>;
 }
 
 template <typename T>

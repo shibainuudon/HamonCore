@@ -36,8 +36,8 @@ HAMON_CXX14_CONSTEXPR T
 ellint_2_unchecked_2(T k, T phi_)
 {
 	// Reduce phi to -pi/2 < phi < +pi/2.
-	int const n = static_cast<int>(hamon::floor(phi_ / hamon::numbers::pi_fn<T>() + T(0.5)));
-	T const phi_red = phi_ - n * hamon::numbers::pi_fn<T>();
+	int const n = static_cast<int>(hamon::floor(phi_ / hamon::numbers::pi_v<T> + T(0.5)));
+	T const phi_red = phi_ - n * hamon::numbers::pi_v<T>;
 
 	T const kk = k * k;
 	T const s = hamon::sin(phi_red);
@@ -92,7 +92,7 @@ ellint_2_impl(T k, T phi_)
 		return hamon::numeric_limits<T>::quiet_NaN();
 	}
 
-	//if (hamon::abs(k) == T(1) && hamon::abs(phi_) >= (hamon::numbers::pi_fn<T>() / 2))
+	//if (hamon::abs(k) == T(1) && hamon::abs(phi_) >= (hamon::numbers::pi_v<T> / 2))
 	//{
 	//	return hamon::numeric_limits<T>::infinity();
 	//}

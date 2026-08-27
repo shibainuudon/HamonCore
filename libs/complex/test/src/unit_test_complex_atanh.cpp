@@ -107,7 +107,7 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::atanh(-z), -hamon::atanh(z), error)));
 	}
 
-	HAMON_CXX11_CONSTEXPR T pi = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR T pi = hamon::numbers::pi_v<T>;
 	HAMON_CXX11_CONSTEXPR T nan = hamon::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR T inf = hamon::numeric_limits<T>::infinity();
 

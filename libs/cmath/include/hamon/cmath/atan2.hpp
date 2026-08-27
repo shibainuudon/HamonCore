@@ -66,7 +66,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 atan2_unchecked_ct(T y, T x) HAMON_NOEXCEPT
 {
-	return atan2_unchecked_ct_1(y, x, hamon::numbers::pi_fn<T>());
+	return atan2_unchecked_ct_1(y, x, hamon::numbers::pi_v<T>);
 }
 
 template <typename T>
@@ -109,7 +109,7 @@ template <typename FloatType>
 inline HAMON_CXX11_CONSTEXPR FloatType
 atan2_impl(FloatType y, FloatType x) HAMON_NOEXCEPT
 {
-	return atan2_impl_1(y, x, hamon::numbers::pi_fn<FloatType>());
+	return atan2_impl_1(y, x, hamon::numbers::pi_v<FloatType>);
 }
 
 }	// namespace detail

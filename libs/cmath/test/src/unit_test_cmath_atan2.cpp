@@ -70,10 +70,10 @@ void Atan2TestFloat()
 	HAMON_CXX11_CONSTEXPR auto inf1 = hamon::numeric_limits<T1>::infinity();
 	HAMON_CXX11_CONSTEXPR auto inf2 = hamon::numeric_limits<T2>::infinity();
 
-	HAMON_CXX11_CONSTEXPR auto pi                = hamon::numbers::pi_fn<R>();
-	HAMON_CXX11_CONSTEXPR auto half_pi           = hamon::numbers::pi_fn<R>() / 2;
-	HAMON_CXX11_CONSTEXPR auto three_quarters_pi = hamon::numbers::pi_fn<R>() * 3 / 4;
-	HAMON_CXX11_CONSTEXPR auto quarter_pi        = hamon::numbers::pi_fn<R>() / 4;
+	HAMON_CXX11_CONSTEXPR auto pi                = hamon::numbers::pi_v<R>;
+	HAMON_CXX11_CONSTEXPR auto half_pi           = hamon::numbers::pi_v<R> / 2;
+	HAMON_CXX11_CONSTEXPR auto three_quarters_pi = hamon::numbers::pi_v<R> * 3 / 4;
+	HAMON_CXX11_CONSTEXPR auto quarter_pi        = hamon::numbers::pi_v<R> / 4;
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<R>();
 
@@ -192,7 +192,7 @@ void Atan2TestInteger(void)
 {
 	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
 
-	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_fn<double>();
+	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_v<double>;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(pi *  0.00, (double)hamon::atan2(T1( 0), T2( 1)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(pi *  0.25, (double)hamon::atan2(T1( 1), T2( 1)), error);

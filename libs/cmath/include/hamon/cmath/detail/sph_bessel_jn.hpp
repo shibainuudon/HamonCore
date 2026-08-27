@@ -27,7 +27,7 @@ sph_bessel_jn(unsigned int n, T x, T& j_n, T& n_n, T& jp_n, T& np_n)
 	T J_nu, N_nu, Jp_nu, Np_nu;
 	hamon::detail::bessel_jn(nu, x, J_nu, N_nu, Jp_nu, Np_nu);
 
-	const T factor = hamon::sqrt(hamon::numbers::pi_fn<T>() / 2) / hamon::sqrt(x);
+	const T factor = hamon::sqrt(hamon::numbers::pi_v<T> / 2) / hamon::sqrt(x);
 
 	j_n = factor * J_nu;
 	n_n = factor * N_nu;

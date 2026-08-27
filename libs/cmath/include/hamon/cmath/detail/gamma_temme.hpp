@@ -28,7 +28,7 @@ gamma_temme(T mu, T& gam1, T& gam2, T& gampl, T& gammi)
 
 	if (hamon::abs(mu) < hamon::numeric_limits<T>::epsilon())
 	{
-		gam1 = -T(hamon::numbers::egamma_fn<T>());
+		gam1 = -T(hamon::numbers::egamma_v<T>);
 	}
 	else
 	{

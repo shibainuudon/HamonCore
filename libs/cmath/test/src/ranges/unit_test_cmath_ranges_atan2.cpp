@@ -77,7 +77,7 @@ struct atan2_error<Real<T>>
 template <typename T>
 void RangesAtan2Test(void)
 {
-	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_fn<double>();
+	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_v<double>;
 	HAMON_CXX11_CONSTEXPR double error = atan2_error<T>::value;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(pi *  0.00, (double)hamon::ranges::atan2(T{ 0.0}, T{ 1.0}), error);
@@ -109,7 +109,7 @@ void RangesAtan2Test(void)
 template <typename T>
 void RangesAtan2Test2(void)
 {
-	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_fn<double>();
+	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_v<double>;
 	HAMON_CXX11_CONSTEXPR double error = atan2_error<T>::value;
 
 	{

@@ -81,8 +81,8 @@ atan_unchecked_ct(T x) HAMON_NOEXCEPT
 		-atan_unchecked_ct(-x) :
 		atan_unchecked_ct_1(
 			x,
-			hamon::numbers::sqrt2_fn<T>(),
-			hamon::numbers::pi_fn<T>(),
+			hamon::numbers::sqrt2_v<T>,
+			hamon::numbers::pi_v<T>,
 			max_factorial<T>() + 1);
 }
 
@@ -104,7 +104,7 @@ atan_impl(FloatType x) HAMON_NOEXCEPT
 		hamon::iszero(x) ?
 			x :
 		hamon::isinf(x) ?
-			hamon::copysign(hamon::numbers::pi_fn<FloatType>() / 2, x) :
+			hamon::copysign(hamon::numbers::pi_v<FloatType> / 2, x) :
 		hamon::isnan(x) ?
 			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		atan_unchecked(x);

@@ -36,8 +36,8 @@ HAMON_CXX14_CONSTEXPR T
 ellint_3_unchecked_2(T k, T nu, T phi_)
 {
 	// Reduce phi to -pi/2 < phi < +pi/2.
-	int const n = static_cast<int>(hamon::floor(phi_ / hamon::numbers::pi_fn<T>()+ T(0.5)));
-	T const phi_red = phi_ - n * hamon::numbers::pi_fn<T>();
+	int const n = static_cast<int>(hamon::floor(phi_ / hamon::numbers::pi_v<T> + T(0.5)));
+	T const phi_red = phi_ - n * hamon::numbers::pi_v<T>;
 
 	T const kk = k * k;
 	T const s = hamon::sin(phi_red);

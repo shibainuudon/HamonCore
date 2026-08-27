@@ -38,7 +38,7 @@ acosh_unchecked(complex<T> const& x) HAMON_NOEXCEPT
 template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
 acosh_impl(T x, T y,
-	T pi = hamon::numbers::pi_fn<T>(),
+	T pi = hamon::numbers::pi_v<T>,
 	T nan = hamon::numeric_limits<T>::quiet_NaN(),
 	T inf = hamon::numeric_limits<T>::infinity()) HAMON_NOEXCEPT
 {

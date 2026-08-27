@@ -14,11 +14,9 @@ namespace hamon_numbers_test
 {
 
 static_assert(hamon::numbers::sqrt2                != 0.0, "");
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 static_assert(hamon::numbers::sqrt2_v<float>       != 0.0, "");
 static_assert(hamon::numbers::sqrt2_v<double>      != 0.0, "");
 static_assert(hamon::numbers::sqrt2_v<long double> != 0.0, "");
-#endif
 
 template <typename T>
 void Sqrt2Test(double error)

@@ -53,8 +53,8 @@ void AtanTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atan(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atan(T(-0.0)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( hamon::numbers::pi_fn<double>() / 2, (double)hamon::atan(+inf), 0.000001);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-hamon::numbers::pi_fn<double>() / 2, (double)hamon::atan(-inf), 0.000001);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( hamon::numbers::pi_v<double> / 2, (double)hamon::atan(+inf), 0.000001);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-hamon::numbers::pi_v<double> / 2, (double)hamon::atan(-inf), 0.000001);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::atan(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::atan(-nan)));

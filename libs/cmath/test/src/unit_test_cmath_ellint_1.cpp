@@ -48,7 +48,7 @@ void Ellint1TestFloat(double error)
 	HAMON_CXX11_CONSTEXPR auto eps1 = hamon::numeric_limits<T1>::epsilon();
 	HAMON_CXX11_CONSTEXPR auto eps2 = hamon::numeric_limits<T2>::epsilon();
 	HAMON_CXX11_CONSTEXPR auto inf  = hamon::numeric_limits<Promoted>::infinity();
-	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_fn<T2>();
+	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_v<T2>;
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ellint_1(nan1, nan2)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ellint_1(nan1, T2(0))));
@@ -317,7 +317,7 @@ void Ellint1TestInt()
 
 	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<double>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<double>::infinity();
-	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_fn<double>();
+	HAMON_CXX11_CONSTEXPR auto pi = hamon::numbers::pi_v<double>;
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ellint_1(T(0), nan)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ellint_1(nan, T(0))));

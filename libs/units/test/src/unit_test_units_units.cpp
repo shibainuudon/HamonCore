@@ -127,7 +127,7 @@ TYPED_TEST(UnitsTest, AmountTest)
 
 TYPED_TEST(UnitsTest, AngleTest)
 {
-	HAMON_CONSTEXPR auto p = hamon::numbers::pi_fn<double>();
+	HAMON_CONSTEXPR auto p = hamon::numbers::pi_v<double>;
 	HAMON_CONSTEXPR hamon::units::radians<TypeParam> r(1);
 	HAMON_CONSTEXPR hamon::units::degrees<TypeParam> d(2);
 
