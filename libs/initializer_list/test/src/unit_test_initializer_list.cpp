@@ -10,7 +10,7 @@
 GTEST_TEST(InitializerListTest, InitializerListTest)
 {
 	hamon::initializer_list<int> il{1,2,3};
-	EXPECT_EQ(3, il.size());
+	EXPECT_EQ(3u, il.size());
 
 	auto it = il.begin();
 	EXPECT_EQ(1, *it);
