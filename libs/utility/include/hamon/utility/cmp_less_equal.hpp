@@ -7,34 +7,22 @@
 #ifndef HAMON_UTILITY_CMP_LESS_EQUAL_HPP
 #define HAMON_UTILITY_CMP_LESS_EQUAL_HPP
 
-#include <utility>
-
-#if defined(__cpp_lib_integer_comparison_functions) && (__cpp_lib_integer_comparison_functions >= 202002L)
-
-namespace hamon
-{
-
-using std::cmp_less_equal;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/utility/cmp_less.hpp>
+#include <hamon/utility/cmp_greater.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
+// 22.2.7 Integer comparison functions[utility.intcmp]
+
 template <typename T, typename U>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-cmp_less_equal(T t, U u) HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool cmp_less_equal(T t, U u) HAMON_NOEXCEPT
 {
-	return !hamon::cmp_less(u, t);
+	// [utility.intcmp]/7
+	return !hamon::cmp_greater(t, u);
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_UTILITY_CMP_LESS_EQUAL_HPP

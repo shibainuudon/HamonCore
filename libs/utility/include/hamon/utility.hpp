@@ -15,6 +15,8 @@
 #include <hamon/utility/cmp_less.hpp>
 #include <hamon/utility/cmp_less_equal.hpp>
 #include <hamon/utility/cmp_not_equal.hpp>
+//#include <hamon/utility/constant_wrapper.hpp>	// since C++26
+//#include <hamon/utility/cw.hpp>	// since C++26
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
@@ -30,6 +32,7 @@
 #include <hamon/utility/make_integer_sequence.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/move_if_noexcept.hpp>
+//#include <hamon/utility/observable_checkpoint.hpp>	// since C++26
 #include <hamon/utility/swap.hpp>
 #include <hamon/utility/to_underlying.hpp>
 #include <hamon/utility/unreachable.hpp>

@@ -7,54 +7,43 @@
 #ifndef HAMON_UTILITY_FORWARD_LIKE_HPP
 #define HAMON_UTILITY_FORWARD_LIKE_HPP
 
-#include <hamon/config.hpp>
-#include <utility>
-
-#if defined(__cpp_lib_forward_like) && (__cpp_lib_forward_like >= 202207L) && \
-	!(defined(HAMON_CLANG) && defined(HAMON_STDLIB_LIBSTDCPP3))
-// clang と libstdc++ の組み合わせだとコンパイルエラーになってしまう。
-
-namespace hamon
-{
-
-using std::forward_like;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/is_rvalue_reference.hpp>
 #include <hamon/type_traits/is_const.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-namespace detail
+// 22.2.4 Forward/move helpers[forward]
+
+namespace forward_like_detail
 {
 
+// [forward]/6.1
 template <typename A, typename B>
-using CopyConst = hamon::conditional_t<hamon::is_const<A>::value, const B, B>;
+using COPY_CONST = hamon::conditional_t<hamon::is_const<A>::value, const B, B>;
 
+// [forward]/6.2
 template <typename A, typename B>
-using OverrideRef = hamon::conditional_t<hamon::is_rvalue_reference<A>::value, hamon::remove_reference_t<B>&&, B&>;
+using OVERRIDE_REF = hamon::conditional_t<hamon::is_rvalue_reference<A>::value, hamon::remove_reference_t<B>&&, B&>;
 
-template <typename A, typename B>
-using ForwardLike = OverrideRef<A&&, CopyConst<hamon::remove_reference_t<A>, hamon::remove_reference_t<B>>>;
+// [forward]/6.3
+template <typename T, typename U>
+using V = OVERRIDE_REF<T&&, COPY_CONST<hamon::remove_reference_t<T>, hamon::remove_reference_t<U>>>;
 
-}	// namespace detail
+}	// namespace forward_like_detail
 
 template <typename T, typename U>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 forward_like(U&& x) HAMON_NOEXCEPT
--> detail::ForwardLike<T, U>
+-> forward_like_detail::V<T, U>
 {
-	return static_cast<detail::ForwardLike<T, U>>(x);
+	// [forward]/7
+	return static_cast<forward_like_detail::V<T, U>>(x);
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_UTILITY_FORWARD_LIKE_HPP

@@ -7,12 +7,15 @@
 #ifndef HAMON_UTILITY_DECLVAL_HPP
 #define HAMON_UTILITY_DECLVAL_HPP
 
-#include <utility>
+#include <hamon/type_traits/add_rvalue_reference.hpp>
 
 namespace hamon
 {
 
-using std::declval;
+// 22.2.6 Function template declval[declval]
+
+template <typename T>
+hamon::add_rvalue_reference_t<T> declval() noexcept;
 
 }	// namespace hamon
 

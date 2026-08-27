@@ -7,19 +7,6 @@
 #ifndef HAMON_UTILITY_CMP_EQUAL_HPP
 #define HAMON_UTILITY_CMP_EQUAL_HPP
 
-#include <utility>
-
-#if defined(__cpp_lib_integer_comparison_functions) && (__cpp_lib_integer_comparison_functions >= 202002L)
-
-namespace hamon
-{
-
-using std::cmp_equal;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/detail/is_standard_integer.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/is_signed.hpp>
@@ -28,8 +15,12 @@ using std::cmp_equal;
 namespace hamon
 {
 
+// 22.2.7 Integer comparison functions[utility.intcmp]
+
 namespace detail
 {
+
+// [utility.intcmp]/2
 
 template <typename T, typename U,
 	bool = hamon::is_signed<T>::value,
@@ -67,9 +58,10 @@ struct cmp_equal_impl<T, U, false, true>
 }	// namespace detail
 
 template <typename T, typename U>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-cmp_equal(T t, U u) HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool cmp_equal(T t, U u) HAMON_NOEXCEPT
 {
+	// [utility.intcmp]/1
 	static_assert(hamon::detail::is_standard_integer<T>::value, "");
 	static_assert(hamon::detail::is_standard_integer<U>::value, "");
 
@@ -77,7 +69,5 @@ cmp_equal(T t, U u) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_UTILITY_CMP_EQUAL_HPP

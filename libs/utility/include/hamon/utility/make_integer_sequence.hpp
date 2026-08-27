@@ -8,19 +8,6 @@
 #define HAMON_UTILITY_MAKE_INTEGER_SEQUENCE_HPP
 
 #include <hamon/utility/integer_sequence.hpp>
-#include <utility>
-
-#if defined(__cpp_lib_integer_sequence) && (__cpp_lib_integer_sequence >= 201304)
-
-namespace hamon
-{
-
-using std::make_integer_sequence;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/enable_if.hpp>
 
 namespace hamon
@@ -88,11 +75,11 @@ struct make_integer_sequence_impl<T, N, hamon::enable_if_t<(N > 1 && N % 2 == 1)
 
 }	// namespace detail
 
+// 21.2.3 Alias template make_integer_sequence[intseq.make]
+
 template <typename T, T N>
 using make_integer_sequence = typename hamon::detail::make_integer_sequence_impl<T, N>::type;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_UTILITY_MAKE_INTEGER_SEQUENCE_HPP
