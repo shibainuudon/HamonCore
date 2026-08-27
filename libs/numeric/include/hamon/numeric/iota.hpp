@@ -7,25 +7,13 @@
 #ifndef HAMON_NUMERIC_IOTA_HPP
 #define HAMON_NUMERIC_IOTA_HPP
 
-#include <hamon/numeric/config.hpp>
-
-#if defined(HAMON_USE_STD_NUMERIC)
-
-#include <numeric>
-
-namespace hamon
-{
-
-using std::iota;
-
-}	// namespace hamon
-
-#else
-
+#include <hamon/iterator/detail/cpp17_forward_iterator.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 26.10.13 Iota[numeric.iota]
 
 /**
  *	@brief		指定された値から始まる整数列を生成する。
@@ -48,6 +36,9 @@ template <typename ForwardIterator, typename T>
 HAMON_CXX14_CONSTEXPR void
 iota(ForwardIterator first, ForwardIterator last, T value)
 {
+	// [algorithms.requirements]/4.4
+	static_assert(hamon::detail::cpp17_forward_iterator<ForwardIterator>, "");
+
 	for (; first != last; ++first)
 	{
 		*first = value;
@@ -56,7 +47,5 @@ iota(ForwardIterator first, ForwardIterator last, T value)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_NUMERIC_IOTA_HPP

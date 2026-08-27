@@ -7,28 +7,18 @@
 #ifndef HAMON_NUMERIC_INNER_PRODUCT_HPP
 #define HAMON_NUMERIC_INNER_PRODUCT_HPP
 
-#include <hamon/numeric/config.hpp>
-
-#if defined(HAMON_USE_STD_NUMERIC)
-
-#include <numeric>
-
-namespace hamon
-{
-
-using std::inner_product;
-
-}	// namespace hamon
-
-#else
-
+#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/multiplies.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 26.10.5 Inner product[inner.product]
 
 /**
  *	@brief	2つのシーケンスの任意の範囲の値の内積を計算する
@@ -62,8 +52,8 @@ template <
 	typename BinaryOperation1,
 	typename BinaryOperation2
 >
-HAMON_CXX14_CONSTEXPR T
-inner_product(
+HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+T inner_product(
 	InputIterator1 first1,
 	InputIterator1 last1,
 	InputIterator2 first2,
@@ -71,6 +61,15 @@ inner_product(
 	BinaryOperation1 binary_op1,
 	BinaryOperation2 binary_op2)
 {
+	// [algorithms.requirements]/4.2
+	static_assert(hamon::detail::cpp17_input_iterator<InputIterator1>, "");
+	static_assert(hamon::detail::cpp17_input_iterator<InputIterator2>, "");
+
+	// [inner.product]/1
+	static_assert(hamon::detail::cpp17_copy_constructible<T>, "");
+	static_assert(hamon::detail::cpp17_copy_assignable<T>, "");
+
+	// [inner.product]/2
 	while (first1 != last1)
 	{
 		init = binary_op1(hamon::move(init), binary_op2(*first1, *first2));
@@ -103,24 +102,16 @@ template <
 	typename InputIterator2,
 	typename T
 >
-HAMON_CXX14_CONSTEXPR T
-inner_product(
+HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+T inner_product(
 	InputIterator1 first1,
 	InputIterator1 last1,
 	InputIterator2 first2,
 	T init)
 {
-	return hamon::inner_product(
-		hamon::move(first1),
-		hamon::move(last1),
-		hamon::move(first2),
-		hamon::move(init),
-		hamon::plus<>(),
-		hamon::multiplies<>());
+	return hamon::inner_product(first1, last1, first2, init, hamon::plus<>(), hamon::multiplies<>());
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_NUMERIC_INNER_PRODUCT_HPP

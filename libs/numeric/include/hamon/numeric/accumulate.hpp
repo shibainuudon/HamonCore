@@ -7,28 +7,18 @@
 #ifndef HAMON_NUMERIC_ACCUMULATE_HPP
 #define HAMON_NUMERIC_ACCUMULATE_HPP
 
-#include <hamon/numeric/config.hpp>
-
-#if defined(HAMON_USE_STD_NUMERIC)
-
-#include <numeric>
-
-namespace hamon
-{
-
-using std::accumulate;
-
-}	// namespace hamon
-
-#else
-
+#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 26.10.3 Accumulate[accumulate]
 
 /**
  *	@brief	1つのシーケンスの任意の範囲の値を足し合わせる
@@ -53,14 +43,17 @@ template <
 	typename T,
 	typename BinaryOperation
 >
-HAMON_CXX11_CONSTEXPR T
-accumulate(
-	InputIterator first,
-	InputIterator last,
-	T init,
-	BinaryOperation binary_op)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T accumulate(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {
-#if defined(HAMON_HAS_CXX14_CONSTEXPR)
+	// [algorithms.requirements]/4.2
+//	static_assert(hamon::detail::cpp17_input_iterator<InputIterator>, "");
+	
+	// [accumulate]/1
+	static_assert(hamon::detail::cpp17_copy_constructible<T>, "");
+	static_assert(hamon::detail::cpp17_copy_assignable<T>, "");
+
+	// [accumulate]/2
 	while (first != last)
 	{
 		init = binary_op(hamon::move(init), *first);
@@ -68,17 +61,6 @@ accumulate(
 	}
 
 	return init;
-#else
-	// C++11でconstexprにするために再帰で実装する
-	return
-		first == last ?
-			init:
-		hamon::accumulate(
-			hamon::next(first),
-			last,
-			binary_op(hamon::move(init), *first),
-			binary_op);
-#endif
 }
 
 /**
@@ -94,21 +76,12 @@ accumulate(
  *	@return	集計結果の値
  */
 template <typename InputIterator, typename T>
-HAMON_CXX11_CONSTEXPR T
-accumulate(
-	InputIterator first,
-	InputIterator last,
-	T init)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T accumulate(InputIterator first, InputIterator last, T init)
 {
-	return hamon::accumulate(
-		hamon::move(first),
-		hamon::move(last),
-		hamon::move(init),
-		hamon::plus<>());
+	return hamon::accumulate(first, last, init, hamon::plus<>());
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_NUMERIC_ACCUMULATE_HPP

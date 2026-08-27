@@ -7,27 +7,15 @@
 #ifndef HAMON_NUMERIC_ADJACENT_DIFFERENCE_HPP
 #define HAMON_NUMERIC_ADJACENT_DIFFERENCE_HPP
 
-#include <hamon/numeric/config.hpp>
-
-#if defined(HAMON_USE_STD_NUMERIC)
-
-#include <numeric>
-
-namespace hamon
-{
-
-using std::adjacent_difference;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/minus.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 26.10.12 Adjacent difference[adjacent.difference]
 
 /**
  *	@brief		隣接する要素間の差を計算する。
@@ -55,18 +43,13 @@ namespace hamon
  *
  *	@complexity	正確に(last - first) - 1回だけbinary_opを適用する
  */
-template <
-	typename InputIterator,
-	typename OutputIterator,
-	typename BinaryOperation
->
+template <typename InputIterator, typename OutputIterator, typename BinaryOperation>
 HAMON_CXX14_CONSTEXPR OutputIterator
-adjacent_difference(
-	InputIterator first,
-	InputIterator last,
-	OutputIterator result,
-	BinaryOperation binary_op)
+adjacent_difference(InputIterator first, InputIterator last, OutputIterator result, BinaryOperation binary_op)
 {
+	// [algorithms.requirements]/4.2
+	static_assert(hamon::detail::cpp17_input_iterator<InputIterator>, "");
+
 	if (first == last)
 	{
 		return result;
@@ -90,28 +73,28 @@ adjacent_difference(
 	return result;
 }
 
+// TODO
+//template <typename ExecutionPolicy, typename ForwardIterator1, typename ForwardIterator2, typename BinaryOperation>
+//HAMON_CXX14_CONSTEXPR ForwardIterator2
+//adjacent_difference(ExecutionPolicy&& exec,
+//	ForwardIterator1 first, ForwardIterator1 last,
+//	ForwardIterator2 result, BinaryOperation binary_op);
+
 /**
  *	@overload
  */
-template <
-	typename InputIterator,
-	typename OutputIterator
->
+template <typename InputIterator, typename OutputIterator>
 HAMON_CXX14_CONSTEXPR OutputIterator
-adjacent_difference(
-	InputIterator first,
-	InputIterator last,
-	OutputIterator result)
+adjacent_difference(InputIterator first, InputIterator last, OutputIterator result)
 {
-	return hamon::adjacent_difference(
-		hamon::move(first),
-		hamon::move(last),
-		hamon::move(result),
-		hamon::minus<>());
+	return hamon::adjacent_difference(first, last, result, hamon::minus<>());
 }
 
-}	// namespace hamon
+// TODO
+//template <typename ExecutionPolicy, typename ForwardIterator1, typename ForwardIterator2>
+//HAMON_CXX14_CONSTEXPR ForwardIterator2
+//adjacent_difference(ExecutionPolicy&& exec, ForwardIterator1 first, ForwardIterator1 last, ForwardIterator2 result);
 
-#endif
+}	// namespace hamon
 
 #endif // HAMON_NUMERIC_ADJACENT_DIFFERENCE_HPP

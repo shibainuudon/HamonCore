@@ -144,7 +144,7 @@ GTEST_TEST(NumericTest, ReduceTest)
 	}
 	{
 		int a[5] = {1, 2, 3, 4, 5};
-		test_container<int, input_iterator_wrapper<int>> con(a);
+		test_container<int, forward_iterator_wrapper<int>> con(a);
 		int res = hamon::reduce(con.begin(), con.end());
 		EXPECT_TRUE(res == 15);
 	}

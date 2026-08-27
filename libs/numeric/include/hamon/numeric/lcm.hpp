@@ -7,19 +7,6 @@
 #ifndef HAMON_NUMERIC_LCM_HPP
 #define HAMON_NUMERIC_LCM_HPP
 
-#include <numeric>
-
-#if defined(__cpp_lib_gcd_lcm) && (__cpp_lib_gcd_lcm >= 201606)
-
-namespace hamon
-{
-
-using std::lcm;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/numeric/gcd.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -31,6 +18,8 @@ using std::lcm;
 
 namespace hamon
 {
+
+// 26.10.15 Least common multiple[numeric.ops.lcm]
 
 /**
  *	@brief		最小公倍数を得る
@@ -48,9 +37,8 @@ template <
 	HAMON_CONSTRAINT(hamon::integral, M),
 	HAMON_CONSTRAINT(hamon::integral, N)
 >
-HAMON_CONSTEXPR hamon::common_type_t<M, N>
-lcm(M m, N n)
-HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+hamon::common_type_t<M, N> lcm(M m, N n) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [numeric.ops.lcm]/1
 	static_assert(!hamon::is_same_v<hamon::remove_cv_t<M>, bool>, "");
@@ -63,7 +51,5 @@ HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_NUMERIC_LCM_HPP

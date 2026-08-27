@@ -7,28 +7,13 @@
 #ifndef HAMON_NUMERIC_MIDPOINT_HPP
 #define HAMON_NUMERIC_MIDPOINT_HPP
 
-#include <numeric>
-
-#if defined(__cpp_lib_interpolate) && (__cpp_lib_interpolate >= 201902)
-
-namespace hamon
-{
-
-using std::midpoint;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
@@ -94,6 +79,8 @@ midpoint_impl(T a, T b, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 
 }	// namespace detail
 
+// 26.10.16 Midpoint[numeric.ops.midpoint]
+
 /**
  *	@brief		数値型の中点を求める
  *
@@ -109,17 +96,15 @@ midpoint_impl(T a, T b, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
  *	・型Tが整数型で合計値が奇数の場合、a側に丸められる
  *	・型Tが浮動小数点数型の場合、最大一回の不正確 (inexact) 操作が発生し、オーバーフローは起こらない
  */
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR
-hamon::enable_if_t<
-	hamon::conjunction<
-		hamon::is_arithmetic<T>,
-		hamon::is_same<hamon::remove_cv_t<T>, T>,
-		hamon::negation<hamon::is_same<T, bool>>
-	>::value,
-	T
+template <typename T,
+	typename = hamon::enable_if_t<
+		// [numeric.ops.midpoint]/1
+		hamon::is_arithmetic_v<T> &&
+		!hamon::is_same_v<hamon::remove_cv_t<T>, bool>
+	>
 >
-midpoint(T a, T b) HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T midpoint(T a, T b) HAMON_NOEXCEPT
 {
 	return detail::midpoint_impl(a, b, hamon::detail::overload_priority<1>{});
 }
@@ -139,16 +124,18 @@ midpoint(T a, T b) HAMON_NOEXCEPT
  *	aとbが同じ配列xのx[i]とx[j]を指しているとして、x[i + (j - i) / 2]を指すポインタを返す。
  *	除算の結果はゼロ方向に丸められる
  */
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR hamon::enable_if_t<hamon::is_object<T>::value, T*>
-midpoint(T* a, T* b) HAMON_NOEXCEPT
+template <typename T,
+	typename = hamon::enable_if_t<hamon::is_object_v<T>>	// [numeric.ops.midpoint]/4
+>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T* midpoint(T* a, T* b) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [numeric.ops.midpoint]/5
 	static_assert(sizeof(T) != 0, "type must be complete");
+
 	return a + hamon::midpoint(hamon::ptrdiff_t(0), b - a);
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_NUMERIC_MIDPOINT_HPP

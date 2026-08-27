@@ -7,30 +7,14 @@
 #ifndef HAMON_NUMERIC_REDUCE_HPP
 #define HAMON_NUMERIC_REDUCE_HPP
 
-#include <hamon/numeric/config.hpp>
-
-#if defined(HAMON_USE_STD_NUMERIC_PARALLEL)
-
-#include <numeric>
-
-namespace hamon
-{
-
-using std::reduce;
-
-}	// namespace hamon
-
-#else
-
+#include <hamon/concepts/convertible_to.hpp>
+#include <hamon/concepts/detail/cpp17_move_constructible.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/iterator/concepts/random_access_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/next.hpp>
-#include <hamon/iterator/concepts/random_access_iterator.hpp>
-#include <hamon/type_traits/is_invocable_r.hpp>
-#include <hamon/type_traits/is_convertible.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -115,6 +99,8 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
 
 }	// namespace detail
 
+// 26.10.4 Reduce[reduce]
+
 /**
  *	@brief	イテレータ範囲を集計する
  *
@@ -138,51 +124,72 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
  *	@complexity	関数オブジェクトbinary_opをO(last - first)回だけ適用する
  */
 template <typename InputIterator, typename T, typename BinaryOperation>
-inline HAMON_CXX11_CONSTEXPR T
-reduce(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T reduce(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {
-	using value_type = typename hamon::iterator_traits<InputIterator>::value_type;
-	static_assert(hamon::is_invocable_r<T, BinaryOperation&, T&, T&>::value, "");
-	static_assert(hamon::is_convertible<value_type, T>::value, "");
+	// [algorithms.requirements]/4.2
+	static_assert(hamon::detail::cpp17_input_iterator<InputIterator>, "");
 
-	return detail::reduce_impl(
-		hamon::move(first),
-		hamon::move(last),
-		hamon::move(init),
-		hamon::move(binary_op));
+	// [reduce]/5
+	static_assert(hamon::convertible_to<decltype(binary_op(init, *first)), T>, "");
+	static_assert(hamon::convertible_to<decltype(binary_op(*first, init)), T>, "");
+	static_assert(hamon::convertible_to<decltype(binary_op(init, init)), T>, "");
+	static_assert(hamon::convertible_to<decltype(binary_op(*first, *first)), T>, "");
+
+	// [reduce]/6
+	static_assert(hamon::detail::cpp17_move_constructible<T>, "");
+
+	return detail::reduce_impl(first, last, init, binary_op);
 }
+
+// TODO
+//template <typename ExecutionPolicy, typename ForwardIterator, typename T, typename BinaryOperation>
+//T reduce(ExecutionPolicy&& exec, ForwardIterator first, ForwardIterator last, T init, BinaryOperation binary_op);
 
 /**
  *	@overload
  */
 template <typename InputIterator, typename T>
-inline HAMON_CXX11_CONSTEXPR T
-reduce(InputIterator first, InputIterator last, T init)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+T reduce(InputIterator first, InputIterator last, T init)
 {
-	return hamon::reduce(
-		hamon::move(first),
-		hamon::move(last),
-		hamon::move(init),
-		hamon::plus<>{});
+	// [reduce]/3
+	return hamon::reduce(first, last, init, hamon::plus<>{});
 }
+
+// TODO
+//template <typename ExecutionPolicy, typename ForwardIterator, typename T>
+//HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+//T reduce(ExecutionPolicy&& exec, ForwardIterator first, ForwardIterator last, T init)
+//{
+//	// [reduce]/4
+//	return hamon::reduce(hamon::forward<ExecutionPolicy>(exec), first, last, init, hamon::plus<>());
+//}
 
 /**
  *	@overload
  */
 template <typename InputIterator>
-inline HAMON_CXX11_CONSTEXPR typename hamon::iterator_traits<InputIterator>::value_type
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+typename hamon::iterator_traits<InputIterator>::value_type
 reduce(InputIterator first, InputIterator last)
 {
-	using value_type = typename hamon::iterator_traits<InputIterator>::value_type;
-	return hamon::reduce(
-		hamon::move(first),
-		hamon::move(last),
-		value_type{},
-		hamon::plus<>{});
+	// [reduce]/1
+	return hamon::reduce(first, last,
+		typename hamon::iterator_traits<InputIterator>::value_type{});
 }
 
-}	// namespace hamon
+// TODO
+//template <typename ExecutionPolicy, typename ForwardIterator>
+//HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+//typename hamon::iterator_traits<ForwardIterator>::value_type
+//reduce(ExecutionPolicy&& exec, ForwardIterator first, ForwardIterator last)
+//{
+//	// [reduce]/2
+//	return hamon::reduce(hamon::forward<ExecutionPolicy>(exec), first, last,
+//		typename hamon::iterator_traits<ForwardIterator>::value_type{});
+//}
 
-#endif
+}	// namespace hamon
 
 #endif // HAMON_NUMERIC_REDUCE_HPP

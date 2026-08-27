@@ -7,19 +7,6 @@
 #ifndef HAMON_NUMERIC_GCD_HPP
 #define HAMON_NUMERIC_GCD_HPP
 
-#include <numeric>
-
-#if defined(__cpp_lib_gcd_lcm) && (__cpp_lib_gcd_lcm >= 201606)
-
-namespace hamon
-{
-
-using std::gcd;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -30,6 +17,8 @@ using std::gcd;
 
 namespace hamon
 {
+
+// 26.10.14 Greatest common divisor[numeric.ops.gcd]
 
 /**
  *	@brief		最大公約数を得る
@@ -47,9 +36,8 @@ template <
 	HAMON_CONSTRAINT(hamon::integral, M),
 	HAMON_CONSTRAINT(hamon::integral, N)
 >
-inline HAMON_CONSTEXPR hamon::common_type_t<M, N>
-gcd(M m, N n)
-HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+hamon::common_type_t<M, N> gcd(M m, N n) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [numeric.ops.gcd]/1
 	static_assert(!hamon::is_same_v<hamon::remove_cv_t<M>, bool>, "");
@@ -62,7 +50,5 @@ HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_NUMERIC_GCD_HPP
