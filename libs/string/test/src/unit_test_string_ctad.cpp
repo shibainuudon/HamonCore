@@ -28,7 +28,6 @@ CtadTest()
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	using string = hamon::basic_string<CharT>;
 	using Traits = typename string::traits_type;
-	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
 
 	{
@@ -82,7 +81,7 @@ CtadTest()
 	}
 	{
 		auto const p = Helper::abcde();
-		string_view const sv{p};
+		hamon::basic_string_view<CharT, Traits> const sv{p};
 		hamon::basic_string s(sv);
 		static_assert(hamon::is_same<decltype(s), string>::value, "");
 		VERIFY(GeneralCheck(s));
@@ -95,7 +94,7 @@ CtadTest()
 	}
 	{
 		auto const p = Helper::abcde();
-		string_view const sv{p};
+		hamon::basic_string_view<CharT, Traits> const sv{p};
 		hamon::basic_string s(sv, 1, 3);
 		static_assert(hamon::is_same<decltype(s), string>::value, "");
 		VERIFY(GeneralCheck(s));
@@ -104,6 +103,32 @@ CtadTest()
 		VERIFY(s[1] == p[2]);
 		VERIFY(s[2] == p[3]);
 	}
+#if defined(HAMON_HAS_STD_STRING_VIEW)
+	{
+		auto const p = Helper::abcde();
+		std::basic_string_view<CharT, Traits> const sv{p};
+		hamon::basic_string s(sv);
+		static_assert(hamon::is_same<decltype(s), string>::value, "");
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 5);
+		VERIFY(s[0] == p[0]);
+		VERIFY(s[1] == p[1]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[3]);
+		VERIFY(s[4] == p[4]);
+	}
+	{
+		auto const p = Helper::abcde();
+		std::basic_string_view<CharT, Traits> const sv{p};
+		hamon::basic_string s(sv, 1, 3);
+		static_assert(hamon::is_same<decltype(s), string>::value, "");
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 3);
+		VERIFY(s[0] == p[1]);
+		VERIFY(s[1] == p[2]);
+		VERIFY(s[2] == p[3]);
+	}
+#endif
 	{
 		CharT const rng[] = {1, 2, 3, 4};
 		hamon::basic_string s(hamon::from_range, rng);

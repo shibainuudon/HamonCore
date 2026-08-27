@@ -33,7 +33,6 @@ template <typename CharT>
 inline HAMON_CXX20_CONSTEXPR bool
 StartsWithTest()
 {
-#if !defined(HAMON_USE_STD_STRING) || HAMON_CXX_STANDARD >= 20
 	using string = hamon::basic_string<CharT>;
 	using Helper = StringTestHelper<CharT>;
 
@@ -96,7 +95,6 @@ StartsWithTest()
 		VERIFY(!(s.starts_with(Helper::abb())));
 		VERIFY(!(s.starts_with(Helper::bcde())));
 	}
-#endif
 
 	return true;
 }

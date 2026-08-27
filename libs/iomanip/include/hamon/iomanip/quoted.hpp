@@ -67,7 +67,6 @@ auto quoted(std::basic_string_view<CharT, Traits> s, CharT delim = CharT('"'), C
 
 #endif
 
-#if !defined(HAMON_USE_STD_STRING)
 template <typename CharT, typename Traits, typename Allocator>
 auto quoted(hamon::basic_string<CharT, Traits, Allocator> const& s, CharT delim = CharT('"'), CharT escape = CharT('\\'))
 -> hamon::detail::quoted_output<CharT, Traits>
@@ -85,9 +84,7 @@ auto quoted(hamon::basic_string<CharT, Traits, Allocator>& s, CharT delim = Char
 	using String = hamon::basic_string<CharT, Traits, Allocator>;
 	return hamon::detail::quoted_input<String>{s, delim, escape};
 }
-#endif
 
-#if !defined(HAMON_USE_STD_STRING_VIEW)
 template <typename CharT, typename Traits>
 auto quoted(hamon::basic_string_view<CharT, Traits> s, CharT delim = CharT('"'), CharT escape = CharT('\\'))
 -> hamon::detail::quoted_output<CharT, Traits>
@@ -97,7 +94,6 @@ auto quoted(hamon::basic_string_view<CharT, Traits> s, CharT delim = CharT('"'),
 		s.data(), s.size(), delim, escape
 	};
 }
-#endif
 
 }	// namespace hamon
 

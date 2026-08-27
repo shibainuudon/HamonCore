@@ -7,21 +7,6 @@
 #ifndef HAMON_STRING_GETLINE_HPP
 #define HAMON_STRING_GETLINE_HPP
 
-#include <hamon/string/config.hpp>
-
-#if defined(HAMON_USE_STD_STRING)
-
-#include <string>
-
-namespace hamon
-{
-
-using std::getline;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/string/basic_string.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// ios_base, streamsize
@@ -134,7 +119,5 @@ getline(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_STRING_GETLINE_HPP

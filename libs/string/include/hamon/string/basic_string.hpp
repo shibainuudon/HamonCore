@@ -7,22 +7,6 @@
 #ifndef HAMON_STRING_BASIC_STRING_HPP
 #define HAMON_STRING_BASIC_STRING_HPP
 
-#include <hamon/string/config.hpp>
-#include <hamon/ranges/from_range_t.hpp>
-
-#if defined(HAMON_USE_STD_STRING)
-
-#include <string>
-
-namespace hamon
-{
-
-using std::basic_string;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/string/basic_string_fwd.hpp>
 #include <hamon/string/char_traits.hpp>
 #include <hamon/string/detail/is_allocator.hpp>
@@ -1689,7 +1673,6 @@ HAMON_WARNING_POP()
 	}
 #endif
 
-#if !defined(HAMON_USE_STD_STRING_VIEW)
 	template <typename Traits2>	// extension
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	operator hamon::basic_string_view<CharT, Traits2>() const HAMON_NOEXCEPT
@@ -1697,7 +1680,6 @@ HAMON_WARNING_POP()
 		// [string.accessors]/7
 		return hamon::basic_string_view<CharT, Traits2>(data(), size());
 	}
-#endif
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR allocator_type	// nodiscard as an extension
 	get_allocator() const HAMON_NOEXCEPT
@@ -2066,7 +2048,7 @@ HAMON_WARNING_POP()
 
 	// 23.4.3.8.5	[string.starts.with]
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-	starts_with(basic_string_view<CharT, Traits> x) const HAMON_NOEXCEPT
+	starts_with(hamon::basic_string_view<CharT, Traits> x) const HAMON_NOEXCEPT
 	{
 		// [string.starts.with]/1
 		return StringView(data(), size()).starts_with(x);
@@ -2088,7 +2070,7 @@ HAMON_WARNING_POP()
 
 	// 23.4.3.8.6	[string.ends.with]
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-	ends_with(basic_string_view<CharT, Traits> x) const HAMON_NOEXCEPT
+	ends_with(hamon::basic_string_view<CharT, Traits> x) const HAMON_NOEXCEPT
 	{
 		// [string.ends.with]/1
 		return StringView(data(), size()).ends_with(x);
@@ -2110,7 +2092,7 @@ HAMON_WARNING_POP()
 
 	// 23.4.3.8.7	[string.contains]
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-	contains(basic_string_view<CharT, Traits> x) const HAMON_NOEXCEPT
+	contains(hamon::basic_string_view<CharT, Traits> x) const HAMON_NOEXCEPT
 	{
 		// [string.contains]/1
 		return StringView(data(), size()).contains(x);
@@ -2162,7 +2144,7 @@ template <
 		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/27
 	>
 >
-explicit basic_string(basic_string_view<CharT, Traits>, Allocator const& = Allocator())
+explicit basic_string(hamon::basic_string_view<CharT, Traits>, Allocator const& = Allocator())
 	-> basic_string<CharT, Traits, Allocator>;
 
 template <
@@ -2174,8 +2156,33 @@ template <
 	>,
 	typename SizeType = typename hamon::allocator_traits<Allocator>::size_type
 >
-basic_string(basic_string_view<CharT, Traits>, SizeType, SizeType, Allocator const& = Allocator())
+basic_string(hamon::basic_string_view<CharT, Traits>, SizeType, SizeType, Allocator const& = Allocator())
 	-> basic_string<CharT, Traits, Allocator>;
+
+#if defined(HAMON_HAS_STD_STRING_VIEW)
+template <
+	typename CharT,
+	typename Traits,
+	typename Allocator = hamon::allocator<CharT>,
+	typename = hamon::enable_if_t<
+		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/27
+	>
+>
+explicit basic_string(std::basic_string_view<CharT, Traits>, Allocator const& = Allocator())
+	-> basic_string<CharT, Traits, Allocator>;
+
+template <
+	typename CharT,
+	typename Traits,
+	typename Allocator = hamon::allocator<CharT>,
+	typename = hamon::enable_if_t<
+		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/27
+	>,
+	typename SizeType = typename hamon::allocator_traits<Allocator>::size_type
+>
+basic_string(std::basic_string_view<CharT, Traits>, SizeType, SizeType, Allocator const& = Allocator())
+	-> basic_string<CharT, Traits, Allocator>;
+#endif
 
 #endif
 
@@ -2340,8 +2347,8 @@ operator==(
 {
 	// [string.cmp]/1
 	return
-		basic_string_view<CharT, Traits>(lhs) ==
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) ==
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2352,8 +2359,8 @@ operator==(
 {
 	// [string.cmp]/1
 	return
-		basic_string_view<CharT, Traits>(lhs) ==
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) ==
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
@@ -2366,8 +2373,8 @@ operator<=>(
 {
 	// [string.cmp]/1
 	return
-		basic_string_view<CharT, Traits>(lhs) <=>
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <=>
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2378,8 +2385,8 @@ operator<=>(
 {
 	// [string.cmp]/1
 	return
-		basic_string_view<CharT, Traits>(lhs) <=>
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <=>
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 #else
@@ -2391,8 +2398,8 @@ operator==(
 	basic_string<CharT, Traits, Allocator> const& rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) ==
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) ==
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 
@@ -2403,8 +2410,8 @@ operator!=(
 	basic_string<CharT, Traits, Allocator> const& rhs) HAMON_NOEXCEPT
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) !=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) !=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2414,8 +2421,8 @@ operator!=(
 	CharT const* rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) !=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) !=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2425,8 +2432,8 @@ operator!=(
 	basic_string<CharT, Traits, Allocator> const& rhs) HAMON_NOEXCEPT
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) !=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) !=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2436,8 +2443,8 @@ operator<(
 	basic_string<CharT, Traits, Allocator> const& rhs) HAMON_NOEXCEPT
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) <
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2447,8 +2454,8 @@ operator<(
 	CharT const* rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) <
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2458,8 +2465,8 @@ operator<(
 	basic_string<CharT, Traits, Allocator> const& rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) <
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2469,8 +2476,8 @@ operator>(
 	basic_string<CharT, Traits, Allocator> const& rhs) HAMON_NOEXCEPT
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) >
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) >
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2480,8 +2487,8 @@ operator>(
 	CharT const* rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) >
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) >
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2491,8 +2498,8 @@ operator>(
 	basic_string<CharT, Traits, Allocator> const& rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) >
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) >
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2502,8 +2509,8 @@ operator<=(
 	basic_string<CharT, Traits, Allocator> const& rhs) HAMON_NOEXCEPT
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) <=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2513,8 +2520,8 @@ operator<=(
 	CharT const* rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) <=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2524,8 +2531,8 @@ operator<=(
 	basic_string<CharT, Traits, Allocator> const& rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) <=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) <=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2535,8 +2542,8 @@ operator>=(
 	basic_string<CharT, Traits, Allocator> const& rhs) HAMON_NOEXCEPT
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) >=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) >=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2546,8 +2553,8 @@ operator>=(
 	CharT const* rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) >=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) >=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 template <typename CharT, typename Traits, typename Allocator>
@@ -2557,8 +2564,8 @@ operator>=(
 	basic_string<CharT, Traits, Allocator> const& rhs)
 {
 	return
-		basic_string_view<CharT, Traits>(lhs) >=
-		basic_string_view<CharT, Traits>(rhs);
+		hamon::basic_string_view<CharT, Traits>(lhs) >=
+		hamon::basic_string_view<CharT, Traits>(rhs);
 }
 
 #endif
@@ -2678,7 +2685,5 @@ struct is_specialization_of_basic_string<hamon::basic_string<CharT, Traits, Allo
 
 }	// namespace detail
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_STRING_BASIC_STRING_HPP

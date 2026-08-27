@@ -33,7 +33,6 @@ template <typename CharT>
 inline HAMON_CXX20_CONSTEXPR bool
 EndsWithTest()
 {
-#if !defined(HAMON_USE_STD_STRING) || HAMON_CXX_STANDARD >= 20
 	using string = hamon::basic_string<CharT>;
 	using Helper = StringTestHelper<CharT>;
 
@@ -95,7 +94,6 @@ EndsWithTest()
 		VERIFY(!(s.ends_with(Helper::ab())));
 		VERIFY( (s.ends_with(Helper::bcd())));
 	}
-#endif
 
 	return true;
 }

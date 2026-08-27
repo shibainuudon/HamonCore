@@ -7,21 +7,6 @@
 #ifndef HAMON_STRING_TO_STRING_HPP
 #define HAMON_STRING_TO_STRING_HPP
 
-#include <hamon/string/config.hpp>
-
-#if defined(HAMON_USE_STD_STRING)
-
-#include <string>
-
-namespace hamon
-{
-
-using std::to_string;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/string/string.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -140,7 +125,5 @@ inline hamon::string to_string(long double val)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_STRING_TO_STRING_HPP

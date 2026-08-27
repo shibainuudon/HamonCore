@@ -33,7 +33,6 @@ template <typename CharT>
 inline HAMON_CXX20_CONSTEXPR bool
 ContainsTest()
 {
-#if !defined(HAMON_USE_STD_STRING) || HAMON_CXX_STANDARD >= 23
 	using string = hamon::basic_string<CharT>;
 	using Helper = StringTestHelper<CharT>;
 
@@ -98,7 +97,6 @@ ContainsTest()
 		VERIFY( (s.contains(Helper::bcd())));
 		VERIFY(!(s.contains(Helper::abb())));
 	}
-#endif
 
 	return true;
 }

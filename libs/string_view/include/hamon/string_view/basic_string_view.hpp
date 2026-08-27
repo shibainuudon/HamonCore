@@ -8,18 +8,6 @@
 #define HAMON_STRING_VIEW_BASIC_STRING_VIEW_HPP
 
 #include <hamon/string_view/config.hpp>
-
-#if defined(HAMON_USE_STD_STRING_VIEW)
-
-namespace hamon
-{
-
-using std::basic_string_view;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/algorithm/clamp.hpp>
@@ -1144,11 +1132,7 @@ struct is_specialization_of_basic_string_view<hamon::basic_string_view<CharT, Tr
 }	// namespace detail
 }	// namespace hamon
 
-#endif	// defined(HAMON_USE_STD_STRING_VIEW)
-
 #include <hamon/functional/config.hpp>
-
-#if !defined(HAMON_USE_STD_STRING_VIEW) || !defined(HAMON_USE_STD_HASH)
 
 #if 0	// TODO hash support
 #include <hamon/functional/hash.hpp>
@@ -1173,11 +1157,7 @@ struct hash<hamon::basic_string_view<CharT, Traits>>
 }	// namespace HAMON_HASH_NAMESPACE
 #endif
 
-#endif	// !defined(HAMON_USE_STD_STRING_VIEW) || !defined(HAMON_USE_STD_HASH)
-
 #include <hamon/ranges/config.hpp>
-
-#if !defined(HAMON_USE_STD_STRING_VIEW) || !defined(HAMON_USE_STD_RANGES)
 
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
@@ -1193,8 +1173,6 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_view<hamon::basic_string_view<CharT, Traits>> = true;
 
 HAMON_RANGES_END_NAMESPACE
-
-#endif	// !defined(HAMON_USE_STD_STRING_VIEW) || !defined(HAMON_USE_STD_RANGES)
 
 #include <hamon/cstddef/size_t.hpp>
 
