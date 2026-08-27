@@ -7,24 +7,6 @@
 #ifndef HAMON_MEMORY_RESOURCE_POLYMORPHIC_ALLOCATOR_HPP
 #define HAMON_MEMORY_RESOURCE_POLYMORPHIC_ALLOCATOR_HPP
 
-#include <hamon/memory_resource/config.hpp>
-
-#if defined(HAMON_USE_STD_MEMORY_RESOURCE)
-
-#include <memory_resource>
-
-namespace hamon
-{
-namespace pmr
-{
-
-using std::pmr::polymorphic_allocator;
-
-}	// namespace pmr
-}	// namespace hamon
-
-#else
-
 #include <hamon/memory_resource/memory_resource.hpp>
 #include <hamon/memory_resource/get_default_resource.hpp>
 #include <hamon/memory/uninitialized_construct_using_allocator.hpp>
@@ -218,7 +200,5 @@ bool operator!=(
 
 }	// namespace pmr
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RESOURCE_POLYMORPHIC_ALLOCATOR_HPP

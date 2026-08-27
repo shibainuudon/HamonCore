@@ -7,24 +7,6 @@
 #ifndef HAMON_MEMORY_RESOURCE_MEMORY_RESOURCE_HPP
 #define HAMON_MEMORY_RESOURCE_MEMORY_RESOURCE_HPP
 
-#include <hamon/memory_resource/config.hpp>
-
-#if defined(HAMON_USE_STD_MEMORY_RESOURCE)
-
-#include <memory_resource>
-
-namespace hamon
-{
-namespace pmr
-{
-
-using std::pmr::memory_resource;
-
-}	// namespace pmr
-}	// namespace hamon
-
-#else
-
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/cstddef/max_align_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -100,7 +82,5 @@ operator!=(const memory_resource& a, const memory_resource& b) noexcept
 
 }	// namespace pmr
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_MEMORY_RESOURCE_MEMORY_RESOURCE_HPP

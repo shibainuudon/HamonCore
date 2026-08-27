@@ -19,28 +19,20 @@ GTEST_TEST(MemoryResourceTest, SynchronizedPoolResourceTest)
 	using SPR = hamon::pmr::synchronized_pool_resource;
 
 	static_assert( hamon::is_default_constructible<SPR>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_default_constructible<SPR>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_default_constructible<SPR>::value, "");
 	static_assert( hamon::is_implicitly_default_constructible<SPR>::value, "");
 
 	static_assert( hamon::is_constructible<SPR, hamon::pmr::memory_resource*>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<SPR, hamon::pmr::memory_resource*>::value, "");
-#endif
 	static_assert(!hamon::is_implicitly_constructible<SPR, hamon::pmr::memory_resource*>::value, "");
 
 	static_assert( hamon::is_constructible<SPR, hamon::pmr::pool_options const&>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<SPR, hamon::pmr::pool_options const&>::value, "");
-#endif
 	static_assert(!hamon::is_implicitly_constructible<SPR, hamon::pmr::pool_options const&>::value, "");
 
 	static_assert( hamon::is_constructible<SPR, hamon::pmr::pool_options const&, hamon::pmr::memory_resource*>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<SPR, hamon::pmr::pool_options const&, hamon::pmr::memory_resource*>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<SPR, hamon::pmr::pool_options const&, hamon::pmr::memory_resource*>::value, "");
 
 	static_assert(!hamon::is_copy_constructible<SPR>::value, "");

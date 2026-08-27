@@ -7,7 +7,6 @@
 #ifndef HAMON_MEMORY_RESOURCE_HPP
 #define HAMON_MEMORY_RESOURCE_HPP
 
-#include <hamon/memory_resource/config.hpp>
 #include <hamon/memory_resource/get_default_resource.hpp>
 #include <hamon/memory_resource/memory_resource.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>

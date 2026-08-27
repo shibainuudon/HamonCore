@@ -17,40 +17,28 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 	using MBR = hamon::pmr::monotonic_buffer_resource;
 
 	static_assert( hamon::is_default_constructible<MBR>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_default_constructible<MBR>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_default_constructible<MBR>::value, "");
 	static_assert( hamon::is_implicitly_default_constructible<MBR>::value, "");
 
 	static_assert( hamon::is_constructible<MBR, hamon::pmr::memory_resource*>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<MBR, hamon::pmr::memory_resource*>::value, "");
-#endif
 	static_assert(!hamon::is_implicitly_constructible<MBR, hamon::pmr::memory_resource*>::value, "");
 
 	static_assert( hamon::is_constructible<MBR, hamon::size_t>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<MBR, hamon::size_t>::value, "");
-#endif
 	static_assert(!hamon::is_implicitly_constructible<MBR, hamon::size_t>::value, "");
 
 	static_assert( hamon::is_constructible<MBR, hamon::size_t, hamon::pmr::memory_resource*>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<MBR, hamon::size_t, hamon::pmr::memory_resource*>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<MBR, hamon::size_t, hamon::pmr::memory_resource*>::value, "");
 
 	static_assert( hamon::is_constructible<MBR, void*, hamon::size_t>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<MBR, void*, hamon::size_t>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<MBR, void*, hamon::size_t>::value, "");
 
 	static_assert( hamon::is_constructible<MBR, void*, hamon::size_t, hamon::pmr::memory_resource*>::value, "");
-#if !defined(HAMON_USE_STD_MEMORY_RESOURCE)
 	static_assert(!hamon::is_nothrow_constructible<MBR, void*, hamon::size_t, hamon::pmr::memory_resource*>::value, "");
-#endif
 	static_assert( hamon::is_implicitly_constructible<MBR, void*, hamon::size_t, hamon::pmr::memory_resource*>::value, "");
 
 	static_assert(!hamon::is_copy_constructible<MBR>::value, "");

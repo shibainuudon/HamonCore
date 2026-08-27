@@ -65,16 +65,10 @@ GTEST_TEST(MemoryResourceTest, PolymorphicAllocatorTest)
 		alloc.deallocate(arr, 4);
 	}
 
-#if defined(HAMON_USE_STD_MEMORY_RESOURCE)
-	namespace ns = std;
-#else
-	namespace ns = hamon;
-#endif
-
 	using pmr_string = hamon::basic_string<char, hamon::char_traits<char>, hamon::pmr::polymorphic_allocator<char>>;
 	{
 		//intとpolymorphic_allocatorを用いるstringのpair
-		using pair = ns::pair<int, pmr_string>;
+		using pair = hamon::pair<int, pmr_string>;
 
 		//memory_resourceとしてmonotonic_buffer_resourceを使用
 		hamon::pmr::monotonic_buffer_resource mr{};
@@ -86,9 +80,9 @@ GTEST_TEST(MemoryResourceTest, PolymorphicAllocatorTest)
 			pair* p = alloc.allocate(1);
 
 			alloc.construct(p,
-				ns::piecewise_construct,
-				ns::make_tuple(128),         //intを128で初期化
-				ns::make_tuple("string", 3u) //string("string", 3)で初期化（最初の3文字を保持する）
+				hamon::piecewise_construct,
+				hamon::make_tuple(128),         //intを128で初期化
+				hamon::make_tuple("string", 3u) //string("string", 3)で初期化（最初の3文字を保持する）
 			);
 
 			EXPECT_EQ(128, p->first);
@@ -125,7 +119,7 @@ GTEST_TEST(MemoryResourceTest, PolymorphicAllocatorTest)
 		{
 			pair* p = alloc.allocate(1);
 
-			const auto v = ns::make_pair(128, "copy");
+			const auto v = hamon::make_pair(128, "copy");
 			alloc.construct(p, v);  //両要素を変換可能なpairからコピー構築
 
 			EXPECT_EQ(128, p->first);
@@ -138,7 +132,7 @@ GTEST_TEST(MemoryResourceTest, PolymorphicAllocatorTest)
 		{
 			pair* p = alloc.allocate(1);
 
-			alloc.construct(p, ns::make_pair(128, "move"));  //両要素を変換可能なpairからムーブ構築
+			alloc.construct(p, hamon::make_pair(128, "move"));  //両要素を変換可能なpairからムーブ構築
 
 			EXPECT_EQ(128, p->first);
 			EXPECT_EQ("move", p->second);
@@ -148,7 +142,7 @@ GTEST_TEST(MemoryResourceTest, PolymorphicAllocatorTest)
 	}
 	{
 		// ネストした  pair  の例
-		using pair = ns::pair<ns::pair<int, pmr_string>, pmr_string>;
+		using pair = hamon::pair<hamon::pair<int, pmr_string>, pmr_string>;
 
 		hamon::pmr::monotonic_buffer_resource mr{};
 		hamon::pmr::polymorphic_allocator<pair> alloc{&mr};
