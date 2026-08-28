@@ -9,6 +9,7 @@
 
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_reference.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -33,13 +34,14 @@ template <typename T, typename A>
 struct cpp17_erasable_impl
 {
 private:
-	template <typename U, typename UA,
-		typename = decltype(hamon::allocator_traits<UA>::destroy(
-			hamon::declval<UA&>(), hamon::declval<U*>()))
+	template <typename T2, typename A2,
+		typename = hamon::enable_if_t<!hamon::is_reference_v<T2>>,
+		typename = decltype(hamon::allocator_traits<A2>::destroy(
+			hamon::declval<A2&>(), hamon::declval<T2*>()))
 	>
 	static auto test(int) -> hamon::true_type;
 
-	template <typename U, typename UA>
+	template <typename T2, typename A2>
 	static auto test(...) -> hamon::false_type;
 
 public:
