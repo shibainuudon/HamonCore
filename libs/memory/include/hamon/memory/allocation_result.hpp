@@ -10,6 +10,10 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
+#if defined(HAMON_APPLE_CLANG) && (HAMON_CXX_STANDARD >= 23)
+#include <memory>
+#endif
+
 namespace hamon
 {
 
