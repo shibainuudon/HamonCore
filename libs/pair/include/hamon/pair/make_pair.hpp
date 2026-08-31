@@ -7,22 +7,7 @@
 #ifndef HAMON_PAIR_MAKE_PAIR_HPP
 #define HAMON_PAIR_MAKE_PAIR_HPP
 
-#include <hamon/pair/config.hpp>
 #include <hamon/pair/pair.hpp>
-
-#if defined(HAMON_USE_STD_PAIR)
-
-#include <utility>
-
-namespace hamon
-{
-
-using std::make_pair;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
@@ -31,8 +16,7 @@ namespace hamon
 {
 
 template <typename T1, typename T2>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 hamon::pair<hamon::unwrap_ref_decay_t<T1>, hamon::unwrap_ref_decay_t<T2>>
 make_pair(T1&& x, T2&& y)
 {
@@ -42,7 +26,5 @@ make_pair(T1&& x, T2&& y)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_PAIR_MAKE_PAIR_HPP

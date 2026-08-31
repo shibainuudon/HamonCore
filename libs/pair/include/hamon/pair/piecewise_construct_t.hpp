@@ -7,22 +7,6 @@
 #ifndef HAMON_PAIR_PIECEWISE_CONSTRUCT_T_HPP
 #define HAMON_PAIR_PIECEWISE_CONSTRUCT_T_HPP
 
-#include <hamon/pair/config.hpp>
-
-#if defined(HAMON_USE_STD_PAIR)
-
-#include <utility>
-
-namespace hamon
-{
-
-using std::piecewise_construct_t;
-using std::piecewise_construct;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -37,7 +21,5 @@ struct piecewise_construct_t
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR piecewise_construct_t piecewise_construct{};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_PAIR_PIECEWISE_CONSTRUCT_T_HPP
