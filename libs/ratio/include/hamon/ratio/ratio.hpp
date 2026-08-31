@@ -7,21 +7,6 @@
 #ifndef HAMON_RATIO_RATIO_HPP
 #define HAMON_RATIO_RATIO_HPP
 
-#include <hamon/ratio/config.hpp>
-
-#if defined(HAMON_USE_STD_RATIO)
-
-#include <ratio>
-
-namespace hamon
-{
-
-using std::ratio;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/numeric/gcd.hpp>
 
@@ -57,7 +42,5 @@ public:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RATIO_RATIO_HPP
