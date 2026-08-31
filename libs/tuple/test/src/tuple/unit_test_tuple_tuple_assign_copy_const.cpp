@@ -53,7 +53,6 @@ static_assert(!hamon::is_copy_assignable<hamon::tuple<NonCopyAssignable&,     No
 static_assert( hamon::is_copy_assignable<hamon::tuple<CopyAssignable&,        CopyAssignable&> const>::value, "");
 static_assert( hamon::is_copy_assignable<hamon::tuple<NothrowCopyAssignable&, NothrowCopyAssignable&> const>::value, "");
 
-#if !defined(HAMON_USE_STD_TUPLE)
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<int,  int> const>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<int&, int> const>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<int,  int&> const>::value, "");
@@ -62,7 +61,6 @@ static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<CopyAssignable&,  
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<CopyAssignable&,        NothrowCopyAssignable&> const>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<NothrowCopyAssignable&, CopyAssignable&> const>::value, "");
 static_assert( hamon::is_nothrow_copy_assignable<hamon::tuple<NothrowCopyAssignable&, NothrowCopyAssignable&> const>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

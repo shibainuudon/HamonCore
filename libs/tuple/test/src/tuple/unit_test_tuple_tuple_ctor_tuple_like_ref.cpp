@@ -21,22 +21,6 @@ namespace hamon_tuple_test
 namespace ctor_tuple_like_ref_test
 {
 
-template <typename T, hamon::size_t N>
-using Array =
-#if defined(HAMON_USE_STD_TUPLE)
-	std::array<T, N>;
-#else
-	hamon::array<T, N>;
-#endif
-
-template <typename T>
-using Complex =
-#if defined(HAMON_USE_STD_TUPLE)
-	std::complex<T>;
-#else
-	hamon::complex<T>;
-#endif
-
 struct Explicit
 {
 	Explicit(int const&) = delete;
@@ -64,33 +48,31 @@ struct NoThrow
 	int n;
 };
 
-static_assert( hamon::is_constructible<hamon::tuple<short, float>, Array<int, 2> &>::value, "");
-static_assert(!hamon::is_constructible<hamon::tuple<short, float>, Array<int, 3> &>::value, "");
-static_assert( hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, Array<int, 3> &>::value, "");
-static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, Array<int, 3> const&>::value, "");
-static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, Array<int, 3> &&>::value, "");
-static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, Array<int, 3> const&&>::value, "");
-static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, Array<int, 2> &>::value, "");
-static_assert( hamon::is_constructible<hamon::tuple<float, float>, Complex<float> &>::value, "");
-static_assert(!hamon::is_constructible<hamon::tuple<float, float, float>, Complex<float> &>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<short, float>, hamon::array<int, 2> &>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<short, float>, hamon::array<int, 3> &>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 3> const&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 3> &&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 3> const&&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 2> &>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<float, float>, hamon::complex<float> &>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<float, float, float>, hamon::complex<float> &>::value, "");
 
-static_assert( hamon::is_implicitly_constructible<hamon::tuple<short, float>, Array<int, 2> &>::value, "");
-static_assert( hamon::is_implicitly_constructible<hamon::tuple<Implicit, Implicit, Implicit>, Array<int, 3> &>::value, "");
-static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Explicit, Implicit, Implicit>, Array<int, 3> &>::value, "");
-static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Implicit, Explicit, Implicit>, Array<int, 3> &>::value, "");
-static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Implicit, Implicit, Explicit>, Array<int, 3> &>::value, "");
-static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Explicit, Explicit, Explicit>, Array<int, 3> &>::value, "");
-static_assert( hamon::is_implicitly_constructible<hamon::tuple<float, float>, Complex<float> &>::value, "");
+static_assert( hamon::is_implicitly_constructible<hamon::tuple<short, float>, hamon::array<int, 2> &>::value, "");
+static_assert( hamon::is_implicitly_constructible<hamon::tuple<Implicit, Implicit, Implicit>, hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Explicit, Implicit, Implicit>, hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Implicit, Explicit, Implicit>, hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Implicit, Implicit, Explicit>, hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 3> &>::value, "");
+static_assert( hamon::is_implicitly_constructible<hamon::tuple<float, float>, hamon::complex<float> &>::value, "");
 
-#if !defined(HAMON_USE_STD_TUPLE)
-static_assert( hamon::is_nothrow_constructible<hamon::tuple<short, float>, Array<int, 2> &>::value, "");
-static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  NoThrow>,  Array<int, 3> &>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, NoThrow,  NoThrow>,  Array<int, 3> &>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  Implicit, NoThrow>,  Array<int, 3> &>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  Implicit>, Array<int, 3> &>::value, "");
-static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, Implicit, Implicit>, Array<int, 3> &>::value, "");
-static_assert( hamon::is_nothrow_constructible<hamon::tuple<float, float>, Complex<float> &>::value, "");
-#endif
+static_assert( hamon::is_nothrow_constructible<hamon::tuple<short, float>, hamon::array<int, 2> &>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  NoThrow>,  hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, NoThrow,  NoThrow>,  hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  Implicit, NoThrow>,  hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  Implicit>, hamon::array<int, 3> &>::value, "");
+static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, Implicit, Implicit>, hamon::array<int, 3> &>::value, "");
+static_assert( hamon::is_nothrow_constructible<hamon::tuple<float, float>, hamon::complex<float> &>::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -100,20 +82,20 @@ HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。デ�
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	{
-		Array<int, 2> a = {1, 2};
+		hamon::array<int, 2> a = {1, 2};
 		hamon::tuple<float, double> t(a);
 		VERIFY(1 == hamon::adl_get<0>(t));
 		VERIFY(2 == hamon::adl_get<1>(t));
 	}
 	{
-		Array<int, 3> a = {3, 4, 5};
+		hamon::array<int, 3> a = {3, 4, 5};
 		hamon::tuple<Explicit, Implicit, NoThrow> t(a);
 		VERIFY(3 == hamon::adl_get<0>(t).n);
 		VERIFY(4 == hamon::adl_get<1>(t).n);
 		VERIFY(5 == hamon::adl_get<2>(t).n);
 	}
 	{
-		Complex<float> c = {1, 2};
+		hamon::complex<float> c = {1, 2};
 		hamon::tuple<float, float> t(c);
 		VERIFY(1 == hamon::adl_get<0>(t));
 		VERIFY(2 == hamon::adl_get<1>(t));

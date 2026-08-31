@@ -7,19 +7,6 @@
 #ifndef HAMON_TUPLE_MAKE_FROM_TUPLE_HPP
 #define HAMON_TUPLE_MAKE_FROM_TUPLE_HPP
 
-#include <hamon/tuple/config.hpp>
-
-#if defined(HAMON_USE_STD_TUPLE)
-
-namespace hamon
-{
-
-using std::make_from_tuple;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
@@ -92,7 +79,5 @@ HAMON_NOEXCEPT_RETURN(
 #undef HAMON_NOEXCEPT_RETURN
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TUPLE_MAKE_FROM_TUPLE_HPP

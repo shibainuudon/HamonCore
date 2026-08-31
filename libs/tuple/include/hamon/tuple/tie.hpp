@@ -7,21 +7,7 @@
 #ifndef HAMON_TUPLE_TIE_HPP
 #define HAMON_TUPLE_TIE_HPP
 
-#include <hamon/tuple/config.hpp>
 #include <hamon/tuple/tuple.hpp>
-
-#if defined(HAMON_USE_STD_TUPLE)
-
-namespace hamon
-{
-
-using std::tie;
-using std::ignore;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
@@ -59,7 +45,5 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 tuple_detail::ignore_t ignore{};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TUPLE_TIE_HPP

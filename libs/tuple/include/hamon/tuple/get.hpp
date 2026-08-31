@@ -7,19 +7,6 @@
 #ifndef HAMON_TUPLE_GET_HPP
 #define HAMON_TUPLE_GET_HPP
 
-#include <hamon/tuple/config.hpp>
-
-#if defined(HAMON_USE_STD_TUPLE)
-
-namespace hamon
-{
-
-using std::get;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/tuple/detail/access.hpp>
@@ -105,7 +92,5 @@ get(tuple<Types...> const&& t) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TUPLE_GET_HPP

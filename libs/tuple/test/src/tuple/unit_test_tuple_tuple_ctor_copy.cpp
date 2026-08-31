@@ -69,12 +69,10 @@ static_assert(!hamon::is_nothrow_copy_constructible<hamon::tuple<Copyable, int>>
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::tuple<int,      Copyable>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::tuple<Copyable, Copyable>>::value, "");
 
-#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<int,      int>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<TriviallyCopyable, int>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<int,               TriviallyCopyable>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<TriviallyCopyable, TriviallyCopyable>>::value, "");
-#endif
 static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<NothrowCopyable, int>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<int,             NothrowCopyable>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<NothrowCopyable, NothrowCopyable>>::value, "");

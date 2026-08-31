@@ -42,12 +42,10 @@ static_assert( hamon::is_assignable<hamon::tuple<int&, int&> const&, hamon::pair
 
 static_assert( hamon::is_assignable<hamon::tuple<AssignableInt, AssignableInt> const&, hamon::pair<int, int>>::value, "");
 
-#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_assignable<hamon::tuple<NothrowAssignableInt, NothrowAssignableInt> const&, hamon::pair<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::tuple<AssignableInt,        NothrowAssignableInt> const&, hamon::pair<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::tuple<NothrowAssignableInt, AssignableInt> const&,        hamon::pair<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::tuple<AssignableInt,        AssignableInt> const&,        hamon::pair<int, int>>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
