@@ -48,7 +48,6 @@ GTEST_TEST(DurationTest, CompareTest)
 	static_assert(hamon::is_same<decltype(hamon::declval<Duration1>() >  hamon::declval<Duration2>()), bool>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Duration1>() <= hamon::declval<Duration2>()), bool>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<Duration1>() >= hamon::declval<Duration2>()), bool>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(hamon::declval<Duration1>() == hamon::declval<Duration2>()), "");
 	static_assert(noexcept(hamon::declval<Duration1>() != hamon::declval<Duration2>()), "");
 	static_assert(noexcept(hamon::declval<Duration1>() <  hamon::declval<Duration2>()), "");
@@ -57,7 +56,6 @@ GTEST_TEST(DurationTest, CompareTest)
 	static_assert(noexcept(hamon::declval<Duration1>() >= hamon::declval<Duration2>()), "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	static_assert(noexcept(hamon::declval<Duration1>() <=> hamon::declval<Duration2>()), "");
-#endif
 #endif
 
 	{

@@ -9,22 +9,6 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::steady_clock;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/ratio.hpp>
@@ -87,7 +71,5 @@ public:
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_STEADY_CLOCK_HPP

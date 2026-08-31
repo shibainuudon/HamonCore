@@ -52,9 +52,7 @@ GTEST_TEST(TimePointTest, RoundTest)
 			decltype(round<ToDuration>(hamon::declval<TimePoint>())),
 			ToTimePoint
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(round<ToDuration>(hamon::declval<TimePoint>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(round<ToDuration>(TimePoint{Duration{-3900}}).time_since_epoch().count(), -4);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(round<ToDuration>(TimePoint{Duration{-3500}}).time_since_epoch().count(), -4);

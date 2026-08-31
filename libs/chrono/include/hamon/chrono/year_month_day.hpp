@@ -16,23 +16,6 @@
 #include <hamon/chrono/year_month.hpp>
 #include <hamon/chrono/month_day.hpp>
 #include <hamon/chrono/last_spec.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::year_month_day;
-using std::chrono::year_month_day_last;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/civil.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
@@ -722,7 +705,5 @@ year_month_day_last::operator-=(years const& y) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_YEAR_MONTH_DAY_HPP

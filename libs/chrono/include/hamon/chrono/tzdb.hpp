@@ -9,22 +9,6 @@
 
 #include <hamon/chrono/time_zone.hpp>
 #include <hamon/chrono/time_zone_link.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::tzdb;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/leap_second.hpp>
 #include <hamon/algorithm/ranges/lower_bound.hpp>
 #include <hamon/stdexcept/runtime_error.hpp>
@@ -111,7 +95,5 @@ private:
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TZDB_HPP

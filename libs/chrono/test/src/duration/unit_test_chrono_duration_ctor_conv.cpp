@@ -34,9 +34,7 @@ HAMON_CXX14_CONSTEXPR bool test_integer()
 	static_assert(!hamon::is_constructible<Duration, duration<float, hamon::micro>>::value, "");
 	static_assert(!hamon::is_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::milli>>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::milli>>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, hamon::milli>>::value, "");
 
@@ -65,14 +63,12 @@ HAMON_CXX14_CONSTEXPR bool test_float()
 	static_assert( hamon::is_constructible<Duration, duration<float, hamon::micro>>::value, "");
 	static_assert( hamon::is_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::nano>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::micro>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::milli>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, hamon::nano>>::value, "");
 //	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, hamon::micro>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, hamon::milli>>::value, "");
-#endif
 
 	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::nano>>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::micro>>::value, "");

@@ -52,9 +52,7 @@ GTEST_TEST(TimePointTest, FloorTest)
 			decltype(floor<ToDuration>(hamon::declval<TimePoint>())),
 			ToTimePoint
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(floor<ToDuration>(hamon::declval<TimePoint>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(floor<ToDuration>(TimePoint{Duration{-3900}}).time_since_epoch().count(), -4);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(floor<ToDuration>(TimePoint{Duration{-3500}}).time_since_epoch().count(), -4);
@@ -97,9 +95,7 @@ GTEST_TEST(TimePointTest, FloorTest)
 			decltype(floor<ToDuration>(hamon::declval<TimePoint>())),
 			ToTimePoint
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(floor<ToDuration>(hamon::declval<TimePoint>())), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR TimePoint d1{Duration{1500}};

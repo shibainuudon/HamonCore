@@ -29,10 +29,8 @@ HAMON_CXX14_CONSTEXPR bool test()
 	Duration d{10};
 	static_assert(hamon::is_same<decltype(d %= d), Duration&>::value, "");
 	static_assert(hamon::is_same<decltype(d %= 2), Duration&>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(d %= d), "");
 	static_assert(noexcept(d %= 2), "");
-#endif
 
 	{
 		auto& t = (d %= 7);

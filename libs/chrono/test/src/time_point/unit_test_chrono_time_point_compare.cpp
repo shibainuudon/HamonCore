@@ -55,7 +55,6 @@ GTEST_TEST(TimePointTest, CompareTest)
 	static_assert(hamon::is_same<decltype(hamon::declval<TimePoint1>() <= hamon::declval<TimePoint2>()), bool>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<TimePoint1>() >= hamon::declval<TimePoint2>()), bool>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(hamon::declval<TimePoint1>() == hamon::declval<TimePoint2>()), "");
 	static_assert(noexcept(hamon::declval<TimePoint1>() != hamon::declval<TimePoint2>()), "");
 	static_assert(noexcept(hamon::declval<TimePoint1>() <  hamon::declval<TimePoint2>()), "");
@@ -64,7 +63,6 @@ GTEST_TEST(TimePointTest, CompareTest)
 	static_assert(noexcept(hamon::declval<TimePoint1>() >= hamon::declval<TimePoint2>()), "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	static_assert(noexcept(hamon::declval<TimePoint1>() <=> hamon::declval<TimePoint2>()), "");
-#endif
 #endif
 
 	{

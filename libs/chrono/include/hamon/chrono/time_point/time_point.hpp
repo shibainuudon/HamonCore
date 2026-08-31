@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_TIME_POINT_TIME_POINT_HPP
 #define HAMON_CHRONO_TIME_POINT_TIME_POINT_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::time_point;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/time_point/time_point_fwd.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
@@ -287,8 +271,6 @@ auto operator<=>(time_point<Clock, Duration1> const& lhs, time_point<Clock, Dura
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #include <hamon/chrono/time_point/common_type.hpp>
 

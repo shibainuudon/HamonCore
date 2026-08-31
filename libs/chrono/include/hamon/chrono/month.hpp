@@ -8,35 +8,6 @@
 #define HAMON_CHRONO_MONTH_HPP
 
 #include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::month;
-
-using std::chrono::January;
-using std::chrono::February;
-using std::chrono::March;
-using std::chrono::April;
-using std::chrono::May;
-using std::chrono::June;
-using std::chrono::July;
-using std::chrono::August;
-using std::chrono::September;
-using std::chrono::October;
-using std::chrono::November;
-using std::chrono::December;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/modulo.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
@@ -275,7 +246,5 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR month December{12};
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_MONTH_HPP

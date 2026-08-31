@@ -46,9 +46,7 @@ GTEST_TEST(DurationTest, DurationCastTest)
 			decltype(duration_cast<Duration2>(hamon::declval<Duration1>())),
 			Duration2
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(duration_cast<Duration2>(hamon::declval<Duration1>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(duration_cast<Duration2>(Duration1{-3900}).count(), -3);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(duration_cast<Duration2>(Duration1{-3500}).count(), -3);
@@ -89,9 +87,7 @@ GTEST_TEST(DurationTest, DurationCastTest)
 			decltype(duration_cast<Duration2>(hamon::declval<Duration1>())),
 			Duration2
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(duration_cast<Duration2>(hamon::declval<Duration1>())), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR Duration1 d1{1500};

@@ -10,22 +10,6 @@
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/utc_clock.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::clock_time_conversion;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/common_type.hpp>
 
 namespace hamon {
@@ -191,7 +175,5 @@ struct clock_time_conversion<DestClock, utc_clock>
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_CLOCK_TIME_CONVERSION_HPP

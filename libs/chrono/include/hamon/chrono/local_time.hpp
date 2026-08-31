@@ -8,22 +8,6 @@
 #define HAMON_CHRONO_LOCAL_TIME_HPP
 
 #include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::local_time;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <ostream>	// basic_ostream
 #include <istream>	// basic_istream
 
@@ -56,7 +40,5 @@ from_stream(
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_LOCAL_TIME_HPP

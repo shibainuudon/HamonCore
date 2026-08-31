@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_CEIL_HPP
 #define HAMON_CHRONO_DURATION_CEIL_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::ceil;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration/duration.hpp>
 #include <hamon/chrono/duration/duration_cast.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
@@ -61,7 +45,5 @@ ceil(duration<Rep, Period> const& d) HAMON_NOEXCEPT_IF(	// noexcept as an extens
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_DURATION_CEIL_HPP

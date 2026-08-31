@@ -31,9 +31,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	using TimePoint = hamon::chrono::time_point<Clock, Duration>;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<TimePoint>().time_since_epoch()), Duration>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(hamon::declval<TimePoint>().time_since_epoch()), "");
-#endif
 
 	TimePoint const tp{Duration{2}};
 	VERIFY(tp.time_since_epoch() == Duration{2});

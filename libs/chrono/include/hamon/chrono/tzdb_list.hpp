@@ -8,22 +8,6 @@
 #define HAMON_CHRONO_TZDB_LIST_HPP
 
 #include <hamon/chrono/tzdb.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::tzdb_list;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/init_tzdb.hpp>
 #include <hamon/chrono/detail/tz.hpp>
 #include <hamon/chrono/detail/private_ctor_tag.hpp>
@@ -105,7 +89,5 @@ private:
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TZDB_LIST_HPP

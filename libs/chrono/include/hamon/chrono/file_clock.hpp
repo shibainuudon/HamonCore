@@ -10,23 +10,6 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/sys_time.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::file_clock;
-using std::chrono::file_time;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/windows.hpp>
 #include <hamon/chrono/detail/filetime_to_timespec.hpp>
 #include <hamon/memory/allocator.hpp>
@@ -116,7 +99,5 @@ from_stream(
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_FILE_CLOCK_HPP

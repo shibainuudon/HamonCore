@@ -46,9 +46,7 @@ GTEST_TEST(DurationTest, RoundTest)
 			decltype(round<ToDuration>(hamon::declval<Duration>())),
 			ToDuration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(round<ToDuration>(hamon::declval<Duration>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(round<ToDuration>(Duration{-3900}).count(), -4);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(round<ToDuration>(Duration{-3500}).count(), -4);

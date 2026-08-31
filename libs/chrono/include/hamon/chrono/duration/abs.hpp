@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_ABS_HPP
 #define HAMON_CHRONO_DURATION_ABS_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::abs;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration/duration.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
@@ -47,7 +31,5 @@ abs(duration<Rep, Period> d) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_DURATION_ABS_HPP

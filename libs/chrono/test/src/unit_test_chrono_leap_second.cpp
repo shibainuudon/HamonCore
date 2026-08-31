@@ -12,8 +12,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if !defined(HAMON_USE_STD_CHRONO)
-
 namespace hamon_chrono_test
 {
 
@@ -290,5 +288,3 @@ GTEST_TEST(ChronoTest, LeapSecondTest)
 }	// namespace leap_second_test
 
 }	// namespace hamon_chrono_test
-
-#endif

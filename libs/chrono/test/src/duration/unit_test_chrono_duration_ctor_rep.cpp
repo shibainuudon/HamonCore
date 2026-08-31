@@ -34,9 +34,7 @@ HAMON_CXX14_CONSTEXPR bool test_integer()
 	static_assert(!hamon::is_constructible<Duration, float>::value, "");
 	static_assert(!hamon::is_constructible<Duration, double>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<Duration, Rep>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<Duration, Rep>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Duration, Rep>::value, "");
 
@@ -66,9 +64,7 @@ HAMON_CXX14_CONSTEXPR bool test_float()
 	static_assert( hamon::is_constructible<Duration, float>::value, "");
 	static_assert( hamon::is_constructible<Duration, double>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<Duration, Rep>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<Duration, Rep>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Duration, Rep>::value, "");
 

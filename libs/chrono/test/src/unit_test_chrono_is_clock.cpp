@@ -111,9 +111,7 @@ struct Clock8
 };
 
 HAMON_IS_CLOCK_TEST(true,  Clock1);
-#if !defined(HAMON_USE_STD_CHRONO)
 HAMON_IS_CLOCK_TEST(true,  Clock2);
-#endif
 HAMON_IS_CLOCK_TEST(false, Clock3);
 HAMON_IS_CLOCK_TEST(false, Clock4);
 HAMON_IS_CLOCK_TEST(false, Clock5);

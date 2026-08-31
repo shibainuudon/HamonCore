@@ -8,22 +8,6 @@
 #define HAMON_CHRONO_HH_MM_SS_HPP
 
 #include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::hh_mm_ss;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstdint.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -152,7 +136,5 @@ operator<<(std::basic_ostream<charT, traits>& os, hh_mm_ss<Duration> const& hms)
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_HH_MM_SS_HPP

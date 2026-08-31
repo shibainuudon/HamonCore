@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_DURATION_VALUES_HPP
 #define HAMON_CHRONO_DURATION_DURATION_VALUES_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::duration_values;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
@@ -59,7 +43,5 @@ public:
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_DURATION_DURATION_VALUES_HPP

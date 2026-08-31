@@ -9,25 +9,6 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::system_clock;
-using std::chrono::sys_time;
-using std::chrono::sys_seconds;
-using std::chrono::sys_days;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/treat_as_floating_point.hpp>
 #include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
@@ -147,7 +128,5 @@ public:
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_SYSTEM_CLOCK_HPP

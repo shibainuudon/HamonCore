@@ -38,10 +38,8 @@ GTEST_TEST(DurationTest, DivTest)
 			decltype(hamon::declval<Duration>() / hamon::declval<float>()),
 			hamon::chrono::duration<float, hamon::ratio<1, 1000>>
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(hamon::declval<Duration>() / hamon::declval<int>()), "");
 		static_assert(noexcept(hamon::declval<Duration>() / hamon::declval<float>()), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR auto d = Duration{5} / 2;
@@ -60,9 +58,7 @@ GTEST_TEST(DurationTest, DivTest)
 			decltype(hamon::declval<Duration1>() / hamon::declval<Duration2>()),
 			float
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(hamon::declval<Duration1>() / hamon::declval<Duration2>()), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR auto d = Duration1{3} / Duration2{2};

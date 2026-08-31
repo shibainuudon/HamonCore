@@ -8,22 +8,6 @@
 #define HAMON_CHRONO_IS_PM_HPP
 
 #include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::is_pm;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -40,7 +24,5 @@ is_pm(hours const& h) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_IS_PM_HPP

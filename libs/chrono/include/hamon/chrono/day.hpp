@@ -8,22 +8,6 @@
 #define HAMON_CHRONO_DAY_HPP
 
 #include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::day;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
@@ -246,10 +230,6 @@ from_stream(
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
-
-#include <hamon/config.hpp>
 
 namespace hamon {
 

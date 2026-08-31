@@ -9,22 +9,6 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::sys_info;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/string.hpp>
 #include <ostream>	// basic_ostream
 
@@ -50,7 +34,5 @@ operator<<(std::basic_ostream<charT, traits>& os, sys_info const& si);
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_SYS_INFO_HPP

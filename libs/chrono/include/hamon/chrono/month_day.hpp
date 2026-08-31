@@ -10,23 +10,6 @@
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/last_spec.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::month_day;
-using std::chrono::month_day_last;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
@@ -355,7 +338,5 @@ operator/(last_spec, int m) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_MONTH_DAY_HPP

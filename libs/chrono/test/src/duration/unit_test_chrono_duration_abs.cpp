@@ -48,9 +48,7 @@ HAMON_CXX14_CONSTEXPR bool test1()
 			decltype(abs(hamon::declval<Duration>())),
 			Duration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(abs(hamon::declval<Duration>())), "");
-#endif
 
 		VERIFY(abs(Duration{-3}).count() == 3);
 		VERIFY(abs(Duration{-2}).count() == 2);
@@ -72,9 +70,7 @@ HAMON_CXX14_CONSTEXPR bool test2()
 			decltype(abs(hamon::declval<Duration>())),
 			Duration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(abs(hamon::declval<Duration>())), "");
-#endif
 
 		VERIFY(abs(Duration{-3.5}).count() == 3.5);
 		VERIFY(abs(Duration{-2.5}).count() == 2.5);

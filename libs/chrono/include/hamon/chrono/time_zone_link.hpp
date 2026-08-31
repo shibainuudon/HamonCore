@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_TIME_ZONE_LINK_HPP
 #define HAMON_CHRONO_TIME_ZONE_LINK_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::time_zone_link;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/private_ctor_tag.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/string.hpp>
@@ -120,7 +104,5 @@ operator>=(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TIME_ZONE_LINK_HPP

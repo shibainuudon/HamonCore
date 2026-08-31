@@ -10,7 +10,6 @@
 #include <hamon/chrono/choose.hpp>
 #include <hamon/chrono/clock_cast.hpp>
 #include <hamon/chrono/clock_time_conversion.hpp>
-#include <hamon/chrono/config.hpp>
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/file_clock.hpp>

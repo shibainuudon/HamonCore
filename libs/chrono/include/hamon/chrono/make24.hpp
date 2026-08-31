@@ -8,22 +8,6 @@
 #define HAMON_CHRONO_MAKE24_HPP
 
 #include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::make24;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -42,7 +26,5 @@ make24(hours const& h, bool is_pm) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_MAKE24_HPP

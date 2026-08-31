@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_ROUND_HPP
 #define HAMON_CHRONO_DURATION_ROUND_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::round;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration/duration.hpp>
 #include <hamon/chrono/duration/floor.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
@@ -78,7 +62,5 @@ round(duration<Rep, Period> const& d) HAMON_NOEXCEPT_IF(	// noexcept as an exten
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_DURATION_ROUND_HPP

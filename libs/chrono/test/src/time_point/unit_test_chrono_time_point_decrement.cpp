@@ -33,10 +33,8 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 	static_assert(hamon::is_same<decltype(--hamon::declval<TimePoint>()), TimePoint&>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<TimePoint>()--), TimePoint>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(--hamon::declval<TimePoint>()), "");
 	static_assert(noexcept(hamon::declval<TimePoint>()--), "");
-#endif
 
 	TimePoint tp{Duration{10}};
 	{

@@ -10,26 +10,6 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/system_clock.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::utc_clock;
-using std::chrono::utc_time;
-using std::chrono::utc_seconds;
-using std::chrono::leap_second_info;
-using std::chrono::get_leap_second_info;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/get_tzdb.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -172,7 +152,5 @@ get_leap_second_info(hamon::chrono::utc_time<Duration> const& ut)
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_UTC_CLOCK_HPP
