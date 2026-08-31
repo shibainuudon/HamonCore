@@ -7,21 +7,6 @@
 #ifndef HAMON_RATIO_RATIO_DIVIDE_HPP
 #define HAMON_RATIO_RATIO_DIVIDE_HPP
 
-#include <hamon/ratio/config.hpp>
-
-#if defined(HAMON_USE_STD_RATIO)
-
-#include <ratio>
-
-namespace hamon
-{
-
-using std::ratio_divide;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/ratio/ratio.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/numeric/gcd.hpp>
@@ -53,7 +38,5 @@ template <typename R1, typename R2>
 using ratio_divide = typename hamon::detail::ratio_divide_impl<R1, R2>::type;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RATIO_RATIO_DIVIDE_HPP
