@@ -24,6 +24,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstdint
 		detail
 		forward_list
+		istream
 		iterator
 		limits
 		memory

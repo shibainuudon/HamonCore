@@ -38,6 +38,7 @@
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/string.hpp>
@@ -47,7 +48,6 @@
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
-#include <istream>
 #include <ostream>
 
 namespace hamon
@@ -997,8 +997,8 @@ to_string(basic_bigint<V> const& value)
 }
 
 //template <typename CharT, typename Traits, typename V>
-//inline std::basic_istream<CharT, Traits>&
-//operator>>(std::basic_istream<CharT, Traits>& is, basic_bigint<V>& x);
+//inline hamon::basic_istream<CharT, Traits>&
+//operator>>(hamon::basic_istream<CharT, Traits>& is, basic_bigint<V>& x);
 
 template <typename CharT, typename Traits, typename V>
 inline std::basic_ostream<CharT, Traits>&

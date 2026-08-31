@@ -8,9 +8,9 @@
 #define HAMON_STRING_GETLINE_HPP
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// ios_base, streamsize
-#include <istream>	// basic_istream
 
 namespace hamon
 {
@@ -18,14 +18,14 @@ namespace hamon
 // 23.4.4.4 [string.io],Inserters and extractors
 
 template <typename CharT, typename Traits, typename Traits2, typename Allocator>
-std::basic_istream<CharT, Traits>&
+hamon::basic_istream<CharT, Traits>&
 getline(
-	std::basic_istream<CharT, Traits>& is,
+	hamon::basic_istream<CharT, Traits>& is,
 	basic_string<CharT, Traits2, Allocator>& str, CharT delim)
 {
 	// 31.7.5.4 [istream.unformatted], Unformatted input functions
 	std::ios_base::iostate state = std::ios_base::goodbit;
-	typename std::basic_istream<CharT, Traits>::sentry sen(is, true);
+	typename hamon::basic_istream<CharT, Traits>::sentry sen(is, true);
 	if (sen)
 	{
 #if !defined(HAMON_NO_EXCEPTIONS)
@@ -90,18 +90,18 @@ getline(
 }
 
 template <typename CharT, typename Traits, typename Traits2, typename Allocator>
-std::basic_istream<CharT, Traits>&
+hamon::basic_istream<CharT, Traits>&
 getline(
-	std::basic_istream<CharT, Traits>&& is,
+	hamon::basic_istream<CharT, Traits>&& is,
 	basic_string<CharT, Traits2, Allocator>& str, CharT delim)
 {
 	return hamon::getline(is, str, delim);
 }
 
 template <typename CharT, typename Traits, typename Traits2, typename Allocator>
-std::basic_istream<CharT, Traits>&
+hamon::basic_istream<CharT, Traits>&
 getline(
-	std::basic_istream<CharT, Traits>& is,
+	hamon::basic_istream<CharT, Traits>& is,
 	basic_string<CharT, Traits2, Allocator>& str)
 {
 	// [string.io]/10
@@ -109,9 +109,9 @@ getline(
 }
 
 template <typename CharT, typename Traits, typename Traits2, typename Allocator>
-std::basic_istream<CharT, Traits>&
+hamon::basic_istream<CharT, Traits>&
 getline(
-	std::basic_istream<CharT, Traits>&& is,
+	hamon::basic_istream<CharT, Traits>&& is,
 	basic_string<CharT, Traits2, Allocator>& str)
 {
 	// [string.io]/10

@@ -18,6 +18,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/initializer_list.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -52,7 +53,6 @@
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// ios_base, streamsize
-#include <istream>	// basic_istream
 #include <ostream>	// basic_ostream
 #include <locale>	// isspace
 
@@ -2584,14 +2584,14 @@ swap(
 
 // [string.io], inserters and extractors
 template <typename CharT, typename Traits, typename Traits2, typename Allocator>
-std::basic_istream<CharT, Traits>&
+hamon::basic_istream<CharT, Traits>&
 operator>>(
-	std::basic_istream<CharT, Traits>& is,
+	hamon::basic_istream<CharT, Traits>& is,
 	basic_string<CharT, Traits2, Allocator>& str)
 {
 	// 31.7.5.4 [istream.unformatted], Unformatted input functions
 	std::ios_base::iostate state = std::ios_base::goodbit;
-	typename std::basic_istream<CharT, Traits>::sentry sen(is);
+	typename hamon::basic_istream<CharT, Traits>::sentry sen(is);
 	if (sen)
 	{
 #if !defined(HAMON_NO_EXCEPTIONS)

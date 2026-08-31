@@ -12,13 +12,13 @@
 #include <hamon/chrono/sys_time.hpp>
 #include <hamon/chrono/detail/windows.hpp>
 #include <hamon/chrono/detail/filetime_to_timespec.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/system_error/generic_category.hpp>
 #include <hamon/system_error/system_error.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <ostream>	// basic_ostream
-#include <istream>	// basic_istream
 
 namespace hamon {
 namespace chrono {
@@ -89,9 +89,9 @@ operator<<(std::basic_ostream<charT, traits>& os, hamon::chrono::file_time<Durat
 #endif
 
 template <typename charT, typename traits, typename Duration, typename Alloc = hamon::allocator<charT>>
-std::basic_istream<charT, traits>&
+hamon::basic_istream<charT, traits>&
 from_stream(
-	std::basic_istream<charT, traits>& is,
+	hamon::basic_istream<charT, traits>& is,
 	const charT* fmt,
 	hamon::chrono::file_time<Duration>& tp,
 	hamon::basic_string<charT, traits, Alloc>* abbrev = nullptr,

@@ -15,14 +15,14 @@
 #include <hamon/chrono/detail/parse_version.hpp>
 #include <hamon/chrono/detail/parse_zone.hpp>
 #include <hamon/cctype/tolower.hpp>
+#include <hamon/istream/istream.hpp>
 #include <hamon/stdexcept/runtime_error.hpp>
-#include <istream>
 
 namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline void parse_tzdata(chrono::tzdb& db, tz::rules_storage_type& rules, std::istream& input)
+inline void parse_tzdata(chrono::tzdb& db, tz::rules_storage_type& rules, hamon::istream& input)
 {
 	db.version = detail::parse_version(input);
 
@@ -32,7 +32,7 @@ inline void parse_tzdata(chrono::tzdb& db, tz::rules_storage_type& rules, std::i
 
 		switch (c)
 		{
-		case std::istream::traits_type::eof():
+		case hamon::istream::traits_type::eof():
 			return;
 
 		case ' ':

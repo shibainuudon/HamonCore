@@ -22,6 +22,7 @@
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/cstring/strlen.hpp>
 #include <hamon/functional/ranges/hash.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/rbegin.hpp>
@@ -40,7 +41,6 @@
 #include <hamon/string_view.hpp>
 #include <hamon/config.hpp>
 #include <ios>				// std::ios_base
-#include <istream>			// std::basic_istream
 #include <locale>			// std::use_facet, std::ctype
 #include <ostream>			// std::basic_ostream
 
@@ -1118,11 +1118,11 @@ HAMON_WARNING_DISABLE_GCC("-Wdangling-reference")
 #endif
 
 template <typename CharT, typename Traits, hamon::size_t N>
-std::basic_istream<CharT, Traits>&
-operator>>(std::basic_istream<CharT, Traits>& is, bitset<N>& x)
+hamon::basic_istream<CharT, Traits>&
+operator>>(hamon::basic_istream<CharT, Traits>& is, bitset<N>& x)
 {
 	std::ios_base::iostate state = std::ios_base::goodbit;
-	typename std::basic_istream<CharT, Traits>::sentry sen(is);
+	typename hamon::basic_istream<CharT, Traits>::sentry sen(is);
 	if (sen)
 	{
 #if !defined(HAMON_NO_EXCEPTIONS)

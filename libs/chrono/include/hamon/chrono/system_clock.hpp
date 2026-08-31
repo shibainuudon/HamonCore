@@ -13,13 +13,13 @@
 #include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/system_error/generic_category.hpp>
 #include <hamon/system_error/system_error.hpp>
 #include <hamon/config.hpp>
 #include <ctime>
 #include <ostream>	// basic_ostream
-#include <istream>	// basic_istream
 
 namespace hamon {
 namespace chrono {
@@ -119,9 +119,9 @@ public:
 
 // TODO
 //template <typename charT, typename traits, typename Duration, typename Alloc = allocator<charT>>
-//std::basic_istream<charT, traits>&
+//hamon::basic_istream<charT, traits>&
 //from_stream(
-//	std::basic_istream<charT, traits>& is, charT const* fmt,
+//	hamon::basic_istream<charT, traits>& is, charT const* fmt,
 //	sys_time<Duration>& tp,
 //	basic_string<charT, traits, Alloc>* abbrev = nullptr,
 //	minutes* offset = nullptr);

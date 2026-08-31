@@ -50,6 +50,7 @@ set(SUBDIRECTORIES
 	inplace_vector
 	iomanip
 	ios
+	istream
 	iterator
 	limits
 	list

@@ -9,8 +9,8 @@
 
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memcpy.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/vector.hpp>
-#include <istream>	// basic_istream
 
 namespace hamon
 {
@@ -22,7 +22,7 @@ namespace detail
 {
 
 template <typename CharT, typename Traits>
-void load_binary(std::basic_istream<CharT, Traits>& is, void* p, hamon::size_t size)
+void load_binary(hamon::basic_istream<CharT, Traits>& is, void* p, hamon::size_t size)
 {
 	auto pbuf = is.rdbuf();
 

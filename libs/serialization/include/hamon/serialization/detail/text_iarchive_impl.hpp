@@ -11,11 +11,11 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <cstdlib>	// strtold
-#include <istream>	// basic_istream
 #include <iomanip>
 #include <ios>		// ios_base
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
@@ -148,7 +148,7 @@ private:
 		typename CharT2, typename Traits2
 	>
 	static void load_string_impl_2(
-		std::basic_istream<CharT1, Traits1>& is,
+		hamon::basic_istream<CharT1, Traits1>& is,
 		hamon::basic_string<CharT2, Traits2>& s,
 		hamon::size_t length,
 		hamon::true_type)
@@ -166,7 +166,7 @@ private:
 		typename CharT2, typename Traits2
 	>
 	static void load_string_impl_2(
-		std::basic_istream<CharT1, Traits1>& is,
+		hamon::basic_istream<CharT1, Traits1>& is,
 		hamon::basic_string<CharT2, Traits2>& s,
 		hamon::size_t length,
 		hamon::false_type)
@@ -181,12 +181,12 @@ private:
 		typename CharT2, typename Traits2
 	>
 	static void load_string_impl(
-		std::basic_istream<CharT1, Traits1>& is,
+		hamon::basic_istream<CharT1, Traits1>& is,
 		hamon::basic_string<CharT2, Traits2>& s,
 		hamon::size_t length,
 		bool skip_whitespace)
 	{
-		using istream_type = std::basic_istream<CharT1, Traits1>;
+		using istream_type = hamon::basic_istream<CharT1, Traits1>;
 		const typename istream_type::sentry ok(is, !skip_whitespace);
 
 		if (ok)
@@ -202,7 +202,7 @@ private:
 		typename CharT2, typename Traits2
 	>
 	static void load_quoted_string_impl(
-		std::basic_istream<CharT1, Traits1>& is,
+		hamon::basic_istream<CharT1, Traits1>& is,
 		hamon::basic_string<CharT2, Traits2>& s,
 		CharT2 leading_delim,
 		CharT2 trailing_delim)
@@ -328,7 +328,7 @@ public:
 private:
 	template <typename CharT1, typename Traits1>
 	static void unget_one_char_impl(
-		std::basic_istream<CharT1, Traits1>& is)
+		hamon::basic_istream<CharT1, Traits1>& is)
 	{
 		is.rdbuf()->sungetc();
 	}
@@ -369,9 +369,9 @@ private:
 
 	template <typename CharT, typename Traits>
 	static CharT get_one_char_impl(
-		std::basic_istream<CharT, Traits>& is)
+		hamon::basic_istream<CharT, Traits>& is)
 	{
-		const typename std::basic_istream<CharT, Traits>::sentry ok(is);
+		const typename hamon::basic_istream<CharT, Traits>::sentry ok(is);
 		if (ok)
 		{
 			auto const rdbuf = is.rdbuf();
