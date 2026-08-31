@@ -8,8 +8,8 @@
 #define HAMON_CHRONO_LOCAL_TIME_HPP
 
 #include <hamon/chrono/time_point.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <ostream>	// basic_ostream
-#include <istream>	// basic_istream
 
 namespace hamon {
 namespace chrono {
@@ -29,9 +29,9 @@ operator<<(
 	const local_time<Duration>& tp);
 
 template <typename charT, typename traits, typename Duration, typename Alloc = allocator<charT>>
-basic_istream<charT, traits>&
+hamon::basic_istream<charT, traits>&
 from_stream(
-	basic_istream<charT, traits>& is,
+	hamon::basic_istream<charT, traits>& is,
 	const charT* fmt,
 	local_time<Duration>& tp,
 	basic_string<charT, traits, Alloc>* abbrev = nullptr,

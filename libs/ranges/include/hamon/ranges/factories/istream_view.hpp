@@ -14,6 +14,7 @@
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -22,7 +23,6 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <istream>
 #include <string>
 
 namespace hamon {
@@ -34,7 +34,7 @@ namespace detail {
 
 template <typename Val, typename CharT, typename Traits>
 HAMON_CONCEPT_OR_BOOL stream_extractable =
-	requires(std::basic_istream<CharT, Traits>& is, Val& t)
+	requires(hamon::basic_istream<CharT, Traits>& is, Val& t)
 	{
 		is >> t;
 	};
@@ -46,7 +46,7 @@ struct stream_extractable_impl
 {
 private:
 	template <typename V, typename C, typename T,
-		typename Stream = std::basic_istream<C, T>,
+		typename Stream = hamon::basic_istream<C, T>,
 		typename = decltype(hamon::declval<Stream&>() >> hamon::declval<V&>())
 	>
 	static auto test(int) -> hamon::true_type;
@@ -169,12 +169,12 @@ private:
 private:
 	friend iterator;
 
-	std::basic_istream<CharT, Traits>* m_stream;
+	hamon::basic_istream<CharT, Traits>* m_stream;
 	Val m_value = Val();
 
 public:
 	HAMON_CXX11_CONSTEXPR explicit
-	basic_istream_view(std::basic_istream<CharT, Traits>& stream)
+	basic_istream_view(hamon::basic_istream<CharT, Traits>& stream)
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<Val>::value)
 		// [range.istream.view]/1
 		: m_stream(hamon::addressof(stream))
@@ -219,7 +219,7 @@ public:
 		typename Traits = typename U::traits_type,
 		typename IStreamView = hamon::ranges::basic_istream_view<T, CharT, Traits>,
 		typename = hamon::enable_if_t<
-			hamon::derived_from<U, std::basic_istream<CharT, Traits>> &&
+			hamon::derived_from<U, hamon::basic_istream<CharT, Traits>> &&
 			hamon::constructible_from<IStreamView, U&>
 		>
 	>

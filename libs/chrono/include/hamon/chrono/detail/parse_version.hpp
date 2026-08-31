@@ -8,14 +8,14 @@
 #define HAMON_CHRONO_DETAIL_PARSE_VERSION_HPP
 
 #include <hamon/chrono/detail/parse.hpp>
+#include <hamon/istream/istream.hpp>
 #include <hamon/string.hpp>
-#include <istream>
 
 namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline hamon::string parse_version(std::istream& input)
+inline hamon::string parse_version(hamon::istream& input)
 {
 	// The first line in tzdata.zi contains
 	//    # version YYYYw

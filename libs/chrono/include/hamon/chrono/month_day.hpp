@@ -149,9 +149,9 @@ operator<<(std::basic_ostream<charT, traits>& os, month_day const& md)
 }
 
 template <typename charT, typename traits, typename Alloc = hamon::allocator<charT>>
-std::basic_istream<charT, traits>&
+hamon::basic_istream<charT, traits>&
 from_stream(
-	std::basic_istream<charT, traits>& is,
+	hamon::basic_istream<charT, traits>& is,
 	charT const* fmt,
 	month_day& md,
 	hamon::basic_string<charT, traits, Alloc>* abbrev = nullptr,

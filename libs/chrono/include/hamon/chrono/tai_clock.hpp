@@ -10,11 +10,11 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/utc_clock.hpp>
-#include <hamon/type_traits/common_type.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/string.hpp>
+#include <hamon/type_traits/common_type.hpp>
 #include <ostream>	// basic_ostream
-#include <istream>	// basic_istream
 
 namespace hamon {
 namespace chrono {
@@ -75,9 +75,9 @@ operator<<(std::basic_ostream<charT, traits>& os, hamon::chrono::tai_time<Durati
 #endif
 
 template <typename charT, typename traits, typename Duration, typename Alloc = hamon::allocator<charT>>
-std::basic_istream<charT, traits>&
+hamon::basic_istream<charT, traits>&
 from_stream(
-	std::basic_istream<charT, traits>& is,
+	hamon::basic_istream<charT, traits>& is,
 	const charT* fmt,
 	hamon::chrono::tai_time<Duration>& tp,
 	hamon::basic_string<charT, traits, Alloc>* abbrev = nullptr,

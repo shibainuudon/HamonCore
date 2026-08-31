@@ -12,15 +12,15 @@
 #include <hamon/chrono/detail/parse.hpp>
 #include <hamon/algorithm/ranges/find.hpp>
 #include <hamon/cctype/tolower.hpp>
+#include <hamon/istream/istream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
-#include <istream>
 
 namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline chrono::year parse_to(std::istream& input, chrono::year only)
+inline chrono::year parse_to(hamon::istream& input, chrono::year only)
 {
 	if (hamon::tolower(input.peek()) != 'o')
 	{
@@ -32,7 +32,7 @@ inline chrono::year parse_to(std::istream& input, chrono::year only)
 	return only;
 }
 
-inline hamon::string parse_letters(std::istream& input)
+inline hamon::string parse_letters(hamon::istream& input)
 {
 	hamon::string result = detail::parse_string(input);
 	// Canonicalize "-" to "" since they are equivalent in the specification.
@@ -68,7 +68,7 @@ inline tz::rule_t& create_rule_entry(tz::rules_storage_type& rules, hamon::strin
 	return result();
 }
 
-inline void parse_rule(tz::rules_storage_type& rules, std::istream& input)
+inline void parse_rule(tz::rules_storage_type& rules, hamon::istream& input)
 {
 	detail::skip_mandatory_whitespace(input);
 	hamon::string name = detail::parse_string(input);

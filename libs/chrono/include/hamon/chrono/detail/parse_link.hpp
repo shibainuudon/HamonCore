@@ -9,15 +9,15 @@
 
 #include <hamon/chrono/tzdb.hpp>
 #include <hamon/chrono/detail/parse.hpp>
+#include <hamon/istream/istream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/utility/move.hpp>
-#include <istream>
 
 namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline void parse_link(chrono::tzdb& db, std::istream& input)
+inline void parse_link(chrono::tzdb& db, hamon::istream& input)
 {
 	detail::skip_mandatory_whitespace(input);
 	hamon::string target = detail::parse_string(input);

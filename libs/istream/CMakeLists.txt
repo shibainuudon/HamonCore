@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(TARGET_NAME_BASE serialization)
+set(TARGET_NAME_BASE istream)
 
 set(TARGET_NAME hamon_${TARGET_NAME_BASE})
 set(TARGET_ALIAS_NAME Hamon::${TARGET_NAME_BASE})
@@ -19,24 +19,7 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
-		algorithm
-		array
-		base64
-		concepts
-		config
-		cstddef
-		cstdint
-		cstring
-		detail
-		istream
-		limits
-		map
-		memory
-		preprocessor
-		string
-		type_traits
-		utility
-		vector)
+		config)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
 option(HAMON_COVERAGE "Coverage" OFF)

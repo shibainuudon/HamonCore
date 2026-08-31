@@ -397,7 +397,8 @@ operator!=(T const& lhs, complex<T> const& rhs) HAMON_NOEXCEPT	// noexcept as an
 
 }	// namespace hamon
 
-#include <istream>
+#include <hamon/istream/basic_istream.hpp>
+#include <hamon/istream/ws.hpp>
 #include <ostream>
 #include <sstream>
 
@@ -405,14 +406,14 @@ namespace hamon
 {
 
 template <typename T, typename CharT, typename traits>
-std::basic_istream<CharT, traits>&
-operator>>(std::basic_istream<CharT, traits>& is, complex<T>& x)
+hamon::basic_istream<CharT, traits>&
+operator>>(hamon::basic_istream<CharT, traits>& is, complex<T>& x)
 {
 	// [complex.ops]/10
 
 	if (is.good())
 	{
-		std::ws(is);
+		hamon::ws(is);
 		if (is.peek() == CharT('('))
 		{
 			is.get();
@@ -420,7 +421,7 @@ operator>>(std::basic_istream<CharT, traits>& is, complex<T>& x)
 			is >> r;
 			if (!is.fail())
 			{
-				std::ws(is);
+				hamon::ws(is);
 				CharT c = static_cast<CharT>(is.peek());
 				if (c == CharT(','))
 				{
@@ -429,7 +430,7 @@ operator>>(std::basic_istream<CharT, traits>& is, complex<T>& x)
 					is >> i;
 					if (!is.fail())
 					{
-						std::ws(is);
+						hamon::ws(is);
 						c = static_cast<CharT>(is.peek());
 						if (c == CharT(')'))
 						{

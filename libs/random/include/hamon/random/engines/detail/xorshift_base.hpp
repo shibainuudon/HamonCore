@@ -10,9 +10,9 @@
 #include <hamon/random/engines/detail/split_mix64.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/ios/flags_saver.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <istream>
 #include <ostream>
 
 namespace hamon
@@ -104,9 +104,9 @@ private:
 		typename CharT, typename Traits,
 		typename U, hamon::size_t M, typename D
 	>
-	friend std::basic_istream<CharT, Traits>&
+	friend hamon::basic_istream<CharT, Traits>&
 	operator>>(
-		std::basic_istream<CharT, Traits>& is,
+		hamon::basic_istream<CharT, Traits>& is,
 		xorshift_base<U, M, D>& e);
 };
 
@@ -139,9 +139,9 @@ template <
 	typename CharT, typename Traits,
 	typename UIntType, hamon::size_t N, typename Derived
 >
-inline std::basic_istream<CharT, Traits>&
+inline hamon::basic_istream<CharT, Traits>&
 operator>>(
-	std::basic_istream<CharT, Traits>& is,
+	hamon::basic_istream<CharT, Traits>& is,
 	xorshift_base<UIntType, N, Derived>& e)
 {
 	hamon::ios::flags_saver lx(is);

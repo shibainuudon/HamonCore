@@ -9,12 +9,12 @@
 #include <hamon/algorithm.hpp>
 #include <hamon/concepts.hpp>
 #include <hamon/cstddef.hpp>
+#include <hamon/istream/istream.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <istream>
 #include <sstream>
 #include <fstream>
 #include <iterator>
@@ -39,8 +39,8 @@ operator>>(std::basic_istream<CharT, Traits>& is, StreamExtratable&)
 
 struct CharStreamExtratable {};
 
-std::istream&
-operator>>(std::istream& is, CharStreamExtratable&)
+hamon::istream&
+operator>>(hamon::istream& is, CharStreamExtratable&)
 {
 	return is;
 }
@@ -115,7 +115,7 @@ static_assert( CanInstantiateIstreamView<WCharStreamExtratable, wchar_t>::value,
 static_assert(!CanInstantiateIstreamView<NonMovable, wchar_t>::value, "");
 static_assert(!CanInstantiateIstreamView<NoDefaultCtor, wchar_t>::value, "");
 
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::istream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::iostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istringstream&>, "");

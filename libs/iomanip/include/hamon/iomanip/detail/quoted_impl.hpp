@@ -11,9 +11,9 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/ios/flags_saver.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/string.hpp>
 #include <ostream>	// basic_ostream
-#include <istream>	// basic_istream
 #include <ios>		// noskipws
 
 namespace hamon
@@ -120,8 +120,8 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::is_compatible_char_traits<Traits, Traits2>::value
 		>>
-	friend std::basic_istream<CharT, Traits2>&
-	operator>>(std::basic_istream<CharT, Traits2>& is, quoted_input const& q)
+	friend hamon::basic_istream<CharT, Traits2>&
+	operator>>(hamon::basic_istream<CharT, Traits2>& is, quoted_input const& q)
 	{
 		auto& s = q.m_str;
 		auto const delim = q.m_delim;
