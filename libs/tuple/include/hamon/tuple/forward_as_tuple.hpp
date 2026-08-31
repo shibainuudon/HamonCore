@@ -7,20 +7,7 @@
 #ifndef HAMON_TUPLE_FORWARD_AS_TUPLE_HPP
 #define HAMON_TUPLE_FORWARD_AS_TUPLE_HPP
 
-#include <hamon/tuple/config.hpp>
 #include <hamon/tuple/tuple.hpp>
-
-#if defined(HAMON_USE_STD_TUPLE)
-
-namespace hamon
-{
-
-using std::forward_as_tuple;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -39,7 +26,5 @@ forward_as_tuple(TTypes&&... t) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TUPLE_FORWARD_AS_TUPLE_HPP

@@ -7,20 +7,7 @@
 #ifndef HAMON_TUPLE_TUPLE_CAT_HPP
 #define HAMON_TUPLE_TUPLE_CAT_HPP
 
-#include <hamon/tuple/config.hpp>
 #include <hamon/tuple/tuple.hpp>
-
-#if defined(HAMON_USE_STD_TUPLE)
-
-namespace hamon
-{
-
-using std::tuple_cat;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
@@ -147,7 +134,5 @@ tuple_cat(Tuples&&... tpls)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TUPLE_TUPLE_CAT_HPP

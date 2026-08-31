@@ -7,19 +7,6 @@
 #ifndef HAMON_TUPLE_TUPLE_HPP
 #define HAMON_TUPLE_TUPLE_HPP
 
-#include <hamon/tuple/config.hpp>
-
-#if defined(HAMON_USE_STD_TUPLE)
-
-namespace hamon
-{
-
-using std::tuple;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/detail/tuple_impl.hpp>
@@ -1593,7 +1580,5 @@ template <typename... Types, typename Alloc>
 struct uses_allocator<hamon::tuple<Types...>, Alloc> : std::true_type {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_TUPLE_TUPLE_HPP
