@@ -7,24 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_RANGES_GREATER_HPP
 #define HAMON_FUNCTIONAL_RANGES_GREATER_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_FUNCTIONAL)
-
-#include <functional>
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::greater;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/detail/less_builtin_ptr_cmp.hpp>
 #include <hamon/concepts/totally_ordered_with.hpp>
@@ -69,7 +51,5 @@ struct greater
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_RANGES_GREATER_HPP

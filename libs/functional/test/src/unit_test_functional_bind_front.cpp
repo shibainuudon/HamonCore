@@ -297,7 +297,6 @@ struct ThrowOnMove
 	void operator()(Args...) {}
 };
 
-#if !defined(HAMON_USE_STD_BIND_FRONT)
 static_assert( noexcept(hamon::bind_front(NoThrow{})), "");
 static_assert( noexcept(hamon::bind_front(ThrowOnCopy{})), "");
 static_assert(!noexcept(hamon::bind_front(ThrowOnMove{})), "");
@@ -330,7 +329,6 @@ static_assert(!noexcept(hamon::bind_front<ThrowOnCopy{}>(ThrowOnMove{})), "");
 static_assert( noexcept(hamon::bind_front<ThrowOnMove{}>(NoThrow{})), "");
 static_assert( noexcept(hamon::bind_front<ThrowOnMove{}>(ThrowOnCopy{})), "");
 static_assert(!noexcept(hamon::bind_front<ThrowOnMove{}>(ThrowOnMove{})), "");
-#endif
 #endif
 
 #undef VERIFY

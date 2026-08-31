@@ -8,19 +8,6 @@
 #define HAMON_FUNCTIONAL_REFERENCE_WRAPPER_HPP
 
 #include <hamon/functional/fwd/reference_wrapper_fwd.hpp>
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_REFERENCE_WRAPPER)
-
-namespace hamon
-{
-
-using std::reference_wrapper;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/invoke.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -101,8 +88,6 @@ reference_wrapper(T&) -> reference_wrapper<T>;
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>

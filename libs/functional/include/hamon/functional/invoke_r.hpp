@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_INVOKE_R_HPP
 #define HAMON_FUNCTIONAL_INVOKE_R_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_INVOKE_R)
-
-namespace hamon
-{
-
-using std::invoke_r;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_void.hpp>
@@ -75,7 +62,5 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(hamon::forward<F>(f), hamon::forward<Args>(
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_INVOKE_R_HPP

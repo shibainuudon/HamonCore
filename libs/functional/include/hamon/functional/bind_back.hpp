@@ -7,21 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_BIND_BACK_HPP
 #define HAMON_FUNCTIONAL_BIND_BACK_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(__cpp_lib_bind_back) && (__cpp_lib_bind_back >= 202306L)	// P2714R1
-
-#define HAMON_USE_STD_BIND_BACK
-
-namespace hamon
-{
-
-using std::bind_back;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/invoke.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits/decay.hpp>
@@ -175,7 +160,5 @@ bind_back(Args&&... args)
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_BIND_BACK_HPP

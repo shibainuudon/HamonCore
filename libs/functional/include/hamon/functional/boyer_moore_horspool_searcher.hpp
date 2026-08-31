@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_BOYER_MOORE_HORSPOOL_SEARCHER_HPP
 #define HAMON_FUNCTIONAL_BOYER_MOORE_HORSPOOL_SEARCHER_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if 0//defined(__cpp_lib_boyer_moore_searcher) && (__cpp_lib_boyer_moore_searcher >= 201603L)
-
-namespace hamon
-{
-
-using std::boyer_moore_horspool_searcher;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/detail/boyer_moore_searcher_skip_table.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/hash.hpp>
@@ -142,7 +129,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_BOYER_MOORE_HORSPOOL_SEARCHER_HPP
