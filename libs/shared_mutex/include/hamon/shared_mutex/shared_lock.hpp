@@ -7,21 +7,6 @@
 #ifndef HAMON_SHARED_MUTEX_SHARED_LOCK_HPP
 #define HAMON_SHARED_MUTEX_SHARED_LOCK_HPP
 
-#include <hamon/shared_mutex/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_MUTEX)
-
-#include <shared_mutex>
-
-namespace hamon
-{
-
-using std::shared_lock;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -275,7 +260,5 @@ void swap(shared_lock<Mutex>& x, shared_lock<Mutex>& y) noexcept
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_SHARED_MUTEX_SHARED_LOCK_HPP

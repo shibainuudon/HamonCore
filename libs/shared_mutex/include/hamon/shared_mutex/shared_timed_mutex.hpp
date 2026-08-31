@@ -7,21 +7,6 @@
 #ifndef HAMON_SHARED_MUTEX_SHARED_TIMED_MUTEX_HPP
 #define HAMON_SHARED_MUTEX_SHARED_TIMED_MUTEX_HPP
 
-#include <hamon/shared_mutex/config.hpp>
-
-#if defined(HAMON_USE_STD_SHARED_MUTEX)
-
-#include <shared_mutex>
-
-namespace hamon
-{
-
-using std::shared_timed_mutex;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/system_clock.hpp>
@@ -101,7 +86,5 @@ public:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_SHARED_MUTEX_SHARED_TIMED_MUTEX_HPP
