@@ -218,7 +218,6 @@ static_assert( hamon::is_constructible<
 	ThrowIterator<false>, ThrowSentinel<false>, hamon::size_t
 >::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 // イテレータとセンチネルが例外を投げずにコンストラクト可能なときは例外を投げない
 static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
@@ -239,7 +238,6 @@ static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<false>, ThrowSentinel<false>, hamon::size_t
 >::value, "");
-#endif
 
 template <bool NoExcept> 
 struct ThrowSizedSentinel
@@ -265,7 +263,6 @@ static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<false>, ThrowIterator
 static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<true>,  ThrowIterator<false>>, "");
 static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<false>, ThrowIterator<false>>, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSizedSentinel<true>>,
 	ThrowIterator<true>, ThrowSizedSentinel<true>, hamon::size_t
@@ -285,7 +282,6 @@ static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSizedSentinel<false>>,
 	ThrowIterator<false>, ThrowSizedSentinel<false>, hamon::size_t
 >::value, "");
-#endif
 
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {

@@ -7,22 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_COUNTED_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_COUNTED_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-namespace views {
-
-using std::ranges::views::counted;
-
-}	// namespace views
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -152,9 +137,8 @@ detail::counted_fn counted{};
 }	// inline namespace cpo
 
 }	// namespace views
+
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_COUNTED_VIEW_HPP

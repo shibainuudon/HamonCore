@@ -7,32 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_ADJACENT_TRANSFORM_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_ADJACENT_TRANSFORM_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_zip) && (__cpp_lib_ranges_zip >= 202110L)
-
-#define HAMON_USE_STD_RANGES_ADJACENT_TRANSFORM_VIEW
-
-#include <hamon/cstddef/size_t.hpp>
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::adjacent_transform_view;
-
-namespace views {
-
-using std::ranges::views::adjacent_transform;
-using std::ranges::views::pairwise_transform;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/adjacent_view.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
@@ -705,7 +680,5 @@ auto pairwise_transform = adjacent_transform<2>;
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
 #undef HAMON_NOEXCEPT_RETURN
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_ADJACENT_TRANSFORM_VIEW_HPP

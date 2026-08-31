@@ -32,7 +32,8 @@ struct B {};
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
@@ -42,7 +43,8 @@ template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool disable_sized_range<test_bidirectional_sized_range<hamon_ranges_test::sized_range_test::B>> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 HAMON_RANGES_SIZED_RANGE_TEST(true,  int      [2]);
 HAMON_RANGES_SIZED_RANGE_TEST(true,  int const[2]);

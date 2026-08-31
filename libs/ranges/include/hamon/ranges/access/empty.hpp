@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_EMPTY_HPP
 #define HAMON_RANGES_ACCESS_EMPTY_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::empty;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/detail/has_member_empty.hpp>
 #include <hamon/ranges/detail/size0_empty.hpp>
 #include <hamon/ranges/detail/eq_iter_empty.hpp>
@@ -101,7 +87,5 @@ detail::empty_fn empty{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_EMPTY_HPP

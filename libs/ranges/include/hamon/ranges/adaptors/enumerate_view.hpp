@@ -7,27 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_ENUMERATE_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_ENUMERATE_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_enumerate) && (__cpp_lib_ranges_enumerate >= 202302L)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::enumerate_view;
-
-namespace views {
-
-using std::ranges::views::enumerate;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -735,7 +715,5 @@ detail::enumerate_fn enumerate {};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_ENUMERATE_VIEW_HPP

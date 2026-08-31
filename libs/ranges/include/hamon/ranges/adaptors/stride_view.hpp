@@ -7,27 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_STRIDE_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_STRIDE_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_stride) && (__cpp_lib_ranges_stride >= 202207L)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::stride_view;
-
-namespace views {
-
-using std::ranges::views::stride;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/adaptors/detail/div_ceil.hpp>
@@ -697,6 +677,9 @@ struct stride_fn
 				hamon::bind_back(*this, hamon::forward<T>(stride))))
 };
 
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+#undef HAMON_NOEXCEPT_RETURN
+
 } // namespace detail
 
 inline namespace cpo
@@ -711,10 +694,5 @@ detail::stride_fn stride{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-#undef HAMON_NOEXCEPT_RETURN
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_STRIDE_VIEW_HPP

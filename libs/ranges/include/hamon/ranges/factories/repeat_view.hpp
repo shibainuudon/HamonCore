@@ -7,29 +7,7 @@
 #ifndef HAMON_RANGES_FACTORIES_REPEAT_VIEW_HPP
 #define HAMON_RANGES_FACTORIES_REPEAT_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_repeat) && (__cpp_lib_ranges_repeat >= 202207L)
-
-#define HAMON_USE_STD_RANGES_REPEAT_VIEW
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::repeat_view;
-
-namespace views {
-
-using std::ranges::views::repeat;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/detail/movable_box.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
@@ -462,7 +440,5 @@ struct is_specialization_of_repeat_view<hamon::ranges::repeat_view<T, Bound>>
 
 }	// namespace detail
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_FACTORIES_REPEAT_VIEW_HPP

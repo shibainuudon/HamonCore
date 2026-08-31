@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_UTILITY_VIEW_INTERFACE_FWD_HPP
 #define HAMON_RANGES_UTILITY_VIEW_INTERFACE_FWD_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::view_interface;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_class.hpp>
@@ -46,7 +32,5 @@ class view_interface;
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_UTILITY_VIEW_INTERFACE_FWD_HPP

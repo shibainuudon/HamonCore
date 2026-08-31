@@ -7,29 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_AS_RVALUE_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_AS_RVALUE_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	(defined(__cpp_lib_ranges_as_rvalue) && (__cpp_lib_ranges_as_rvalue >= 202207L))	// P2446R2
-
-#define HAMON_USE_STD_RANGES_AS_RVALUE_VIEW
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::as_rvalue_view;
-
-namespace views {
-
-using std::ranges::views::as_rvalue;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/concepts/view.hpp>
@@ -285,7 +263,5 @@ detail::as_rvalue_fn as_rvalue{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_AS_RVALUE_VIEW_HPP

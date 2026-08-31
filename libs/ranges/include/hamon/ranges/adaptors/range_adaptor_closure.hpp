@@ -7,21 +7,6 @@
 #ifndef HAMON_RANGES_ADAPTORS_RANGE_ADAPTOR_CLOSURE_HPP
 #define HAMON_RANGES_ADAPTORS_RANGE_ADAPTOR_CLOSURE_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if 0 && defined(HAMON_USE_STD_RANGES) && \
-	(defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202202L))	// P2387R3
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::range_adaptor_closure;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/constructible_from.hpp>
@@ -152,7 +137,5 @@ class range_adaptor_closure
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_RANGE_ADAPTOR_CLOSURE_HPP

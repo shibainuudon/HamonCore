@@ -7,15 +7,11 @@
 #ifndef HAMON_RANGES_CONCEPTS_RANGE_HPP
 #define HAMON_RANGES_CONCEPTS_RANGE_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -24,11 +20,7 @@ namespace ranges
 
 // [range.range]/1
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::range;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL range =

@@ -7,20 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_CONCAT_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_CONCAT_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using hamon::ranges::concat_view;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/all_bidirectional.hpp>
 #include <hamon/ranges/adaptors/detail/all_forward.hpp>
@@ -1214,7 +1201,5 @@ detail::concat_fn concat{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_CONCAT_VIEW_HPP

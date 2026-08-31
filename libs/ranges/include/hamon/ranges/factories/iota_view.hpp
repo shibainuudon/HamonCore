@@ -7,26 +7,7 @@
 #ifndef HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP
 #define HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::iota_view;
-
-namespace views {
-
-using std::ranges::views::iota;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/detail/iota_diff_t.hpp>
@@ -981,7 +962,5 @@ struct is_specialization_of_iota_view<hamon::ranges::iota_view<W, Bound>>
 
 }	// namespace detail
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP

@@ -7,28 +7,7 @@
 #ifndef HAMON_RANGES_FACTORIES_ISTREAM_VIEW_HPP
 #define HAMON_RANGES_FACTORIES_ISTREAM_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::basic_istream_view;
-using std::ranges::istream_view;
-using std::ranges::wistream_view;
-
-namespace views {
-
-using std::ranges::views::istream;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/default_initializable.hpp>
@@ -268,7 +247,5 @@ detail::istream_fn<T> istream{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_FACTORIES_ISTREAM_VIEW_HPP

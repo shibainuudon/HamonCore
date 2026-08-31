@@ -7,26 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_DROP_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_DROP_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::drop_view;
-
-namespace views {
-
-using std::ranges::views::drop;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/cached_value.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
@@ -427,6 +408,8 @@ public:
 			hamon::bind_back(*this, hamon::forward<T>(n))))
 };
 
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+
 } // namespace detail
 
 inline namespace cpo
@@ -439,11 +422,7 @@ detail::drop_fn drop{};
 
 }	// namespace views
 
-#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_DROP_VIEW_HPP

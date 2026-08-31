@@ -7,27 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_SLIDE_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_SLIDE_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_slide) && (__cpp_lib_ranges_slide >= 202202L)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::slide_view;
-
-namespace views {
-
-using std::ranges::views::slide;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/counted_view.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
@@ -805,6 +785,9 @@ public:
 				hamon::bind_back(*this, hamon::forward<T>(n))))
 };
 
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+#undef HAMON_NOEXCEPT_RETURN
+
 } // namespace detail
 
 inline namespace cpo
@@ -819,10 +802,5 @@ detail::slide_fn slide{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-#undef HAMON_NOEXCEPT_RETURN
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_SLIDE_VIEW_HPP

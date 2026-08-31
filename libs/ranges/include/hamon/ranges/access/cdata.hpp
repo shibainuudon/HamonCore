@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_CDATA_HPP
 #define HAMON_RANGES_ACCESS_CDATA_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::cdata;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/possibly_const_range.hpp>
 #include <hamon/ranges/data.hpp>
@@ -65,7 +51,5 @@ detail::cdata_fn cdata{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_CDATA_HPP

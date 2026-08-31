@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_END_HPP
 #define HAMON_RANGES_ACCESS_END_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::end;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/has_member_end.hpp>
 #include <hamon/ranges/detail/has_adl_end.hpp>
@@ -108,7 +94,5 @@ detail::end_fn end{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_END_HPP

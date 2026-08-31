@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ADAPTORS_REF_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_REF_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::ref_view;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
@@ -162,7 +148,5 @@ bool enable_borrowed_range<hamon::ranges::ref_view<R>> = true;
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_REF_VIEW_HPP

@@ -7,26 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_AS_CONST_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_AS_CONST_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::as_const_view;
-
-namespace views {
-
-using std::ranges::views::as_const;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/adaptors/ref_view.hpp>
@@ -317,7 +298,5 @@ detail::as_const_fn as_const{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_AS_CONST_VIEW_HPP

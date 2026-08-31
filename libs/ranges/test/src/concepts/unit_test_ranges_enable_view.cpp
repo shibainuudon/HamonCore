@@ -35,13 +35,15 @@ struct EnableViewFalse : hamon::ranges::view_base { };
 }	// namespace enable_view_test
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_view<hamon_ranges_test::enable_view_test::EnableViewFalse> = false;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test {
 namespace enable_view_test {
@@ -68,13 +70,15 @@ struct EnableViewTrue { };
 }	// namespace enable_view_test
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_view<hamon_ranges_test::enable_view_test::EnableViewTrue> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test {
 namespace enable_view_test {

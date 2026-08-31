@@ -77,9 +77,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>, hamon::tuple<int, int, int>>::value, "");
 
 		static_assert(!hamon::is_implicitly_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert(!hamon::is_nothrow_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>>::value, "");
-#endif
 	}
 	{
 		using V = hamon::ranges::repeat_view<Point, int>;
@@ -93,18 +91,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		static_assert(!hamon::is_implicitly_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>, hamon::tuple<int>>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert(!hamon::is_nothrow_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>>::value, "");
 		static_assert(!hamon::is_nothrow_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int, int>, hamon::tuple<int>>::value, "");
-#endif
 	}
 	{
 		using V = hamon::ranges::repeat_view<int>;
 		static_assert( hamon::is_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int>>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int>>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert( hamon::is_nothrow_constructible<V, hamon::piecewise_construct_t, hamon::tuple<int>>::value, "");
-#endif
 	}
 	{
 		using V = hamon::ranges::repeat_view<MoveOnly>;
@@ -113,9 +107,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_constructible<V, int>::value, "");
 		static_assert(!hamon::is_constructible<V, MoveOnly const&>::value, "");
 		static_assert( hamon::is_constructible<V, MoveOnly &&>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert( hamon::is_nothrow_constructible<V, MoveOnly &&>::value, "");
-#endif
 		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
@@ -170,10 +162,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_constructible<V, int>::value, "");
 		static_assert( hamon::is_constructible<V, ThrowOnMoveCtor const&>::value, "");
 		static_assert( hamon::is_constructible<V, ThrowOnMoveCtor &&>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert( hamon::is_nothrow_constructible<V, ThrowOnMoveCtor const&>::value, "");
 		static_assert(!hamon::is_nothrow_constructible<V, ThrowOnMoveCtor &&>::value, "");
-#endif
 		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
@@ -228,10 +218,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_constructible<V, int>::value, "");
 		static_assert( hamon::is_constructible<V, ThrowOnCopyCtor const&>::value, "");
 		static_assert( hamon::is_constructible<V, ThrowOnCopyCtor &&>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert(!hamon::is_nothrow_constructible<V, ThrowOnCopyCtor const&>::value, "");
 		static_assert( hamon::is_nothrow_constructible<V, ThrowOnCopyCtor &&>::value, "");
-#endif
 		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");

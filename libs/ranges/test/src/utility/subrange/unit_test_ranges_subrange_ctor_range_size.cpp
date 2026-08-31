@@ -225,7 +225,6 @@ static_assert( hamon::is_constructible<
 	test_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>, hamon::size_t
 >::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 // イテレータとセンチネルが例外を投げずにコンストラクト可能なときは例外を投げない
 static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
@@ -243,7 +242,6 @@ static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	test_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>, hamon::size_t
 >::value, "");
-#endif
 
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {

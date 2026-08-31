@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_SIZE_HPP
 #define HAMON_RANGES_ACCESS_SIZE_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::size;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/detail/has_member_size.hpp>
 #include <hamon/ranges/detail/has_adl_size.hpp>
 #include <hamon/ranges/detail/sentinel_size.hpp>
@@ -112,7 +98,5 @@ detail::size_fn size{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_SIZE_HPP

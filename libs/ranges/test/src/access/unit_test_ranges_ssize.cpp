@@ -36,13 +36,15 @@ struct R
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool disable_sized_range<hamon_ranges_test::ssize_test::R> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {
@@ -55,17 +57,12 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	constexpr int a[10]{ };
 	static_assert(hamon::same_as<decltype(hamon::ranges::ssize(a)), hamon::ptrdiff_t>, "");
 	static_assert(hamon::ranges::ssize(a) == 10, "");
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
-	// MSVSの実装だとnoexcept指定されていない
 	static_assert(noexcept(hamon::ranges::ssize(a)), "");
-#endif
 
 	int a2[2]{};
 	static_assert(hamon::same_as<decltype(hamon::ranges::ssize(a2)), hamon::ptrdiff_t>, "");
 	VERIFY(hamon::ranges::ssize(a2) == 2);
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
 	static_assert(noexcept(hamon::ranges::ssize(a2)), "");
-#endif
 
 	return true;
 }
@@ -75,9 +72,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	int a[3]{ };
 	test_input_sized_range<int> ri(a);
 	VERIFY(hamon::ranges::ssize(ri) == 3);
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
 	static_assert(noexcept(hamon::ranges::ssize(ri)), "");
-#endif
 
 	return true;
 }

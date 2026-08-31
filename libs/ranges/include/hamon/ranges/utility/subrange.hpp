@@ -8,25 +8,6 @@
 #define HAMON_RANGES_UTILITY_SUBRANGE_HPP
 
 #include <hamon/ranges/utility/subrange_kind.hpp>
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::subrange;
-using std::ranges::get;
-
-}	// namespace ranges
-
-using ranges::get;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/ranges/utility/subrange_kind.hpp>
 #include <hamon/ranges/utility/detail/make_unsigned_like_t.hpp>
 #include <hamon/ranges/utility/detail/convertible_to_non_slicing.hpp>
 #include <hamon/ranges/utility/detail/different_from.hpp>
@@ -489,13 +470,15 @@ using ranges::get;
 
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <typename It, typename Sent, hamon::ranges::subrange_kind Kind>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon::ranges::subrange<It, Sent, Kind>> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 #include <hamon/cstddef/size_t.hpp>
 #include <tuple>
@@ -547,8 +530,6 @@ struct is_specialization_of_subrange<hamon::ranges::subrange<Iter, Sent, Kind>>
 
 }	// namespace detail
 }	// namespace hamon
-
-#endif
 
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>

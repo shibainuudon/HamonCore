@@ -58,13 +58,15 @@ static_assert(hamon::same_as<decltype(hamon::ranges::size(f())), hamon::size_t>,
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool disable_sized_range<hamon_ranges_test::size_test::R5> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {

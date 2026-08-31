@@ -114,9 +114,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_base<FV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(hamon::same_as<decltype(hamon::declval<FV&&>().base()), V>, "");
-#if !defined(HAMON_USE_STD_RANGES)
 	static_assert(noexcept(hamon::declval<FV&&>().base()) == hamon::is_nothrow_move_constructible<V>::value, "");
-#endif
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible<V>)
@@ -124,11 +122,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(hamon::same_as<decltype(hamon::declval<FV&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<FV const&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<FV const&&>().base()), V>, "");
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(hamon::declval<FV&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
 		static_assert(noexcept(hamon::declval<FV const&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
 		static_assert(noexcept(hamon::declval<FV const&&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
-#endif
 	}
 #endif
 
@@ -136,9 +132,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::same_as<decltype(hamon::declval<FV&&>().pred()), Pred const&>, "");
 	static_assert(hamon::same_as<decltype(hamon::declval<FV const&>().pred()), Pred const&>, "");
 	static_assert(hamon::same_as<decltype(hamon::declval<FV const&&>().pred()), Pred const&>, "");
-#if !defined(HAMON_USE_STD_RANGES)
 	static_assert(noexcept(hamon::declval<FV&>().pred()), "");
-#endif
 
 	static_assert( has_begin<FV&>::value, "");
 	static_assert( has_begin<FV&&>::value, "");

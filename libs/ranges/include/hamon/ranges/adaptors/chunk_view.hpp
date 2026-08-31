@@ -7,29 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_CHUNK_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_CHUNK_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_chunk) && (__cpp_lib_ranges_chunk >= 202202L)
-
-#include <hamon/cstddef/size_t.hpp>
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::chunk_view;
-
-namespace views {
-
-using std::ranges::views::chunk;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/take_view.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
@@ -1057,7 +1035,5 @@ detail::chunk_fn chunk{};
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
 #undef HAMON_NOEXCEPT_RETURN
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_chunk_VIEW_HPP

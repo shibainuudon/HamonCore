@@ -7,27 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_CARTESIAN_PRODUCT_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_CARTESIAN_PRODUCT_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_cartesian_product) && (__cpp_lib_ranges_cartesian_product >= 202207L)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::cartesian_product_view;
-
-namespace views {
-
-using std::ranges::views::cartesian_product;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/all_random_access.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -1002,7 +982,5 @@ detail::cartesian_product_fn cartesian_product{};
 }	// namespace hamon
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_CARTESIAN_PRODUCT_VIEW_HPP

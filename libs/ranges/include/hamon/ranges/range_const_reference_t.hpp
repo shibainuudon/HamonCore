@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_RANGE_CONST_REFERENCE_T_HPP
 #define HAMON_RANGES_RANGE_CONST_REFERENCE_T_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::range_const_reference_t;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
@@ -35,7 +21,5 @@ using range_const_reference_t = hamon::iter_const_reference_t<ranges::iterator_t
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_RANGE_CONST_REFERENCE_T_HPP

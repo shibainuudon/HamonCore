@@ -9,7 +9,6 @@
 
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
-#include <hamon/ranges/config.hpp>
 #include <hamon/iterator/detail/constant_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -20,11 +19,7 @@ namespace hamon
 namespace ranges
 {
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::constant_range;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 // [range.refinements]/7
 

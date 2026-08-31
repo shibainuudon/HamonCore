@@ -7,13 +7,9 @@
 #ifndef HAMON_RANGES_CONCEPTS_BORROWED_RANGE_HPP
 #define HAMON_RANGES_CONCEPTS_BORROWED_RANGE_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -22,11 +18,7 @@ namespace ranges
 
 // [range.range]/4
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::borrowed_range;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL borrowed_range =

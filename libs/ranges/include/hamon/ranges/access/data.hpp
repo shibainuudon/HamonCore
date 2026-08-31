@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_DATA_HPP
 #define HAMON_RANGES_ACCESS_DATA_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::data;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/detail/has_member_data.hpp>
 #include <hamon/ranges/detail/begin_data.hpp>
@@ -87,7 +73,5 @@ detail::data_fn data{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_DATA_HPP

@@ -7,16 +7,12 @@
 #ifndef HAMON_RANGES_CONCEPTS_VIEW_HPP
 #define HAMON_RANGES_CONCEPTS_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -25,11 +21,7 @@ namespace ranges
 
 // [range.view]/1
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::view;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL view =

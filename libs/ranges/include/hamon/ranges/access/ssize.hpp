@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_SSIZE_HPP
 #define HAMON_RANGES_ACCESS_SSIZE_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::ssize;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/size.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
@@ -69,7 +55,5 @@ detail::ssize_fn ssize{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_SSIZE_HPP

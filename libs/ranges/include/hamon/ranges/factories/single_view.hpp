@@ -7,26 +7,7 @@
 #ifndef HAMON_RANGES_FACTORIES_SINGLE_VIEW_HPP
 #define HAMON_RANGES_FACTORIES_SINGLE_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::single_view;
-
-namespace views {
-
-using std::ranges::views::single;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/detail/movable_box.hpp>
 #include <hamon/concepts/move_constructible.hpp>
@@ -183,7 +164,5 @@ detail::single_fn single{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_FACTORIES_SINGLE_VIEW_HPP
