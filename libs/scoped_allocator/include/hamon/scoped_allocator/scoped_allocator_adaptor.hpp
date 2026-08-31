@@ -7,21 +7,6 @@
 #ifndef HAMON_SCOPED_ALLOCATOR_SCOPED_ALLOCATOR_ADAPTOR_HPP
 #define HAMON_SCOPED_ALLOCATOR_SCOPED_ALLOCATOR_ADAPTOR_HPP
 
-#include <hamon/scoped_allocator/config.hpp>
-
-#if defined(HAMON_USE_STD_SCOPED_ALLOCATOR)
-
-#include <scoped_allocator>
-
-namespace hamon
-{
-
-using std::scoped_allocator_adaptor;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/scoped_allocator/scoped_allocator_adaptor_fwd.hpp>
 #include <hamon/scoped_allocator/detail/scoped_allocator_base.hpp>
 #include <hamon/scoped_allocator/detail/outermost.hpp>
@@ -272,7 +257,5 @@ operator!=(
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_SCOPED_ALLOCATOR_SCOPED_ALLOCATOR_ADAPTOR_HPP
