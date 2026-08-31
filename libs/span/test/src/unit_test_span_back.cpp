@@ -19,9 +19,7 @@ namespace back_test
 template <typename Span>
 HAMON_CXX11_CONSTEXPR bool test(Span sp)
 {
-#if !defined(HAMON_USE_STD_SPAN)
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.back());
-#endif
 	return hamon::addressof(sp.back()) == sp.data() + sp.size() - 1;
 }
 

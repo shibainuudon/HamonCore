@@ -64,16 +64,17 @@ test2()
 	static_assert( hamon::is_constructible<hamon::span<T, 0>, T*, T*>::value, "");
 	static_assert( hamon::is_constructible<hamon::span<T, 1>, T*, T*>::value, "");
 	static_assert( hamon::is_constructible<hamon::span<T, 2>, T*, T*>::value, "");
-#if !defined(HAMON_USE_STD_SPAN)
+
 	static_assert( hamon::is_nothrow_constructible<hamon::span<T>   , T*, T*>::value, "");
 	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 0>, T*, T*>::value, "");
 	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 1>, T*, T*>::value, "");
 	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 2>, T*, T*>::value, "");
-#endif
+
 	static_assert( hamon::is_implicitly_constructible<hamon::span<T>   , T*, T*>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<hamon::span<T, 0>, T*, T*>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<hamon::span<T, 1>, T*, T*>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<hamon::span<T, 2>, T*, T*>::value, "");
+
 	T arr[3] {};
 	hamon::span<T>    s1{arr, arr + 2};
 	hamon::span<T, 3> s2{arr, arr + 3};
