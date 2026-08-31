@@ -7,23 +7,6 @@
 #ifndef HAMON_CHRONO_TREAT_AS_FLOATING_POINT_HPP
 #define HAMON_CHRONO_TREAT_AS_FLOATING_POINT_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::treat_as_floating_point;
-using std::chrono::treat_as_floating_point_v;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/config.hpp>
 
@@ -46,7 +29,5 @@ bool treat_as_floating_point_v = treat_as_floating_point<Rep>::value;
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TREAT_AS_FLOATING_POINT_HPP

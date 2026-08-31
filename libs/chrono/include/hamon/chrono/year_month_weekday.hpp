@@ -16,23 +16,6 @@
 #include <hamon/chrono/year_month.hpp>
 #include <hamon/chrono/month_weekday.hpp>
 #include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::year_month_weekday;
-using std::chrono::year_month_weekday_last;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
@@ -636,7 +619,5 @@ year_month_weekday_last::operator-=(years const& y) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_YEAR_MONTH_WEEKDAY_HPP

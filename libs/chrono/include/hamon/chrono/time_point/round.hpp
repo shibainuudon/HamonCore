@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_TIME_POINT_ROUND_HPP
 #define HAMON_CHRONO_TIME_POINT_ROUND_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::round;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/time_point/time_point.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
 #include <hamon/chrono/duration/round.hpp>
@@ -54,7 +38,5 @@ round(hamon::chrono::time_point<Clock, Duration> const& tp) HAMON_NOEXCEPT_IF(
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TIME_POINT_ROUND_HPP

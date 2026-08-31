@@ -8,6 +8,7 @@
 #define HAMON_CHRONO_DETAIL_IS_SPECIALIZATION_OF_DURATION_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <chrono>	// duration
 
 namespace hamon {
 namespace chrono {

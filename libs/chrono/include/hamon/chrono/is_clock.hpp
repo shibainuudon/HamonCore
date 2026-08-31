@@ -7,23 +7,6 @@
 #ifndef HAMON_CHRONO_IS_CLOCK_HPP
 #define HAMON_CHRONO_IS_CLOCK_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::is_clock;
-using std::chrono::is_clock_v;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
@@ -72,7 +55,5 @@ constexpr bool is_clock_v = is_clock<T>::value;
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_IS_CLOCK_HPP

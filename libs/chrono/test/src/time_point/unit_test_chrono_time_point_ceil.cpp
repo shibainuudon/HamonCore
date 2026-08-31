@@ -52,9 +52,7 @@ GTEST_TEST(TimePointTest, CeilTest)
 			decltype(ceil<ToDuration>(hamon::declval<TimePoint>())),
 			ToTimePoint
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(ceil<ToDuration>(hamon::declval<TimePoint>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(ceil<ToDuration>(TimePoint{Duration{-3900}}).time_since_epoch().count(), -3);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(ceil<ToDuration>(TimePoint{Duration{-3500}}).time_since_epoch().count(), -3);
@@ -97,9 +95,7 @@ GTEST_TEST(TimePointTest, CeilTest)
 			decltype(ceil<ToDuration>(hamon::declval<TimePoint>())),
 			ToTimePoint
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(ceil<ToDuration>(hamon::declval<TimePoint>())), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR TimePoint d1{Duration{1500}};

@@ -46,10 +46,8 @@ GTEST_TEST(TimePointTest, SubTest)
 			decltype(hamon::declval<TimePoint1>() - hamon::declval<TimePoint2>()),
 			CommonDuration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(hamon::declval<TimePoint1>() - hamon::declval<Duration2>()), "");
 		static_assert(noexcept(hamon::declval<TimePoint1>() - hamon::declval<TimePoint2>()), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-2998,
 			(TimePoint1{Duration1{2}} - Duration2{3}).time_since_epoch().count());
@@ -71,10 +69,8 @@ GTEST_TEST(TimePointTest, SubTest)
 			decltype(hamon::declval<TimePoint1>() - hamon::declval<TimePoint2>()),
 			CommonDuration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(hamon::declval<TimePoint1>() - hamon::declval<Duration2>()), "");
 		static_assert(noexcept(hamon::declval<TimePoint1>() - hamon::declval<TimePoint2>()), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(599996,
 			(TimePoint1{Duration1{3}} - Duration2{4}).time_since_epoch().count());

@@ -17,9 +17,7 @@ namespace treat_as_floating_point_test
 template <typename T>
 void test()
 {
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(hamon::is_base_of<hamon::is_floating_point<T>, hamon::chrono::treat_as_floating_point<T>>::value, "");
-#endif
 	static_assert(hamon::is_floating_point<T>::value == hamon::chrono::treat_as_floating_point<T>::value, "");
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	static_assert(hamon::is_floating_point_v<T> == hamon::chrono::treat_as_floating_point_v<T>, "");

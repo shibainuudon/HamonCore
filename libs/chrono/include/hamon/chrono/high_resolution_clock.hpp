@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_HIGH_RESOLUTION_CLOCK_HPP
 #define HAMON_CHRONO_HIGH_RESOLUTION_CLOCK_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::high_resolution_clock;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/steady_clock.hpp>
 
 namespace hamon {
@@ -38,7 +22,5 @@ using high_resolution_clock = hamon::chrono::system_clock;
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_HIGH_RESOLUTION_CLOCK_HPP

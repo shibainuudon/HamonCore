@@ -46,9 +46,7 @@ GTEST_TEST(DurationTest, FloorTest)
 			decltype(floor<ToDuration>(hamon::declval<Duration>())),
 			ToDuration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(floor<ToDuration>(hamon::declval<Duration>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(floor<ToDuration>(Duration{-3900}).count(), -4);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(floor<ToDuration>(Duration{-3500}).count(), -4);
@@ -89,9 +87,7 @@ GTEST_TEST(DurationTest, FloorTest)
 			decltype(floor<ToDuration>(hamon::declval<Duration>())),
 			ToDuration
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(floor<ToDuration>(hamon::declval<Duration>())), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR Duration d1{1500};

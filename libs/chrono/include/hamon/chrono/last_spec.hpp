@@ -7,23 +7,6 @@
 #ifndef HAMON_CHRONO_LAST_SPEC_HPP
 #define HAMON_CHRONO_LAST_SPEC_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::last_spec;
-using std::chrono::last;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -41,7 +24,5 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR last_spec last {};
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_LAST_SPEC_HPP

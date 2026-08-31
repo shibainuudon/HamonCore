@@ -53,9 +53,7 @@ GTEST_TEST(TimePointTest, TimePointCastTest)
 			decltype(time_point_cast<Duration2>(hamon::declval<TimePoint1>())),
 			TimePoint2
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(time_point_cast<Duration2>(hamon::declval<TimePoint1>())), "");
-#endif
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(time_point_cast<Duration2>(TimePoint1{Duration1{-3900}}).time_since_epoch().count(), -3);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(time_point_cast<Duration2>(TimePoint1{Duration1{-3500}}).time_since_epoch().count(), -3);
@@ -98,9 +96,7 @@ GTEST_TEST(TimePointTest, TimePointCastTest)
 			decltype(time_point_cast<Duration2>(hamon::declval<TimePoint1>())),
 			TimePoint2
 		>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(time_point_cast<Duration2>(hamon::declval<TimePoint1>())), "");
-#endif
 
 		{
 			HAMON_CXX11_CONSTEXPR TimePoint1 d1{Duration1{1500}};

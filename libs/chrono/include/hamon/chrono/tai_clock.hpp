@@ -10,24 +10,6 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/utc_clock.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::tai_clock;
-using std::chrono::tai_time;
-using std::chrono::tai_seconds;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/string.hpp>
@@ -103,7 +85,5 @@ from_stream(
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TAI_CLOCK_HPP

@@ -27,9 +27,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 	Duration const d{10};
 	static_assert(hamon::is_same<decltype(d.count()), Rep>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(d.count()), "");
-#endif
 
 	VERIFY(d.count() == 10);
 

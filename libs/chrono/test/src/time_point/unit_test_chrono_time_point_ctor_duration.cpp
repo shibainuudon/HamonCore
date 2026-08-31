@@ -30,9 +30,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	using TimePoint = hamon::chrono::time_point<Clock, Duration>;
 
 	static_assert( hamon::is_constructible<TimePoint, Duration const&>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<TimePoint, Duration const&>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<TimePoint, Duration const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<TimePoint, Duration const&>::value, "");
 

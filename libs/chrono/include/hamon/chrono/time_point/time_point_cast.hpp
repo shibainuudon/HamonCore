@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_TIME_POINT_TIME_POINT_CAST_HPP
 #define HAMON_CHRONO_TIME_POINT_TIME_POINT_CAST_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::time_point_cast;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/time_point/time_point.hpp>
 #include <hamon/chrono/duration/duration_cast.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
@@ -52,7 +36,5 @@ time_point_cast(hamon::chrono::time_point<Clock, Duration> const& t) HAMON_NOEXC
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_TIME_POINT_TIME_POINT_CAST_HPP

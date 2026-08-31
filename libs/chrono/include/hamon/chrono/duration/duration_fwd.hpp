@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_DURATION_FWD_HPP
 #define HAMON_CHRONO_DURATION_DURATION_FWD_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::duration;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/ratio/ratio.hpp>
 
 namespace hamon {
@@ -34,7 +18,5 @@ class duration;
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_DURATION_DURATION_FWD_HPP

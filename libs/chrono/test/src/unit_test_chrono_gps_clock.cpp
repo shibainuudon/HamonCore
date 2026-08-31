@@ -50,9 +50,7 @@ void to_utc_test()
 	static_assert(hamon::is_same<chrono::utc_time<chrono::seconds>,
 		decltype(chrono::gps_clock::to_utc(chrono::gps_time<chrono::years>{chrono::years{ 0 }}))>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(chrono::gps_clock::to_utc(chrono::gps_seconds{0_s})), "");
-#endif
 
 	EXPECT_TRUE(chrono::gps_clock::to_utc(chrono::gps_seconds{ 0_s }) ==
 		chrono::utc_clock::from_sys(chrono::sys_days{ chrono::January / 6 / 1980 }));
@@ -126,9 +124,7 @@ void from_utc_test()
 	static_assert(hamon::is_same<chrono::gps_time<chrono::seconds>,
 		decltype(chrono::gps_clock::from_utc(chrono::utc_time<chrono::years>{chrono::years{ 0 }}))>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(chrono::gps_clock::from_utc(chrono::utc_seconds{0_s})), "");
-#endif
 
 	// [time.clock.gps.overview]/1
 	//   The clock gps_clock measures seconds since the first Sunday of January,

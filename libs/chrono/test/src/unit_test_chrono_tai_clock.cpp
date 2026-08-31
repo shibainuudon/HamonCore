@@ -50,9 +50,7 @@ void to_utc_test()
 	static_assert(hamon::is_same<chrono::utc_time<chrono::seconds>,
 		decltype(chrono::tai_clock::to_utc(chrono::tai_time<chrono::years>{chrono::years{0}}))>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(chrono::tai_clock::to_utc(chrono::tai_seconds{0_s})), "");
-#endif
 
 	constexpr auto unix_to_tai_epoch_offset = chrono::sys_days{chrono::January / 1 / 1970} - chrono::sys_days{chrono::January / 1 / 1958};
 
@@ -131,9 +129,7 @@ void from_utc_test()
 	static_assert(hamon::is_same<chrono::tai_time<chrono::seconds>,
 		decltype(chrono::tai_clock::from_utc(chrono::utc_time<chrono::years>{chrono::years{0}}))>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(chrono::tai_clock::from_utc(chrono::utc_seconds{0_s})), "");
-#endif
 
 	constexpr auto unix_to_tai_epoch_offset = chrono::sys_days{chrono::January / 1 / 1970} - chrono::sys_days{chrono::January / 1 / 1958};
 

@@ -11,33 +11,6 @@
 #include <hamon/chrono/local_days.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/last_spec.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::weekday;
-
-using std::chrono::Sunday;
-using std::chrono::Monday;
-using std::chrono::Tuesday;
-using std::chrono::Wednesday;
-using std::chrono::Thursday;
-using std::chrono::Friday;
-using std::chrono::Saturday;
-
-using std::chrono::weekday_indexed;
-using std::chrono::weekday_last;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/detail/modulo.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
@@ -415,7 +388,5 @@ weekday::operator[](last_spec) const HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_WEEKDAY_HPP

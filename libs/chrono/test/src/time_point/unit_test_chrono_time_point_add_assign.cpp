@@ -31,9 +31,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	using TimePoint = hamon::chrono::time_point<Clock, Duration>;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<TimePoint&>() += hamon::declval<Duration>()), TimePoint&>::value, "");
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert(noexcept(hamon::declval<TimePoint&>() += hamon::declval<Duration>()), "");
-#endif
 
 	TimePoint tp{Duration{10}};
 	{

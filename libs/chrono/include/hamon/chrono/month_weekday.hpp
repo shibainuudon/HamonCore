@@ -9,23 +9,6 @@
 
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/weekday.hpp>
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::month_weekday;
-using std::chrono::month_weekday_last;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
@@ -239,7 +222,5 @@ operator/(weekday_last const& wdl, int m) HAMON_NOEXCEPT
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_MONTH_WEEKDAY_HPP

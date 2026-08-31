@@ -46,9 +46,7 @@ HAMON_CXX14_CONSTEXPR bool test_integer()
 	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::micro>>>::value, "");
 	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::milli>>>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
-#endif
 	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
 	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
 
@@ -80,14 +78,12 @@ HAMON_CXX14_CONSTEXPR bool test_float()
 	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::micro>>>::value, "");
 	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::milli>>>::value, "");
 
-#if !defined(HAMON_USE_STD_CHRONO)
 	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, hamon::nano>>>::value, "");
 //	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, hamon::micro>>>::value, "");
 	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, hamon::milli>>>::value, "");
-#endif
 
 	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
 	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");

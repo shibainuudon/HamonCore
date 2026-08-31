@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_DURATION_HPP
 #define HAMON_CHRONO_DURATION_DURATION_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::duration;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration/duration_fwd.hpp>
 #include <hamon/chrono/duration/duration_cast.hpp>
 #include <hamon/chrono/duration/duration_values.hpp>
@@ -453,8 +437,6 @@ operator<<(std::basic_ostream<charT, traits>& os, duration<Rep, Period> const& d
 
 }	// namespace chrono
 }	// namespace hamon
-
-#endif
 
 #include <hamon/chrono/duration/common_type.hpp>
 

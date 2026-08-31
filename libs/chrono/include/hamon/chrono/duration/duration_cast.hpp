@@ -7,22 +7,6 @@
 #ifndef HAMON_CHRONO_DURATION_DURATION_CAST_HPP
 #define HAMON_CHRONO_DURATION_DURATION_CAST_HPP
 
-#include <hamon/chrono/config.hpp>
-
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::duration_cast;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
-
 #include <hamon/chrono/duration/duration_fwd.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
@@ -105,7 +89,5 @@ duration_cast(duration<Rep, Period> const& d) HAMON_NOEXCEPT_IF(	// noexcept as 
 }	// namespace hamon
 
 #include <hamon/chrono/duration/duration.hpp>
-
-#endif
 
 #endif // HAMON_CHRONO_DURATION_DURATION_CAST_HPP
