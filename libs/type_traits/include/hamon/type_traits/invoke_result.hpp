@@ -7,21 +7,6 @@
 #ifndef HAMON_TYPE_TRAITS_INVOKE_RESULT_HPP
 #define HAMON_TYPE_TRAITS_INVOKE_RESULT_HPP
 
-#include <hamon/functional/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703) && \
-	defined(HAMON_USE_STD_REFERENCE_WRAPPER)
-
-namespace hamon
-{
-
-using std::invoke_result;
-
-}	// namespace hamon
-
-#else
-
 namespace hamon
 {
 
@@ -242,13 +227,6 @@ struct invoke_result
 	//	__type_identity<ArgTypes>{}) && ...),
 	//	"each argument type must be a complete class or an unbounded array");
 };
-
-}	// namespace hamon
-
-#endif
-
-namespace hamon
-{
 
 /**
  *	@brief	invoke_resultのエイリアステンプレート

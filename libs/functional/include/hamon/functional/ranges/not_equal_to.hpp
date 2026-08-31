@@ -7,24 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_RANGES_NOT_EQUAL_TO_HPP
 #define HAMON_FUNCTIONAL_RANGES_NOT_EQUAL_TO_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_FUNCTIONAL)
-
-#include <functional>
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::not_equal_to;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/detail/eq_builtin_ptr_cmp.hpp>
 #include <hamon/concepts/equality_comparable_with.hpp>
@@ -69,7 +51,5 @@ struct not_equal_to
 }	// namespace ranges
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_RANGES_NOT_EQUAL_TO_HPP

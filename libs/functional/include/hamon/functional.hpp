@@ -16,7 +16,6 @@
 #include <hamon/functional/bit_xor.hpp>
 #include <hamon/functional/boyer_moore_horspool_searcher.hpp>
 #include <hamon/functional/boyer_moore_searcher.hpp>
-#include <hamon/functional/config.hpp>
 #include <hamon/functional/cref.hpp>
 #include <hamon/functional/default_searcher.hpp>
 #include <hamon/functional/divides.hpp>

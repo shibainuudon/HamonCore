@@ -7,18 +7,11 @@
 #ifndef HAMON_FUNCTIONAL_DETAIL_IS_REFERENCE_WRAPPER_HPP
 #define HAMON_FUNCTIONAL_DETAIL_IS_REFERENCE_WRAPPER_HPP
 
-#include <hamon/functional/config.hpp>
+#include <hamon/functional/fwd/reference_wrapper_fwd.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
-
-#if !defined(HAMON_USE_STD_REFERENCE_WRAPPER)
-template <typename T>
-class reference_wrapper;
-#else
-using std::reference_wrapper;
-#endif
 
 namespace detail
 {

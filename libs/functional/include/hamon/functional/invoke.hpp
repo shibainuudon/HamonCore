@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_INVOKE_HPP
 #define HAMON_FUNCTIONAL_INVOKE_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_INVOKE)
-
-namespace hamon
-{
-
-using std::invoke;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/detail/is_reference_wrapper.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/is_base_of.hpp>
@@ -183,7 +170,5 @@ HAMON_INVOKE_RETURN(
 }	// namespace hamon
 
 HAMON_WARNING_POP()
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_INVOKE_HPP

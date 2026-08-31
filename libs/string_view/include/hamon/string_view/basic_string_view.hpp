@@ -1132,8 +1132,6 @@ struct is_specialization_of_basic_string_view<hamon::basic_string_view<CharT, Tr
 }	// namespace detail
 }	// namespace hamon
 
-#include <hamon/functional/config.hpp>
-
 #if 0	// TODO hash support
 #include <hamon/functional/hash.hpp>
 #include <hamon/hash_functions/murmur_hash_3.hpp>

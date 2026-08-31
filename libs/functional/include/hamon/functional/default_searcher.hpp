@@ -7,20 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_DEFAULT_SEARCHER_HPP
 #define HAMON_FUNCTIONAL_DEFAULT_SEARCHER_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(__cpp_lib_boyer_moore_searcher) && (__cpp_lib_boyer_moore_searcher >= 201603L) && \
-	defined(__cpp_lib_constexpr_functional) && (__cpp_lib_constexpr_functional >= 201907L)	// P1032R1
-
-namespace hamon
-{
-
-using std::default_searcher;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/algorithm/search.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -65,7 +51,5 @@ private:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_DEFAULT_SEARCHER_HPP

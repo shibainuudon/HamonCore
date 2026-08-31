@@ -7,20 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_NOT_FN_HPP
 #define HAMON_FUNCTIONAL_NOT_FN_HPP
 
-#include <hamon/functional/config.hpp>
-#include <functional>
-
-#if defined(__cpp_lib_not_fn) && (__cpp_lib_not_fn >= 201603) && defined(HAMON_CPP_LIB_CONSTEXPR_FUNCTIONAL)
-
-namespace hamon
-{
-
-using std::not_fn;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -105,7 +91,5 @@ HAMON_NOEXCEPT_IF((
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_NOT_FN_HPP

@@ -7,23 +7,8 @@
 #ifndef HAMON_TYPE_TRAITS_IS_INVOCABLE_HPP
 #define HAMON_TYPE_TRAITS_IS_INVOCABLE_HPP
 
-#include <hamon/functional/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304) && \
-	defined(HAMON_USE_STD_REFERENCE_WRAPPER)
-
-namespace hamon
-{
-
-using std::is_invocable;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/is_invocable_r.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -45,23 +30,10 @@ struct is_invocable
 	: public hamon::is_invocable_r<void, Fn, ArgTypes...>
 {};
 
-}	// namespace hamon
-
-#endif
-
-#include <hamon/config.hpp>
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
-namespace hamon
-{
-
 template <typename Fn, typename... ArgTypes>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 bool is_invocable_v = is_invocable<Fn, ArgTypes...>::value;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_IS_INVOCABLE_HPP
