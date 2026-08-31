@@ -61,7 +61,8 @@ struct R3 : test_bidirectional_range<int>
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 // N.B. this is a lie, rbegin on an R1 rvalue will return a dangling pointer.
 template <>
@@ -73,7 +74,8 @@ template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::rbegin_test::R2> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {

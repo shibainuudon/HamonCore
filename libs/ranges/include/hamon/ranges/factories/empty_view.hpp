@@ -7,26 +7,7 @@
 #ifndef HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP
 #define HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::empty_view;
-
-namespace views {
-
-using std::ranges::views::empty;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/type_traits/is_object.hpp>
@@ -86,7 +67,5 @@ struct is_specialization_of_empty_view<hamon::ranges::empty_view<T>>
 
 }	// namespace detail
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP

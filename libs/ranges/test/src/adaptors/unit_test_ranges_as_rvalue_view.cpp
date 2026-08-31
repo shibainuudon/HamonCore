@@ -172,13 +172,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using V = View<T>;
 	using ARV = hamon::ranges::as_rvalue_view<V>;
 
-	static_assert(hamon::is_default_constructible<ARV>::value == hamon::is_default_constructible<V>::value, "");
-	static_assert(hamon::is_nothrow_default_constructible<ARV>::value == hamon::is_nothrow_default_constructible<V>::value, "");
+	static_assert( hamon::is_default_constructible<ARV>::value == hamon::is_default_constructible<V>::value, "");
+	static_assert( hamon::is_nothrow_default_constructible<ARV>::value == hamon::is_nothrow_default_constructible<V>::value, "");
 
-	static_assert(hamon::is_constructible<ARV, V>::value, "");
-#if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
-	static_assert(hamon::is_nothrow_constructible<ARV, V>::value == hamon::is_nothrow_move_constructible<V>::value, "");
-#endif
+	static_assert( hamon::is_constructible<ARV, V>::value, "");
+	static_assert( hamon::is_nothrow_constructible<ARV, V>::value == hamon::is_nothrow_move_constructible<V>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<ARV, V>::value, "");
 
 	static_assert( hamon::ranges::range<ARV>, "");
@@ -202,9 +200,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_base<ARV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(hamon::same_as<decltype(hamon::declval<ARV&&>().base()), V>, "");
-#if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 	static_assert(noexcept(hamon::declval<ARV&&>().base()) == hamon::is_nothrow_move_constructible<V>::value, "");
-#endif
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible<V>)
@@ -212,9 +208,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&&>().base()), V>, "");
-#if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 		static_assert(noexcept(hamon::declval<ARV&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
-#endif
 	}
 #endif
 
@@ -235,10 +229,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		}
 #endif
 
-#if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 		static_assert(noexcept(hamon::declval<ARV&>().begin()) == noexcept(hamon::ranges::begin(hamon::declval<V&>())), "");
 		static_assert(noexcept(hamon::declval<ARV&>().end()) == noexcept(hamon::ranges::end(hamon::declval<V&>())), "");
-#endif
 	}
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
@@ -258,10 +250,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().end()), hamon::move_sentinel<CS>>, "");
 		}
 
-#if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 		static_assert(noexcept(hamon::declval<ARV const&>().begin()), "");
 		static_assert(noexcept(hamon::declval<ARV const&>().end()), "");
-#endif
 	}
 #endif
 
@@ -278,7 +268,6 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_reserve_hint<ARV const>::value == hamon::ranges::approximately_sized_range<V const>, "");
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-#if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 	if constexpr (has_size<ARV>::value)
 	{
 		static_assert(noexcept(hamon::declval<ARV&>().size()) == noexcept(hamon::ranges::size(hamon::declval<V&>())), "");
@@ -288,7 +277,6 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		static_assert(noexcept(hamon::declval<ARV const&>().size()) == noexcept(hamon::ranges::size(hamon::declval<V const&>())), "");
 	}
-#endif
 #endif
 
 	return true;

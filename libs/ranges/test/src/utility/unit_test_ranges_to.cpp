@@ -280,7 +280,6 @@ HAMON_CXX14_CONSTEXPR bool common_construction_test()
 			VERIFY(c.m_value1 == 13);
 			VERIFY(c.m_value2 == 0);
 		}
-#if !(defined(HAMON_USE_STD_RANGES_TO) && defined(HAMON_STDLIB_DINKUMWARE))	// MSVC-STLの ranges::to は、あるバージョンまでtypoがあった
 		{
 			auto c = a | hamon::ranges::to<C>(14, 15);
 			static_assert(hamon::is_same<decltype(c), C>::value, "");
@@ -288,7 +287,6 @@ HAMON_CXX14_CONSTEXPR bool common_construction_test()
 			VERIFY(c.m_value1 == 14);
 			VERIFY(c.m_value2 == 15);
 		}
-#endif
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		{
@@ -298,7 +296,6 @@ HAMON_CXX14_CONSTEXPR bool common_construction_test()
 			VERIFY(c.m_value1 == 0);
 			VERIFY(c.m_value2 == 0);
 		}
-#if !(defined(HAMON_USE_STD_RANGES_TO) && defined(HAMON_STDLIB_DINKUMWARE))	// MSVC-STLの ranges::to は、あるバージョンまでtypoがあった
 		{
 			auto c = a | hamon::ranges::to<CommonConstructible>(16, 17);
 			static_assert(hamon::is_same<decltype(c), C>::value, "");
@@ -306,7 +303,6 @@ HAMON_CXX14_CONSTEXPR bool common_construction_test()
 			VERIFY(c.m_value1 == 16);
 			VERIFY(c.m_value2 == 17);
 		}
-#endif
 #endif
 	}
 	return true;

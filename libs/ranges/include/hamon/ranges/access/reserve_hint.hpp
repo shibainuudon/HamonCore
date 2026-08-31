@@ -7,21 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_RESERVE_HINT_HPP
 #define HAMON_RANGES_ACCESS_RESERVE_HINT_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_reserve_hint) && (__cpp_lib_ranges_reserve_hint >= 202502L)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::reserve_hint;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/detail/has_member_reserve_hint.hpp>
 #include <hamon/ranges/detail/has_adl_reserve_hint.hpp>
 #include <hamon/ranges/size.hpp>
@@ -92,7 +77,5 @@ detail::reserve_hint_fn reserve_hint{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_RESERVE_HINT_HPP

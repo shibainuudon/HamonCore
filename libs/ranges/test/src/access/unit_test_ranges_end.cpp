@@ -76,7 +76,8 @@ struct RR
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 // Allow ranges::begin to work with RV&&
 template <>
@@ -88,7 +89,8 @@ template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::end_test::RR> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {

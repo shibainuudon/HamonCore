@@ -1155,12 +1155,11 @@ struct hash<hamon::basic_string_view<CharT, Traits>>
 }	// namespace HAMON_HASH_NAMESPACE
 #endif
 
-#include <hamon/ranges/config.hpp>
-
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <typename CharT, typename Traits>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
@@ -1170,7 +1169,8 @@ template <typename CharT, typename Traits>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_view<hamon::basic_string_view<CharT, Traits>> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 #include <hamon/cstddef/size_t.hpp>
 

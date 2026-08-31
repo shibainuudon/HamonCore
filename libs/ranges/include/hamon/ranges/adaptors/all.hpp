@@ -7,23 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_ALL_HPP
 #define HAMON_RANGES_ADAPTORS_ALL_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-namespace views {
-
-using std::ranges::views::all;
-using std::ranges::views::all_t;
-
-}	// namespace views
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/adaptors/ref_view.hpp>
 #include <hamon/ranges/adaptors/owning_view.hpp>
@@ -100,9 +84,8 @@ template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 using all_t = decltype(hamon::views::all(hamon::declval<R>()));
 
 }	// namespace views
+
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_ALL_HPP

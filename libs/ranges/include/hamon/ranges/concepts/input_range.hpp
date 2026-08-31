@@ -7,16 +7,12 @@
 #ifndef HAMON_RANGES_CONCEPTS_INPUT_RANGE_HPP
 #define HAMON_RANGES_CONCEPTS_INPUT_RANGE_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -25,11 +21,7 @@ namespace ranges
 
 // [range.refinements]/1
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::input_range;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL input_range =

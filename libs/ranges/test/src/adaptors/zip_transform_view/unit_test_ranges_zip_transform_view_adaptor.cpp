@@ -52,8 +52,6 @@ struct F3
 	void operator()(Args...) const;
 };
 
-// Microsoft-STLだと内部コンパイルエラーになってしまう
-#if !defined(HAMON_USE_STD_RANGES_ZIP_TRANSFORM_VIEW) && defined(HAMON_STDLIB_DINKUMWARE)
 using CPO = decltype(hamon::views::zip_transform);
 
 static_assert( hamon::is_invocable<CPO, F0<int>>::value, "");
@@ -74,7 +72,6 @@ static_assert( hamon::is_invocable<CPO, F2, int(&)[2], float(&)[3]>::value, "");
 static_assert(!hamon::is_invocable<CPO, F3>::value, "");
 static_assert(!hamon::is_invocable<CPO, F3, int(&)[2]>::value, "");
 static_assert(!hamon::is_invocable<CPO, F3, int(&)[2], int(&)[2]>::value, "");
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

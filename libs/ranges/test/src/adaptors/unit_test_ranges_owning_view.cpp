@@ -103,13 +103,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::is_nothrow_move_constructible<OV>::value == hamon::is_nothrow_move_constructible<R>::value, "");
 	static_assert(hamon::is_nothrow_move_assignable<OV>::value == hamon::is_nothrow_move_assignable<R>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 	static_assert(hamon::is_nothrow_constructible<OV, R&&>::value == hamon::is_nothrow_move_constructible<R>::value, "");
 	static_assert(noexcept(hamon::declval<OV&>().begin()), "");
 	static_assert(noexcept(hamon::declval<OV const&>().begin()), "");
 	static_assert(noexcept(hamon::declval<OV&>().end()), "");
 	static_assert(noexcept(hamon::declval<OV const&>().end()), "");
-#endif
 
 	static_assert(hamon::same_as<decltype(hamon::declval<OV&>().base()),  R&>, "");
 	static_assert(hamon::same_as<decltype(hamon::declval<OV&&>().base()), R&&>, "");
@@ -170,11 +168,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert(!has_back<OV>::value, "");
 		static_assert( has_subscript<OV>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(ov.empty()), "");
 		static_assert(noexcept(ov.size()), "");
 		static_assert(noexcept(ov.reserve_hint()), "");
-#endif
 
 		VERIFY(&ov.base() != &r);
 		VERIFY(!ov.empty());
@@ -211,11 +207,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert(!has_back<OV>::value, "");
 		static_assert( has_subscript<OV>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(ov.empty()), "");
 		static_assert(noexcept(ov.size()), "");
 		static_assert(noexcept(ov.reserve_hint()), "");
-#endif
 
 		VERIFY(&ov.base() != &r);
 		VERIFY(!ov.empty());
@@ -260,12 +254,10 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		static_assert(!has_back<OV>::value, "");
 		static_assert( has_subscript<OV>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(ov.empty()), "");
 		static_assert(noexcept(ov.size()), "");
 		static_assert(noexcept(ov.reserve_hint()), "");
 		static_assert(noexcept(ov.data()), "");
-#endif
 
 		VERIFY(&ov.base() != &r);
 		VERIFY(!ov.empty());
@@ -303,12 +295,10 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		static_assert(!has_back<OV>::value, "");
 		static_assert( has_subscript<OV>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(ov.empty()), "");
 		static_assert(noexcept(ov.size()), "");
 		static_assert(noexcept(ov.reserve_hint()), "");
 		static_assert(noexcept(ov.data()), "");
-#endif
 
 		VERIFY(&ov.base() != &r);
 		VERIFY(!ov.empty());
@@ -354,9 +344,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		static_assert(!has_back<OV>::value, "");
 		static_assert(!has_subscript<OV>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(ov.reserve_hint()), "");
-#endif
+
 		VERIFY(&ov.base() != &r);
 		VERIFY(ov.reserve_hint() == 3);
 		VERIFY(ov.begin() == r.begin());
@@ -388,9 +377,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		static_assert(!has_back<OV>::value, "");
 		static_assert(!has_subscript<OV>::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(ov.reserve_hint()), "");
-#endif
 
 		VERIFY(&ov.base() != &r);
 		VERIFY(ov.reserve_hint() == 3);

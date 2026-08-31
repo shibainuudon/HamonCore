@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_ACCESS_BEGIN_HPP
 #define HAMON_RANGES_ACCESS_BEGIN_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::begin;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/has_member_begin.hpp>
 #include <hamon/ranges/detail/has_adl_begin.hpp>
@@ -100,7 +86,5 @@ detail::begin_fn begin{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ACCESS_BEGIN_HPP

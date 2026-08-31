@@ -7,16 +7,12 @@
 #ifndef HAMON_RANGES_CONCEPTS_SIZED_RANGE_HPP
 #define HAMON_RANGES_CONCEPTS_SIZED_RANGE_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -25,11 +21,7 @@ namespace ranges
 
 // 25.4.4 Sized ranges[range.sized]
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::sized_range;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL sized_range =

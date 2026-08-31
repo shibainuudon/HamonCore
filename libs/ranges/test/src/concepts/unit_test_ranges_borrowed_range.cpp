@@ -38,7 +38,8 @@ struct B {};
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
@@ -48,7 +49,8 @@ template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::test_random_access_range<hamon_ranges_test::borrowed_range_test::B>> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 HAMON_RANGES_BORROWED_RANGE_TEST_IMPL(false, int      [2]);
 HAMON_RANGES_BORROWED_RANGE_TEST_IMPL(false, int const[2]);
@@ -71,9 +73,7 @@ HAMON_RANGES_BORROWED_RANGE_TEST(true,  hamon::ranges::subrange<bidirectional_it
 HAMON_RANGES_BORROWED_RANGE_TEST(true,  hamon::ranges::subrange<forward_iterator_wrapper<int>>);
 HAMON_RANGES_BORROWED_RANGE_TEST(true,  hamon::ranges::subrange<input_iterator_wrapper<int>>);
 
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::ranges::empty_view<int>);
-#endif
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::ranges::iota_view<int>);
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::ranges::iota_view<int, int>);
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::ranges::ref_view<int[5]>);

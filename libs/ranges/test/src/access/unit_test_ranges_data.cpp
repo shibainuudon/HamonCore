@@ -54,14 +54,16 @@ long R3::l = 0;
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 // N.B. this is a lie, begin on an R3 rvalue will return a dangling pointer.
 template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::data_test::R3> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {

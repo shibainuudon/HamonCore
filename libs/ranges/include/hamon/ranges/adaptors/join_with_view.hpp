@@ -7,29 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_JOIN_WITH_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_JOIN_WITH_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_join_with) && (__cpp_lib_ranges_join_with >= 202202L)
-
-#define HAMON_USE_STD_RANGES_JOIN_WITH_VIEW
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::join_with_view;
-
-namespace views {
-
-using std::ranges::views::join_with;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/as_lvalue.hpp>
 #include <hamon/ranges/adaptors/detail/concatable.hpp>
@@ -1001,7 +979,5 @@ detail::join_with_fn join_with{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_JOIN_WITH_VIEW_HPP

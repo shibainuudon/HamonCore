@@ -62,9 +62,6 @@ struct TestView : hamon::ranges::view_base
 
 HAMON_CXX14_CONSTEXPR bool test00()
 {
-	// Microsoft-STL の operator-(iterator, sentinel) はエラーになってしまう
-#if !(defined(HAMON_USE_STD_RANGES_ADJACENT_TRANSFORM_VIEW) && defined(HAMON_STDLIB_DINKUMWARE))
-
 	// iterator<true>, sentinel<true>
 	{
 		using V = TestView<int,
@@ -243,7 +240,6 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		VERIFY(i - s == -4);
 		VERIFY(s - i ==  4);
 	}
-#endif
 
 	return true;
 }

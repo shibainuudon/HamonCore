@@ -7,11 +7,6 @@
 #ifndef HAMON_RANGES_CONCEPTS_VIEWABLE_RANGE_HPP
 #define HAMON_RANGES_CONCEPTS_VIEWABLE_RANGE_HPP
 
-#include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 //#include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
@@ -19,9 +14,10 @@
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/movable.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
-#endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -30,11 +26,7 @@ namespace ranges
 
 // [range.refinements]/6
 
-#if defined(HAMON_USE_STD_RANGES)
-
-using std::ranges::viewable_range;
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL viewable_range =

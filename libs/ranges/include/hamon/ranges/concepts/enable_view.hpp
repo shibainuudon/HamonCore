@@ -7,22 +7,6 @@
 #ifndef HAMON_RANGES_CONCEPTS_ENABLE_VIEW_HPP
 #define HAMON_RANGES_CONCEPTS_ENABLE_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::enable_view;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/utility/view_interface_fwd.hpp>
 #include <hamon/concepts/derived_from.hpp>
@@ -75,7 +59,5 @@ bool enable_view =
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_CONCEPTS_ENABLE_VIEW_HPP

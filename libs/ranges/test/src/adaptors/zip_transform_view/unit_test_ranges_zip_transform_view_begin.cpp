@@ -155,8 +155,6 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_same<I, CI>::value, "");
 	}
 
-	// MSVC-STLの実装がSFINAE-friendlyになっていない
-#if !defined(HAMON_USE_STD_RANGES_ZIP_TRANSFORM_VIEW) && defined(HAMON_STDLIB_DINKUMWARE)
 	// !ranges::range<InnerView const>
 	{
 		using F = Add;
@@ -184,7 +182,6 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//using I  = decltype(hamon::declval<ZV&>().begin());
 		//static_assert(hamon::is_same<I,  ZV::iterator<false>>::value, "");
 	}
-#endif
 
 	// !regular_invocable<F const&, range_reference_t<Views const>...>
 	{

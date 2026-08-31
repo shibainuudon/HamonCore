@@ -78,7 +78,8 @@ struct R4
 
 }	// namespace hamon_ranges_test
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 // N.B. this is a lie, rend on an R1 rvalue will return a dangling pointer.
 template <>
@@ -90,7 +91,8 @@ template <>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::rend_test::R3> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {

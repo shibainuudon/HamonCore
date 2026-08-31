@@ -308,7 +308,8 @@ template <typename T> using test_input_common_view         = test_view<T, input_
 
 using namespace hamon_ranges_test;
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <typename T, typename Iterator, typename Sentinel>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
@@ -338,6 +339,7 @@ template <typename T, typename Iterator, typename Sentinel>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_view<hamon_ranges_test::test_borrowed_view<T, Iterator, Sentinel>> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 #endif // UNIT_TEST_COMMON_RANGES_TEST_HPP

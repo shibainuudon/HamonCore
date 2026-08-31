@@ -8,20 +8,6 @@
 #define HAMON_RANGES_UTILITY_VIEW_INTERFACE_HPP
 
 #include <hamon/ranges/utility/view_interface_fwd.hpp>
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::view_interface;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/cbegin.hpp>
 #include <hamon/ranges/cend.hpp>
@@ -290,7 +276,5 @@ public:
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_UTILITY_VIEW_INTERFACE_HPP

@@ -7,23 +7,6 @@
 #ifndef HAMON_RANGES_CONCEPTS_APPROXIMATELY_SIZED_RANGE_HPP
 #define HAMON_RANGES_CONCEPTS_APPROXIMATELY_SIZED_RANGE_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_reserve_hint) && (__cpp_lib_ranges_reserve_hint >= 202502L)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::approximately_sized_range;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -76,7 +59,5 @@ HAMON_CONCEPT_OR_BOOL approximately_sized_range =
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_CONCEPTS_APPROXIMATELY_SIZED_RANGE_HPP

@@ -7,20 +7,6 @@
 #ifndef HAMON_RANGES_BORROWED_ITERATOR_T_HPP
 #define HAMON_RANGES_BORROWED_ITERATOR_T_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::borrowed_iterator_t;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -42,7 +28,5 @@ using borrowed_iterator_t =
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_BORROWED_ITERATOR_T_HPP

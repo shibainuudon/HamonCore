@@ -7,28 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_SPLIT_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_SPLIT_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-#define HAMON_USE_STD_RANGES_SPLIT_VIEW
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::split_view;
-
-namespace views {
-
-using std::ranges::views::split;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/adaptors/detail/non_propagating_cache.hpp>
@@ -470,7 +449,5 @@ detail::split_fn split{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_SPLIT_VIEW_HPP

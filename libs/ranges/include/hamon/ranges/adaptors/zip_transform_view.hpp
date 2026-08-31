@@ -7,29 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_ZIP_TRANSFORM_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_ZIP_TRANSFORM_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_zip) && (__cpp_lib_ranges_zip >= 202110L)
-
-#define HAMON_USE_STD_RANGES_ZIP_TRANSFORM_VIEW
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::zip_transform_view;
-
-namespace views {
-
-using std::ranges::views::zip_transform;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/zip_view.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
@@ -726,7 +704,5 @@ detail::zip_transform_fn zip_transform{};
 }	// namespace hamon
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_ZIP_TRANSFORM_VIEW_HPP

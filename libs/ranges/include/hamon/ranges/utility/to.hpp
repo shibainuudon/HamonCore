@@ -7,23 +7,6 @@
 #ifndef HAMON_RANGES_UTILITY_TO_HPP
 #define HAMON_RANGES_UTILITY_TO_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES) && \
-	defined(__cpp_lib_ranges_to_container) && (__cpp_lib_ranges_to_container >= 202202L)
-
-#define HAMON_USE_STD_RANGES_TO
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::to;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
 #include <hamon/ranges/adaptors/transform_view.hpp>
 #include <hamon/ranges/adaptors/ref_view.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
@@ -590,7 +573,5 @@ auto to(Args&&... args)
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_UTILITY_TO_HPP

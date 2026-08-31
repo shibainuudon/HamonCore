@@ -237,13 +237,15 @@ struct throw_sized_borrowed_range : public test_range<T, Iterator, Sentinel>
 
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <typename T, typename Iterator, typename Sentinel>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::subrange_test::ctor_range_test::throw_sized_borrowed_range<T, Iterator, Sentinel>> = true;
 
-HAMON_RANGES_END_NAMESPACE
+}	// namespace ranges
+}	// namespace hamon
 
 namespace hamon_ranges_test
 {
@@ -303,7 +305,6 @@ static_assert( hamon::is_constructible<
 	throw_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
 
-#if !defined(HAMON_USE_STD_RANGES)
 // イテレータとセンチネルが例外を投げずにコンストラクト可能なときは例外を投げない
 static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::unsized>,
@@ -355,7 +356,6 @@ static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
-#endif
 
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {

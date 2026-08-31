@@ -610,17 +610,14 @@ span(Range&&)
 
 }	// namespace hamon
 
-#include <hamon/ranges/config.hpp>
-
-#if 1//!(defined(HAMON_USE_STD_SPAN) && defined(HAMON_USE_STD_RANGES))
-
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
 #include <hamon/cstddef/size_t.hpp>
 
 // [span.syn]
 
-HAMON_RANGES_START_NAMESPACE
+namespace hamon {
+namespace ranges {
 
 template <typename T, hamon::size_t Extent>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
@@ -630,9 +627,8 @@ template <typename T, hamon::size_t Extent>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_view<hamon::span<T, Extent>> = true;
 
-HAMON_RANGES_END_NAMESPACE
-
-#endif
+}	// namespace ranges
+}	// namespace hamon
 
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>

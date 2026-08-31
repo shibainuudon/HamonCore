@@ -7,26 +7,7 @@
 #ifndef HAMON_RANGES_ADAPTORS_AS_INPUT_VIEW_HPP
 #define HAMON_RANGES_ADAPTORS_AS_INPUT_VIEW_HPP
 
-#include <hamon/ranges/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon {
-namespace ranges {
-
-using std::ranges::as_input_view;
-
-namespace views {
-
-using std::ranges::views::adjacent_transform;
-
-}	// namespace views
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#include <hamon/ranges/fwd.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -396,7 +377,5 @@ detail::as_input_fn as_input{};
 
 }	// namespace ranges
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_RANGES_ADAPTORS_AS_INPUT_VIEW_HPP
