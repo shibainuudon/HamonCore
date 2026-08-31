@@ -7,19 +7,6 @@
 #ifndef HAMON_SPAN_SPAN_HPP
 #define HAMON_SPAN_SPAN_HPP
 
-#include <hamon/span/config.hpp>
-
-#if defined(HAMON_USE_STD_SPAN)
-
-namespace hamon
-{
-
-using std::span;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/span/span_fwd.hpp>
 #include <hamon/span/dynamic_extent.hpp>
 #include <hamon/span/detail/is_specialization_of_span.hpp>
@@ -623,11 +610,9 @@ span(Range&&)
 
 }	// namespace hamon
 
-#endif
-
 #include <hamon/ranges/config.hpp>
 
-#if !(defined(HAMON_USE_STD_SPAN) && defined(HAMON_USE_STD_RANGES))
+#if 1//!(defined(HAMON_USE_STD_SPAN) && defined(HAMON_USE_STD_RANGES))
 
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
