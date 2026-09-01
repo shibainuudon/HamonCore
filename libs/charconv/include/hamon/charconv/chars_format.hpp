@@ -7,21 +7,6 @@
 #ifndef HAMON_CHARCONV_CHARS_FORMAT_HPP
 #define HAMON_CHARCONV_CHARS_FORMAT_HPP
 
-#include <hamon/charconv/config.hpp>
-
-#if defined(HAMON_USE_STD_CHARCONV)
-
-#include <charconv>
-
-namespace hamon
-{
-
-using std::chars_format;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/to_underlying.hpp>
 #include <hamon/config.hpp>
 
@@ -89,7 +74,5 @@ operator^=(chars_format& X, chars_format Y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHARCONV_CHARS_FORMAT_HPP
