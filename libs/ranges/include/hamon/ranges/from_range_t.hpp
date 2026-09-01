@@ -7,6 +7,8 @@
 #ifndef HAMON_RANGES_FROM_RANGE_T_HPP
 #define HAMON_RANGES_FROM_RANGE_T_HPP
 
+#include <hamon/config.hpp>
+
 namespace hamon
 {
 
