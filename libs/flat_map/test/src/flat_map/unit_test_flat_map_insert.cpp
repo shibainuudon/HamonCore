@@ -10,13 +10,13 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -232,7 +232,7 @@ GTEST_TEST(FlatMapTest, InsertTest)
 		// 以下のように指定した方が高速になる
 		fm.insert(hamon::sorted_unique, fm2.begin(), fm2.end());
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (const auto& p : fm)
 		{
 			ss << p.first << ":" << p.second << ", ";

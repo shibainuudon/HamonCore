@@ -6,9 +6,9 @@
 
 #include <hamon/map.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>
 
 namespace hamon_map_test
 {
@@ -19,7 +19,7 @@ namespace pmr_test
 template <typename Key, typename T, typename C, typename A>
 std::string ToString(const hamon::map<Key, T, C, A>& m)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	for (const auto& n : m)
 	{
 		out << "[" << n.first << "] = " << n.second << "; ";

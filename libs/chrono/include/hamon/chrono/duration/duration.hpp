@@ -16,13 +16,13 @@
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ratio/ratio_divide.hpp>
+#include <hamon/sstream/basic_ostringstream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/config.hpp>
-#include <sstream>	// basic_ostringstream
 
 namespace hamon {
 namespace chrono {
@@ -426,7 +426,7 @@ hamon::basic_ostream<charT, traits>&
 operator<<(hamon::basic_ostream<charT, traits>& os, duration<Rep, Period> const& d)
 {
 	// [time.duration.io]/1
-	std::basic_ostringstream<charT, traits> s;
+	hamon::basic_ostringstream<charT, traits> s;
 	s.flags(os.flags());
 	s.imbue(os.getloc());
 	s.precision(os.precision());

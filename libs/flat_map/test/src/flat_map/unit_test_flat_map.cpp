@@ -5,9 +5,9 @@
  */
 
 #include <hamon/flat_map.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(FlatMapTest, FlatMapTest)
 {
@@ -24,7 +24,7 @@ GTEST_TEST(FlatMapTest, FlatMapTest)
 	EXPECT_EQ(3, r);
 
 	// 全体を出力する
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (const auto& p : fm)
 	{
 		ss << p.first << ":" << p.second << ", ";

@@ -5,8 +5,8 @@
  */
 
 #include <hamon/queue.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <vector>
 
 namespace hamon_priority_queue_test
@@ -16,7 +16,7 @@ namespace priority_queue_test
 {
 
 template<typename T>
-void pop_println(std::stringstream& ss, T& pq)
+void pop_println(hamon::stringstream& ss, T& pq)
 {
 	for (; !pq.empty(); pq.pop())
 	{
@@ -37,7 +37,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 	}
 
 	{
-		std::stringstream ss;
+		hamon::stringstream ss;
 		pop_println(ss, max_priority_queue);
 		EXPECT_EQ("9 8 7 6 5 4 3 2 1 0 ", ss.str());
 	}
@@ -47,7 +47,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 		hamon::priority_queue<int, std::vector<int>, std::greater<int>>
 			min_priority_queue1(data.begin(), data.end());
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		pop_println(ss, min_priority_queue1);
 		EXPECT_EQ("0 1 2 3 4 5 6 7 8 9 ", ss.str());
 	}
@@ -57,7 +57,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 	{
 		hamon::priority_queue min_priority_queue2(data.begin(), data.end(), std::greater<int>());
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		pop_println(ss, min_priority_queue2);
 		EXPECT_EQ("0 1 2 3 4 5 6 7 8 9 ", ss.str());
 	}
@@ -77,7 +77,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 			custom_priority_queue(data.begin(), data.end(), CustomLess{});
 #endif
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		pop_println(ss, custom_priority_queue);
 		EXPECT_EQ("0 1 2 3 4 5 6 7 8 9 ", ss.str());
 	}
@@ -92,7 +92,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 			lambda_priority_queue.push(n);
 		}
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		pop_println(ss, lambda_priority_queue);
 		EXPECT_EQ("8 9 6 7 4 5 2 3 0 1 ", ss.str());
 	}

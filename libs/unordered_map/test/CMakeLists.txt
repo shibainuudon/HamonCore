@@ -23,6 +23,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		memory_resource
 		pair
 		ranges
+		sstream
 		string
 		tuple
 		type_traits

@@ -6,8 +6,8 @@
 
 #include <hamon/vector.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(VectorTest, PmrTest)
 {
@@ -26,7 +26,7 @@ GTEST_TEST(VectorTest, PmrTest)
 	EXPECT_TRUE(size == 5u);
 
 	// 各要素に対して操作を行う
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (int x : v)
 	{
 		ss << x << ", ";

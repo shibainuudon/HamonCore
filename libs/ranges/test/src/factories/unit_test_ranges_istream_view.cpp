@@ -12,11 +12,15 @@
 #include <hamon/istream/istream.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/ostream/ostream.hpp>
+#include <hamon/sstream/istringstream.hpp>
+#include <hamon/sstream/ostringstream.hpp>
+#include <hamon/sstream/stringstream.hpp>
+#include <hamon/sstream/wistringstream.hpp>
+#include <hamon/sstream/wstringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <fstream>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -119,35 +123,35 @@ static_assert(!CanInstantiateIstreamView<NoDefaultCtor, wchar_t>::value, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::istream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::ostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::iostream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::istringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::ostringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::ifstream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ofstream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::fstream&>, "");
 
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream const&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream const&&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream&&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream const&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream const&&>, "");
 
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<float>), std::stringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<NotStreamExtratable>), std::stringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<StreamExtratable>), std::stringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<CharStreamExtratable>), std::stringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<WCharStreamExtratable>), std::stringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), std::stringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), std::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<float>), hamon::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NotStreamExtratable>), hamon::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<StreamExtratable>), hamon::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<CharStreamExtratable>), hamon::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<WCharStreamExtratable>), hamon::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), hamon::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), hamon::stringstream&>, "");
 
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::wstringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<float>), std::wstringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<NotStreamExtratable>), std::wstringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<StreamExtratable>), std::wstringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<CharStreamExtratable>), std::wstringstream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<WCharStreamExtratable>), std::wstringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), std::wstringstream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), std::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<float>), hamon::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NotStreamExtratable>), hamon::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<StreamExtratable>), hamon::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<CharStreamExtratable>), hamon::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<WCharStreamExtratable>), hamon::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), hamon::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), hamon::wstringstream&>, "");
 
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), int&>, "");
 
@@ -237,8 +241,8 @@ GTEST_TEST(RangesTest, IstreamViewTest)
 
 #if defined(HAMON_HAS_CXX17_RANGE_BASED_FOR)
 	{
-		std::istringstream iss{"1 2 3  4\t5"};
-		std::stringstream ss;
+		hamon::istringstream iss{"1 2 3  4\t5"};
+		hamon::stringstream ss;
 		for (int i : hamon::views::istream<int>(iss))
 		{
 			ss << i;
@@ -246,8 +250,8 @@ GTEST_TEST(RangesTest, IstreamViewTest)
 		EXPECT_EQ("12345", ss.str());
 	}
 	{
-		std::wistringstream iss{L"1 2 3  4\t5"};
-		std::wstringstream ss;
+		hamon::wistringstream iss{L"1 2 3  4\t5"};
+		hamon::wstringstream ss;
 		for (int i : hamon::views::istream<int>(iss))
 		{
 			ss << i;
@@ -256,7 +260,7 @@ GTEST_TEST(RangesTest, IstreamViewTest)
 	}
 #endif
 	{
-		std::istringstream iss{"1 2 3  4\t5"};
+		hamon::istringstream iss{"1 2 3  4\t5"};
 		auto rv = hamon::views::istream<int>(iss);
 		auto it = rv.begin();
 		EXPECT_FALSE(it == rv.end());
@@ -284,7 +288,7 @@ GTEST_TEST(RangesTest, IstreamViewTest)
 	}
 	{
 		float buf[256] {};
-		auto floats = std::stringstream {"1.1  2.2\t3.3\v4.4\f55\n66\r7.7  8.8"};
+		auto floats = hamon::stringstream {"1.1  2.2\t3.3\v4.4\f55\n66\r7.7  8.8"};
 		hamon::ranges::copy(
 			hamon::views::istream<float>(floats),
 			buf
@@ -303,8 +307,8 @@ GTEST_TEST(RangesTest, IstreamViewTest)
 	// [range.istream.overview]/3
 	// Example 1:
 	{
-		std::stringstream ss;
-		auto ints = std::istringstream {"0 1  2   3     4"};
+		hamon::stringstream ss;
+		auto ints = hamon::istringstream {"0 1  2   3     4"};
 		hamon::ranges::copy(hamon::views::istream<int>(ints), std::ostream_iterator<int>{ss, "-"});
 		EXPECT_EQ("0-1-2-3-4-", ss.str());
 	}

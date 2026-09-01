@@ -9,12 +9,12 @@
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/ranges/factories/iota_view.hpp>
 #include <hamon/memory/make_unique.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(RangesTest, P2609R3Test)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	hamon::ranges::for_each(
 		hamon::views::iota(0, 5),
 		[&](hamon::unique_ptr<int> v) {

@@ -6,13 +6,13 @@
 
 #include <hamon/ios/detail/flags_saver.hpp>
 #include <hamon/ios.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(IosTest, FlagsSaverTest)
 {
 	{
-		std::stringstream ss;
+		hamon::stringstream ss;
 		{
 			hamon::detail::flags_saver fs(ss);
 			ss << hamon::boolalpha;
@@ -32,7 +32,7 @@ GTEST_TEST(IosTest, FlagsSaverTest)
 		EXPECT_EQ("true 1 false 0 ", ss.str());
 	}
 	{
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << 123 << " ";
 		{
 			hamon::detail::flags_saver fs(ss);
@@ -55,7 +55,7 @@ GTEST_TEST(IosTest, FlagsSaverTest)
 		EXPECT_EQ("123 7b 0x7b 0X7B 0x7b 7b 123 ", ss.str());
 	}
 	{
-		std::stringstream ss;
+		hamon::stringstream ss;
 		{
 			hamon::detail::flags_saver fs(ss);
 			ss << hamon::showpoint;

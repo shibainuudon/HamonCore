@@ -14,11 +14,11 @@
 
 #include <hamon/set/multiset.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include <string>
-#include <sstream>
 
 namespace hamon_multiset_test
 {
@@ -259,7 +259,7 @@ HAMON_CXX20_CONSTEXPR bool test2()
 template <typename T, typename C>
 std::string ToString(const hamon::multiset<T, C>& set)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	auto n = set.size();
 	out << "{";
 	for (auto const& elm : set)

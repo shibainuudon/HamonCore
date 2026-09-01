@@ -5,8 +5,8 @@
  */
 
 #include <hamon/set/multiset.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(MultisetTest, OverviewTest)
 {
@@ -29,7 +29,7 @@ GTEST_TEST(MultisetTest, OverviewTest)
 
 	// 発見した
 	// 同じキーの要素を全て列挙する
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (hamon::size_t i = 0; i < count; ++i)
 	{
 		int value = *it;

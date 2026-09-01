@@ -11,8 +11,8 @@
 
 #include <hamon/string/basic_string.hpp>
 #include <hamon/ostream/endl.hpp>
+#include <hamon/sstream/basic_stringstream.hpp>
 #include <hamon/config.hpp>
-#include <sstream>
 #include <iomanip>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
@@ -31,7 +31,7 @@ void IStreamTest()
 	using Helper = StringTestHelper<CharT>;
 
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = (ss >> s);
@@ -43,14 +43,14 @@ void IStreamTest()
 		EXPECT_EQ(s, string(Helper::long_str(), 10, 5));// "brown"
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde();
 		string s;
 		ss >> s;
 		EXPECT_EQ(s, Helper::abcde());
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde();
 		string s;
 		ss << std::setw(3);
@@ -58,7 +58,7 @@ void IStreamTest()
 		EXPECT_EQ(s, string(Helper::abcde(), 0, 3));	// "abc"
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde();
 		string s;
 		ss << std::setw(7);

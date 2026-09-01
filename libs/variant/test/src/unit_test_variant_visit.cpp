@@ -11,13 +11,13 @@
 #include <hamon/variant/variant.hpp>
 #include <hamon/variant/get.hpp>
 #include <hamon/variant/bad_variant_access.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -288,7 +288,7 @@ inline void RuntimeTest()
 		using var_t = hamon::variant<int, long, double, hamon::string>;
 		hamon::vector<var_t> vec = { "hello", 15l, 10, 1.5 };
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (auto& v : vec)
 		{
 			hamon::visit([&](auto&& arg) { ss << arg << ", "; }, v);

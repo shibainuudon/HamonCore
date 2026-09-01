@@ -5,8 +5,8 @@
  */
 
 #include <hamon/flat_map.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(FlatMultimapTest, FlatMultimapTest)
 {
@@ -19,7 +19,7 @@ GTEST_TEST(FlatMultimapTest, FlatMultimapTest)
 	};
 
 	// 全体を出力する
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (const auto& p : fm)
 	{
 		ss << p.first << ":" << p.second << ", ";

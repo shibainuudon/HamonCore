@@ -5,8 +5,8 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(MultimapTest, OverviewTest)
 {
@@ -25,7 +25,7 @@ GTEST_TEST(MultimapTest, OverviewTest)
 
 	// キー`a`を持つ値を列挙する
 	auto p = m.equal_range('a');
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (auto it = p.first; it != p.second; ++it)
 	{
 		ss << it->second << ", ";

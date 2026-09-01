@@ -10,13 +10,13 @@
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_set_test_helper.hpp"
 
@@ -167,7 +167,7 @@ GTEST_TEST(FlatSetTest, InsertTest)
 		// 以下のように指定した方が高速になる
 		fs.insert(hamon::sorted_unique, {5, 6, 7});
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (int i : fs)
 		{
 			ss << i << ", ";

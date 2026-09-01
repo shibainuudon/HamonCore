@@ -831,7 +831,7 @@ GTEST_TEST(RangesTest, TakeWhileViewTest)
 	// [range.take.while.overview]/3
 	// Example 1:
 	{
-		auto input = std::istringstream {"0 1 2 3 4 5 6 7 8 9"};
+		auto input = hamon::istringstream {"0 1 2 3 4 5 6 7 8 9"};
 		auto small = [](const auto x) noexcept { return x < 5; };
 		auto small_ints = hamon::views::istream<int>(input) | hamon::views::take_while(small);
 		for (const auto i : small_ints)

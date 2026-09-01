@@ -19,6 +19,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		cmath
 		limits
 		numbers
+		sstream
 		type_traits
 		utility
 		common_test)

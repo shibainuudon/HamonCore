@@ -8,8 +8,8 @@
  */
 
 #include <hamon/complex/complex.hpp>
+#include <hamon/sstream/ostringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_complex_test
 {
@@ -22,19 +22,19 @@ void test()
 {
 	{
 		hamon::complex<T> const c(1, 2);
-		std::ostringstream os;
+		hamon::ostringstream os;
 		os << c;
 		EXPECT_EQ(os.str(), "(1,2)");
 	}
 	{
 		hamon::complex<T> const c(-2, 1);
-		std::ostringstream os;
+		hamon::ostringstream os;
 		os << c;
 		EXPECT_EQ(os.str(), "(-2,1)");
 	}
 	{
 		hamon::complex<T> const c(12, -345);
-		std::ostringstream os;
+		hamon::ostringstream os;
 		os << c;
 		EXPECT_EQ(os.str(), "(12,-345)");
 	}

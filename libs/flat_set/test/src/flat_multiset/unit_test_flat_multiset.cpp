@@ -8,8 +8,8 @@
 #include <hamon/string.hpp>
 #include <hamon/deque.hpp>
 #include <hamon/functional.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(FlatMultisetTest, FlatMultisetTest)
 {
@@ -22,7 +22,7 @@ GTEST_TEST(FlatMultisetTest, FlatMultisetTest)
 		EXPECT_EQ("Alice", *it);
 
 		// 全体を出力する
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (const auto& str : fs)
 		{
 			ss << str << ", ";
@@ -37,7 +37,7 @@ GTEST_TEST(FlatMultisetTest, FlatMultisetTest)
 		hamon::flat_multiset<int, hamon::greater<int>, hamon::deque<int>> fs(keys);
 
 		// 全体を出力する
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (int i : fs)
 		{
 			ss << i << " ";

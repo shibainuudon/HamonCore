@@ -7,6 +7,8 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/sstream/stringstream.hpp>
+#include <hamon/sstream/wstringstream.hpp>
 #include <gtest/gtest.h>
 #include "serialize_test.hpp"
 #include "vector_test.hpp"
@@ -39,16 +41,16 @@ void VectorSerializeTestSub()
 
 	vector_type const v = make_random_vector<T, N>();
 
-	SerializeTest<json_oarchive,   json_iarchive,   std::stringstream>(v);
-	SerializeTest<text_oarchive,   text_iarchive,   std::stringstream>(v);
-	SerializeTest<xml_oarchive,    xml_iarchive,    std::stringstream>(v);
-	SerializeTest<binary_oarchive, binary_iarchive, std::stringstream>(v);
+	SerializeTest<json_oarchive,   json_iarchive,   hamon::stringstream>(v);
+	SerializeTest<text_oarchive,   text_iarchive,   hamon::stringstream>(v);
+	SerializeTest<xml_oarchive,    xml_iarchive,    hamon::stringstream>(v);
+	SerializeTest<binary_oarchive, binary_iarchive, hamon::stringstream>(v);
 
 #if !defined(HAMON_NO_STD_WSTREAMBUF)
-	SerializeTest<json_oarchive,   json_iarchive,   std::wstringstream>(v);
-	SerializeTest<text_oarchive,   text_iarchive,   std::wstringstream>(v);
-	SerializeTest<xml_oarchive,    xml_iarchive,    std::wstringstream>(v);
-//	SerializeTest<binary_oarchive, binary_iarchive, std::wstringstream>(v);
+	SerializeTest<json_oarchive,   json_iarchive,   hamon::wstringstream>(v);
+	SerializeTest<text_oarchive,   text_iarchive,   hamon::wstringstream>(v);
+	SerializeTest<xml_oarchive,    xml_iarchive,    hamon::wstringstream>(v);
+//	SerializeTest<binary_oarchive, binary_iarchive, hamon::wstringstream>(v);
 #endif
 }
 

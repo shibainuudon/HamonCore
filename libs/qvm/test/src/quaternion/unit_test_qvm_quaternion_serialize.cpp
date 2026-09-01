@@ -5,6 +5,8 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
+#include <hamon/sstream/stringstream.hpp>
+#include <hamon/sstream/wstringstream.hpp>
 #include <gtest/gtest.h>
 #include "serialize_test.hpp"
 #include "quaternion_test.hpp"
@@ -37,16 +39,16 @@ TYPED_TEST(QuaternionSerializeTest, SerializeTest)
 
 	quaternion const q = make_random_quaternion<T>();
 
-	SerializeTest<json_oarchive,   json_iarchive,   std::stringstream>(q);
-	SerializeTest<text_oarchive,   text_iarchive,   std::stringstream>(q);
-	SerializeTest<xml_oarchive,    xml_iarchive,    std::stringstream>(q);
-	SerializeTest<binary_oarchive, binary_iarchive, std::stringstream>(q);
+	SerializeTest<json_oarchive,   json_iarchive,   hamon::stringstream>(q);
+	SerializeTest<text_oarchive,   text_iarchive,   hamon::stringstream>(q);
+	SerializeTest<xml_oarchive,    xml_iarchive,    hamon::stringstream>(q);
+	SerializeTest<binary_oarchive, binary_iarchive, hamon::stringstream>(q);
 
 #if !defined(HAMON_NO_STD_WSTREAMBUF)
-	SerializeTest<json_oarchive,   json_iarchive,   std::wstringstream>(q);
-	SerializeTest<text_oarchive,   text_iarchive,   std::wstringstream>(q);
-	SerializeTest<xml_oarchive,    xml_iarchive,    std::wstringstream>(q);
-//	SerializeTest<binary_oarchive, binary_iarchive, std::wstringstream>(q);
+	SerializeTest<json_oarchive,   json_iarchive,   hamon::wstringstream>(q);
+	SerializeTest<text_oarchive,   text_iarchive,   hamon::wstringstream>(q);
+	SerializeTest<xml_oarchive,    xml_iarchive,    hamon::wstringstream>(q);
+//	SerializeTest<binary_oarchive, binary_iarchive, hamon::wstringstream>(q);
 #endif
 }
 

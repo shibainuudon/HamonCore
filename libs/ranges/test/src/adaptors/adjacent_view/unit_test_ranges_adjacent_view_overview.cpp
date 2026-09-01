@@ -5,10 +5,10 @@
  */
 
 #include <hamon/ranges/adaptors/adjacent_view.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -23,7 +23,7 @@ GTEST_TEST(RangesTest, AdjacentViewOverviewTest)
 		// [range.adjacent.overview]/2.2
 		// Example 1:
 		hamon::vector<int> v = { 1, 2, 3, 4 };
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto i : v | hamon::views::adjacent<2>)
 		{
 			out << "(" << hamon::adl_get<0>(i) << ", " << hamon::adl_get<1>(i) << ") ";  // prints (1, 2) (2, 3) (3, 4)

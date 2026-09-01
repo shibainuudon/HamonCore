@@ -6,8 +6,8 @@
 
 #include <hamon/map/multimap.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(MultimapTest, PmrTest)
 {
@@ -27,7 +27,7 @@ GTEST_TEST(MultimapTest, PmrTest)
 
 	// キー`a`を持つ値を列挙する
 	auto p = m.equal_range('a');
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (auto it = p.first; it != p.second; ++it)
 	{
 		ss << it->second << ", ";

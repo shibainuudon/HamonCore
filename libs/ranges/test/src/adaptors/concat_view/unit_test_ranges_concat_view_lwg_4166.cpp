@@ -10,9 +10,9 @@
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/factories/istream_view.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -25,7 +25,7 @@ GTEST_TEST(RangesTest, ConcatViewLWG4166Test)
 {
 	auto range_copyable_it = hamon::vector<int>{ 1, 2, 3 };
 	{
-		std::stringstream ss{ "4 5 6" };
+		hamon::stringstream ss{ "4 5 6" };
 		auto range_noncopyable_it = hamon::views::istream<int>(ss);
 
 		auto view1 = hamon::views::concat(range_copyable_it, range_noncopyable_it);
@@ -33,7 +33,7 @@ GTEST_TEST(RangesTest, ConcatViewLWG4166Test)
 		EXPECT_TRUE(hamon::ranges::equal(view1, hamon::vector<int>{ 1, 2, 3, 4, 5, 6 })); // ok
 	}
 	{
-		std::stringstream ss{ "4 5 6" };
+		hamon::stringstream ss{ "4 5 6" };
 		auto range_noncopyable_it = hamon::views::istream<int>(ss);
 
 		auto view2 = hamon::views::concat(range_noncopyable_it, range_copyable_it);

@@ -12,10 +12,10 @@
  */
 
 #include <hamon/set/set.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <sstream>
 
 namespace hamon_set_test
 {
@@ -158,7 +158,7 @@ GTEST_TEST(SetTest, RBeginREndTest)
 	// https://en.cppreference.com/w/cpp/container/set/rbegin
 	{
 		hamon::set<unsigned> rep {1, 2, 3, 4, 1, 2, 3, 4};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto it = rep.crbegin(); it != rep.crend(); ++it)
 		{
 			out << *it << ' ';

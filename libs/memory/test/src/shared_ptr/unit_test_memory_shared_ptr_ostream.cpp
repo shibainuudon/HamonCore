@@ -8,8 +8,8 @@
  */
 
 #include <hamon/memory/shared_ptr.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_memory_test
 {
@@ -24,9 +24,9 @@ GTEST_TEST(SharedPtrTest, OstreamTest)
 {
 	auto p = new int;
 	hamon::shared_ptr<int> sp(p);
-	std::stringstream ss1;
+	hamon::stringstream ss1;
 	ss1 << sp;
-	std::stringstream ss2;
+	hamon::stringstream ss2;
 	ss2 << p;
 	EXPECT_TRUE(ss1.str() == ss2.str());
 }

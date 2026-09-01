@@ -20,4 +20,5 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		initializer_list
 		ostream
 		ranges
+		sstream
 		common_test)

@@ -8,7 +8,7 @@
 #define HAMON_DEBUG_DETAIL_ASSERTION_FAILED_HPP
 
 #include <hamon/debug/assertion_handler.hpp>
-#include <sstream>
+#include <hamon/sstream/stringstream.hpp>
 
 namespace hamon
 {
@@ -29,7 +29,7 @@ assertion_failed(
 	Expr const& expr,
 	char const* msg)
 {
-	std::stringstream ss;
+	hamon::stringstream ss;
 	ss << expr;
 
 	hamon::debug::get_assertion_handler()(

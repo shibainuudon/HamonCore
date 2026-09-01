@@ -11,9 +11,9 @@
 #include <hamon/iterator/size.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -30,7 +30,7 @@ GTEST_TEST(RangesTest, ConcatViewOverviewTest)
 		hamon::vector<int> v1{ 1, 2, 3 }, v2{ 4, 5 }, v3{};
 		hamon::array<int, 3> a{ 6, 7, 8 };
 		auto s = hamon::views::single(9);
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto&& i : hamon::views::concat(v1, v2, v3, a, s))
 		{
 			out << i << ' ';      // prints 1 2 3 4 5 6 7 8 9
@@ -47,7 +47,7 @@ GTEST_TEST(RangesTest, ConcatViewOverviewTest)
 		auto con = hamon::views::concat(v0, v1, a, ie);
 		EXPECT_TRUE(con.size() == v0.size() + v1.size() + hamon::size(a) + ie.size());
 		{
-			std::stringstream out;
+			hamon::stringstream out;
 			for (auto&& t : con)
 			{
 				out << t << ' ';
@@ -57,7 +57,7 @@ GTEST_TEST(RangesTest, ConcatViewOverviewTest)
 		con[6] = 42; // con is random_access_range, operator[] returns a reference
 		EXPECT_TRUE(a[1] == 42); // a[1] was modified via con[6]
 		{
-			std::stringstream out;
+			hamon::stringstream out;
 			for (auto&& t : con)
 			{
 				out << t << ' ';
@@ -68,7 +68,7 @@ GTEST_TEST(RangesTest, ConcatViewOverviewTest)
 		hamon::list<int> l{ 7, 8 }; // list is bidirectional range
 		auto cat = hamon::views::concat(v0, l);
 		{
-			std::stringstream out;
+			hamon::stringstream out;
 			for (auto&& t : cat)
 			{
 				out << t << ' ';
@@ -84,7 +84,7 @@ GTEST_TEST(RangesTest, ConcatViewOverviewTest)
 		auto t = hamon::views::iota(6, 9);
 		auto cat = hamon::views::concat(p, e, t);
 		auto dog = hamon::views::concat(cat, cat);
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto i{ dog.begin() }; i != hamon::default_sentinel; ++i)
 		{
 			out << *i << ' ';

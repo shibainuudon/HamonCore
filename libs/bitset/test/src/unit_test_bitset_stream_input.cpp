@@ -9,21 +9,21 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/sstream/istringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(BitsetTest, StreamInputTest)
 {
 	{
-		std::istringstream ss("001101");
+		hamon::istringstream ss("001101");
 
 		hamon::bitset<0> b0;
 		ss >> b0;
 		EXPECT_EQ("", b0.to_string());
 	}
 	{
-		std::istringstream ss("001101");
+		hamon::istringstream ss("001101");
 
 		hamon::bitset<3> b0;
 		ss >> b0;
@@ -34,21 +34,21 @@ GTEST_TEST(BitsetTest, StreamInputTest)
 		EXPECT_EQ("101", b1.to_string());
 	}
 	{
-		std::istringstream ss("001101");
+		hamon::istringstream ss("001101");
 
 		hamon::bitset<8> b0;
 		ss >> b0;
 		EXPECT_EQ("00001101", b0.to_string());
 	}
 	{
-		std::istringstream ss("0011X01");
+		hamon::istringstream ss("0011X01");
 
 		hamon::bitset<9> b0;
 		ss >> b0;
 		EXPECT_EQ("000000011", b0.to_string());
 	}
 	{
-		std::istringstream ss("0101111101011111010111110101111101011111010111110101111101011111");
+		hamon::istringstream ss("0101111101011111010111110101111101011111010111110101111101011111");
 
 		hamon::bitset<64> b0;
 		ss >> b0;

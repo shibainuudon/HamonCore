@@ -28,6 +28,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		random
 		ranges
 		set
+		sstream
 		string
 		tuple
 		type_traits

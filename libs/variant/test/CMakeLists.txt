@@ -18,6 +18,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		initializer_list
 		memory
+		sstream
 		string
 		utility
 		vector

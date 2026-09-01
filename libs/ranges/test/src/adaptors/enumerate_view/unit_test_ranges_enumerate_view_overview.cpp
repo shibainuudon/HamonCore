@@ -5,10 +5,10 @@
  */
 
 #include <hamon/ranges/adaptors/enumerate_view.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -24,7 +24,7 @@ GTEST_TEST(RangesTest, EnumerateViewOverviewTest)
 		// [range.enumerate.overview]/2
 		// Example 1:
 		hamon::vector<int> vec {1, 2, 3};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto [index, value] : hamon::views::enumerate(vec))
 		{
 			out << index << ":" << value << ' ';         // prints 0:1 1:2 2:3
@@ -34,7 +34,7 @@ GTEST_TEST(RangesTest, EnumerateViewOverviewTest)
 #endif
 	{
 		hamon::vector<int> vec {10, 20, 30};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto t : hamon::views::enumerate(vec))
 		{
 			auto index = hamon::adl_get<0>(t);

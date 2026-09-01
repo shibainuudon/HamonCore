@@ -9,6 +9,7 @@
 #include <hamon/flat_map/flat_multimap.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/deque.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
 
@@ -274,7 +274,7 @@ GTEST_TEST(FlatMultimapTest, EmplaceTest)
 			hamon::forward_as_tuple(static_cast<hamon::size_t>(3), 'B'),
 			hamon::forward_as_tuple(5, 6));
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (const auto& p : fm)
 		{
 			ss << p.first << ":(" << p.second.x << ", " << p.second.y << ')' << ", ";

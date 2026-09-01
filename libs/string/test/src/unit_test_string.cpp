@@ -5,8 +5,9 @@
  */
 
 #include <hamon/string.hpp>
+#include <hamon/sstream/stringstream.hpp>
+#include <hamon/sstream/wstringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(StringTest, StringTest)
 {
@@ -23,7 +24,7 @@ GTEST_TEST(StringTest, StringTest)
 		hamon::string hello = s.substr(0, 5);
 
 		// ostreamへの出力
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << hello;
 		EXPECT_EQ("hello", ss.str());
 	}
@@ -40,7 +41,7 @@ GTEST_TEST(StringTest, StringTest)
 		hamon::wstring hello = s.substr(0, 5);
 
 		// ostreamへの出力
-		std::wstringstream ss;
+		hamon::wstringstream ss;
 		ss << hello;
 		EXPECT_EQ(L"hello", ss.str());
 	}

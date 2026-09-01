@@ -7,9 +7,9 @@
 #include <hamon/set/set.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>
 
 namespace hamon_set_test
 {
@@ -20,7 +20,7 @@ namespace pmr_test
 template<typename T>
 std::string ToString(const hamon::pmr::set<T>& set)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	auto n = set.size();
 	out << "{";
 	for (auto const& elm : set)

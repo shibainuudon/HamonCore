@@ -9,11 +9,11 @@
  */
 
 #include <hamon/inplace_vector.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -207,7 +207,7 @@ GTEST_TEST(InplaceVectorTest, OpAssignMoveTest)
 	{
 		auto print = [](hamon::inplace_vector<hamon::string, 3> const& v)
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& e : v)
 			{
 				ss << e << ", ";

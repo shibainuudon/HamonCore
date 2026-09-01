@@ -7,10 +7,11 @@
 #include <hamon/ranges/adaptors/lazy_split_view.hpp>
 #include <hamon/ranges/factories/istream_view.hpp>
 #include <hamon/list.hpp>
+#include <hamon/sstream/istringstream.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <string>
 
 namespace hamon_ranges_test
@@ -26,7 +27,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	{
 		// [range.lazy.split.overview]/3
 		// Example 1:
-		std::stringstream out;
+		hamon::stringstream out;
 		std::string str {"the quick brown fox"};
 		for (auto word : str | hamon::views::lazy_split(' '))
 		{
@@ -41,7 +42,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	{
 		hamon::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 		hamon::vector<int> pattern = {4, 5};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto inner_range : v | hamon::views::lazy_split(pattern))
 		{
 			for (int n : inner_range)
@@ -55,7 +56,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	{
 		hamon::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 		hamon::vector<int> pattern = {};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto inner_range : v | hamon::views::lazy_split(pattern))
 		{
 			for (int n : inner_range)
@@ -69,7 +70,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	{
 		hamon::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 		hamon::vector<int> pattern = {8, 9};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto inner_range : v | hamon::views::lazy_split(pattern))
 		{
 			for (int n : inner_range)
@@ -83,7 +84,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	{
 		hamon::vector<int> v = {1, 2, 4, 4, 1, 1, 1, 10, 23, 67, 9, 1, 1, 1, 1111, 1, 1, 1, 1, 1, 1, 9, 0};
 		hamon::list<int> delimiter = {1, 1, 1};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto inner_range : v | hamon::views::lazy_split(delimiter))
 		{
 			for (int n : inner_range)
@@ -95,8 +96,8 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 		EXPECT_EQ("1244\n1023679\n1111\n\n90\n", out.str());
 	}
 	{
-		auto iss = std::istringstream {"1 2 3 1 4 5 6 1 7 8 1 9 1"};
-		std::stringstream out;
+		auto iss = hamon::istringstream {"1 2 3 1 4 5 6 1 7 8 1 9 1"};
+		hamon::stringstream out;
 		for (auto inner_range : hamon::views::istream<int>(iss) | hamon::views::lazy_split(1))
 		{
 			for (int n : inner_range)
@@ -109,7 +110,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	}
 	{
 		const auto str = hamon::string_view("1, 12434, 5, 0000, 3942");
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto inner_range : str | hamon::views::lazy_split(hamon::string_view(", ", 2)))
 		{
 			for (char c : inner_range)

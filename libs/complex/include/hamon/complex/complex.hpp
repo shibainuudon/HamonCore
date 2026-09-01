@@ -400,7 +400,7 @@ operator!=(T const& lhs, complex<T> const& rhs) HAMON_NOEXCEPT	// noexcept as an
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/istream/ws.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
-#include <sstream>
+#include <hamon/sstream/basic_ostringstream.hpp>
 
 namespace hamon
 {
@@ -491,7 +491,7 @@ operator<<(hamon::basic_ostream<CharT, traits>& o, complex<T> const& x)
 {
 	// [complex.ops]/14
 	// Inserts the complex number x onto the stream o as if it were implemented as follows:
-	std::basic_ostringstream<CharT, traits> s;
+	hamon::basic_ostringstream<CharT, traits> s;
 	s.flags(o.flags());
 	s.imbue(o.getloc());
 	s.precision(o.precision());

@@ -12,9 +12,9 @@
 #include <hamon/iterator/back_inserter.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <iterator>
 
 namespace hamon_algorithm_test
@@ -70,7 +70,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		EXPECT_TRUE(it == hamon::end(out));
 	}
 	{
-		std::stringstream ss("0 1 2 3 4 5 6 7 8 9");
+		hamon::stringstream ss("0 1 2 3 4 5 6 7 8 9");
 		std::istream_iterator<int> ii_first(ss);
 		std::istream_iterator<int> ii_last;
 		int out[4] {};

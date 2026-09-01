@@ -18,10 +18,10 @@
 
 #include <hamon/iomanip/quoted.hpp>
 #include <hamon/ios.hpp>
+#include <hamon/sstream/basic_stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <string>
 #if (HAMON_CXX_STANDARD >= 17) && HAMON_HAS_INCLUDE(<string_view>)
 #include <string_view>
@@ -44,7 +44,7 @@ void test2(Str in, CharT delim, CharT escape, Str unquoted_str, Str quoted_str, 
 {
 	// round trip
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		if (noskip_ws)
 		{
 			hamon::noskipws(ss);
@@ -59,7 +59,7 @@ void test2(Str in, CharT delim, CharT escape, Str unquoted_str, Str quoted_str, 
 
 	// unquoted
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		if (noskip_ws)
 		{
 			hamon::noskipws(ss);
@@ -74,7 +74,7 @@ void test2(Str in, CharT delim, CharT escape, Str unquoted_str, Str quoted_str, 
 
 	// quoted
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		if (noskip_ws)
 		{
 			hamon::noskipws(ss);

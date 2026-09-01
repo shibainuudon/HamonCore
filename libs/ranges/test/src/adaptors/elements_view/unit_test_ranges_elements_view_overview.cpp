@@ -7,10 +7,10 @@
 #include <hamon/ranges/adaptors/elements_view.hpp>
 #include <hamon/algorithm/ranges/count_if.hpp>
 #include <hamon/pair.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
 #include <map>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -35,7 +35,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 
 		{
 			auto names = historical_figures | hamon::views::elements<0>;
-			std::stringstream out;
+			hamon::stringstream out;
 			for (auto&& name : names)
 			{
 				out << name << ' ';          // prints Babbage Hamilton Lovelace Turing 
@@ -44,7 +44,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 		}
 		{
 			auto birth_years = historical_figures | hamon::views::elements<1>;
-			std::stringstream out;
+			hamon::stringstream out;
 			for (auto&& born : birth_years)
 			{
 				out << born << ' ';          // prints 1791 1936 1815 1912 
@@ -55,7 +55,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 		// Example 2:
 		{
 			auto names = historical_figures | hamon::views::keys;
-			std::stringstream out;
+			hamon::stringstream out;
 			for (auto&& name : names)
 			{
 				out << name << ' ';          // prints Babbage Hamilton Lovelace Turing 

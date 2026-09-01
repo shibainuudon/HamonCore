@@ -6,8 +6,8 @@
 
 #include <hamon/set/multiset.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(MultisetTest, PmrTest)
 {
@@ -31,7 +31,7 @@ GTEST_TEST(MultisetTest, PmrTest)
 
 	// 発見した
 	// 同じキーの要素を全て列挙する
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (hamon::size_t i = 0; i < count; ++i)
 	{
 		int value = *it;

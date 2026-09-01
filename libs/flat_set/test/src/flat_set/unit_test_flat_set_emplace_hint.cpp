@@ -10,6 +10,7 @@
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -20,7 +21,6 @@
 #include <hamon/deque.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_set_test_helper.hpp"
 
@@ -350,7 +350,7 @@ GTEST_TEST(FlatSetTest, EmplaceHintTest)
 		// キー5の要素が最後尾に追加されることが事前にわかっているので、fs.end()をヒントとして与える
 		fs.emplace_hint(fs.end(), 5);
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (int i : fs)
 		{
 			ss << i << ", ";
@@ -365,7 +365,7 @@ GTEST_TEST(FlatSetTest, EmplaceHintTest)
 		fs.emplace_hint(fs.end(), "BBBB");
 		fs.emplace_hint(fs.begin(), hamon::begin(aaa), hamon::end(aaa));
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (auto const& i : fs)
 		{
 			ss << i << ", ";

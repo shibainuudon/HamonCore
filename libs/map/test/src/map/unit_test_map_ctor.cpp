@@ -7,10 +7,10 @@
 #include <hamon/map/map.hpp>
 #include <hamon/ostream/ostream.hpp>
 #include <hamon/ranges/from_range_t.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>
 
 namespace hamon_map_test
 {
@@ -21,7 +21,7 @@ namespace ctor_test
 template <typename Key, typename T, typename C>
 std::string ToString(const hamon::map<Key, T, C>& m)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	for (const auto& n : m)
 	{
 		out << "[" << n.first << "] = " << n.second << ", ";

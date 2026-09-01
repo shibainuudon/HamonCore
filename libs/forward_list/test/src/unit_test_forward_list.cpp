@@ -6,8 +6,8 @@
 
 #include <hamon/forward_list/forward_list.hpp>
 #include <hamon/algorithm/for_each.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(ForwardListTest, ForwardListTest)
 {
@@ -17,7 +17,7 @@ GTEST_TEST(ForwardListTest, ForwardListTest)
 	ls.insert_after(ls.begin(), 1); // 先頭の後ろに1を追加
 
 	// イテレータを介して全要素に対して操作を行う
-	std::stringstream ss;
+	hamon::stringstream ss;
 	hamon::for_each(ls.cbegin(), ls.cend(), [&](int x) {
 		ss << x << ", ";
 	});

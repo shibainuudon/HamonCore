@@ -12,12 +12,12 @@
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
-#include <sstream>
 #include <array>
 #include "get_random_value.hpp"
 
@@ -246,7 +246,7 @@ R"({
 }
 
 using JsonTestTypes = ::testing::Types<
-	std::tuple<std::stringstream,  hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>
+	std::tuple<hamon::stringstream,  hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>
 >;
 
 template <typename T>
