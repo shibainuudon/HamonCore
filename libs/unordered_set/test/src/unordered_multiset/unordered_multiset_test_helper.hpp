@@ -7,11 +7,15 @@
 #ifndef HAMON_UNORDERED_MULTISET_TEST_HELPER_HPP
 #define HAMON_UNORDERED_MULTISET_TEST_HELPER_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/hash.hpp>
 #include <hamon/functional/ranges/hash.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/remove_const.hpp>
 #include <hamon/utility/adl_swap.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon_unordered_multiset_test
 {
@@ -155,13 +159,13 @@ struct TestAllocator1
 	HAMON_CXX20_CONSTEXPR
 	T* allocate(hamon::size_t n)
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX20_CONSTEXPR
 	void deallocate(T* p, hamon::size_t n)
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -182,10 +186,10 @@ template <typename T>
 struct TestAllocator2
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
-	using propagate_on_container_copy_assignment = std::true_type;
-	using propagate_on_container_move_assignment = std::true_type;
-	using propagate_on_container_swap = std::true_type;
+	using is_always_equal = hamon::false_type;
+	using propagate_on_container_copy_assignment = hamon::true_type;
+	using propagate_on_container_move_assignment = hamon::true_type;
+	using propagate_on_container_swap = hamon::true_type;
 
 	int id;
 
@@ -199,13 +203,13 @@ struct TestAllocator2
 	HAMON_CXX20_CONSTEXPR
 	T* allocate(hamon::size_t n)
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX20_CONSTEXPR
 	void deallocate(T* p, hamon::size_t n)
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -227,7 +231,7 @@ template <typename T>
 struct TestAllocator3
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
+	using is_always_equal = hamon::false_type;
 
 	int id;
 
@@ -241,13 +245,13 @@ struct TestAllocator3
 	HAMON_CXX20_CONSTEXPR
 	T* allocate(hamon::size_t n)
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX20_CONSTEXPR
 	void deallocate(T* p, hamon::size_t n)
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -277,9 +281,9 @@ template <typename T>
 struct TestAllocator4
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
-	using propagate_on_container_copy_assignment = std::true_type;
-	using propagate_on_container_move_assignment = std::false_type;
+	using is_always_equal = hamon::false_type;
+	using propagate_on_container_copy_assignment = hamon::true_type;
+	using propagate_on_container_move_assignment = hamon::false_type;
 
 	int id;
 
@@ -293,13 +297,13 @@ struct TestAllocator4
 	HAMON_CXX20_CONSTEXPR
 	T* allocate(hamon::size_t n)
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX20_CONSTEXPR
 	void deallocate(T* p, hamon::size_t n)
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -322,9 +326,9 @@ template <typename T>
 struct TestAllocator5
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
-	using propagate_on_container_copy_assignment = std::false_type;
-	using propagate_on_container_move_assignment = std::true_type;
+	using is_always_equal = hamon::false_type;
+	using propagate_on_container_copy_assignment = hamon::false_type;
+	using propagate_on_container_move_assignment = hamon::true_type;
 
 	int id;
 
@@ -338,13 +342,13 @@ struct TestAllocator5
 	HAMON_CXX20_CONSTEXPR
 	T* allocate(hamon::size_t n)
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX20_CONSTEXPR
 	void deallocate(T* p, hamon::size_t n)
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -366,8 +370,8 @@ template <typename T>
 struct TestAllocator6
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
-	using propagate_on_container_swap = std::false_type;
+	using is_always_equal = hamon::false_type;
+	using propagate_on_container_swap = hamon::false_type;
 
 	int id;
 
@@ -381,13 +385,13 @@ struct TestAllocator6
 	HAMON_CXX20_CONSTEXPR
 	T* allocate(hamon::size_t n)
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX20_CONSTEXPR
 	void deallocate(T* p, hamon::size_t n)
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	HAMON_CXX11_CONSTEXPR
