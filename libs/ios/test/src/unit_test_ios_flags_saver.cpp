@@ -4,7 +4,8 @@
  *	@brief	flags_saver のテスト
  */
 
-#include <hamon/ios/flags_saver.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
+#include <hamon/ios.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 
@@ -13,16 +14,16 @@ GTEST_TEST(IosTest, FlagsSaverTest)
 	{
 		std::stringstream ss;
 		{
-			hamon::ios::flags_saver fs(ss);
-			ss << std::boolalpha;
+			hamon::detail::flags_saver fs(ss);
+			ss << hamon::boolalpha;
 			ss << true << " ";
 		}
 		{
 			ss << true << " ";
 		}
 		{
-			hamon::ios::flags_saver fs(ss);
-			ss << std::boolalpha;
+			hamon::detail::flags_saver fs(ss);
+			ss << hamon::boolalpha;
 			ss << false << " ";
 		}
 		{
@@ -34,16 +35,16 @@ GTEST_TEST(IosTest, FlagsSaverTest)
 		std::stringstream ss;
 		ss << 123 << " ";
 		{
-			hamon::ios::flags_saver fs(ss);
-			ss << std::hex;
+			hamon::detail::flags_saver fs(ss);
+			ss << hamon::hex;
 			ss << 123 << " ";
 			{
-				hamon::ios::flags_saver fs2(ss);
-				ss << std::showbase;
+				hamon::detail::flags_saver fs2(ss);
+				ss << hamon::showbase;
 				ss << 123 << " ";
 				{
-					hamon::ios::flags_saver fs3(ss);
-					ss << std::uppercase;
+					hamon::detail::flags_saver fs3(ss);
+					ss << hamon::uppercase;
 					ss << 123 << " ";
 				}
 				ss << 123 << " ";
@@ -56,13 +57,13 @@ GTEST_TEST(IosTest, FlagsSaverTest)
 	{
 		std::stringstream ss;
 		{
-			hamon::ios::flags_saver fs(ss);
-			ss << std::showpoint;
+			hamon::detail::flags_saver fs(ss);
+			ss << hamon::showpoint;
 			ss << 1.0 << " ";
 		}
 		{
-			hamon::ios::flags_saver fs(ss);
-			ss << std::showpos;
+			hamon::detail::flags_saver fs(ss);
+			ss << hamon::showpos;
 			ss << 1.0 << " ";
 		}
 		{

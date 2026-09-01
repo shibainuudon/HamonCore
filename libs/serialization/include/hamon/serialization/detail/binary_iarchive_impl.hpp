@@ -9,6 +9,7 @@
 
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memcpy.hpp>
+#include <hamon/ios/streamsize.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/vector.hpp>
 
@@ -30,13 +31,13 @@ void load_binary(hamon::basic_istream<CharT, Traits>& is, void* p, hamon::size_t
 	if (size % sizeof(CharT) == 0)
 	{
 		// size が sizeof(CharT) の倍数のときはそのまま読み込めば良い
-		pbuf->sgetn(static_cast<CharT*>(p), static_cast<std::streamsize>(count));
+		pbuf->sgetn(static_cast<CharT*>(p), static_cast<hamon::streamsize>(count));
 	}
 	else
 	{
 		// そうでないときは、一時バッファに読み込んでからコピーする
 		hamon::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
-		pbuf->sgetn(buf.data(), static_cast<std::streamsize>(count));
+		pbuf->sgetn(buf.data(), static_cast<hamon::streamsize>(count));
 		hamon::memcpy(p, buf.data(), size);
 	}
 

@@ -11,6 +11,7 @@
 #include <hamon/string_view.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/ieee754.hpp>
+#include <hamon/ios.hpp>
 #include <hamon/ostream/endl.hpp>
 #include <hamon/cstring.hpp>
 #include <gtest/gtest.h>
@@ -66,10 +67,10 @@ test(hamon::string_view sv, hamon::chars_format fmt, hamon::size_t expected_idx,
 #else
 			if (bits1.to_uint() != bits2.to_uint())
 			{
-				std::cout << std::hex;
+				std::cout << hamon::hex;
 				std::cout << "hamon: " << bits1.to_uint() << ", ";
 				std::cout << "expected: " << bits2.to_uint() << ", ";
-				std::cout << std::dec;
+				std::cout << hamon::dec;
 	
 				std::cout << "\"" << sv << "\": ";
 				if (bits1.to_uint() == bits2.to_uint())

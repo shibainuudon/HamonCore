@@ -8,9 +8,10 @@
 #define HAMON_STRING_GETLINE_HPP
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/ios/ios_base.hpp>
+#include <hamon/ios/streamsize.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/config.hpp>
-#include <ios>		// ios_base, streamsize
 
 namespace hamon
 {
@@ -24,7 +25,7 @@ getline(
 	basic_string<CharT, Traits2, Allocator>& str, CharT delim)
 {
 	// 31.7.5.4 [istream.unformatted], Unformatted input functions
-	std::ios_base::iostate state = std::ios_base::goodbit;
+	hamon::ios_base::iostate state = hamon::ios_base::goodbit;
 	typename hamon::basic_istream<CharT, Traits>::sentry sen(is, true);
 	if (sen)
 	{
@@ -34,7 +35,7 @@ getline(
 #endif
 			// [string.io]/6
 			str.erase();
-			std::streamsize extracted = 0;
+			hamon::streamsize extracted = 0;
 			while (true)
 			{
 				typename Traits::int_type const i = is.rdbuf()->sbumpc();
@@ -42,7 +43,7 @@ getline(
 				// [string.io]/6.1
 				if (Traits::eq_int_type(i, Traits::eof()))
 				{
-					state |= std::ios_base::eofbit;
+					state |= hamon::ios_base::eofbit;
 					break;
 				}
 				
@@ -60,7 +61,7 @@ getline(
 				// [string.io]/6.3
 				if (str.size() == str.max_size())
 				{
-					state |= std::ios_base::failbit;
+					state |= hamon::ios_base::failbit;
 					break;
 				}
 			}
@@ -68,15 +69,15 @@ getline(
 			// [string.io]/8
 			if (extracted == 0)
 			{
-				state |= std::ios_base::failbit;
+				state |= hamon::ios_base::failbit;
 			}
 #if !defined(HAMON_NO_EXCEPTIONS)
 		}
 		catch (...)
 		{
-			state |= std::ios_base::badbit;
+			state |= hamon::ios_base::badbit;
 			is.setstate(state);	// TODO nothrow
-			if (is.exceptions() & std::ios_base::badbit)
+			if (is.exceptions() & hamon::ios_base::badbit)
 			{
 				throw;
 			}

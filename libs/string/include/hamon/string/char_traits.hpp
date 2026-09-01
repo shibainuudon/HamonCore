@@ -12,9 +12,10 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint_least16_t.hpp>
 #include <hamon/cstdint/uint_least32_t.hpp>
+#include <hamon/ios/streamoff.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
-#include <ios>	// streamoff, streampos, u8streampos, u16streampos, u32streampos, wstreampos
+#include <ios>		// streampos, u8streampos, u16streampos, u32streampos, wstreampos
 #include <cwchar>	// mbstate_t, wmemcmp, wcslen, wmemchr, wmemmove, wmemcpy, wmemset
 #include <cstdio>	// EOF
 #include <cstring>	// memcmp, strlen, memchr, memmove, memcpy, memset
@@ -134,7 +135,7 @@ struct char_traits<char>
 {
 	using char_type  = char;
 	using int_type   = int;
-	using off_type   = std::streamoff;
+	using off_type   = hamon::streamoff;
 	using pos_type   = std::streampos;
 	using state_type = std::mbstate_t;
 	using comparison_category = hamon::strong_ordering;
@@ -267,7 +268,7 @@ struct char_traits<char8_t>
 {
 	using char_type  = char8_t;
 	using int_type   = unsigned int;
-	using off_type   = std::streamoff;
+	using off_type   = hamon::streamoff;
 	using pos_type   = std::u8streampos;
 	using state_type = std::mbstate_t;
 	using comparison_category = hamon::strong_ordering;
@@ -401,7 +402,7 @@ struct char_traits<char16_t>
 {
 	using char_type  = char16_t;
 	using int_type   = hamon::uint_least16_t;
-	using off_type   = std::streamoff;
+	using off_type   = hamon::streamoff;
 	using pos_type   = std::u16streampos;
 	using state_type = std::mbstate_t;
 	using comparison_category = hamon::strong_ordering;
@@ -507,7 +508,7 @@ struct char_traits<char32_t>
 {
 	using char_type  = char32_t;
 	using int_type   = hamon::uint_least32_t;
-	using off_type   = std::streamoff;
+	using off_type   = hamon::streamoff;
 	using pos_type   = std::u32streampos;
 	using state_type = std::mbstate_t;
 	using comparison_category = hamon::strong_ordering;
@@ -612,7 +613,7 @@ struct char_traits<wchar_t>
 {
 	using char_type  = wchar_t;
 	using int_type   = std::wint_t;
-	using off_type   = std::streamoff;
+	using off_type   = hamon::streamoff;
 	using pos_type   = std::wstreampos;
 	using state_type = std::mbstate_t;
 	using comparison_category = hamon::strong_ordering;
