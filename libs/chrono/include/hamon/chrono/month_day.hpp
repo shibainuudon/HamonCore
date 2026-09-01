@@ -12,6 +12,7 @@
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -141,8 +142,8 @@ operator>=(month_day const& x, month_day const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, month_day const& md)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, month_day const& md)
 {
 	// [time.cal.md.nonmembers]/3
 	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{:L}/{}"), md.month(), md.day());
@@ -254,8 +255,8 @@ operator>=(month_day_last const& x, month_day_last const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, month_day_last const& mdl)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, month_day_last const& mdl)
 {
 	// [time.cal.mdlast]/9
 	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{:L}/last"), mdl.month());

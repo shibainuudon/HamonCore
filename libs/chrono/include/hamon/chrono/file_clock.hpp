@@ -14,11 +14,11 @@
 #include <hamon/chrono/detail/filetime_to_timespec.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/system_error/generic_category.hpp>
 #include <hamon/system_error/system_error.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <ostream>	// basic_ostream
 
 namespace hamon {
 namespace chrono {
@@ -79,8 +79,8 @@ public:
 // 30.7.6.3 Non-member functions[time.clock.file.nonmembers]
 
 template <typename charT, typename traits, typename Duration>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, hamon::chrono::file_time<Duration> const& tp);
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, hamon::chrono::file_time<Duration> const& tp);
 #if 0	// TODO
 {
 	// [time.clock.file.nonmembers]/1

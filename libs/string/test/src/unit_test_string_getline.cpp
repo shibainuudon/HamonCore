@@ -29,6 +29,7 @@
 #include <hamon/string/getline.hpp>
 #include <hamon/string/basic_string.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/ostream/endl.hpp>
 #include <hamon/config.hpp>
 #include <sstream>
 #include "constexpr_test.hpp"
@@ -49,9 +50,9 @@ void GetLineTest()
 
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::abcde() << std::endl;
-		ss << Helper::ABCDE() << std::endl;
-		ss << Helper::aababc() << std::endl;
+		ss << Helper::abcde() << hamon::endl;
+		ss << Helper::ABCDE() << hamon::endl;
+		ss << Helper::aababc() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(ss, s);
 		EXPECT_TRUE(&r == &ss);
@@ -63,7 +64,7 @@ void GetLineTest()
 	}
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::long_str() << std::endl;
+		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(ss, s);
 		EXPECT_TRUE(&r == &ss);
@@ -71,9 +72,9 @@ void GetLineTest()
 	}
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::abcde() << std::endl;
-		ss << Helper::ABCDE() << std::endl;
-		ss << Helper::aababc() << std::endl;
+		ss << Helper::abcde() << hamon::endl;
+		ss << Helper::ABCDE() << hamon::endl;
+		ss << Helper::aababc() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(hamon::move(ss), s);
 		EXPECT_TRUE(&r == &ss);
@@ -85,7 +86,7 @@ void GetLineTest()
 	}
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::long_str() << std::endl;
+		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(hamon::move(ss), s);
 		EXPECT_TRUE(&r == &ss);
@@ -104,7 +105,7 @@ void GetLineTest()
 	}
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::long_str() << std::endl;
+		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(ss, s, ss.widen(' '));
 		EXPECT_TRUE(&r == &ss);
@@ -127,7 +128,7 @@ void GetLineTest()
 	}
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::long_str() << std::endl;
+		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(hamon::move(ss), s, ss.widen(' '));
 		EXPECT_TRUE(&r == &ss);

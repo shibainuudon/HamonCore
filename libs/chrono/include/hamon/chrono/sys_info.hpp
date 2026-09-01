@@ -9,8 +9,8 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/string.hpp>
-#include <ostream>	// basic_ostream
 
 namespace hamon {
 namespace chrono {
@@ -28,8 +28,8 @@ struct sys_info
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, sys_info const& si);
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, sys_info const& si);
 #endif
 
 }	// namespace chrono

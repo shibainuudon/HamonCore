@@ -7,10 +7,10 @@
 #ifndef HAMON_COMPLEX_COMPLEX_HPP
 #define HAMON_COMPLEX_COMPLEX_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -399,7 +399,7 @@ operator!=(T const& lhs, complex<T> const& rhs) HAMON_NOEXCEPT	// noexcept as an
 
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/istream/ws.hpp>
-#include <ostream>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <sstream>
 
 namespace hamon
@@ -486,8 +486,8 @@ operator>>(hamon::basic_istream<CharT, traits>& is, complex<T>& x)
 }
 
 template <typename T, typename CharT, typename traits>
-std::basic_ostream<CharT, traits>&
-operator<<(std::basic_ostream<CharT, traits>& o, complex<T> const& x)
+hamon::basic_ostream<CharT, traits>&
+operator<<(hamon::basic_ostream<CharT, traits>& o, complex<T> const& x)
 {
 	// [complex.ops]/14
 	// Inserts the complex number x onto the stream o as if it were implemented as follows:

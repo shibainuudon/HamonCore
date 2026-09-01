@@ -11,6 +11,7 @@
 #include <hamon/string_view.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/ieee754.hpp>
+#include <hamon/ostream/endl.hpp>
 #include <hamon/cstring.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -83,7 +84,7 @@ test(hamon::string_view sv, hamon::chars_format fmt, hamon::size_t expected_idx,
 				{
 					std::cout << "ng(-" << (bits2.to_uint() - bits1.to_uint()) << ") ";
 				}
-				std::cout << std::endl;
+				std::cout << hamon::endl;
 			}
 #endif
 		}
@@ -3688,7 +3689,7 @@ inline void random_test_sub(
 	for (int i = 0; i < count; ++i)
 	{
 		auto str = make_random_number_string(buf, integer_part_length, fraction_part_length, exponent_part_length, rng);
-		//std::cout << str << std::endl;
+		//std::cout << str << hamon::endl;
 		T v1{};
 		T v2{};
 		auto r1 = hamon::from_chars(str.begin(), str.end(), v1);
@@ -3735,7 +3736,7 @@ inline void random_test()
 			"\rrandom_test<" << (hamon::is_same<T, float>::value ? "float" : "double") << ">" <<
 			"("  << i << "/" << IntegerPartLengthMax << ")";
 	}
-	std::cout << std::endl;
+	std::cout << hamon::endl;
 }
 #endif
 
@@ -3801,7 +3802,7 @@ inline void performance_test_sub(int integer_part_length, int fraction_part_leng
 			"from_chars<" << (hamon::is_same<T, float>::value ? "float" : "double") << ">" <<
 			"(" << std::setw(3) << integer_part_length <<
 			", " << std::setw(3) << fraction_part_length << "): " <<
-			elapsed.count() << " ms" << std::endl;
+			elapsed.count() << " ms" << hamon::endl;
 	}
 }
 
@@ -3821,7 +3822,7 @@ inline void performance_test()
 		}
 	}
 
-	std::cout << std::endl;
+	std::cout << hamon::endl;
 }
 
 #endif

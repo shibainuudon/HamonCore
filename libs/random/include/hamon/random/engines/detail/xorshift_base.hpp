@@ -12,8 +12,8 @@
 #include <hamon/ios/flags_saver.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
-#include <ostream>
 
 namespace hamon
 {
@@ -95,9 +95,9 @@ private:
 		typename CharT, typename Traits,
 		typename U, hamon::size_t M, typename D
 	>
-	friend std::basic_ostream<CharT, Traits>&
+	friend hamon::basic_ostream<CharT, Traits>&
 	operator<<(
-		std::basic_ostream<CharT, Traits>& os,
+		hamon::basic_ostream<CharT, Traits>& os,
 		xorshift_base<U, M, D> const& e);
 
 	template <
@@ -114,9 +114,9 @@ template <
 	typename CharT, typename Traits,
 	typename UIntType, hamon::size_t N, typename Derived
 >
-inline std::basic_ostream<CharT, Traits>&
+inline hamon::basic_ostream<CharT, Traits>&
 operator<<(
-	std::basic_ostream<CharT, Traits>& os,
+	hamon::basic_ostream<CharT, Traits>& os,
 	xorshift_base<UIntType, N, Derived> const& e)
 {
 	hamon::ios::flags_saver lx(os);

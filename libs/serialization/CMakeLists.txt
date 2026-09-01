@@ -32,6 +32,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		limits
 		map
 		memory
+		ostream
 		preprocessor
 		string
 		type_traits

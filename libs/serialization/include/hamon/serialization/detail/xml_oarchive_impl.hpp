@@ -10,6 +10,7 @@
 #include <hamon/base64/base64_xml_name.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/array.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <iomanip>
-#include <ostream>	// basic_ostream
 #include <ios>		// ios_base
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
@@ -104,7 +104,7 @@ public:
 private:
 	template <typename CharT, typename Traits>
 	static void save_string_impl(
-		std::basic_ostream<CharT, Traits>& os,
+		hamon::basic_ostream<CharT, Traits>& os,
 		hamon::basic_string<CharT, Traits> const& s)
 	{
 		os << s;
@@ -115,7 +115,7 @@ private:
 		typename CharT2, typename Traits2
 	>
 	static void save_string_impl(
-		std::basic_ostream<CharT1, Traits1>& os,
+		hamon::basic_ostream<CharT1, Traits1>& os,
 		hamon::basic_string<CharT2, Traits2> const& s)
 	{
 		using String = hamon::basic_string<CharT1, Traits1>;

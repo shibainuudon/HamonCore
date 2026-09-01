@@ -17,6 +17,7 @@
 #include <hamon/chrono/month_weekday.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -291,8 +292,8 @@ operator-(year_month_weekday const& ymwd, years const& dy) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, year_month_weekday const& ymwd)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, year_month_weekday const& ymwd)
 {
 	// [time.cal.ymwd.nonmembers]/11
 	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{}/{:L}/{:L}"),
@@ -564,8 +565,8 @@ operator-(year_month_weekday_last const& ymwdl, years const& dy) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, year_month_weekday_last const& ymwdl)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, year_month_weekday_last const& ymwdl)
 {
 	// [time.cal.ymwdlast.nonmembers]/11
 	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{}/{:L}/{:L}"),

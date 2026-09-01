@@ -12,8 +12,8 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/ios/flags_saver.hpp>
 #include <hamon/istream/basic_istream.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/string.hpp>
-#include <ostream>	// basic_ostream
 #include <ios>		// noskipws
 
 namespace hamon
@@ -57,8 +57,8 @@ private:
 			hamon::is_same<Traits, void>::value ||
 			hamon::detail::is_compatible_char_traits<Traits, Traits2>::value
 		>>
-	friend std::basic_ostream<CharT, Traits2>&
-	operator<<(std::basic_ostream<CharT, Traits2>& os, quoted_output const& q)
+	friend hamon::basic_ostream<CharT, Traits2>&
+	operator<<(hamon::basic_ostream<CharT, Traits2>& os, quoted_output const& q)
 	{
 		auto first = q.m_first;
 		auto const last = q.m_last;
@@ -109,8 +109,8 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::is_compatible_char_traits<Traits, Traits2>::value
 		>>
-	friend std::basic_ostream<CharT, Traits2>&
-	operator<<(std::basic_ostream<CharT, Traits2>& os, quoted_input const& q)
+	friend hamon::basic_ostream<CharT, Traits2>&
+	operator<<(hamon::basic_ostream<CharT, Traits2>& os, quoted_input const& q)
 	{
 		// [quoted.manip]/3.2
 		return os << quoted_output<CharT, Traits>{q.m_str.data(), q.m_str.size(), q.m_delim, q.m_escape};

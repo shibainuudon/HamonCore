@@ -8,7 +8,7 @@
 #define HAMON_CHRONO_LOCAL_INFO_HPP
 
 #include <hamon/chrono/sys_info.hpp>
-#include <ostream>	// basic_ostream
+#include <hamon/ostream/basic_ostream.hpp>
 
 namespace hamon {
 namespace chrono {
@@ -28,8 +28,8 @@ struct local_info
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, local_info const& li);
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, local_info const& li);
 #endif
 
 }	// namespace chrono

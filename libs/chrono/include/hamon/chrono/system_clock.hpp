@@ -14,12 +14,12 @@
 #include <hamon/cstdint.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/istream/basic_istream.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/system_error/generic_category.hpp>
 #include <hamon/system_error/system_error.hpp>
 #include <hamon/config.hpp>
 #include <ctime>
-#include <ostream>	// basic_ostream
 
 namespace hamon {
 namespace chrono {
@@ -101,8 +101,8 @@ public:
 // TODO
 //template <typename charT, typename traits, typename Duration>
 //requires (!hamon::chrono::treat_as_floating_point<typename Duration::rep>::value && Duration{1} < days{1})	// [time.clock.system.nonmembers]/1
-//std::basic_ostream<charT, traits>&
-//operator<<(std::basic_ostream<charT, traits>& os, sys_time<Duration> const& tp)
+//hamon::basic_ostream<charT, traits>&
+//operator<<(hamon::basic_ostream<charT, traits>& os, sys_time<Duration> const& tp)
 //{
 //	// [time.clock.system.nonmembers]/2
 //	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{:L%F %T}"), tp);
@@ -110,8 +110,8 @@ public:
 
 // TODO
 //template <typename charT, typename traits>
-//std::basic_ostream<charT, traits>&
-//operator<<(std::basic_ostream<charT, traits>& os, sys_days const& dp)
+//hamon::basic_ostream<charT, traits>&
+//operator<<(hamon::basic_ostream<charT, traits>& os, sys_days const& dp)
 //{
 //	// [time.clock.system.nonmembers]/4,5
 //	return os << year_month_day{dp};

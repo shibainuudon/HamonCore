@@ -40,6 +40,7 @@
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/string.hpp>
 #include <hamon/type_traits/is_integral.hpp>
@@ -48,7 +49,6 @@
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
-#include <ostream>
 
 namespace hamon
 {
@@ -1001,8 +1001,8 @@ to_string(basic_bigint<V> const& value)
 //operator>>(hamon::basic_istream<CharT, Traits>& is, basic_bigint<V>& x);
 
 template <typename CharT, typename Traits, typename V>
-inline std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, basic_bigint<V> const& x)
+inline hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, basic_bigint<V> const& x)
 {
 	return os << to_string(x);
 }

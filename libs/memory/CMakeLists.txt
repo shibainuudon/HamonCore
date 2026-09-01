@@ -31,6 +31,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		iterator	# iter_value_t
 		limits
 		new
+		ostream
 		pair
 		static_typeinfo
 		tuple

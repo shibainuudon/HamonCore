@@ -10,11 +10,11 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/utc_clock.hpp>
-#include <hamon/type_traits/common_type.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
+#include <hamon/type_traits/common_type.hpp>
 #include <hamon/string.hpp>
-#include <ostream>	// basic_ostream
 
 namespace hamon {
 namespace chrono {
@@ -65,8 +65,8 @@ public:
 // 30.7.5.3 Non-member functions[time.clock.gps.nonmembers]
 
 template <typename charT, typename traits, typename Duration>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, hamon::chrono::gps_time<Duration> const& t);
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, hamon::chrono::gps_time<Duration> const& t);
 #if 0	// TODO
 {
 	// [time.clock.gps.nonmembers]/1

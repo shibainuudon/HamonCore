@@ -7,16 +7,16 @@
 #ifndef HAMON_BITFLAGS_BITFLAGS_HPP
 #define HAMON_BITFLAGS_BITFLAGS_HPP
 
+#include <hamon/bit/popcount.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_enum.hpp>
-#include <hamon/bit/popcount.hpp>
-#include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <ostream>
 
 namespace hamon
 {
@@ -515,8 +515,8 @@ private:
  *	@brief	ストリームへの出力
  */
 template <typename CharT, typename Traits, typename E, hamon::size_t N, bool Dense>
-std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, bitflags<E, N, Dense> const& rhs)
+hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, bitflags<E, N, Dense> const& rhs)
 {
 	return os << rhs.template to_string<CharT, Traits>();
 }

@@ -26,6 +26,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/ref.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
@@ -44,7 +45,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 #include <functional>	// std::hash
-#include <ostream>
 
 // 20.3.2 Shared-ownership pointers[util.sharedptr]
 
@@ -778,8 +778,8 @@ swap(shared_ptr<T>& a, shared_ptr<T>& b) noexcept
 
 // 20.3.2.2.12 I/O[util.smartptr.shared.io]
 template <typename E, typename T, typename Y>
-std::basic_ostream<E, T>&
-operator<<(std::basic_ostream<E, T>& os, shared_ptr<Y> const& p)
+hamon::basic_ostream<E, T>&
+operator<<(hamon::basic_ostream<E, T>& os, shared_ptr<Y> const& p)
 {
 	// [util.smartptr.shared.io]/1
 	os << p.get();

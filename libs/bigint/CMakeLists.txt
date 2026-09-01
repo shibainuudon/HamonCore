@@ -33,6 +33,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		istream
 		limits
 		memory
+		ostream
 		string
 		string_view
 		system_error

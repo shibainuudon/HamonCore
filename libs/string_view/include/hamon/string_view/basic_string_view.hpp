@@ -22,6 +22,7 @@
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ranges/concepts/contiguous_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/range_value_t.hpp>
@@ -43,7 +44,6 @@
 #include <hamon/assert.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <ostream>
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -1048,14 +1048,14 @@ swap(
 // [string.view.io], inserters and extractors
 
 template <typename CharT, typename Traits1, typename Traits2>
-inline std::basic_ostream<CharT, Traits1>&
+inline hamon::basic_ostream<CharT, Traits1>&
 operator<<(
-	std::basic_ostream<CharT, Traits1>& os,
+	hamon::basic_ostream<CharT, Traits1>& os,
 	basic_string_view<CharT, Traits2> str)
 {
 	// 31.7.6.3.1 [ostream.formatted.reqmts]
 	std::ios_base::iostate state = std::ios_base::goodbit;
-	typename std::basic_ostream<CharT, Traits1>::sentry sen(os);
+	typename hamon::basic_ostream<CharT, Traits1>::sentry sen(os);
 	if (sen)
 	{
 #if !defined(HAMON_NO_EXCEPTIONS)

@@ -16,6 +16,7 @@
 #include <hamon/units/quantity/detail/quantity_without_offset.hpp>
 #include <hamon/units/quantity/detail/quantity_without_scale_offset.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ratio/ratio.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
@@ -23,7 +24,6 @@
 #include <hamon/utility/adl_swap.hpp>
 #include <hamon/compare/config.hpp>
 #include <hamon/config.hpp>
-#include <ostream>
 
 namespace hamon
 {
@@ -522,8 +522,8 @@ template <
 	typename E, typename T,
 	typename U, typename D, typename S, typename O
 >
-inline std::basic_ostream<E, T>&
-operator<<(std::basic_ostream<E, T>& os, quantity<U, D, S, O> const& rhs)
+inline hamon::basic_ostream<E, T>&
+operator<<(hamon::basic_ostream<E, T>& os, quantity<U, D, S, O> const& rhs)
 {
 	return os << rhs.value();
 }

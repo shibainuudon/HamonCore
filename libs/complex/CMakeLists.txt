@@ -25,6 +25,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		istream
 		limits
 		numbers
+		ostream
 		tuple
 		type_traits)
 

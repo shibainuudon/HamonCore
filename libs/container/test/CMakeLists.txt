@@ -21,5 +21,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		functional
 		initializer_list
 		memory
+		ostream
 		ranges
 		common_test)
