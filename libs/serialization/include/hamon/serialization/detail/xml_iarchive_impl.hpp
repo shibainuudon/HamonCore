@@ -9,6 +9,7 @@
 
 #include <hamon/algorithm/transform.hpp>
 #include <hamon/base64/base64_xml_name.hpp>
+#include <hamon/charconv/from_chars.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/ios/boolalpha.hpp>
@@ -17,11 +18,7 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <cstdlib>	// strtold
 #include <iomanip>
-#if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
-#include <charconv>
-#endif
 
 namespace hamon
 {
@@ -271,14 +268,8 @@ private:
 			[](char_type c){return static_cast<char>(c);});
 		auto first = s.data();
 		auto last  = s.data() + s.length();
-#if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
-		auto result = std::from_chars(first, last, t);
+		auto result = hamon::from_chars(first, last, t);
 		m_is.seekg(result.ptr - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
-#else
-		char* end;
-		t = static_cast<T>(std::strtold(first, &end));
-		m_is.seekg(end - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
-#endif
 	}
 
 	template <typename CharT, typename Traits>

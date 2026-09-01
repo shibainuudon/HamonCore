@@ -7,21 +7,6 @@
 #ifndef HAMON_CHARCONV_TO_CHARS_RESULT_HPP
 #define HAMON_CHARCONV_TO_CHARS_RESULT_HPP
 
-#include <hamon/charconv/config.hpp>
-
-#if defined(HAMON_USE_STD_CHARCONV)
-
-#include <charconv>
-
-namespace hamon
-{
-
-using std::to_chars_result;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/system_error/errc.hpp>
 #include <hamon/config.hpp>
 
@@ -32,6 +17,7 @@ struct to_chars_result
 {
 	char* ptr;
 	hamon::errc ec;
+
 #if defined(HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS)
 	friend bool operator==(to_chars_result const&, to_chars_result const&) = default;
 #else
@@ -58,7 +44,5 @@ struct to_chars_result
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHARCONV_TO_CHARS_RESULT_HPP

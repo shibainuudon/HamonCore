@@ -9,21 +9,6 @@
 
 #include <hamon/charconv/chars_format.hpp>
 #include <hamon/charconv/to_chars_result.hpp>
-#include <hamon/charconv/config.hpp>
-
-#if defined(HAMON_USE_STD_CHARCONV)
-
-#include <charconv>
-
-namespace hamon
-{
-
-using std::to_chars;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/charconv/detail/to_chars_integer.hpp>
 #include <hamon/charconv/detail/to_chars_floating_point.hpp>
 #include <hamon/charconv/detail/to_chars_floating_point_precision.hpp>
@@ -90,7 +75,5 @@ to_chars(char* first, char* last, T value, hamon::chars_format fmt, int precisio
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHARCONV_TO_CHARS_HPP

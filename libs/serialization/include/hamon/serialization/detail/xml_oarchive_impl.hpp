@@ -8,6 +8,7 @@
 #define HAMON_SERIALIZATION_DETAIL_XML_OARCHIVE_IMPL_HPP
 
 #include <hamon/base64/base64_xml_name.hpp>
+#include <hamon/charconv/to_chars.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/ios.hpp>
@@ -18,10 +19,6 @@
 #include <hamon/string.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <iomanip>
-#if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
-#include <charconv>
-#endif
 
 namespace hamon
 {
@@ -169,37 +166,14 @@ private:
 	template <typename T>
 	void save_float_impl(T t)
 	{
-#if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
-		// to_charsが使えるなら使う
 		auto constexpr digits =
 			4 +	// sign, decimal point, "e+" or "e-"
 			hamon::numeric_limits<T>::max_digits10 +
 			4;	// log10(max_exponent10)
 		hamon::array<char, digits + 1> buf{};
-		auto result = std::to_chars(buf.data(), buf.data() + buf.size(), t);
+		auto result = hamon::to_chars(buf.data(), buf.data() + buf.size(), t);
 		m_os << buf.data();
 		(void)result;
-#elif 1
-		// snprintfを使う
-		auto constexpr digits10 = hamon::numeric_limits<T>::max_digits10;
-		auto constexpr digits =
-			4 +	// sign, decimal point, "e+" or "e-"
-			digits10 +
-			4;	// log10(max_exponent10)
-		const char* length_modifier = hamon::is_same<T, long double>::value ? "L" : "";
-		hamon::array<char, 10> fmt{};	// フォーマット文字列。"%.9g"など。
-		std::snprintf(fmt.data(), fmt.size(), "%%.%d%sg", digits10, length_modifier);
-		hamon::array<char, digits + 1> buf{};
-		std::snprintf(buf.data(), buf.size(), fmt.data(), t);
-		m_os << buf.data();
-#else
-		// operator<< を使う方法だと最も短い文字列にならない。
-		// (TODO: 良い方法があるなら修正したい)
-		auto const flags = m_os.flags();
-		m_os << std::setprecision(hamon::numeric_limits<T>::max_digits10)
-			<< hamon::scientific << t;
-		m_os.flags(flags);
-#endif
 	}
 
 private:
