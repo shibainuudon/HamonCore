@@ -292,7 +292,7 @@ template <typename T>
 struct TestAllocator2
 {
 	using value_type = T;
-	using is_always_equal = hamon::false_type;
+	using is_always_equal = std::false_type;
 	using propagate_on_container_copy_assignment = hamon::true_type;
 	using propagate_on_container_move_assignment = hamon::true_type;
 	using propagate_on_container_swap = hamon::true_type;
@@ -340,7 +340,7 @@ template <typename T>
 struct TestAllocator3
 {
 	using value_type = T;
-	using is_always_equal = hamon::false_type;
+	using is_always_equal = std::false_type;
 
 	int id;
 
@@ -393,7 +393,7 @@ template <typename T>
 struct TestAllocator4
 {
 	using value_type = T;
-	using is_always_equal = hamon::false_type;
+	using is_always_equal = std::false_type;
 	using propagate_on_container_copy_assignment = hamon::true_type;
 	using propagate_on_container_move_assignment = hamon::false_type;
 
@@ -441,7 +441,7 @@ template <typename T>
 struct TestAllocator5
 {
 	using value_type = T;
-	using is_always_equal = hamon::false_type;
+	using is_always_equal = std::false_type;
 	using propagate_on_container_copy_assignment = hamon::false_type;
 	using propagate_on_container_move_assignment = hamon::true_type;
 
@@ -488,7 +488,7 @@ template <typename T>
 struct TestAllocator6
 {
 	using value_type = T;
-	using is_always_equal = hamon::false_type;
+	using is_always_equal = std::false_type;
 	using propagate_on_container_swap = hamon::false_type;
 
 	int id;
