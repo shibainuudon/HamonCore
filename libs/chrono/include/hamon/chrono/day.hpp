@@ -10,6 +10,7 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -202,8 +203,8 @@ operator-(day const& x, day const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, day const& d)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, day const& d)
 {
 	// [time.cal.day.nonmembers]/7
 	return os << (d.ok() ?

@@ -62,6 +62,7 @@ set(SUBDIRECTORIES
 	numbers
 	numeric
 	optional
+	ostream
 	pair
 	preprocessor
 	queue

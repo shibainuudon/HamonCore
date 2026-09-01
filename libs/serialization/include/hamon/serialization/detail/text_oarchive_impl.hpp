@@ -10,6 +10,7 @@
 #include <hamon/algorithm/transform.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/array.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <iomanip>
-#include <ostream>	// basic_ostream
 #include <ios>		// ios_base
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
@@ -108,7 +108,7 @@ private:
 		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
 	>
 	static void save_string_impl(
-		std::basic_ostream<CharT1, Traits1>& os,
+		hamon::basic_ostream<CharT1, Traits1>& os,
 		hamon::basic_string<CharT2, Traits2> const& s)
 	{
 		hamon::basic_string<CharT1> tmp;
@@ -124,7 +124,7 @@ private:
 		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
 	>
 	static void save_string_impl(
-		std::basic_ostream<CharT1, Traits1>& os,
+		hamon::basic_ostream<CharT1, Traits1>& os,
 		hamon::basic_string<CharT2, Traits2> const& s)
 	{
 		auto const count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);

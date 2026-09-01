@@ -11,6 +11,7 @@
 #include <hamon/chrono/detail/modulo.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -203,8 +204,8 @@ operator-(month const& x, month const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, month const& m)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, month const& m)
 {
 	// [time.cal.month.nonmembers]/7
 	return os << (m.ok() ?

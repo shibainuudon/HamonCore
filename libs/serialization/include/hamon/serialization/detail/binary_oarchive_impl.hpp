@@ -9,8 +9,8 @@
 
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memcpy.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/vector.hpp>
-#include <ostream>	// basic_ostream
 
 namespace hamon
 {
@@ -22,7 +22,7 @@ namespace detail
 {
 
 template <typename CharT, typename Traits>
-void save_binary(std::basic_ostream<CharT, Traits>& os, void const* p, hamon::size_t size)
+void save_binary(hamon::basic_ostream<CharT, Traits>& os, void const* p, hamon::size_t size)
 {
 	auto pbuf = os.rdbuf();
 	auto const count = (size + (sizeof(CharT) - 1)) / sizeof(CharT);

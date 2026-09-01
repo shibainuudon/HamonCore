@@ -10,6 +10,7 @@
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/weekday.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -75,8 +76,8 @@ operator!=(month_weekday const& x, month_weekday const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, month_weekday const& mwd)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, month_weekday const& mwd)
 {
 	// [time.cal.mwd.nonmembers]/2
 	return os << hamon::format(os.getloc(),
@@ -145,8 +146,8 @@ operator!=(month_weekday_last const& x, month_weekday_last const& y) HAMON_NOEXC
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, month_weekday_last const& mwdl)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, month_weekday_last const& mwdl)
 {
 	// [time.cal.mwdlast.nonmembers]/2
 	return os << hamon::format(os.getloc(),

@@ -7,6 +7,7 @@
 #include <hamon/chrono/sys_time.hpp>
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ostream/endl.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 
@@ -18,7 +19,7 @@ GTEST_TEST(ChronoTest, SysTimeTest)
 #if 0	// TODO
 	namespace chrono = hamon::chrono;
 	chrono::sys_time<chrono::seconds> now = chrono::floor<chrono::seconds>(chrono::system_clock::now());
-	std::cout << now << std::endl;
+	std::cout << now << hamon::endl;
 #endif
 }
 

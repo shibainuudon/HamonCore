@@ -10,13 +10,13 @@
 #include <hamon/debug/detail/value_expression_fwd.hpp>
 #include <hamon/debug/detail/expression_base.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <ostream>
 
 namespace hamon
 {
@@ -57,25 +57,25 @@ struct stream_outputtable_impl<Stream, Expr, hamon::void_t<decltype(hamon::declv
 
 template <typename CharT, typename Traits, typename T>
 using stream_outputtable =
-	typename stream_outputtable_impl<std::basic_ostream<CharT, Traits>, value_expression<T>>::type;
+	typename stream_outputtable_impl<hamon::basic_ostream<CharT, Traits>, value_expression<T>>::type;
 
 template <typename CharT, typename Traits, typename T, typename = hamon::enable_if_t<stream_outputtable<CharT, Traits, T>::value>>
-std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, value_expression<T> const& rhs)
+hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, value_expression<T> const& rhs)
 {
 	return os << rhs.value();
 }
 
 template <typename CharT, typename Traits, typename T, hamon::enable_if_t<!stream_outputtable<CharT, Traits, T>::value>* = nullptr>
-std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, value_expression<T> const& /*rhs*/)
+hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, value_expression<T> const& /*rhs*/)
 {
 	return os;// << rhs.value();
 }
 
 template <typename CharT, typename Traits>
-std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, value_expression<hamon::nullptr_t> const& /*rhs*/)
+hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, value_expression<hamon::nullptr_t> const& /*rhs*/)
 {
 	return os << "nullptr";
 }

@@ -9,6 +9,7 @@
 
 #include <hamon/debug/assertion_info.hpp>
 #include <hamon/cstdlib/abort.hpp>
+#include <hamon/ostream/endl.hpp>
 #include <iostream>
 
 namespace hamon
@@ -29,11 +30,11 @@ inline void default_assertion_handler(assertion_info const& info)
 {
 	std::cout
 		<< info.file_name << "(" << info.line_number << "): error : "
-		<< info.function_name      << std::endl
-		<< "Assertion failed:"     << std::endl
-		<< info.expr_str           << std::endl
-		<< info.evaluated_expr_str << std::endl
-		<< info.msg                << std::endl;
+		<< info.function_name      << hamon::endl
+		<< "Assertion failed:"     << hamon::endl
+		<< info.expr_str           << hamon::endl
+		<< info.evaluated_expr_str << hamon::endl
+		<< info.msg                << hamon::endl;
 
 	hamon::abort();
 }

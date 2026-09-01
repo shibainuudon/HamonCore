@@ -14,6 +14,7 @@
 #include <hamon/chrono/treat_as_floating_point.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ratio/ratio_divide.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -21,7 +22,6 @@
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/config.hpp>
-#include <ostream>	// basic_ostream
 #include <sstream>	// basic_ostringstream
 
 namespace hamon {
@@ -422,8 +422,8 @@ operator<=>(duration<Rep1, Period1> const& lhs, duration<Rep2, Period2> const& r
 // 29.5.11 I/O[time.duration.io]
 
 template <typename charT, typename traits, typename Rep, typename Period>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, duration<Rep, Period> const& d)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, duration<Rep, Period> const& d)
 {
 	// [time.duration.io]/1
 	std::basic_ostringstream<charT, traits> s;

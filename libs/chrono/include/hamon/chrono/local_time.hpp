@@ -9,7 +9,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/istream/basic_istream.hpp>
-#include <ostream>	// basic_ostream
+#include <hamon/ostream/basic_ostream.hpp>
 
 namespace hamon {
 namespace chrono {
@@ -23,9 +23,9 @@ using local_time = time_point<local_t, Duration>;
 // TODO
 #if 0
 template <typename charT, typename traits, typename Duration>
-basic_ostream<charT, traits>&
+hamon::basic_ostream<charT, traits>&
 operator<<(
-	basic_ostream<charT, traits>& os,
+	hamon::basic_ostream<charT, traits>& os,
 	const local_time<Duration>& tp);
 
 template <typename charT, typename traits, typename Duration, typename Alloc = allocator<charT>>

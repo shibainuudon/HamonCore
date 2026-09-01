@@ -10,6 +10,7 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/ostream/endl.hpp>
 #include <hamon/config.hpp>
 #include <sstream>
 #include <iomanip>
@@ -31,7 +32,7 @@ void IStreamTest()
 
 	{
 		std::basic_stringstream<CharT> ss;
-		ss << Helper::long_str() << std::endl;
+		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = (ss >> s);
 		EXPECT_TRUE(&r == &ss);

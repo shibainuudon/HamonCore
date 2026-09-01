@@ -13,6 +13,7 @@
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/detail/modulo.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -211,8 +212,8 @@ operator-(weekday const& x, weekday const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, weekday const& wd)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, weekday const& wd)
 {
 	// [time.cal.wd.nonmembers]/6
 	return os << (wd.ok() ?
@@ -304,8 +305,8 @@ operator!=(weekday_indexed const& x, weekday_indexed const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, weekday_indexed const& wdi)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, weekday_indexed const& wdi)
 {
 	// [time.cal.wdidx.nonmembers]/2
 	auto i = wdi.index();
@@ -362,8 +363,8 @@ operator!=(weekday_last const& x, weekday_last const& y) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, weekday_last const& wdl)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, weekday_last const& wdl)
 {
 	// [time.cal.wdlast.nonmembers]/2
 	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{:L}[last]"), wdl.weekday());

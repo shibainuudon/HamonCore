@@ -11,6 +11,7 @@
 #include <hamon/cstddef.hpp>
 #include <hamon/istream/istream.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/ostream/ostream.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
@@ -116,7 +117,7 @@ static_assert(!CanInstantiateIstreamView<NonMovable, wchar_t>::value, "");
 static_assert(!CanInstantiateIstreamView<NoDefaultCtor, wchar_t>::value, "");
 
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::istream&>, "");
-static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::ostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::iostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istringstream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostringstream&>, "");

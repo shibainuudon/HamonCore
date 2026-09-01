@@ -17,6 +17,7 @@
 
 //#include <queue>
 //#include <iostream>
+#include <hamon/ostream/endl.hpp>
 
 namespace hamon_container_test
 {
@@ -33,7 +34,7 @@ void tree_print(Tree const& t)
 	auto root = t.root();
 	if (root == nullptr)
 	{
-		std::cout << "null" << std::endl;
+		std::cout << "null" << hamon::endl;
 		return;
 	}
 

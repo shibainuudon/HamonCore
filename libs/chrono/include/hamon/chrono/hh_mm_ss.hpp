@@ -9,10 +9,10 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/config.hpp>
-#include <ostream>
 
 namespace hamon {
 namespace chrono {
@@ -126,8 +126,8 @@ private:
 // 30.9.3 Non-members[time.hms.nonmembers]
 
 template <typename charT, typename traits, typename Duration>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, hh_mm_ss<Duration> const& hms);
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, hh_mm_ss<Duration> const& hms);
 #if 0	// TODO
 {
 	return os << format(os.getloc(), STATICALLY-WIDEN<charT>("{:L%T}"), hms);

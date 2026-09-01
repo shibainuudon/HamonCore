@@ -30,6 +30,7 @@
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/numeric/accumulate.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/stdexcept/invalid_argument.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/overflow_error.hpp>
@@ -42,7 +43,6 @@
 #include <hamon/config.hpp>
 #include <ios>				// std::ios_base
 #include <locale>			// std::use_facet, std::ctype
-#include <ostream>			// std::basic_ostream
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -1178,8 +1178,8 @@ operator>>(hamon::basic_istream<CharT, Traits>& is, bitset<N>& x)
 HAMON_WARNING_POP()
 
 template <typename CharT, typename Traits, hamon::size_t N>
-std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, bitset<N> const& x)
+hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, bitset<N> const& x)
 {
 	// [bitset.operators]/8
 	return os << x.template to_string<CharT, Traits>

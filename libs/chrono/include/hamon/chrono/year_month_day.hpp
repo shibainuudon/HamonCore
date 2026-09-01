@@ -19,6 +19,7 @@
 #include <hamon/chrono/detail/civil.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -308,8 +309,8 @@ operator-(year_month_day const& ymd, years const& dy) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, year_month_day const& ymd)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, year_month_day const& ymd)
 {
 	// [time.cal.ymd.nonmembers]/14
 	return os << (ymd.ok() ?
@@ -592,8 +593,8 @@ operator-(year_month_day_last const& ymdl, years const& dy) HAMON_NOEXCEPT
 
 #if 0	// TODO
 template <typename charT, typename traits>
-std::basic_ostream<charT, traits>&
-operator<<(std::basic_ostream<charT, traits>& os, year_month_day_last const& ymdl)
+hamon::basic_ostream<charT, traits>&
+operator<<(hamon::basic_ostream<charT, traits>& os, year_month_day_last const& ymdl)
 {
 	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{}/{:L}"),
 		ymdl.year(), ymdl.month_day_last());

@@ -14,6 +14,7 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -33,12 +34,12 @@
 #include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
-#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/length_error.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -53,7 +54,6 @@
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// ios_base, streamsize
-#include <ostream>	// basic_ostream
 #include <locale>	// isspace
 
 namespace hamon
@@ -2662,9 +2662,9 @@ operator>>(
 }
 
 template <typename CharT, typename Traits, typename Traits2, typename Allocator>
-std::basic_ostream<CharT, Traits>&
+hamon::basic_ostream<CharT, Traits>&
 operator<<(
-	std::basic_ostream<CharT, Traits>& os,
+	hamon::basic_ostream<CharT, Traits>& os,
 	basic_string<CharT, Traits2, Allocator> const& str)
 {
 	// [string.io]/5

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/ostream/ostream.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <gtest/gtest.h>
 #include <string>
@@ -31,7 +32,7 @@ struct Point
 {
 	double x, y;
 
-	friend std::ostream& operator<<(std::ostream& os, Point pt)
+	friend hamon::ostream& operator<<(hamon::ostream& os, Point pt)
 	{
 		return os << '(' << pt.x << ", " << pt.y << ')';
 	}

@@ -15,6 +15,7 @@
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -45,7 +46,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <ostream>	// basic_ostream
 
 namespace hamon
 {
@@ -815,11 +815,11 @@ template <typename E, typename T, typename Y, typename D,
 	// [unique.ptr.io]/1
 	typename = hamon::enable_if_t<
 		hamon::detail::can_ostream_unique_ptr<
-			std::basic_ostream<E, T>&,
+			hamon::basic_ostream<E, T>&,
 			unique_ptr<Y, D> const&
 		>::value>>
-std::basic_ostream<E, T>&
-operator<<(std::basic_ostream<E, T>& os, unique_ptr<Y, D> const& p)
+hamon::basic_ostream<E, T>&
+operator<<(hamon::basic_ostream<E, T>& os, unique_ptr<Y, D> const& p)
 {
 	// [unique.ptr.io]/2
 	os << p.get();
