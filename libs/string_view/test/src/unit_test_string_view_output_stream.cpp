@@ -5,12 +5,13 @@
  */
 
 #include <hamon/string_view.hpp>
+#include <hamon/iomanip/setfill.hpp>
+#include <hamon/iomanip/setw.hpp>
 #include <hamon/ios.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <iomanip>
 
 namespace hamon_test
 {
@@ -35,9 +36,9 @@ GTEST_TEST(StringViewTest, OutputStreamTest)
 	{
 		hamon::string_view sv{"abc"};
 		hamon::stringstream ss;
-		ss << std::setfill('-');
+		ss << hamon::setfill('-');
 		ss << hamon::left;
-		ss << std::setw(5);
+		ss << hamon::setw(5);
 		ss << sv;
 		EXPECT_EQ(ss.str(), "abc--");
 
@@ -45,16 +46,16 @@ GTEST_TEST(StringViewTest, OutputStreamTest)
 		ss << sv;
 		EXPECT_EQ(ss.str(), "abc--abc");
 
-		ss << std::setw(6);
+		ss << hamon::setw(6);
 		ss << sv;
 		EXPECT_EQ(ss.str(), "abc--abcabc---");
 	}
 	{
 		hamon::wstring_view sv{L"abcd"};
 		hamon::wstringstream ss;
-		ss << std::setfill(L'+');
+		ss << hamon::setfill(L'+');
 		ss << hamon::right;
-		ss << std::setw(6);
+		ss << hamon::setw(6);
 		ss << sv;
 		EXPECT_EQ(ss.str(), L"++abcd");
 
@@ -62,7 +63,7 @@ GTEST_TEST(StringViewTest, OutputStreamTest)
 		ss << sv;
 		EXPECT_EQ(ss.str(), L"++abcdabcd");
 
-		ss << std::setw(5);
+		ss << hamon::setw(5);
 		ss << sv;
 		EXPECT_EQ(ss.str(), L"++abcdabcd+abcd");
 	}

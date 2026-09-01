@@ -18,7 +18,7 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <iomanip>
+#include <iosfwd>	// std::streampos
 
 namespace hamon
 {

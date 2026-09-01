@@ -12,6 +12,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/iomanip/quoted.hpp>
 #include <hamon/ios/boolalpha.hpp>
 #include <hamon/ios/ios_base.hpp>
 #include <hamon/ios/streamsize.hpp>
@@ -19,7 +20,6 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <iomanip>
 
 namespace hamon
 {
@@ -207,7 +207,7 @@ private:
 		CharT2 trailing_delim)
 	{
 #if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-		is >> std::quoted(s);
+		is >> hamon::quoted(s);
 #else
 		using String = hamon::basic_string<CharT2, Traits2>;
 		auto const leading_delim_str  = String(1, leading_delim);

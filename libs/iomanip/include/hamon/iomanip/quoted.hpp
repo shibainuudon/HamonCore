@@ -10,20 +10,13 @@
 #include <hamon/iomanip/detail/quoted_impl.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
-#include <iomanip>
 #include <string>
-#if (HAMON_CXX_STANDARD >= 17) && HAMON_HAS_INCLUDE(<string_view>)
+#if defined(HAMON_HAS_STD_STRING_VIEW)
 #include <string_view>
 #endif
 
 namespace hamon
 {
-
-#if defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-
-using std::quoted;
-
-#else
 
 template <typename CharT>
 auto quoted(CharT const* s, CharT delim = CharT('"'), CharT escape = CharT('\\'))
@@ -63,8 +56,6 @@ auto quoted(std::basic_string_view<CharT, Traits> s, CharT delim = CharT('"'), C
 		s.data(), s.size(), delim, escape
 	};
 }
-#endif
-
 #endif
 
 template <typename CharT, typename Traits, typename Allocator>
