@@ -11,6 +11,7 @@
 #include <hamon/string_view.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/ieee754.hpp>
+#include <hamon/iomanip/setw.hpp>
 #include <hamon/ios.hpp>
 #include <hamon/ostream/endl.hpp>
 #include <hamon/cstring.hpp>
@@ -3801,8 +3802,8 @@ inline void performance_test_sub(int integer_part_length, int fraction_part_leng
 		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
 		std::cout <<
 			"from_chars<" << (hamon::is_same<T, float>::value ? "float" : "double") << ">" <<
-			"(" << std::setw(3) << integer_part_length <<
-			", " << std::setw(3) << fraction_part_length << "): " <<
+			"(" << hamon::setw(3) << integer_part_length <<
+			", " << hamon::setw(3) << fraction_part_length << "): " <<
 			elapsed.count() << " ms" << hamon::endl;
 	}
 }

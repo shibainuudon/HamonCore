@@ -10,10 +10,11 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/iomanip/setfill.hpp>
+#include <hamon/iomanip/setw.hpp>
 #include <hamon/ios.hpp>
 #include <hamon/sstream/basic_stringstream.hpp>
 #include <hamon/config.hpp>
-#include <iomanip>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
@@ -41,9 +42,9 @@ void OStreamTest()
 		hamon::basic_stringstream<CharT> ss;
 		CharT const c = ss.widen('-');
 		string const s = Helper::abcde();
-		ss << std::setfill(c);
+		ss << hamon::setfill(c);
 		ss << hamon::left;
-		ss << std::setw(7);
+		ss << hamon::setw(7);
 		ss << s;
 		EXPECT_EQ(ss.str(), (s + c + c).c_str());	// "abcde--"
 
@@ -55,9 +56,9 @@ void OStreamTest()
 		hamon::basic_stringstream<CharT> ss;
 		CharT const c = ss.widen('+');
 		string const s = Helper::abcde();
-		ss << std::setfill(c);
+		ss << hamon::setfill(c);
 		ss << hamon::right;
-		ss << std::setw(6);
+		ss << hamon::setw(6);
 		ss << s;
 		EXPECT_EQ(ss.str(), (c + s).c_str());	// "+abcde"
 
