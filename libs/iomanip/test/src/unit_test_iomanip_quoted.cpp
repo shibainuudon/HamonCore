@@ -17,6 +17,7 @@
  */
 
 #include <hamon/iomanip/quoted.hpp>
+#include <hamon/ios.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
@@ -35,7 +36,7 @@ namespace quoted_test
 template <typename CharT, typename Traits>
 bool is_skipws(std::basic_istream<CharT, Traits> const& is)
 {
-	return (is.flags() & std::ios_base::skipws) != 0;
+	return (is.flags() & hamon::ios_base::skipws) != 0;
 }
 
 template <typename Str, typename OutStr, typename CharT>
@@ -46,7 +47,7 @@ void test2(Str in, CharT delim, CharT escape, Str unquoted_str, Str quoted_str, 
 		std::basic_stringstream<CharT> ss;
 		if (noskip_ws)
 		{
-			std::noskipws(ss);
+			hamon::noskipws(ss);
 		}
 		auto const skipws = is_skipws(ss);
 		ss << hamon::quoted(in, delim, escape);
@@ -61,7 +62,7 @@ void test2(Str in, CharT delim, CharT escape, Str unquoted_str, Str quoted_str, 
 		std::basic_stringstream<CharT> ss;
 		if (noskip_ws)
 		{
-			std::noskipws(ss);
+			hamon::noskipws(ss);
 		}
 		auto const skipws = is_skipws(ss);
 		ss << in;
@@ -76,7 +77,7 @@ void test2(Str in, CharT delim, CharT escape, Str unquoted_str, Str quoted_str, 
 		std::basic_stringstream<CharT> ss;
 		if (noskip_ws)
 		{
-			std::noskipws(ss);
+			hamon::noskipws(ss);
 		}
 		auto const skipws = is_skipws(ss);
 		ss << hamon::quoted(in, delim, escape);

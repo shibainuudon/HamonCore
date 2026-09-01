@@ -9,7 +9,8 @@
 
 #include <hamon/random/engines/detail/split_mix64.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/ios/flags_saver.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
+#include <hamon/ios/ios_base.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
@@ -119,12 +120,12 @@ operator<<(
 	hamon::basic_ostream<CharT, Traits>& os,
 	xorshift_base<UIntType, N, Derived> const& e)
 {
-	hamon::ios::flags_saver lx(os);
+	hamon::detail::flags_saver lx(os);
 	os.flags(
-		std::ios_base::dec |
-		std::ios_base::left |
-		std::ios_base::fixed |
-		std::ios_base::scientific);
+		hamon::ios_base::dec |
+		hamon::ios_base::left |
+		hamon::ios_base::fixed |
+		hamon::ios_base::scientific);
 	CharT sp = os.widen(' ');
 
 	for (hamon::size_t i = 0; i < N; ++i)
@@ -144,12 +145,12 @@ operator>>(
 	hamon::basic_istream<CharT, Traits>& is,
 	xorshift_base<UIntType, N, Derived>& e)
 {
-	hamon::ios::flags_saver lx(is);
+	hamon::detail::flags_saver lx(is);
 	is.flags(
-		std::ios_base::dec |
-		std::ios_base::skipws |
-		std::ios_base::fixed |
-		std::ios_base::scientific);
+		hamon::ios_base::dec |
+		hamon::ios_base::skipws |
+		hamon::ios_base::fixed |
+		hamon::ios_base::scientific);
 
 	UIntType tbl[N];
 	for (hamon::size_t i = 0; i < N; ++i)

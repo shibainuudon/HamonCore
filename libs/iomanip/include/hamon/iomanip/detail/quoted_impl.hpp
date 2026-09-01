@@ -10,11 +10,11 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/ios/flags_saver.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
+#include <hamon/ios/skipws.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/string.hpp>
-#include <ios>		// noskipws
 
 namespace hamon
 {
@@ -143,10 +143,10 @@ private:
 		}
 
 		// [quoted.manip]/3.1.1.5
-		hamon::ios::flags_saver fs(is);
+		hamon::detail::flags_saver fs(is);
 
 		// [quoted.manip]/3.1.1.1
-		std::noskipws(is);
+		hamon::noskipws(is);
 
 		// [quoted.manip]/3.1.1.2
 		s.clear();

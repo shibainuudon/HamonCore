@@ -10,6 +10,9 @@
 #include <hamon/algorithm/transform.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/ios/boolalpha.hpp>
+#include <hamon/ios/scientific.hpp>
+#include <hamon/ios/streamsize.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -18,7 +21,6 @@
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <iomanip>
-#include <ios>		// ios_base
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
 #endif
@@ -72,7 +74,7 @@ public:
 	void save(bool t) override
 	{
 		auto const old_flags = m_os.flags();
-		m_os << std::boolalpha << t;
+		m_os << hamon::boolalpha << t;
 		m_os.flags(old_flags);
 	}
 
@@ -115,7 +117,7 @@ private:
 		tmp.resize(s.size());
 		hamon::transform(s.begin(), s.end(), tmp.begin(),
 			[](CharT2 c){return static_cast<CharT1>(c);});
-		os.write(tmp.c_str(), static_cast<std::streamsize>(tmp.size()));
+		os.write(tmp.c_str(), static_cast<hamon::streamsize>(tmp.size()));
 	}
 
 	template <
@@ -128,7 +130,7 @@ private:
 		hamon::basic_string<CharT2, Traits2> const& s)
 	{
 		auto const count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
-		os.write(reinterpret_cast<CharT1 const*>(s.data()), static_cast<std::streamsize>(count));
+		os.write(reinterpret_cast<CharT1 const*>(s.data()), static_cast<hamon::streamsize>(count));
 	}
 
 public:
@@ -205,7 +207,7 @@ private:
 		// (TODO: 良い方法があるなら修正したい)
 		auto const flags = m_os.flags();
 		m_os << std::setprecision(hamon::numeric_limits<T>::max_digits10)
-			<< std::scientific << t;
+			<< hamon::scientific << t;
 		m_os.flags(flags);
 #endif
 	}

@@ -19,6 +19,8 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/initializer_list.hpp>
+#include <hamon/ios/ios_base.hpp>
+#include <hamon/ios/streamsize.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
@@ -53,7 +55,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <ios>		// ios_base, streamsize
 #include <locale>	// isspace
 
 namespace hamon
@@ -2590,7 +2591,7 @@ operator>>(
 	basic_string<CharT, Traits2, Allocator>& str)
 {
 	// 31.7.5.4 [istream.unformatted], Unformatted input functions
-	std::ios_base::iostate state = std::ios_base::goodbit;
+	hamon::ios_base::iostate state = hamon::ios_base::goodbit;
 	typename hamon::basic_istream<CharT, Traits>::sentry sen(is);
 	if (sen)
 	{
@@ -2601,10 +2602,10 @@ operator>>(
 			// [string.io]/1
 			str.erase();
 
-			std::streamsize const n =
+			hamon::streamsize const n =
 				is.width() > 0 ? is.width() :
-				static_cast<std::streamsize>(str.max_size());
-			std::streamsize extracted = 0;
+				static_cast<hamon::streamsize>(str.max_size());
+			hamon::streamsize extracted = 0;
 			while (true)
 			{
 				// [string.io]/1.1
@@ -2618,7 +2619,7 @@ operator>>(
 				// [string.io]/1.2
 				if (Traits::eq_int_type(i, Traits::eof()))
 				{
-					state |= std::ios_base::eofbit;
+					state |= hamon::ios_base::eofbit;
 					break;
 				}
 				
@@ -2640,15 +2641,15 @@ operator>>(
 			// [string.io]/3
 			if (extracted == 0)
 			{
-				state |= std::ios_base::failbit;
+				state |= hamon::ios_base::failbit;
 			}
 #if !defined(HAMON_NO_EXCEPTIONS)
 		}
 		catch (...)
 		{
-			state |= std::ios_base::badbit;
+			state |= hamon::ios_base::badbit;
 			is.setstate(state);	// TODO nothrow
-			if (is.exceptions() & std::ios_base::badbit)
+			if (is.exceptions() & hamon::ios_base::badbit)
 			{
 				throw;
 			}

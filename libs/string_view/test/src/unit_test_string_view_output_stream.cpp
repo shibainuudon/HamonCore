@@ -5,6 +5,7 @@
  */
 
 #include <hamon/string_view.hpp>
+#include <hamon/ios.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
@@ -34,7 +35,7 @@ GTEST_TEST(StringViewTest, OutputStreamTest)
 		hamon::string_view sv{"abc"};
 		std::stringstream ss;
 		ss << std::setfill('-');
-		ss << std::left;
+		ss << hamon::left;
 		ss << std::setw(5);
 		ss << sv;
 		EXPECT_EQ(ss.str(), "abc--");
@@ -51,7 +52,7 @@ GTEST_TEST(StringViewTest, OutputStreamTest)
 		hamon::wstring_view sv{L"abcd"};
 		std::wstringstream ss;
 		ss << std::setfill(L'+');
-		ss << std::right;
+		ss << hamon::right;
 		ss << std::setw(6);
 		ss << sv;
 		EXPECT_EQ(ss.str(), L"++abcd");

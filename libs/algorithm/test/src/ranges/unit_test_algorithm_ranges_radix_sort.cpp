@@ -9,6 +9,7 @@
 #include <hamon/algorithm/ranges/is_sorted.hpp>
 //#include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/cstddef.hpp>
+#include <hamon/ios.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/random.hpp>
@@ -243,7 +244,7 @@ GTEST_TEST(AlgorithmTest, RangesRadixSortTest)
 
 						auto t2 = std::chrono::high_resolution_clock::now();
 						auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-						std::cout << std::right << std::setw(10);
+						std::cout << hamon::right << std::setw(10);
 						std::cout << n << ": " << elapsed_time.count() << " ms"<< std::endl;
 					}
 

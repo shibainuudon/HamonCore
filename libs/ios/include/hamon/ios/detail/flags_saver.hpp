@@ -4,24 +4,25 @@
  *	@brief	flags_saver クラスの定義
  */
 
-#ifndef HAMON_IOS_FLAGS_SAVER_HPP
-#define HAMON_IOS_FLAGS_SAVER_HPP
+#ifndef HAMON_IOS_DETAIL_FLAGS_SAVER_HPP
+#define HAMON_IOS_DETAIL_FLAGS_SAVER_HPP
 
-#include <ios>
+#include <hamon/ios/ios_base.hpp>
 
 namespace hamon
 {
 
-namespace ios
+namespace detail
 {
 
 class flags_saver
 {
 public:
-	typedef ::std::ios_base            state_type;
-	typedef ::std::ios_base::fmtflags  aspect_type;
+	using state_type  = hamon::ios_base;
+	using aspect_type = hamon::ios_base::fmtflags;
 
-	explicit flags_saver(state_type& s)
+	explicit
+	flags_saver(state_type& s)
 		: m_state(s), m_aspect(s.flags())
 	{}
 
@@ -46,8 +47,8 @@ private:
 	flags_saver& operator=(flags_saver const&) = delete;
 };
 
-}	// namespace ios
+}	// namespace detail
 
 }	// namespace hamon
 
-#endif // HAMON_IOS_FLAGS_SAVER_HPP
+#endif // HAMON_IOS_DETAIL_FLAGS_SAVER_HPP

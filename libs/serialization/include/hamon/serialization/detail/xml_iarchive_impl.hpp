@@ -11,13 +11,14 @@
 #include <hamon/base64/base64_xml_name.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/ios/boolalpha.hpp>
+#include <hamon/ios/ios_base.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <cstdlib>	// strtold
 #include <iomanip>
-#include <ios>		// ios_base
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
 #endif
@@ -86,7 +87,7 @@ public:
 	void load(bool& t) override
 	{
 		auto const old_flags = m_is.flags();
-		m_is >> std::boolalpha >> t;
+		m_is >> hamon::boolalpha >> t;
 		m_is.flags(old_flags);
 	}
 
@@ -272,11 +273,11 @@ private:
 		auto last  = s.data() + s.length();
 #if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
 		auto result = std::from_chars(first, last, t);
-		m_is.seekg(result.ptr - last, std::ios_base::cur);	// 変換できなかったぶん戻す
+		m_is.seekg(result.ptr - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
 #else
 		char* end;
 		t = static_cast<T>(std::strtold(first, &end));
-		m_is.seekg(end - last, std::ios_base::cur);	// 変換できなかったぶん戻す
+		m_is.seekg(end - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
 #endif
 	}
 

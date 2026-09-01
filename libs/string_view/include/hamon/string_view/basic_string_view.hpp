@@ -16,6 +16,8 @@
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/ios/ios_base.hpp>
+#include <hamon/ios/streamsize.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
@@ -1054,7 +1056,7 @@ operator<<(
 	basic_string_view<CharT, Traits2> str)
 {
 	// 31.7.6.3.1 [ostream.formatted.reqmts]
-	std::ios_base::iostate state = std::ios_base::goodbit;
+	hamon::ios_base::iostate state = hamon::ios_base::goodbit;
 	typename hamon::basic_ostream<CharT, Traits1>::sentry sen(os);
 	if (sen)
 	{
@@ -1064,34 +1066,34 @@ operator<<(
 #endif
 			// [string.view.io]/1
 
-			auto const str_n = static_cast<std::streamsize>(str.size());
+			auto const str_n = static_cast<hamon::streamsize>(str.size());
 			auto const n = hamon::max(os.width(), str_n);
 			auto const fill_n = n - str_n;
 			auto const fill_c = os.fill();
 
-			if ((os.flags() & std::ios_base::adjustfield) != std::ios_base::left)
+			if ((os.flags() & hamon::ios_base::adjustfield) != hamon::ios_base::left)
 			{
-				for (std::streamsize i = 0; i < fill_n; ++i)
+				for (hamon::streamsize i = 0; i < fill_n; ++i)
 				{
 					if (os.rdbuf()->sputc(fill_c) == Traits1::eof())
 					{
-						state |= std::ios_base::failbit;
+						state |= hamon::ios_base::failbit;
 					}
 				}
 			}
 
 			if (os.rdbuf()->sputn(str.data(), str_n) != str_n)
 			{
-				state |= std::ios_base::failbit;
+				state |= hamon::ios_base::failbit;
 			}
 
-			if ((os.flags() & std::ios_base::adjustfield) == std::ios_base::left)
+			if ((os.flags() & hamon::ios_base::adjustfield) == hamon::ios_base::left)
 			{
-				for (std::streamsize i = 0; i < fill_n; ++i)
+				for (hamon::streamsize i = 0; i < fill_n; ++i)
 				{
 					if (os.rdbuf()->sputc(fill_c) == Traits1::eof())
 					{
-						state |= std::ios_base::failbit;
+						state |= hamon::ios_base::failbit;
 					}
 				}
 			}
@@ -1101,9 +1103,9 @@ operator<<(
 		}
 		catch (...)
 		{
-			state |= std::ios_base::badbit;
+			state |= hamon::ios_base::badbit;
 			os.setstate(state);
-			if (os.exceptions() & std::ios_base::badbit)
+			if (os.exceptions() & hamon::ios_base::badbit)
 			{
 				throw;
 			}

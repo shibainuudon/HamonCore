@@ -22,6 +22,7 @@
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/cstring/strlen.hpp>
 #include <hamon/functional/ranges/hash.hpp>
+#include <hamon/ios/ios_base.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
@@ -41,7 +42,6 @@
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/config.hpp>
-#include <ios>				// std::ios_base
 #include <locale>			// std::use_facet, std::ctype
 
 HAMON_WARNING_PUSH()
@@ -1121,7 +1121,7 @@ template <typename CharT, typename Traits, hamon::size_t N>
 hamon::basic_istream<CharT, Traits>&
 operator>>(hamon::basic_istream<CharT, Traits>& is, bitset<N>& x)
 {
-	std::ios_base::iostate state = std::ios_base::goodbit;
+	hamon::ios_base::iostate state = hamon::ios_base::goodbit;
 	typename hamon::basic_istream<CharT, Traits>::sentry sen(is);
 	if (sen)
 	{
@@ -1139,7 +1139,7 @@ operator>>(hamon::basic_istream<CharT, Traits>& is, bitset<N>& x)
 				typename Traits::int_type i = is.rdbuf()->sgetc();
 				if (Traits::eq_int_type(i, Traits::eof()))
 				{
-					state |= std::ios_base::eofbit;
+					state |= hamon::ios_base::eofbit;
 					break;
 				}
 
@@ -1159,13 +1159,13 @@ operator>>(hamon::basic_istream<CharT, Traits>& is, bitset<N>& x)
 			// [bitset.operators]/6
 			if (count == 0 && N > 0)
 			{
-				state |= std::ios_base::failbit;
+				state |= hamon::ios_base::failbit;
 			}
 #if !defined(HAMON_NO_EXCEPTIONS)
 		}
 		catch (...)
 		{
-			state |= std::ios_base::badbit;
+			state |= hamon::ios_base::badbit;
 		}
 #endif
 		is.setstate(state);

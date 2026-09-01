@@ -10,6 +10,7 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/ios.hpp>
 #include <hamon/config.hpp>
 #include <sstream>
 #include <iomanip>
@@ -41,7 +42,7 @@ void OStreamTest()
 		CharT const c = ss.widen('-');
 		string const s = Helper::abcde();
 		ss << std::setfill(c);
-		ss << std::left;
+		ss << hamon::left;
 		ss << std::setw(7);
 		ss << s;
 		EXPECT_EQ(ss.str(), (s + c + c).c_str());	// "abcde--"
@@ -55,7 +56,7 @@ void OStreamTest()
 		CharT const c = ss.widen('+');
 		string const s = Helper::abcde();
 		ss << std::setfill(c);
-		ss << std::right;
+		ss << hamon::right;
 		ss << std::setw(6);
 		ss << s;
 		EXPECT_EQ(ss.str(), (c + s).c_str());	// "+abcde"

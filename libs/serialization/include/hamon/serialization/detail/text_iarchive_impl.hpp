@@ -11,13 +11,15 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/ios/boolalpha.hpp>
+#include <hamon/ios/ios_base.hpp>
+#include <hamon/ios/streamsize.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <cstdlib>	// strtold
 #include <iomanip>
-#include <ios>		// ios_base
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
 #endif
@@ -113,7 +115,7 @@ public:
 	void load(bool& t) override
 	{
 		auto const old_flags = m_is.flags();
-		m_is >> std::boolalpha >> t;
+		m_is >> hamon::boolalpha >> t;
 		m_is.flags(old_flags);
 	}
 
@@ -155,7 +157,7 @@ private:
 	{
 		hamon::basic_string<CharT1> tmp;
 		tmp.resize(length);
-		is.read(&tmp[0], static_cast<std::streamsize>(tmp.size()));
+		is.read(&tmp[0], static_cast<hamon::streamsize>(tmp.size()));
 		s.resize(length);
 		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](CharT1 c){return static_cast<CharT2>(c);});
@@ -173,7 +175,7 @@ private:
 	{
 		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
 		s.resize(length);
-		is.read(reinterpret_cast<CharT1*>(&s[0]), static_cast<std::streamsize>(count));
+		is.read(reinterpret_cast<CharT1*>(&s[0]), static_cast<hamon::streamsize>(count));
 	}
 
 	template <
@@ -359,11 +361,11 @@ private:
 		auto last  = s.data() + s.length();
 #if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
 		auto result = std::from_chars(first, last, t);
-		m_is.seekg(result.ptr - last, std::ios_base::cur);	// 変換できなかったぶん戻す
+		m_is.seekg(result.ptr - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
 #else
 		char* end;
 		t = static_cast<T>(std::strtold(first, &end));
-		m_is.seekg(end - last, std::ios_base::cur);	// 変換できなかったぶん戻す
+		m_is.seekg(end - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
 #endif
 	}
 
