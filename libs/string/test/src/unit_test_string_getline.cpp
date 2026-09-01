@@ -30,8 +30,8 @@
 #include <hamon/string/basic_string.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/ostream/endl.hpp>
+#include <hamon/sstream/basic_stringstream.hpp>
 #include <hamon/config.hpp>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
@@ -49,7 +49,7 @@ void GetLineTest()
 	using Helper = StringTestHelper<CharT>;
 
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde() << hamon::endl;
 		ss << Helper::ABCDE() << hamon::endl;
 		ss << Helper::aababc() << hamon::endl;
@@ -63,7 +63,7 @@ void GetLineTest()
 		EXPECT_EQ(s, Helper::aababc());
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(ss, s);
@@ -71,7 +71,7 @@ void GetLineTest()
 		EXPECT_EQ(s, Helper::long_str());
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde() << hamon::endl;
 		ss << Helper::ABCDE() << hamon::endl;
 		ss << Helper::aababc() << hamon::endl;
@@ -85,7 +85,7 @@ void GetLineTest()
 		EXPECT_EQ(s, Helper::aababc());
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(hamon::move(ss), s);
@@ -93,7 +93,7 @@ void GetLineTest()
 		EXPECT_EQ(s, Helper::long_str());
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde();
 		string s;
 		auto const delim = Helper::abcde()[2];
@@ -104,7 +104,7 @@ void GetLineTest()
 		EXPECT_EQ(s, string(Helper::abcde(), 3, 2));	// "de"
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(ss, s, ss.widen(' '));
@@ -116,7 +116,7 @@ void GetLineTest()
 		EXPECT_EQ(s, string(Helper::long_str(), 10, 5));// "brown"
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::abcde();
 		string s;
 		auto const delim = Helper::abcde()[3];
@@ -127,7 +127,7 @@ void GetLineTest()
 		EXPECT_EQ(s, string(Helper::abcde(), 4, 1));	// "e"
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		ss << Helper::long_str() << hamon::endl;
 		string s;
 		auto& r = hamon::getline(hamon::move(ss), s, ss.widen(' '));

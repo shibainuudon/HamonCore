@@ -7,10 +7,10 @@
 #include <hamon/ranges/adaptors/reverse_view.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -25,7 +25,7 @@ GTEST_TEST(RangesTest, ReverseViewOverviewTest)
 		// [range.reverse.overview]/3
 		// Example 1:
 		hamon::vector<int> is {0, 1, 2, 3, 4};
-		std::stringstream out;
+		hamon::stringstream out;
 		for (int i : is | hamon::views::reverse)
 		{
 			out << i << ' '; // prints 4 3 2 1 0
@@ -34,7 +34,7 @@ GTEST_TEST(RangesTest, ReverseViewOverviewTest)
 	}
 
 	{
-		std::stringstream out;
+		hamon::stringstream out;
 		for (char c : hamon::string_view("Hello") | hamon::views::reverse)
 		{
 			out << c;
@@ -53,7 +53,7 @@ HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wdangling-reference")
 #endif
 
-		std::stringstream out;
+		hamon::stringstream out;
 		for (char c : hamon::string_view("Hello") | hamon::views::reverse | hamon::views::reverse)
 		{
 			out << c;
@@ -68,7 +68,7 @@ HAMON_WARNING_POP()
 		auto il = {3, 1, 4, 1, 5, 9};
 
 		{
-			std::stringstream out;
+			hamon::stringstream out;
 			hamon::ranges::reverse_view rv {il};
 			for (int i : rv)
 			{
@@ -77,7 +77,7 @@ HAMON_WARNING_POP()
 			EXPECT_EQ("9 5 1 4 1 3 ", out.str());
 		}
 		{
-			std::stringstream out;
+			hamon::stringstream out;
 			for (int i : il | hamon::views::reverse)
 			{
 				out << i << ' ';
@@ -85,7 +85,7 @@ HAMON_WARNING_POP()
 			EXPECT_EQ("9 5 1 4 1 3 ", out.str());
 		}
 		{
-			std::stringstream out;
+			hamon::stringstream out;
 			hamon::ranges::reverse_view rv {il};
 			// operator[] is inherited from hamon::view_interface
 			for (auto i {0U}; i != rv.size(); ++i)

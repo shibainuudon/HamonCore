@@ -10,6 +10,7 @@
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
@@ -246,7 +247,7 @@ R"(<?xml version="1.0"?>
 }
 
 using XmlTestTypes = ::testing::Types<
-	std::tuple<std::stringstream, hamon::serialization::xml_oarchive, hamon::serialization::xml_iarchive>
+	std::tuple<hamon::stringstream, hamon::serialization::xml_oarchive, hamon::serialization::xml_iarchive>
 >;
 
 template <typename T>

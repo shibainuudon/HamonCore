@@ -9,9 +9,9 @@
 
 #include <hamon/inplace_vector.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -238,7 +238,7 @@ GTEST_TEST(InplaceVectorTest, EraseTest)
 	{
 		auto print = [](hamon::inplace_vector<int, 10> const& v)
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& e : v)
 			{
 				ss << e << ", ";

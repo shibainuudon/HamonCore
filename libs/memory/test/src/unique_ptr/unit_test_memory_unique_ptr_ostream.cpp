@@ -8,8 +8,8 @@
  */
 
 #include <hamon/memory/unique_ptr.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_memory_test
@@ -25,9 +25,9 @@ GTEST_TEST(UniquePtrTest, OstreamTest)
 {
 	auto p = new int;
 	hamon::unique_ptr<int> up(p);
-	std::stringstream ss1;
+	hamon::stringstream ss1;
 	ss1 << up;
-	std::stringstream ss2;
+	hamon::stringstream ss2;
 	ss2 << up;
 	EXPECT_EQ(ss1.str(), ss2.str());
 }

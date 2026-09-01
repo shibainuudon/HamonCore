@@ -10,6 +10,7 @@
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 #include "flat_set_test_helper.hpp"
@@ -177,7 +177,7 @@ GTEST_TEST(FlatSetTest, InsertRangeTest)
 
 		fs.insert_range(fs2);
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (int i : fs)
 		{
 			ss << i << ", ";

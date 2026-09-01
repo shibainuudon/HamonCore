@@ -5,8 +5,8 @@
  */
 
 #include <hamon/queue.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(QueueTest, QueueTest)
 {
@@ -26,7 +26,7 @@ GTEST_TEST(QueueTest, QueueTest)
 
 	// Print and remove all elements. Note that std::queue does not
 	// support begin()/end(), so a range-for-loop cannot be used.
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (; !q.empty(); q.pop())
 	{
 		ss << q.front() << ' ';

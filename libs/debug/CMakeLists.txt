@@ -23,6 +23,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstddef
 		cstdlib
 		ostream
+		sstream
 		type_traits
 		utility)
 

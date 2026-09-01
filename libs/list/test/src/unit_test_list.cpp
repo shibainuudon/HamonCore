@@ -6,8 +6,8 @@
 
 #include <hamon/list.hpp>
 #include <hamon/algorithm/for_each.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(ListTest, ListTest)
 {
@@ -22,7 +22,7 @@ GTEST_TEST(ListTest, ListTest)
 	ls.push_back(4);
 
 	// 要素を先頭から順番に表示
-	std::stringstream ss;
+	hamon::stringstream ss;
 	hamon::for_each(ls.cbegin(), ls.cend(), [&](int x){
 		ss << x << ", ";
 	});

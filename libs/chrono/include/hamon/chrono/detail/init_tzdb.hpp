@@ -12,7 +12,8 @@
 #include <hamon/chrono/detail/parse_leap_seconds.hpp>
 #include <hamon/chrono/tzdb.hpp>
 #include <hamon/algorithm/ranges/sort.hpp>
-#include <sstream>
+#include <hamon/sstream/istringstream.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon {
 namespace chrono {
@@ -27,7 +28,7 @@ inline void init_tzdb(hamon::chrono::tzdb& tzdb, tz::rules_storage_type& rules)
 		const char* s =
 #include <hamon/chrono/detail/tzdata.zi>
 		;
-		std::istringstream tzdata(s);
+		hamon::istringstream tzdata(s);
 
 		parse_tzdata(tzdb, rules, tzdata);
 
@@ -39,7 +40,7 @@ inline void init_tzdb(hamon::chrono::tzdb& tzdb, tz::rules_storage_type& rules)
 		const char* s =
 #include <hamon/chrono/detail/leap-seconds.list>
 		;
-		std::istringstream leap_seconds_data(s);
+		hamon::istringstream leap_seconds_data(s);
 		parse_leap_seconds(tzdb.leap_seconds, leap_seconds_data);
 	}
 }

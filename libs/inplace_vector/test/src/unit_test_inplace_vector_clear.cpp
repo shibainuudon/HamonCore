@@ -7,6 +7,7 @@
  */
 
 #include <hamon/inplace_vector.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -160,7 +161,7 @@ GTEST_TEST(InplaceVectorTest, ClearTest)
 
 		// Before clear
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& value : container)
 			{
 				ss << value << ' ';
@@ -173,7 +174,7 @@ GTEST_TEST(InplaceVectorTest, ClearTest)
 
 		// After clear
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& value : container)
 			{
 				ss << value << ' ';

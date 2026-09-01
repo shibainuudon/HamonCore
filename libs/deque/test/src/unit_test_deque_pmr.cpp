@@ -7,8 +7,8 @@
 #include <hamon/deque.hpp>
 #include <hamon/algorithm/for_each.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(DequeTest, PmrTest)
 {
@@ -19,7 +19,7 @@ GTEST_TEST(DequeTest, PmrTest)
 	deq.push_back(1);   // 末尾に要素を追加
 
 	// イテレータを介して全要素に対して操作を行う
-	std::stringstream ss;
+	hamon::stringstream ss;
 	hamon::for_each(deq.begin(), deq.end(), [&](int x) {
 		ss << x << ", ";
 	});

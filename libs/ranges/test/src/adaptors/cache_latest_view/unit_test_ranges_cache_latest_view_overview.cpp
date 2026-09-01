@@ -8,9 +8,9 @@
 #include <hamon/ranges/adaptors/transform_view.hpp>
 #include <hamon/ranges/adaptors/filter_view.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -25,7 +25,7 @@ GTEST_TEST(RangesTest, CacheLatestViewOverviewTest)
 	{
 		hamon::vector<int> v = {1, 2, 3, 4, 5};
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 
 		auto square = [&](int i)
 		{

@@ -6,8 +6,8 @@
 
 #include <hamon/bigint.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_bigint_test
 {
@@ -20,13 +20,13 @@ inline void StreamOutputSignedTest()
 {
 	{
 		BigInt const x = -123;
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "-123");
 	}
 	{
 		BigInt const x = -629968538327;
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "-629968538327");
 	}
@@ -37,7 +37,7 @@ inline void StreamOutputSignedTest2()
 {
 	{
 		BigInt const x {"-385335686481014111885846834642220016869768311067870000000000"};
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "-385335686481014111885846834642220016869768311067870000000000");
 	}
@@ -48,19 +48,19 @@ inline void StreamOutputUnignedTest()
 {
 	{
 		BigInt const x = 0;
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "0");
 	}
 	{
 		BigInt const x = 123;
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "123");
 	}
 	{
 		BigInt const x = 629968538327;
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "629968538327");
 	}
@@ -71,7 +71,7 @@ inline void StreamOutputUnignedTest2()
 {
 	{
 		BigInt const x {"314159265358979323846264338327950288419716939937510"};
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ(ss.str(), "314159265358979323846264338327950288419716939937510");
 	}

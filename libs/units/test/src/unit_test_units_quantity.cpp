@@ -20,8 +20,9 @@
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/ratio/ratio.hpp>
+#include <hamon/sstream/stringstream.hpp>
+#include <hamon/sstream/wstringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace units_quantity_test
@@ -702,13 +703,13 @@ TYPED_TEST(QuantityTest, OutputStreamTest)
 
 	{
 		const Q1 x(321);
-		std::stringstream ss;
+		hamon::stringstream ss;
 		ss << x;
 		EXPECT_EQ("321", ss.str());
 	}
 	{
 		const Q2 x(54321);
-		std::wstringstream ss;
+		hamon::wstringstream ss;
 		ss << x;
 		EXPECT_EQ(L"54321", ss.str());
 	}

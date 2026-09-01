@@ -16,9 +16,9 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/complex.hpp>
 #include <hamon/numeric/iota.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -139,7 +139,7 @@ GTEST_TEST(InplaceVectorTest, ErasureTest)
 	{
 		auto print = [](hamon::inplace_vector<int, 10> const& v)
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& e : v)
 			{
 				ss << e << ", ";
@@ -162,7 +162,7 @@ GTEST_TEST(InplaceVectorTest, ErasureTest)
 		hamon::inplace_vector<hamon::complex<double>, 10> nums {{2, 2}, {4, 2}, {4, 8}, {4, 2}};
 		hamon::erase(nums, {4, 2}); // since U = T, the value type can be ommited
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& e : nums)
 			{
 				ss << e << ", ";

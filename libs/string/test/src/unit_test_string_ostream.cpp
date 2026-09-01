@@ -11,8 +11,8 @@
 
 #include <hamon/string/basic_string.hpp>
 #include <hamon/ios.hpp>
+#include <hamon/sstream/basic_stringstream.hpp>
 #include <hamon/config.hpp>
-#include <sstream>
 #include <iomanip>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
@@ -32,13 +32,13 @@ void OStreamTest()
 
 	{
 		string const s = Helper::abcde();
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		auto& r = (ss << s);
 		EXPECT_TRUE(&r == &ss);
 		EXPECT_EQ(ss.str(), s.c_str());
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		CharT const c = ss.widen('-');
 		string const s = Helper::abcde();
 		ss << std::setfill(c);
@@ -52,7 +52,7 @@ void OStreamTest()
 		EXPECT_EQ(ss.str(), (s + c + c + s).c_str());	// "abcde--abcde"
 	}
 	{
-		std::basic_stringstream<CharT> ss;
+		hamon::basic_stringstream<CharT> ss;
 		CharT const c = ss.widen('+');
 		string const s = Helper::abcde();
 		ss << std::setfill(c);

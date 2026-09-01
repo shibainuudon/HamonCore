@@ -10,8 +10,8 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/ratio.hpp>
+#include <hamon/sstream/basic_stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_chrono_test
 {
@@ -23,7 +23,7 @@ template <typename Period, typename Rep, typename CharT>
 void test(Rep v, CharT const* str)
 {
 	auto const d = hamon::chrono::duration<Rep, Period>{v};
-	std::basic_stringstream<CharT> ss;
+	hamon::basic_stringstream<CharT> ss;
 	auto& r = (ss << d);
 	EXPECT_TRUE(&r == &ss);
 	EXPECT_EQ(str, ss.str());

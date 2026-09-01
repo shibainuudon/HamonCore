@@ -9,11 +9,11 @@
 
 #include <hamon/inplace_vector.hpp>
 #include <hamon/pair.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -266,7 +266,7 @@ GTEST_TEST(InplaceVectorTest, EmplaceBackTest)
 		fauna.emplace_back("CAT", dog);
 		fauna.emplace_back("CAT", hamon::move(dog));
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& v : fauna)
 			{
 				ss << "(" << v.first << ", " << v.second << "), ";
@@ -277,7 +277,7 @@ GTEST_TEST(InplaceVectorTest, EmplaceBackTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 		EXPECT_THROW(fauna.emplace_back("BUG", "BUG"), hamon::bad_alloc); // throws: there is no space
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& v : fauna)
 			{
 				ss << "(" << v.first << ", " << v.second << "), ";

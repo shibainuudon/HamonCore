@@ -6,8 +6,9 @@
 
 #include <hamon/random/engines/xoshiro.hpp>
 #include <hamon/random/seed_seq.hpp>
+#include <hamon/sstream/istringstream.hpp>
+#include <hamon/sstream/ostringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_random_test
@@ -243,9 +244,9 @@ TYPED_TEST(XoshiroTest, InputOutputTest)
 
 	Engine e1;
 	e1.discard(100);
-	std::ostringstream os;
+	hamon::ostringstream os;
 	os << e1;
-	std::istringstream is(os.str());
+	hamon::istringstream is(os.str());
 	Engine e2;
 	EXPECT_TRUE(e1 != e2);
 	is >> e2;

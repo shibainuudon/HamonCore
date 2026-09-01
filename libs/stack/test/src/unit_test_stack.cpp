@@ -5,8 +5,8 @@
  */
 
 #include <hamon/stack.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(StackTest, StackTest)
 {
@@ -17,7 +17,7 @@ GTEST_TEST(StackTest, StackTest)
 	st.push(2);
 	st.push(3);
 
-	std::stringstream ss;
+	hamon::stringstream ss;
 	while (!st.empty())
 	{
 		ss << st.top() << " "; // 末尾要素を参照する

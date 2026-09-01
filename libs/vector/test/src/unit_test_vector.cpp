@@ -5,8 +5,8 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 GTEST_TEST(VectorTest, VectorTest)
 {
@@ -24,7 +24,7 @@ GTEST_TEST(VectorTest, VectorTest)
 	EXPECT_TRUE(size == 5u);
 
 	// 各要素に対して操作を行う
-	std::stringstream ss;
+	hamon::stringstream ss;
 	for (int x : v)
 	{
 		ss << x << ", ";

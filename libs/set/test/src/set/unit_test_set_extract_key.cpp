@@ -7,12 +7,12 @@
  */
 
 #include <hamon/set/set.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include <string>
-#include <sstream>
 
 namespace hamon_set_test
 {
@@ -118,7 +118,7 @@ int S::s_dtor_count = 0;
 template <typename T, typename C>
 std::string ToString(const hamon::set<T, C>& set)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	auto n = set.size();
 	out << "{";
 	for (auto const& elm : set)

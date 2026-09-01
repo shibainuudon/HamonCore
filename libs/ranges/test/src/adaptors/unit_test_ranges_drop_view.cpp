@@ -20,12 +20,12 @@
 #include <hamon/concepts.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/span.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 #include "range_test_helper.hpp"
@@ -699,7 +699,7 @@ GTEST_TEST(ViewsTest, DropViewTest)
 	// [range.drop.overview]/3
 	// Example 1:
 	{
-		std::stringstream ss;
+		hamon::stringstream ss;
 		auto ints = hamon::views::iota(0) | hamon::views::take(10);
 		for (auto i : ints | hamon::views::drop(5))
 		{

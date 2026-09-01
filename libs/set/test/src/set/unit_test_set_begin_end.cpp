@@ -13,10 +13,10 @@
 
 #include <hamon/set/set.hpp>
 #include <hamon/algorithm.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <sstream>
 
 namespace hamon_set_test
 {
@@ -159,7 +159,7 @@ GTEST_TEST(SetTest, BeginEndTest)
 	// https://en.cppreference.com/w/cpp/container/set/begin
 	{
 		hamon::set<int> set {3, 1, 4, 1, 5, 9, 2, 6, 5};
-		std::stringstream out;
+		hamon::stringstream out;
 		hamon::for_each(set.cbegin(), set.cend(), [&](int x)
 		{
 			out << x << ' ';

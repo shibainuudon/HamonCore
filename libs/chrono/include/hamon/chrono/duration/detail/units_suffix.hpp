@@ -10,7 +10,7 @@
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/ratio.hpp>
-#include <sstream>	// basic_ostringstream
+#include <hamon/sstream/basic_ostringstream.hpp>
 
 namespace hamon {
 namespace chrono {
@@ -26,7 +26,7 @@ struct units_suffix_impl
 {
 	// [time.duration.io]/1.22
 	template <typename CharT, typename Traits>
-	static void invoke(std::basic_ostringstream<CharT, Traits>& s)
+	static void invoke(hamon::basic_ostringstream<CharT, Traits>& s)
 	{
 		s << HAMON_STATICALLY_WIDEN(CharT, "[")
 		  << N
@@ -41,7 +41,7 @@ struct units_suffix_impl<N, 1>
 {
 	// [time.duration.io]/1.21
 	template <typename CharT, typename Traits>
-	static void invoke(std::basic_ostringstream<CharT, Traits>& s)
+	static void invoke(hamon::basic_ostringstream<CharT, Traits>& s)
 	{
 		s << HAMON_STATICALLY_WIDEN(CharT, "[")
 		  << N
@@ -57,7 +57,7 @@ template <>                                                        \
 struct units_suffix_impl<PERIOD::num, PERIOD::den>                 \
 {                                                                  \
 	template <typename CharT, typename Traits>                     \
-	static void invoke(std::basic_ostringstream<CharT, Traits>& s) \
+	static void invoke(hamon::basic_ostringstream<CharT, Traits>& s) \
 	{                                                              \
 		s << HAMON_STATICALLY_WIDEN(CharT, S);                     \
 	}                                                              \

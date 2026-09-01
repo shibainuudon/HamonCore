@@ -10,9 +10,9 @@
 #include <hamon/inplace_vector.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/span.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -84,7 +84,7 @@ GTEST_TEST(InplaceVectorTest, DataTest)
 	{
 		auto pointer_func = [](const int* p, hamon::size_t size)
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (hamon::size_t i = 0; i < size; ++i)
 			{
 				ss << p[i] << ' ';
@@ -94,7 +94,7 @@ GTEST_TEST(InplaceVectorTest, DataTest)
 
 		auto span_func = [](hamon::span<const int> data) // since C++20
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (const int e : data)
 			{
 				ss << e << ' ';

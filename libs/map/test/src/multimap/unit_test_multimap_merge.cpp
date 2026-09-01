@@ -19,12 +19,12 @@
 #include <hamon/map/multimap.hpp>
 #include <hamon/map/map.hpp>
 #include <hamon/functional.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include <string>
-#include <sstream>
 
 namespace hamon_multimap_test
 {
@@ -226,7 +226,7 @@ HAMON_CXX20_CONSTEXPR bool test3()
 template <typename Key, typename T, typename C>
 std::string ToString(const hamon::multimap<Key, T, C>& m)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	for (const auto& n : m)
 	{
 		out << "[" << n.first << "] = " << n.second << ", ";

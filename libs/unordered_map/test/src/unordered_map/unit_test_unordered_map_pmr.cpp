@@ -6,10 +6,10 @@
 
 #include <hamon/unordered_map/unordered_map.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_unordered_map_test
 {
@@ -30,7 +30,7 @@ GTEST_TEST(UnorderedMapTest, PmrTest)
 			{"BLUE", "#0000FF"}
 		}, &mr);
 
-	std::stringstream ss;
+	hamon::stringstream ss;
 
 	// Helper lambda function to print key-value pairs
 	auto print_key_value = [&](const hamon::string& key, const hamon::string& value)

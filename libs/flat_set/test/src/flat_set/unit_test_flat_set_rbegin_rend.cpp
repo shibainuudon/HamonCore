@@ -13,12 +13,12 @@
 
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_set_test_helper.hpp"
 
@@ -163,7 +163,7 @@ GTEST_TEST(FlatSetTest, RBeginREndTest)
 	{
 		hamon::flat_set<int> fs = {3, 1, 4};
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (auto i = fs.rbegin(); i != fs.rend(); ++i)
 		{
 			ss << *i << ", ";

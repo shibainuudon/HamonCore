@@ -17,9 +17,9 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -446,7 +446,7 @@ GTEST_TEST(FlatMapTest, EmplaceTest)
 			hamon::forward_as_tuple(static_cast<hamon::size_t>(3), 'B'),
 			hamon::forward_as_tuple(5, 6));
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (const auto& p : fm)
 		{
 			ss << p.first << ":(" << p.second.x << ", " << p.second.y << ')' << ", ";

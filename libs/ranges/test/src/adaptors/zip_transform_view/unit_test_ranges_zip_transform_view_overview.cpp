@@ -6,9 +6,9 @@
 
 #include <hamon/ranges/adaptors/zip_transform_view.hpp>
 #include <hamon/functional/ranges/plus.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -25,7 +25,7 @@ GTEST_TEST(RangesTest, ZipTransformViewOverviewTest)
 		hamon::vector<int> v1 = {1, 2};
 		hamon::vector<int> v2 = {4, 5, 6};
 
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto i : hamon::views::zip_transform(hamon::ranges::plus{}, v1, v2))
 		{
 			out << i << ' ';     // prints 5 7

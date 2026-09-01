@@ -7,9 +7,9 @@
  */
 
 #include <hamon/inplace_vector.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -79,7 +79,7 @@ GTEST_TEST(InplaceVectorTest, PopBackTest)
 	{
 		auto print = [](hamon::inplace_vector<int, 4> const& v)
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			for (auto const& e : v)
 			{
 				ss << e << ", ";

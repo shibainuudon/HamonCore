@@ -5,10 +5,10 @@
  */
 
 #include <hamon/set/set.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>
 
 namespace hamon_set_test
 {
@@ -19,7 +19,7 @@ namespace op_assign_test
 template <typename T, typename C>
 std::string ToString(const hamon::set<T, C>& set)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	auto n = set.size();
 	out << "{";
 	for (auto const& elm : set)

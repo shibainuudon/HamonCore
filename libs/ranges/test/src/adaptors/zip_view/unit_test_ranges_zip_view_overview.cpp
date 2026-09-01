@@ -7,9 +7,9 @@
 #include <hamon/ranges/adaptors/zip_view.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/list.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_ranges_test
 {
@@ -33,7 +33,7 @@ GTEST_TEST(RangesTest, ZipViewOverviewTest)
 		hamon::ranges::range_reference_t<decltype(z)> f = z.front();   // f is a tuple<int&, char&>
 		(void)f;												// that refers to the first element of v and l
 
-		std::stringstream out;
+		hamon::stringstream out;
 		for (auto&& [x, y] : z)
 		{
 			out << '(' << x << ", " << y << ") ";        // prints (1, a) (2, b)

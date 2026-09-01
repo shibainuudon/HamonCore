@@ -19,13 +19,13 @@
 #include <hamon/concepts.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/span.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 #include "range_test_helper.hpp"
@@ -1558,7 +1558,7 @@ GTEST_TEST(RangesTest, TakeViewTest)
 	// [range.take.overview]/3
 	// Example 1:
 	{
-		std::stringstream ss;
+		hamon::stringstream ss;
 		hamon::vector<int> is {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 		for (int i : is | hamon::views::take(5))
 		{

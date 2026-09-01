@@ -5,8 +5,8 @@
  */
 
 #include <hamon/flat_set/flat_set.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 
 namespace hamon_flat_set_test
 {
@@ -47,7 +47,7 @@ GTEST_TEST(FlatSetTest, EraseTest)
 			}
 		}
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (int i : fs)
 		{
 			ss << i << ", ";

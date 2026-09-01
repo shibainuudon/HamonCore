@@ -13,11 +13,11 @@
 
 #include <hamon/map/multimap.hpp>
 #include <hamon/algorithm.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include <string>
-#include <sstream>
 
 namespace hamon_multimap_test
 {
@@ -195,7 +195,7 @@ GTEST_TEST(MultimapTest, RBeginREndTest)
 		using Pair = typename hamon::multimap<std::string, int>::value_type;
 
 		// Print out in reverse order using const reverse iterators
-		std::stringstream out;
+		hamon::stringstream out;
 		hamon::for_each(map.crbegin(), map.crend(),
 			[&](Pair const& e)
 			{
@@ -206,7 +206,7 @@ GTEST_TEST(MultimapTest, RBeginREndTest)
 		map.rbegin()->second = 42; // OK: non-const value is modifiable
 //		map.crbegin()->second = 42; // Error: cannot modify the const value
 
-		std::stringstream out2;
+		hamon::stringstream out2;
 		hamon::for_each(map.crbegin(), map.crend(),
 			[&](Pair const& e)
 			{

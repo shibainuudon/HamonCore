@@ -5,9 +5,9 @@
  */
 
 #include <hamon/map.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>
 
 namespace hamon_map_test
 {
@@ -18,7 +18,7 @@ namespace overview_test
 template <typename Key, typename T, typename C>
 std::string ToString(const hamon::map<Key, T, C>& m)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	for (const auto& n : m)
 	{
 		out << "[" << n.first << "] = " << n.second << "; ";

@@ -20,6 +20,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		deque
 		initializer_list
 		memory_resource
+		sstream
 		string
 		type_traits
 		vector

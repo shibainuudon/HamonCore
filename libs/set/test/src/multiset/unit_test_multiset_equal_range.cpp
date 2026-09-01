@@ -10,12 +10,12 @@
 #include <hamon/set/multiset.hpp>
 #include <hamon/functional.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include <string>
-#include <sstream>
 
 namespace hamon_multiset_test
 {
@@ -109,7 +109,7 @@ HAMON_CXX20_CONSTEXPR bool test2()
 template <typename I>
 std::string ToString(I first, I lb, I ub, I last)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	for (I i {first}; i != lb; ++i)
 	{
 		out << *i << ' ';

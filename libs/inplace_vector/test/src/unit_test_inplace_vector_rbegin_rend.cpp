@@ -13,11 +13,11 @@
 
 #include <hamon/inplace_vector.hpp>
 #include <hamon/algorithm.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 
 namespace hamon_inplace_vector_test
@@ -179,12 +179,12 @@ GTEST_TEST(InplaceVectorTest, RBeginREndTest)
 		hamon::copy(data.cbegin(), data.cend(), arr.begin());
 
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			hamon::for_each(arr.cbegin(), arr.cend(), [&](const hamon::string_view s){ ss << s << ' '; });
 			EXPECT_EQ("a b c d e f g h ", ss.str());
 		}
 		{
-			std::stringstream ss;
+			hamon::stringstream ss;
 			hamon::for_each(arr.crbegin(), arr.crend(), [&](const hamon::string_view s){ ss << s << ' '; });
 			EXPECT_EQ("h g f e d c b a ", ss.str());
 		}
@@ -196,7 +196,7 @@ GTEST_TEST(InplaceVectorTest, RBeginREndTest)
 
 		{
 			// Print elements of container in reverse order using const_reverse_iterator's.
-			std::stringstream ss;
+			hamon::stringstream ss;
 			hamon::for_each(a.crbegin(), a.crend(), [&](int e){ ss << e << ' '; });
 			EXPECT_EQ("40 69 76 76 79 12 0 35 11 11 1 ", ss.str());
 		}
@@ -206,7 +206,7 @@ GTEST_TEST(InplaceVectorTest, RBeginREndTest)
 
 		{
 			// Print elements as chars in reverse order using const_reverse_iterator's.
-			std::stringstream ss;
+			hamon::stringstream ss;
 			hamon::for_each(a.crbegin(), a.crend(), [&](int e){ ss << static_cast<char>(e); });
 			EXPECT_EQ("Hello, C++!", ss.str());
 		}

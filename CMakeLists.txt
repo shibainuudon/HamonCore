@@ -75,6 +75,7 @@ set(SUBDIRECTORIES
 	set
 	shared_mutex
 	span
+	sstream
 	stack
 	static_typeinfo
 	stdexcept

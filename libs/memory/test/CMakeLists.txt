@@ -20,6 +20,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		bit
 		list
 		pair
+		sstream
 		tuple
 		type_traits
 		utility

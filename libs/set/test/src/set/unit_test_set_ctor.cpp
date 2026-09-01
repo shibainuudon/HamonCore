@@ -8,10 +8,10 @@
 #include <hamon/cmath/hypot.hpp>
 #include <hamon/ostream/ostream.hpp>
 #include <hamon/ranges/from_range_t.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <sstream>
 
 namespace hamon_set_test
 {
@@ -22,7 +22,7 @@ namespace ctor_test
 template <typename T, typename C>
 std::string ToString(const hamon::set<T, C>& set)
 {
-	std::stringstream out;
+	hamon::stringstream out;
 	auto n = set.size();
 	out << "{";
 	for (auto const& elm : set)

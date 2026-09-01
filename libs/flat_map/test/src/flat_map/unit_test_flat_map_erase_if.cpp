@@ -17,9 +17,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -186,7 +186,7 @@ GTEST_TEST(FlatMapTest, EraseIfTest)
 		auto num = hamon::erase_if(fm, [](const value_type& x) { return x.first == "B"; });
 		EXPECT_TRUE(num == 1);
 
-		std::stringstream ss;
+		hamon::stringstream ss;
 		for (const auto& p : fm)
 		{
 			ss << p.first << ":" << p.second << ", ";

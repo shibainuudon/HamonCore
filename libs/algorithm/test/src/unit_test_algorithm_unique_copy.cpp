@@ -11,9 +11,9 @@
 #include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
+#include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -151,7 +151,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		EXPECT_TRUE(b.empty());
 	}
 	{
-		std::stringstream ss("1 1 1 2 2 3 33");
+		hamon::stringstream ss("1 1 1 2 2 3 33");
 		std::istream_iterator<int> ii_first(ss);
 		std::istream_iterator<int> ii_last;
 		hamon::vector<int> b;
