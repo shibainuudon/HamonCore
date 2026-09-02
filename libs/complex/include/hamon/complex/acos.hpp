@@ -46,8 +46,8 @@ acos_impl(T x, T y,
 {
 	return
 		// If z is (±0,+0), the result is (π/2,-0)
-		hamon::iszero(x) && hamon::iszero(y) ?
-			complex<T>{pi / 2, 0} :
+		hamon::iszero(x) && hamon::iszero(y) && !hamon::signbit(y) ?
+			complex<T>{pi / 2, T(-0.0)} :
 		// If z is (±0,NaN), the result is (π/2,NaN)
 		hamon::iszero(x) && hamon::isnan(y) ?
 			complex<T>{pi / 2, nan} :

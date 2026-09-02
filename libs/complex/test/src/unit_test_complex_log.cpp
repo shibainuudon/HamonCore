@@ -94,9 +94,7 @@ void test()
 	HAMON_CXX11_CONSTEXPR T inf = hamon::numeric_limits<T>::infinity();
 
 	// If z is (-0,+0), the result is (-∞,π) and FE_DIVBYZERO is raised
-	//HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(-inf, pi), hamon::log(hamon::complex<T>(-0.0, +0.0))));
-	// ※HAMONでは-0と+0を区別しない
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(-inf, +0.0), hamon::log(hamon::complex<T>(-0.0, +0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(-inf, pi), hamon::log(hamon::complex<T>(-0.0, +0.0))));
 
 	// If z is (+0,+0), the result is (-∞,+0) and FE_DIVBYZERO is raised
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(-inf, +0.0), hamon::log(hamon::complex<T>(+0.0, +0.0))));

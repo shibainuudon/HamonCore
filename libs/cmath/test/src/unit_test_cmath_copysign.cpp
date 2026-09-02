@@ -53,16 +53,14 @@ void CopysignTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 5.0), hamon::copysign(T(-5.0), T(+2.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-5.0), hamon::copysign(T(-5.0), T(-2.0)));
 	
-	// HAMONでは、yが±0のときはxの符号は変更されない
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 2.0), hamon::copysign(T( 2.0), T(+0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 2.0), hamon::copysign(T( 2.0), T(-0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-3.0), hamon::copysign(T(-3.0), T(+0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-2.0), hamon::copysign(T( 2.0), T(-0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 3.0), hamon::copysign(T(-3.0), T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-3.0), hamon::copysign(T(-3.0), T(-0.0)));
 	
-	// HAMONでは、yが±NaNのときはxの符号は変更されない
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 4.0), hamon::copysign(T( 4.0), +nan));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 4.0), hamon::copysign(T( 4.0), -nan));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-5.0), hamon::copysign(T(-5.0), +nan));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-4.0), hamon::copysign(T( 4.0), -nan));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 5.0), hamon::copysign(T(-5.0), +nan));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-5.0), hamon::copysign(T(-5.0), -nan));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 6.0), hamon::copysign(T( 6.0), +inf));
@@ -78,37 +76,35 @@ void CopysignTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf, hamon::copysign(inf, T(+3.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::copysign(inf, T(-3.0)));
 
-	// HAMONでは、+NaNと-NaNは区別されない
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::copysign(nan, T(+1.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::copysign(nan, T(-1.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(nan, T(+1.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(nan, T(-1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::copysign(nan, T(-1.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::copysign(nan, T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::copysign(nan, T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(nan, T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(nan, T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::copysign(nan, T(-0.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::copysign(nan,  nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::copysign(nan, -nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(nan,  nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(nan, -nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::copysign(nan, -nan)));
 
-	// HAMONでは、+0と-0は区別されない
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::copysign(T(0), T(+1.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::copysign(T(0), T(-1.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(T(0), T(+1.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(T(0), T(-1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::copysign(T(0), T(-1.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::copysign(T(0), T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::copysign(T(0), T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(T(0), T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(T(0), T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::copysign(T(0), T(-0.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::copysign(T(0),  nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::copysign(T(0), -nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(T(0),  nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::copysign(T(0), -nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::copysign(T(0), -nan)));
 }
 
 template <typename T>

@@ -57,7 +57,7 @@ void RadiansToDegreesTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::radians_to_degrees(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::radians_to_degrees(-nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::radians_to_degrees(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::radians_to_degrees(-nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::radians_to_degrees(-nan)));
 }
 
 template <typename T>

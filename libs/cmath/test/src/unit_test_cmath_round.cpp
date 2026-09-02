@@ -53,7 +53,7 @@ void RoundTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::round(T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::round(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::round(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::round(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::round(T(-0.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::round(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::round(-inf)));
