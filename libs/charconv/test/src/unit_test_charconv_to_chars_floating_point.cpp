@@ -13,7 +13,6 @@
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include "charconv_test_helper.hpp"
 
 namespace hamon_charconv_test
 {
@@ -52,18 +51,16 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		const char* expected;
 	};
 
-	using nan_str = nan_str<float>;
-
 	const test_data data[] =
 	{
 		{ 0.0f, "0"},
 		{-0.0f, "-0"},
 		{ infinity, "inf"},
 		{-infinity, "-inf"},
-		{ quiet_NaN, nan_str::nan_str1()},
-		{-quiet_NaN, nan_str::nan_str2()},
-		{ signaling_NaN, nan_str::snan_str1()},
-		{-signaling_NaN, nan_str::snan_str2()},
+		{ quiet_NaN, "nan"},
+		{-quiet_NaN, "-nan"},
+		{ signaling_NaN, "nan(snan)"},
+		{-signaling_NaN, "-nan(snan)"},
 		{ 2.018f, "2.018"},
 		{-2.018f, "-2.018"},
 		{1e-6f, "1e-06"},
@@ -119,18 +116,16 @@ inline HAMON_CXX14_CONSTEXPR bool double_test()
 		const char* expected;
 	};
 
-	using nan_str = nan_str<double>;
-
 	const test_data data[] =
 	{
 		{ 0.0, "0"},
 		{-0.0, "-0"},
 		{ infinity, "inf"},
 		{-infinity, "-inf"},
-		{ quiet_NaN, nan_str::nan_str1()},
-		{-quiet_NaN, nan_str::nan_str2()},
-		{ signaling_NaN, nan_str::snan_str1()},
-		{-signaling_NaN, nan_str::snan_str2()},
+		{ quiet_NaN, "nan"},
+		{-quiet_NaN, "-nan"},
+		{ signaling_NaN, "nan(snan)"},
+		{-signaling_NaN, "-nan(snan)"},
 		{2.018, "2.018"},
 		{-2.018, "-2.018"},
 		{1e-6, "1e-06"},
@@ -178,28 +173,18 @@ inline HAMON_CXX14_CONSTEXPR bool double_test()
 
 GTEST_TEST(CharConvTest, ToCharsFloatingPointTest)
 {
-#if !defined(HAMON_USE_STD_CHARCONV)
-#define TO_CHARS_CONSTEXPR_EXPECT_TRUE	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#else
-#define TO_CHARS_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#endif
-
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(float_test());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test());
-
-#undef TO_CHARS_CONSTEXPR_EXPECT_TRUE
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(float_test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test());
 
 	{
-		using nan_str = nan_str<float>;
 		float const nan_payload = hamon::nanf("1729");
-		EXPECT_TRUE(test( nan_payload, nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, "nan"));
+		EXPECT_TRUE(test(-nan_payload, "-nan"));
 	}
 	{
-		using nan_str = nan_str<double>;
 		double const nan_payload = hamon::nan("1729");
-		EXPECT_TRUE(test( nan_payload, nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, "nan"));
+		EXPECT_TRUE(test(-nan_payload, "-nan"));
 	}
 }
 
