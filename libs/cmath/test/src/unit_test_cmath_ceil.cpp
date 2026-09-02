@@ -40,7 +40,7 @@ void CeilTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ceil(T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ceil(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ceil(T(-0.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)  1.0,  hamon::ceil(T(1.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)  2.0,  hamon::ceil(T(1.0) + eps));
@@ -74,7 +74,7 @@ void CeilTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::ceil(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::ceil(-nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(-nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ceil(-nan)));
 }
 
 template <typename T>

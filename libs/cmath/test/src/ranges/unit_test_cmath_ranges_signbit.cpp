@@ -58,7 +58,7 @@ void RangesSignbitTest(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::signbit(T{ inf}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::ranges::signbit(T{-inf}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::signbit(T{ nan}));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::signbit(T{-nan}));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::ranges::signbit(T{-nan}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::ranges::signbit(T{-1}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::signbit(T{ 0}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::signbit(T{ 1}));

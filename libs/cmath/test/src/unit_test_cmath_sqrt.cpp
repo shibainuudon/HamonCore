@@ -56,7 +56,7 @@ void SqrtTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::sqrt(T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::sqrt(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::sqrt(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::sqrt(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::sqrt(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::sqrt(+inf));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::sqrt(-eps)));

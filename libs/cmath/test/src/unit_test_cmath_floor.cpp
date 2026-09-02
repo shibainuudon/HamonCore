@@ -38,7 +38,7 @@ void FloorTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::floor(T(+0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::floor(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::floor(T(-0.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)  1.0,  hamon::floor(T(1.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)  1.0,  hamon::floor(T(1.0) + eps));
@@ -72,7 +72,7 @@ void FloorTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::floor(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::floor(-nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(-nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::floor(-nan)));
 }
 
 template <typename T>

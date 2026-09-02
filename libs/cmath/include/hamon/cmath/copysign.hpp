@@ -7,27 +7,13 @@
 #ifndef HAMON_CMATH_COPYSIGN_HPP
 #define HAMON_CMATH_COPYSIGN_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::copysign;
-using std::copysignf;
-using std::copysignl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/ieee754/binary.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 
@@ -37,51 +23,49 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename FloatType>
+HAMON_CXX14_CONSTEXPR FloatType
+copysign_impl_fallback(FloatType x, FloatType y) HAMON_NOEXCEPT
+{
+	using Binary = hamon::ieee754::binary<FloatType>;
+	Binary a(x);
+	Binary b(y);
+	a.set_sign(b.sign());
+	return a.to_float();
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 copysign_impl(float x, float y) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_copysignf)
 	return __builtin_copysignf(x, y);
+#else
+	return copysign_impl_fallback(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 copysign_impl(double x, double y) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_copysign)
 	return __builtin_copysign(x, y);
+#else
+	return copysign_impl_fallback(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 copysign_impl(long double x, long double y) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_copysignl)
 	return __builtin_copysignl(x, y);
-}
-
 #else
-
-template <typename FloatType>
-HAMON_CXX11_CONSTEXPR FloatType
-copysign_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
-{
-	return
-		hamon::iszero(y) || hamon::isnan(y) ?
-			x :
-		hamon::signbit(x) != hamon::signbit(y) ?
-			-x :
-		x;
-}
-
+	return copysign_impl_fallback(x, y);
 #endif
+}
 
 }	// namespace detail
 
-/**
- *	@brief	std::copysign のconstexpr版
- *
- *	※std::copysignとの違い
- *	yが±0または±NaNのとき、xの符号は変更されない。
- *	これはconstexpr関数にするための制限。
- */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 copysign(FloatType x, FloatType y) HAMON_NOEXCEPT
@@ -113,7 +97,5 @@ copysignl(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_COPYSIGN_HPP

@@ -121,11 +121,8 @@ void PowTestErrorHandling(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf, hamon::pow(T(+0.0), T(-5.0)));
 
 	// pow(-0, exp), where exp is a negative odd integer, returns -∞ and raises FE_DIVBYZERO
-//	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::pow(T(-0.0), T(-3.0)));
-//	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::pow(T(-0.0), T(-5.0)));
-	// ※HAMONでは-0と+0を区別しない
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf, hamon::pow(T(-0.0), T(-3.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf, hamon::pow(T(-0.0), T(-5.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::pow(T(-0.0), T(-3.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::pow(T(-0.0), T(-5.0)));
 
 	// pow(±0, exp), where exp is negative, finite, and is an even integer or a non-integer, returns +∞ and raises FE_DIVBYZERO
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf, hamon::pow(T(+0.0), T(-2.0)));
@@ -150,8 +147,8 @@ void PowTestErrorHandling(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ   (T(-0.0),       hamon::pow(T(-0.0), T(5.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::pow(T(-0.0), T(3.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::pow(T(-0.0), T(5.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::pow(T(-0.0), T(3.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::pow(T(-0.0), T(5.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::pow(T(-0.0), T(3.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::pow(T(-0.0), T(5.0))));
 
 	// pow(±0, exp), where exp is positive non-integer or a positive even integer, returns +0
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ   (T( 0),         hamon::pow(T(+0.0), T(0.5)));
@@ -239,8 +236,8 @@ void PowTestErrorHandling(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ   (T(-0.0),       hamon::pow(-inf, T(-5.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::pow(-inf, T(-3.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::pow(-inf, T(-5.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::pow(-inf, T(-3.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::pow(-inf, T(-5.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::pow(-inf, T(-3.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::pow(-inf, T(-5.0))));
 
 	// pow(-∞, exp) returns +0 if exp is a negative non-integer or even integer
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ   (T(+0.0),       hamon::pow(-inf, T(-2.0)));

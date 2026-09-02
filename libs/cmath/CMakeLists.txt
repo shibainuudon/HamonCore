@@ -25,6 +25,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstddef
 		cstdint
 		detail
+		ieee754
 		limits
 		numbers
 		type_traits

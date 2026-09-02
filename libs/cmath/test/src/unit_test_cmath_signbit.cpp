@@ -41,13 +41,13 @@ void SignbitTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(min));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(lowest));
 
-	// HAMONでは、+0と-0は区別されない
+	// +0と-0は区別される
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(T( 0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(T(-0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(T(-0.0)));
 
-	// HAMONでは、+NaNと-NaNは区別されない
+	// +NaNと-NaNは区別される
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit( nan));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(-nan));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(-nan));
 }
 
 template <typename T>

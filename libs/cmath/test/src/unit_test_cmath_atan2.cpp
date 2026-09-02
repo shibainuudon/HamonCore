@@ -15,6 +15,9 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wfloat-conversion")
+
 namespace hamon_cmath_test
 {
 
@@ -103,23 +106,21 @@ void Atan2TestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)pi * -0.25, (double)hamon::atan2(T1(-0.5), T2( 0.5)), error);
 
 	//If y is ±0 and x is negative or -0, ±π is returned
-//	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( pi, (double)hamon::atan2(T1(+0.0), T2(-0.0)), error);
-//	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-pi, (double)hamon::atan2(T1(-0.0), T2(-0.0)), error);
-	// ※HAMONでは-0と+0を区別しない
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::atan2(T1(+0.0), T2(-0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::atan2(T1(-0.0), T2(-0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( pi, (double)hamon::atan2(T1(+0.0), T2(-0.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-pi, (double)hamon::atan2(T1(-0.0), T2(-0.0)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( pi, hamon::atan2(T1(+0.0), T2(-1.0)));
-//	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-pi, hamon::atan2(T1(-0.0), T2(-1.0)));
-	// ※HAMONでは-0と+0を区別しない
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( pi, hamon::atan2(T1(-0.0), T2(-1.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-pi, hamon::atan2(T1(-0.0), T2(-1.0)));
 
 	//If y is ±0 and x is positive or +0, ±0 is returned
-	// ※HAMONでは-0と+0を区別しない
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::atan2(T1(+0.0), T2(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::atan2(T1(-0.0), T2(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::atan2(T1(+0.0), T2(+1.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::atan2(T1(-0.0), T2(+1.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::atan2(T1(+0.0), T2(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::atan2(T1(-0.0), T2(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::atan2(T1(+0.0), T2(+1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::atan2(T1(-0.0), T2(+1.0))));
 
 	//If y is ±∞ and x is finite, ±π/2 is returned
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( half_pi, hamon::atan2( inf1, T2(1.0)));
@@ -151,10 +152,11 @@ void Atan2TestFloat()
 
 	//If x is +∞ and y is finite and positive, +0 is returned
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atan2(T1(+1.0), +inf2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::atan2(T1(+1.0), +inf2)));
 
 	//If x is +∞ and y is finite and negative, -0 is returned
-	// ※HAMONでは-0と+0を区別しない
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atan2(T1(-1.0), +inf2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::atan2(T1(-1.0), +inf2)));
 
 	//If either x is NaN or y is NaN, NaN is returned
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::atan2(+nan1,    T2(+0.0))));
@@ -237,3 +239,5 @@ GTEST_TEST(CMathTest, Atan2Test)
 }	// namespace atan2_test
 
 }	// namespace hamon_cmath_test
+
+HAMON_WARNING_POP()
