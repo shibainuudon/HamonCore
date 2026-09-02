@@ -13,7 +13,6 @@
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include "charconv_test_helper.hpp"
 
 namespace hamon_charconv_test
 {
@@ -55,8 +54,6 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		const char* expected;
 	};
 
-	using nan_str = nan_str<float>;
-
 	const test_data data[] =
 	{
 		// Test special cases (zero, inf, nan) and an ordinary case. Also test negative signs.
@@ -64,10 +61,10 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		{-0.0f, chars_format::scientific, "-0e+00"},
 		{ infinity, chars_format::scientific, "inf"},
 		{-infinity, chars_format::scientific, "-inf"},
-		{ quiet_NaN, chars_format::scientific, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::scientific, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::scientific, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::scientific, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::scientific, "nan"},
+		{-quiet_NaN, chars_format::scientific, "-nan"},
+		{ signaling_NaN, chars_format::scientific, "nan(snan)"},
+		{-signaling_NaN, chars_format::scientific, "-nan(snan)"},
 		{ 2.018f, chars_format::scientific, "2.018e+00"},
 		{-2.018f, chars_format::scientific, "-2.018e+00"},
 
@@ -76,10 +73,10 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		{-0.0f, chars_format::fixed, "-0"},
 		{ infinity, chars_format::fixed, "inf"},
 		{-infinity, chars_format::fixed, "-inf"},
-		{ quiet_NaN, chars_format::fixed, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::fixed, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::fixed, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::fixed, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::fixed, "nan"},
+		{-quiet_NaN, chars_format::fixed, "-nan"},
+		{ signaling_NaN, chars_format::fixed, "nan(snan)"},
+		{-signaling_NaN, chars_format::fixed, "-nan(snan)"},
 		{ 2.018f, chars_format::fixed, "2.018"},
 		{-2.018f, chars_format::fixed, "-2.018"},
 
@@ -88,10 +85,10 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		{-0.0f, chars_format::general, "-0"},
 		{ infinity, chars_format::general, "inf"},
 		{-infinity, chars_format::general, "-inf"},
-		{ quiet_NaN, chars_format::general, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::general, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::general, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::general, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::general, "nan"},
+		{-quiet_NaN, chars_format::general, "-nan"},
+		{ signaling_NaN, chars_format::general, "nan(snan)"},
+		{-signaling_NaN, chars_format::general, "-nan(snan)"},
 		{ 2.018f, chars_format::general, "2.018"},
 		{-2.018f, chars_format::general, "-2.018"},
 
@@ -100,10 +97,10 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		{-0.0f, chars_format::hex, "-0p+0"},
 		{ infinity, chars_format::hex, "inf"},
 		{-infinity, chars_format::hex, "-inf"},
-		{ quiet_NaN, chars_format::hex, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::hex, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::hex, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::hex, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::hex, "nan"},
+		{-quiet_NaN, chars_format::hex, "-nan"},
+		{ signaling_NaN, chars_format::hex, "nan(snan)"},
+		{-signaling_NaN, chars_format::hex, "-nan(snan)"},
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{ 0x1.729p+0f, chars_format::hex, "1.729p+0"},
 		{-0x1.729p+0f, chars_format::hex, "-1.729p+0"},
@@ -480,10 +477,8 @@ inline HAMON_CXX14_CONSTEXPR bool float_test()
 		// Test hexfloat corner cases.
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{0x1.728p+0f,      chars_format::hex, "1.728p+0"}, // instead of "2.e5p-1"
-#if !defined(HAMON_USE_STD_CHARCONV) || defined(HAMON_STDLIB_DINKUMWARE)
 		{0x0.000002p-126f, chars_format::hex, "0.000002p-126"}, // instead of "1p-149", min subnormal
 		{0x0.fffffep-126f, chars_format::hex, "0.fffffep-126"}, // max subnormal
-#endif
 		{0x1p-126f,        chars_format::hex, "1p-126"}, // min normal
 		{0x1.fffffep+127f, chars_format::hex, "1.fffffep+127"}, // max normal
 
@@ -543,8 +538,6 @@ inline HAMON_CXX14_CONSTEXPR bool double_test1()
 		const char* expected;
 	};
 
-	using nan_str = nan_str<double>;
-
 	const test_data data[] =
 	{
 		// Test special cases (zero, inf, nan) and an ordinary case. Also test negative signs.
@@ -552,10 +545,10 @@ inline HAMON_CXX14_CONSTEXPR bool double_test1()
 		{-0.0, chars_format::scientific, "-0e+00"},
 		{ infinity, chars_format::scientific, "inf"},
 		{-infinity, chars_format::scientific, "-inf"},
-		{ quiet_NaN, chars_format::scientific, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::scientific, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::scientific, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::scientific, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::scientific, "nan"},
+		{-quiet_NaN, chars_format::scientific, "-nan"},
+		{ signaling_NaN, chars_format::scientific, "nan(snan)"},
+		{-signaling_NaN, chars_format::scientific, "-nan(snan)"},
 		{ 2.018, chars_format::scientific, "2.018e+00"},
 		{-2.018, chars_format::scientific, "-2.018e+00"},
 
@@ -564,10 +557,10 @@ inline HAMON_CXX14_CONSTEXPR bool double_test1()
 		{-0.0, chars_format::fixed, "-0"},
 		{ infinity, chars_format::fixed, "inf"},
 		{-infinity, chars_format::fixed, "-inf"},
-		{ quiet_NaN, chars_format::fixed, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::fixed, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::fixed, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::fixed, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::fixed, "nan"},
+		{-quiet_NaN, chars_format::fixed, "-nan"},
+		{ signaling_NaN, chars_format::fixed, "nan(snan)"},
+		{-signaling_NaN, chars_format::fixed, "-nan(snan)"},
 		{ 2.018, chars_format::fixed, "2.018"},
 		{-2.018, chars_format::fixed, "-2.018"},
 
@@ -576,10 +569,10 @@ inline HAMON_CXX14_CONSTEXPR bool double_test1()
 		{-0.0, chars_format::general, "-0"},
 		{ infinity, chars_format::general, "inf"},
 		{-infinity, chars_format::general, "-inf"},
-		{ quiet_NaN, chars_format::general, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::general, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::general, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::general, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::general, "nan"},
+		{-quiet_NaN, chars_format::general, "-nan"},
+		{ signaling_NaN, chars_format::general, "nan(snan)"},
+		{-signaling_NaN, chars_format::general, "-nan(snan)"},
 		{ 2.018, chars_format::general, "2.018"},
 		{-2.018, chars_format::general, "-2.018"},
 
@@ -588,10 +581,10 @@ inline HAMON_CXX14_CONSTEXPR bool double_test1()
 		{-0.0, chars_format::hex, "-0p+0"},
 		{ infinity, chars_format::hex, "inf"},
 		{-infinity, chars_format::hex, "-inf"},
-		{ quiet_NaN, chars_format::hex, nan_str::nan_str1()},
-		{-quiet_NaN, chars_format::hex, nan_str::nan_str2()},
-		{ signaling_NaN, chars_format::hex, nan_str::snan_str1()},
-		{-signaling_NaN, chars_format::hex, nan_str::snan_str2()},
+		{ quiet_NaN, chars_format::hex, "nan"},
+		{-quiet_NaN, chars_format::hex, "-nan"},
+		{ signaling_NaN, chars_format::hex, "nan(snan)"},
+		{-signaling_NaN, chars_format::hex, "-nan(snan)"},
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{ 0x1.729p+0, chars_format::hex, "1.729p+0"},
 		{-0x1.729p+0, chars_format::hex, "-1.729p+0"},
@@ -2402,10 +2395,8 @@ inline HAMON_CXX14_CONSTEXPR bool double_test6()
 		// Test hexfloat corner cases.
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{0x1.728p+0,              chars_format::hex, "1.728p+0"}, // instead of "2.e5p-1"
-#if !defined(HAMON_USE_STD_CHARCONV) || defined(HAMON_STDLIB_DINKUMWARE)
 		{0x0.0000000000001p-1022, chars_format::hex, "0.0000000000001p-1022"}, // instead of "1p-1074", min subnormal
 		{0x0.fffffffffffffp-1022, chars_format::hex, "0.fffffffffffffp-1022"}, // max subnormal
-#endif
 		{0x1p-1022,               chars_format::hex, "1p-1022"}, // min normal
 		{0x1.fffffffffffffp+1023, chars_format::hex, "1.fffffffffffffp+1023"}, // max normal
 
@@ -2531,53 +2522,43 @@ inline HAMON_CXX14_CONSTEXPR bool double_test6()
 
 GTEST_TEST(CharConvTest, ToCharsFloatingPointFmtTest)
 {
-#if !defined(HAMON_USE_STD_CHARCONV)
-#define TO_CHARS_CONSTEXPR_EXPECT_TRUE	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
-#else
-#define TO_CHARS_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
-#endif
-
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(float_test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(float_test());
 
 	// constexprのステップ数の制限にかかるので適当に分割しないといけない
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test1());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test2());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test3_1());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test3_2());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test3_3());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test4());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test5_1());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test5_2());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test5_3());
-	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test6());
-
-#undef TO_CHARS_CONSTEXPR_EXPECT_TRUE
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test3_1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test3_2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test3_3());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test4());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test5_1());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test5_2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test5_3());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(double_test6());
 
 	using hamon::chars_format;
 
 	{
-		using nan_str = nan_str<float>;
 		float const nan_payload = hamon::nanf("1729");
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, nan_str::nan_str2()));
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed,      nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed,      nan_str::nan_str2()));
-		EXPECT_TRUE(test( nan_payload, chars_format::general,    nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general,    nan_str::nan_str2()));
-		EXPECT_TRUE(test( nan_payload, chars_format::hex,        nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex,        nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan"));
+		EXPECT_TRUE(test( nan_payload, chars_format::fixed,      "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::fixed,      "-nan"));
+		EXPECT_TRUE(test( nan_payload, chars_format::general,    "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::general,    "-nan"));
+		EXPECT_TRUE(test( nan_payload, chars_format::hex,        "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::hex,        "-nan"));
 	}
 	{
-		using nan_str = nan_str<double>;
 		double const nan_payload = hamon::nan("1729");
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, nan_str::nan_str2()));
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed,      nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed,      nan_str::nan_str2()));
-		EXPECT_TRUE(test( nan_payload, chars_format::general,    nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general,    nan_str::nan_str2()));
-		EXPECT_TRUE(test( nan_payload, chars_format::hex,        nan_str::nan_str1()));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex,        nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan"));
+		EXPECT_TRUE(test( nan_payload, chars_format::fixed,      "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::fixed,      "-nan"));
+		EXPECT_TRUE(test( nan_payload, chars_format::general,    "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::general,    "-nan"));
+		EXPECT_TRUE(test( nan_payload, chars_format::hex,        "nan"));
+		EXPECT_TRUE(test(-nan_payload, chars_format::hex,        "-nan"));
 	}
 }
 

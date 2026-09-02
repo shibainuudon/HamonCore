@@ -56,10 +56,7 @@ test(hamon::string_view sv, hamon::chars_format fmt, hamon::size_t expected_idx,
 		if (bits2.is_nan())
 		{
 			VERIFY(bits1.is_nan());
-#if !(defined(HAMON_USE_STD_CHARCONV) && defined(HAMON_STDLIB_LIBSTDCPP3))
-			// libstdc++ で chars_format::hex のときテストが通らない
 			VERIFY(bits1.sign() == bits2.sign());
-#endif
 		}
 		else
 		{
@@ -93,10 +90,7 @@ test(hamon::string_view sv, hamon::chars_format fmt, hamon::size_t expected_idx,
 	}
 	else if (ret.ec == hamon::errc::result_out_of_range)
 	{
-#if !(defined(HAMON_USE_STD_CHARCONV) && defined(HAMON_STDLIB_DINKUMWARE))
-		// Microsoft-STL だと result_out_of_range のときもvalueが書き込まれる
 		VERIFY(dest == unmodified_value);
-#endif
 	}
 	else
 	{
@@ -828,9 +822,7 @@ inline void hex_test()
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.5p -1",   chars_format::hex, 3, errc{}, T(1.3125)));		// 0x1.5p0
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.5p- 1",   chars_format::hex, 3, errc{}, T(1.3125)));		// 0x1.5p0
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.25p++12", chars_format::hex, 4, errc{}, T(1.14453125)));	// 0x1.25p0
-#if !(defined(HAMON_USE_STD_CHARCONV) && defined(HAMON_STDLIB_LIBSTDCPP3))
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.25p+-12", chars_format::hex, 4, errc{}, T(1.14453125)));	// 0x1.25p0
-#endif
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.25p-+12", chars_format::hex, 4, errc{}, T(1.14453125)));	// 0x1.25p0
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.25p--12", chars_format::hex, 4, errc{}, T(1.14453125)));	// 0x1.25p0
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test("1.25p0x12", chars_format::hex, 6, errc{}, T(1.14453125)));	// 0x1.25p0
