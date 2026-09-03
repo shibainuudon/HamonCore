@@ -50,16 +50,19 @@ void RoundTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T) 2.0,  hamon::round(T( 1.5)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T) 2.0,  hamon::round(T( 1.5) + eps));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::round(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::round(T(-0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::round(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::round(T(-0.0))));
-
+	// If num is ±∞, it is returned, unmodified.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::round(+inf)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::round(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::round(+inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::round(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::round(-inf)));
 
+	// If num is ±0, it is returned, unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::round(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::round(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::round(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::round(T(-0.0))));
+
+	// If num is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::round(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::round(-nan)));
 }

@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_LLROUND_HPP
 #define HAMON_CMATH_LLROUND_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::llround;
-using std::llroundf;
-using std::llroundl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/round.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -32,6 +17,7 @@ using std::llroundl;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -39,37 +25,56 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR long long
+llround_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	return static_cast<long long>(round_unchecked(x));
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR long long
+llround_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::llround(x);
+}
 
 inline HAMON_CXX11_CONSTEXPR long long
 llround_unchecked(float x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_llroundf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_llroundf)
+	return hamon::is_constant_evaluated() ? llround_unchecked_ct(x) : __builtin_llroundf(x);
+#else
+	return hamon::is_constant_evaluated() ? llround_unchecked_ct(x) : llround_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long long
 llround_unchecked(double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_llround(x);
+#elif HAMON_HAS_BUILTIN(__builtin_llround)
+	return hamon::is_constant_evaluated() ? llround_unchecked_ct(x) : __builtin_llround(x);
+#else
+	return hamon::is_constant_evaluated() ? llround_unchecked_ct(x) : llround_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long long
 llround_unchecked(long double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_llroundl(x);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_llroundl)
+	return hamon::is_constant_evaluated() ? llround_unchecked_ct(x) : __builtin_llroundl(x);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR long long
-llround_unchecked(T x) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		static_cast<long long>(round_unchecked(x)) : std::llround(x);
-}
-
+	return hamon::is_constant_evaluated() ? llround_unchecked_ct(x) : llround_unchecked_rt(x);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR long long
@@ -122,7 +127,5 @@ llroundl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_LLROUND_HPP

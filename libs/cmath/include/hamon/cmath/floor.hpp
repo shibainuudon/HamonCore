@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_FLOOR_HPP
 #define HAMON_CMATH_FLOOR_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::floor;
-using std::floorf;
-using std::floorl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
@@ -30,7 +15,9 @@ using std::floorl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -38,32 +25,11 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-floor_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_floorf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-floor_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_floor(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-floor_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_floorl(x);
-}
-
-#else
-
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-floor_unchecked_1(T x, T x0) HAMON_NOEXCEPT
+floor_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	T const x0 = trunc_unchecked(x);
 	return
 		x >= 0 || hamon::almost_equal(x, x0) ?
 			x0 :
@@ -72,12 +38,47 @@ floor_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-floor_unchecked(T x) HAMON_NOEXCEPT
+floor_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return floor_unchecked_1(x, trunc_unchecked(x));
+	// TODO
+	return std::floor(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+floor_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_floorf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_floorf)
+	return hamon::is_constant_evaluated() ? floor_unchecked_ct(x) : __builtin_floorf(x);
+#else
+	return hamon::is_constant_evaluated() ? floor_unchecked_ct(x) : floor_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+floor_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_floor(x);
+#elif HAMON_HAS_BUILTIN(__builtin_floor)
+	return hamon::is_constant_evaluated() ? floor_unchecked_ct(x) : __builtin_floor(x);
+#else
+	return hamon::is_constant_evaluated() ? floor_unchecked_ct(x) : floor_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+floor_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_floorl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_floorl)
+	return hamon::is_constant_evaluated() ? floor_unchecked_ct(x) : __builtin_floorl(x);
+#else
+	return hamon::is_constant_evaluated() ? floor_unchecked_ct(x) : floor_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -129,7 +130,5 @@ floorl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FLOOR_HPP

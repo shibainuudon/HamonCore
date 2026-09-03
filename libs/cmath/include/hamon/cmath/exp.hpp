@@ -28,30 +28,8 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-exp_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_expf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-exp_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_exp(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-exp_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_expl(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 exp_unchecked_around_zero_recur(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
@@ -61,7 +39,7 @@ exp_unchecked_around_zero_recur(T x, unsigned int n, unsigned int last) HAMON_NO
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 exp_unchecked_around_zero(T x) HAMON_NOEXCEPT
 {
 	return !(x > -1) ?
@@ -70,9 +48,14 @@ exp_unchecked_around_zero(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-exp_unchecked_ct_1(int i, T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+exp_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	// 指数関数はマクローリン展開によって求めることができるが、
+	// xの絶対値が大きくなると急激に精度が落ちてしまう。
+	// そこで、e^(a+b) = e^a * e^b であることを利用して、xを整数部と小数部にわけて、
+	// 整数部はテーブル引きで求め、小数部はマクローリン展開で求めてそれらを乗算する。
+	int const i = static_cast<int>(x);
 	return
 		i > exp_table_max ?
 			hamon::numeric_limits<T>::infinity() :
@@ -82,28 +65,45 @@ exp_unchecked_ct_1(int i, T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-exp_unchecked_ct(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+exp_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	// 指数関数はマクローリン展開によって求めることができるが、
-	// xの絶対値が大きくなると急激に精度が落ちてしまう。
-	// そこで、e^(a+b) = e^a * e^b であることを利用して、xを整数部と小数部にわけて、
-	// 整数部はテーブル引きで求め、小数部はマクローリン展開で求めてそれらを乗算する。
-	return exp_unchecked_ct_1(static_cast<int>(x), x);
+	// TODO
+	return std::exp(x);
 }
 
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-exp_unchecked(T x) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR float
+exp_unchecked(float x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		exp_unchecked_ct(x) : std::exp(x);
-}
-
+#if HAMON_HAS_BUILTIN(__builtin_expf)
+	return hamon::is_constant_evaluated() ? exp_unchecked_ct(x) : __builtin_expf(x);
+#else
+	return hamon::is_constant_evaluated() ? exp_unchecked_ct(x) : exp_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+exp_unchecked(double x) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_exp)
+	return hamon::is_constant_evaluated() ? exp_unchecked_ct(x) : __builtin_exp(x);
+#else
+	return hamon::is_constant_evaluated() ? exp_unchecked_ct(x) : exp_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+exp_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_expl)
+	return hamon::is_constant_evaluated() ? exp_unchecked_ct(x) : __builtin_expl(x);
+#else
+	return hamon::is_constant_evaluated() ? exp_unchecked_ct(x) : exp_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 exp_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -133,7 +133,7 @@ exp_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 exp(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(arg);
@@ -152,7 +152,7 @@ expl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 exp(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(static_cast<double>(arg));

@@ -7,27 +7,14 @@
 #ifndef HAMON_CMATH_FMIN_HPP
 #define HAMON_CMATH_FMIN_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::fmin;
-using std::fminf;
-using std::fminl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -35,36 +22,50 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fmin_unchecked_ct(T x, T y) HAMON_NOEXCEPT
+{
+	return x < y ? x : y;
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fmin_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::fmin(x, y);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 fmin_unchecked(float x, float y) HAMON_NOEXCEPT
 {
-	return __builtin_fminf(x, y);
+#if HAMON_HAS_BUILTIN(__builtin_fminf)
+	return hamon::is_constant_evaluated() ? fmin_unchecked_ct(x, y) : __builtin_fminf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmin_unchecked_ct(x, y) : fmin_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 fmin_unchecked(double x, double y) HAMON_NOEXCEPT
 {
-	return __builtin_fmin(x, y);
+#if HAMON_HAS_BUILTIN(__builtin_fmin)
+	return hamon::is_constant_evaluated() ? fmin_unchecked_ct(x, y) : __builtin_fmin(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmin_unchecked_ct(x, y) : fmin_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 fmin_unchecked(long double x, long double y) HAMON_NOEXCEPT
 {
-	return __builtin_fminl(x, y);
-}
-
+#if HAMON_HAS_BUILTIN(__builtin_fminl)
+	return hamon::is_constant_evaluated() ? fmin_unchecked_ct(x, y) : __builtin_fminl(x, y);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-fmin_unchecked(T x, T y) HAMON_NOEXCEPT
-{
-	return x < y ? x : y;
-}
-
+	return hamon::is_constant_evaluated() ? fmin_unchecked_ct(x, y) : fmin_unchecked_rt(x, y);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -125,7 +126,5 @@ fminl(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FMIN_HPP

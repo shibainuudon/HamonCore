@@ -206,7 +206,7 @@ GTEST_TEST(CMathTest, FmaTest)
 	FmaTestFloat<double,      float,       double>     ();
 //	FmaTestFloat<double,      float,       long double>();
 	FmaTestFloat<double,      double,      float>      ();
-//	FmaTestFloat<double,      double,      double>     ();
+	FmaTestFloat<double,      double,      double>     ();
 	FmaTestFloat<double,      double,      long double>();
 //	FmaTestFloat<double,      long double, float>      ();
 	FmaTestFloat<double,      long double, double>     ();

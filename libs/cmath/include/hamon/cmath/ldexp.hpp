@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_LDEXP_HPP
 #define HAMON_CMATH_LDEXP_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::ldexp;
-using std::ldexpf;
-using std::ldexpl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -38,39 +23,58 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+ldexp_unchecked_ct(T x, int exp) HAMON_NOEXCEPT
+{
+	// FLT_RADIX が2のとき、scalbn と等しい
+	// そうでないときは、x * std::pow(2, exp) となる
+	return hamon::scalbn(x, exp);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+ldexp_unchecked_rt(T x, int exp) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::ldexp(x, exp);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 ldexp_unchecked(float x, int exp) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_ldexpf(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_ldexpf)
+	return hamon::is_constant_evaluated() ? ldexp_unchecked_ct(x, exp) : __builtin_ldexpf(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? ldexp_unchecked_ct(x, exp) : ldexp_unchecked_rt(x, exp);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 ldexp_unchecked(double x, int exp) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_ldexp(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_ldexp)
+	return hamon::is_constant_evaluated() ? ldexp_unchecked_ct(x, exp) : __builtin_ldexp(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? ldexp_unchecked_ct(x, exp) : ldexp_unchecked_rt(x, exp);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 ldexp_unchecked(long double x, int exp) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_ldexpl(x, exp);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_ldexpl)
+	return hamon::is_constant_evaluated() ? ldexp_unchecked_ct(x, exp) : __builtin_ldexpl(x, exp);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-ldexp_unchecked(T x, int exp) HAMON_NOEXCEPT
-{
-	// FLT_RADIX が2のとき、scalbn と等しい
-	// そうでないときは、x * std::pow(2, exp) となる
-	return hamon::is_constant_evaluated() ?
-		hamon::scalbn(x, exp) : std::ldexp(x, exp);
-}
-
+	return hamon::is_constant_evaluated() ? ldexp_unchecked_ct(x, exp) : ldexp_unchecked_rt(x, exp);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -124,7 +128,5 @@ ldexpl(long double x, int exp) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_LDEXP_HPP

@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_MODF_HPP
 #define HAMON_CMATH_MODF_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::modf;
-using std::modff;
-using std::modfl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -41,14 +26,54 @@ namespace detail
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
-modf_unchecked(T x, T* iptr) HAMON_NOEXCEPT
+modf_unchecked_ct(T x, T* iptr) HAMON_NOEXCEPT
 {
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::modf(x, iptr);
-	}
 	*iptr = hamon::trunc(x);
 	return hamon::copysign(x - (*iptr), x);
+}
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR T
+modf_unchecked_rt(T x, T* iptr) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::modf(x, iptr);
+}
+
+inline HAMON_CXX14_CONSTEXPR float
+modf_unchecked(float x, float* iptr) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_modff(x, iptr);
+#elif HAMON_HAS_BUILTIN(__builtin_modff)
+	return hamon::is_constant_evaluated() ? modf_unchecked_ct(x, iptr) : __builtin_modff(x, iptr);
+#else
+	return hamon::is_constant_evaluated() ? modf_unchecked_ct(x, iptr) : modf_unchecked_rt(x, iptr);
+#endif
+}
+
+inline HAMON_CXX14_CONSTEXPR double
+modf_unchecked(double x, double* iptr) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_modf(x, iptr);
+#elif HAMON_HAS_BUILTIN(__builtin_modf)
+	return hamon::is_constant_evaluated() ? modf_unchecked_ct(x, iptr) : __builtin_modf(x, iptr);
+#else
+	return hamon::is_constant_evaluated() ? modf_unchecked_ct(x, iptr) : modf_unchecked_rt(x, iptr);
+#endif
+}
+
+inline HAMON_CXX14_CONSTEXPR long double
+modf_unchecked(long double x, long double* iptr) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_modfl(x, iptr);
+#elif HAMON_HAS_BUILTIN(__builtin_modfl)
+	return hamon::is_constant_evaluated() ? modf_unchecked_ct(x, iptr) : __builtin_modfl(x, iptr);
+#else
+	return hamon::is_constant_evaluated() ? modf_unchecked_ct(x, iptr) : modf_unchecked_rt(x, iptr);
+#endif
 }
 
 template <typename FloatType>
@@ -116,7 +141,5 @@ modfl(long double x, long double* iptr) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_MODF_HPP

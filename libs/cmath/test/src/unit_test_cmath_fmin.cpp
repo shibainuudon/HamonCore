@@ -66,8 +66,11 @@ void FMinTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf3, hamon::fmin( inf1,    -inf2));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf3, hamon::fmin(-inf1,    -inf2));
 
+	// If one of the two arguments is NaN, the value of the other argument is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.5, hamon::fmin(nan1,    T2(0.5)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.5, hamon::fmin(T1(0.5), nan2));
+
+	// Only if both arguments are NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::fmin(nan1, nan2)));
 }
 

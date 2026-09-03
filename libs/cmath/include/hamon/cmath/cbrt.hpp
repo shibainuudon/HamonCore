@@ -25,56 +25,62 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-cbrt_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_cbrtf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-cbrt_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_cbrt(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-cbrt_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_cbrtl(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cbrt_unchecked_ct_1(T x, T third) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+cbrt_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	T const third = T(1) / T(3);
 	return x < 0 ?
 		-hamon::pow(-x, third) :
 		 hamon::pow( x, third);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cbrt_unchecked_ct(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+cbrt_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return cbrt_unchecked_ct_1(x, T(1) / T(3));
+	// TODO
+	return std::cbrt(x);
 }
 
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cbrt_unchecked(T x) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR float
+cbrt_unchecked(float x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		cbrt_unchecked_ct(x) : std::cbrt(x);
-}
-
+#if defined(HAMON_GCC)
+	return __builtin_cbrtf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cbrtf)
+	return hamon::is_constant_evaluated() ? cbrt_unchecked_ct(x) : __builtin_cbrtf(x);
+#else
+	return hamon::is_constant_evaluated() ? cbrt_unchecked_ct(x) : cbrt_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+cbrt_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_cbrt(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cbrt)
+	return hamon::is_constant_evaluated() ? cbrt_unchecked_ct(x) : __builtin_cbrt(x);
+#else
+	return hamon::is_constant_evaluated() ? cbrt_unchecked_ct(x) : cbrt_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+cbrt_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_cbrtl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cbrtl)
+	return hamon::is_constant_evaluated() ? cbrt_unchecked_ct(x) : __builtin_cbrtl(x);
+#else
+	return hamon::is_constant_evaluated() ? cbrt_unchecked_ct(x) : cbrt_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 cbrt_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -102,7 +108,7 @@ cbrt_impl(FloatType x) HAMON_NOEXCEPT
  *			xが負の値でも立方根を計算できる。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 cbrt(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(arg);
@@ -121,7 +127,7 @@ cbrtl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 cbrt(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(static_cast<double>(arg));

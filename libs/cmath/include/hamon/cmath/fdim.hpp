@@ -7,28 +7,15 @@
 #ifndef HAMON_CMATH_FDIM_HPP
 #define HAMON_CMATH_FDIM_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::fdim;
-using std::fdimf;
-using std::fdiml;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -36,41 +23,62 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fdim_unchecked_ct(T x, T y) HAMON_NOEXCEPT
+{
+	return x > y ? x - y : T(0);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fdim_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::fdim(x, y);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 fdim_unchecked(float x, float y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_fdimf(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_fdimf)
+	return hamon::is_constant_evaluated() ? fdim_unchecked_ct(x, y) : __builtin_fdimf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fdim_unchecked_ct(x, y) : fdim_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 fdim_unchecked(double x, double y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_fdim(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_fdim)
+	return hamon::is_constant_evaluated() ? fdim_unchecked_ct(x, y) : __builtin_fdim(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fdim_unchecked_ct(x, y) : fdim_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 fdim_unchecked(long double x, long double y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_fdiml(x, y);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_fdiml)
+	return hamon::is_constant_evaluated() ? fdim_unchecked_ct(x, y) : __builtin_fdiml(x, y);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-fdim_unchecked(T x, T y) HAMON_NOEXCEPT
-{
-	return x > y ? x - y : T(0);
-}
-
+	return hamon::is_constant_evaluated() ? fdim_unchecked_ct(x, y) : fdim_unchecked_rt(x, y);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
-fdim_impl_2(FloatType x, FloatType y, FloatType inf) HAMON_NOEXCEPT
+fdim_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
+	FloatType const inf = hamon::numeric_limits<FloatType>::infinity();
 	return
 		hamon::isnan(x) || hamon::isnan(y) ?
 			hamon::numeric_limits<FloatType>::quiet_NaN() :
@@ -85,13 +93,6 @@ fdim_impl_2(FloatType x, FloatType y, FloatType inf) HAMON_NOEXCEPT
 		y == -inf ?
 			inf :
 		fdim_unchecked(x, y);
-}
-
-template <typename FloatType>
-HAMON_CXX11_CONSTEXPR FloatType
-fdim_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
-{
-	return fdim_impl_2(x, y, hamon::numeric_limits<FloatType>::infinity());
 }
 
 }	// namespace detail
@@ -142,7 +143,5 @@ fdiml(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FDIM_HPP

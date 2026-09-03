@@ -55,12 +55,17 @@ void CosTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.0, (double)hamon::cos( hamon::numbers::pi_v<T>), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.0, (double)hamon::cos(-hamon::numbers::pi_v<T>), error);
 
+	// if the argument is ±0, the result is 1.0.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::cos(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::cos(T(-0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cos( nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cos(-nan)));
+
+	// if the argument is ±∞, NaN is returned and FE_INVALID is raised.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cos( inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cos(-inf)));
+
+	// if the argument is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cos( nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cos(-nan)));
 }
 
 template <typename T>

@@ -7,6 +7,7 @@
 #include <hamon/cmath/frac.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -58,6 +59,8 @@ void FracTestFloat(void)
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0.0), hamon::frac(T( inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0.0), hamon::frac(T(-inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::frac(T( inf))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::frac(T(-inf))));
 
 	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::frac(T( nan))));

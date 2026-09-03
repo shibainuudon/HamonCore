@@ -7,19 +7,6 @@
 #ifndef HAMON_CMATH_ISFINITE_HPP
 #define HAMON_CMATH_ISFINITE_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::isfinite;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/arithmetic.hpp>
@@ -35,12 +22,19 @@ namespace detail
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR bool
+isfinite_impl_ct(FloatType x) HAMON_NOEXCEPT
+{
+	return !hamon::isinf(x) && !hamon::isnan(x);
+}
+
+template <typename FloatType>
+HAMON_CXX11_CONSTEXPR bool
 isfinite_impl(FloatType x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+#if HAMON_HAS_BUILTIN(__builtin_isfinite)
 	return __builtin_isfinite(x);
 #else
-	return !hamon::isinf(x) && !hamon::isnan(x);
+	return isfinite_impl_ct(x);
 #endif
 }
 
@@ -64,7 +58,5 @@ isfinite(Arithmetic arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_ISFINITE_HPP

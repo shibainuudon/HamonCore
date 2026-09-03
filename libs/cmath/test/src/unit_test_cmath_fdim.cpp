@@ -6,6 +6,8 @@
 
 #include <hamon/cmath/fdim.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -117,6 +119,12 @@ void FdimTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0,  hamon::fdim(-inf1,  inf2));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0,  hamon::fdim(-inf1, -inf2));
 
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::fdim(T1( 0.0), T2( 0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::fdim(T1( 0.0), T2( 0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::fdim(T1( 0.0), T2(10.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::fdim(T1( 0.0), T2(10.0))));
+
+	// If either argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::fdim( nan1,    T2(2.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::fdim(-nan1,    T2(3.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::fdim( nan1,    inf2)));

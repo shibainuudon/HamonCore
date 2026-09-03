@@ -6,7 +6,9 @@
 
 #include <hamon/cmath/asinh.hpp>
 #include <hamon/cmath/isnan.hpp>
-#include <hamon/cmath/fabs.hpp>
+#include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/fabs.hpp>	// HAMON_CXX11_CONSTEXPR_EXPECT_NEAR
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -47,12 +49,16 @@ void AsinhTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.647231146371095710624858610443619663504414430193, (double)hamon::asinh(T( 2.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.818446459232066823483698963560708993786253942768, (double)hamon::asinh(T( 3.0)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asinh(T(+0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asinh(T(-0.0)));
+	// if the argument is ±0 or ±∞, it is returned unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::asinh(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::asinh(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::asinh(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::asinh(T(-0.0))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::asinh(+inf));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::asinh(-inf));
 
+	// if the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asinh(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asinh(-nan)));
 }

@@ -21,21 +21,21 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_positive_impl_2(FloatType x, hamon::detail::overload_priority<1>)
 {
 	return !hamon::isnan(x) && (x > 0);
 }
 
 template <typename IntegralType>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_positive_impl_2(IntegralType x, hamon::detail::overload_priority<0>)
 {
 	return x > 0;
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_positive_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return is_positive_impl_2(x, hamon::detail::overload_priority<1>{});
@@ -56,7 +56,7 @@ is_positive_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN の場合、falseを返す。
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 is_positive(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::is_positive_impl(x);

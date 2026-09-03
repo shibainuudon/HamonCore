@@ -6,6 +6,7 @@
 
 #include <hamon/cmath/frexp.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -126,12 +127,14 @@ inline HAMON_CXX14_CONSTEXPR bool FrexpTestFloat(void)
 		int exp = 0;
 		auto x = hamon::frexp(T(+0.0), &exp);
 		VERIFY(x == T(+0.0));
+		VERIFY(!hamon::signbit(x));
 		VERIFY(exp == 0);
 	}
 	{
 		int exp = 0;
 		auto x = hamon::frexp(T(-0.0), &exp);
 		VERIFY(x == T(-0.0));
+		VERIFY(hamon::signbit(x));
 		VERIFY(exp == 0);
 	}
 	{

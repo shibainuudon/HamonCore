@@ -24,14 +24,14 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 rsqrt_unchecked(T x) HAMON_NOEXCEPT
 {
 	return T(1) / hamon::detail::sqrt_unchecked(x);
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 rsqrt_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -63,7 +63,7 @@ rsqrt_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN の場合、NaN  を返す。
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
 rsqrt(Arithmetic x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;

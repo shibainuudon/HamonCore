@@ -127,15 +127,15 @@ void FmodTestInteger(void)
 
 GTEST_TEST(CMathTest, FmodTest)
 {
-//	FmodTestFloat<float,       float>      ();
+	FmodTestFloat<float,       float>      ();
 	FmodTestFloat<float,       double>     ();
 //	FmodTestFloat<float,       long double>();
 	FmodTestFloat<double,      float>      ();
-//	FmodTestFloat<double,      double>     ();
+	FmodTestFloat<double,      double>     ();
 	FmodTestFloat<double,      long double>();
 //	FmodTestFloat<long double, float>      ();
 	FmodTestFloat<long double, double>     ();
-//	FmodTestFloat<long double, long double>();
+	FmodTestFloat<long double, long double>();
 
 	FmodTestInteger<int,         int>();
 //	FmodTestInteger<int,         float>();

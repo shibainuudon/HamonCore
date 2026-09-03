@@ -7,19 +7,6 @@
 #ifndef HAMON_CMATH_ISNAN_HPP
 #define HAMON_CMATH_ISNAN_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::isnan;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
@@ -33,12 +20,19 @@ namespace detail
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR bool
+isnan_impl_ct(FloatType x) HAMON_NOEXCEPT
+{
+	return !(x == x);
+}
+
+template <typename FloatType>
+HAMON_CXX11_CONSTEXPR bool
 isnan_impl(FloatType x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+#if HAMON_HAS_BUILTIN(__builtin_isnan)
 	return __builtin_isnan(x);
 #else
-	return !(x == x);
+	return isnan_impl_ct(x);
 #endif
 }
 
@@ -56,7 +50,5 @@ isnan(Arithmetic arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_ISNAN_HPP

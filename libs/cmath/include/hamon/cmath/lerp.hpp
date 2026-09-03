@@ -7,30 +7,11 @@
 #ifndef HAMON_CMATH_LERP_HPP
 #define HAMON_CMATH_LERP_HPP
 
-#include <hamon/config.hpp>
-#include <cmath>
-
-#if defined(__cpp_lib_interpolate) && (__cpp_lib_interpolate >= 201902) &&	\
-	defined(HAMON_HAS_CXX23_LIB_EXTENDED_FLOATING_POINT_TYPES) &&	\
-	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000))
-#  define HAMON_USE_STD_LERP
-#endif
-
-#if defined(HAMON_USE_STD_LERP)
-
-namespace hamon
-{
-
-using std::lerp;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -39,7 +20,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 lerp_impl_2(T a, T b, T t, T x) HAMON_NOEXCEPT
 {
 	return (t > 1) == (b > a) ?
@@ -48,7 +29,7 @@ lerp_impl_2(T a, T b, T t, T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 lerp_impl(T a, T b, T t) HAMON_NOEXCEPT
 {
 	return
@@ -82,7 +63,7 @@ lerp_impl(T a, T b, T t) HAMON_NOEXCEPT
  *	あらゆる時間値t1とt2についてCMP(lerp(a,b,t2), lerp(a,b,t1))、CMP(t2, t1)、CMP(b,a)はいずれも非負となる
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 lerp(FloatType a, FloatType b, FloatType t) HAMON_NOEXCEPT
 {
 	return detail::lerp_impl(a, b, t);
@@ -99,7 +80,8 @@ template <
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic3)
 >
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 lerp(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;
@@ -107,7 +89,5 @@ lerp(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_LERP_HPP

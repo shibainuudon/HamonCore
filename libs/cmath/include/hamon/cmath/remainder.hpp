@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_REMAINDER_HPP
 #define HAMON_CMATH_REMAINDER_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::remainder;
-using std::remainderf;
-using std::remainderl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -33,6 +18,7 @@ using std::remainderl;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -40,37 +26,56 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+remainder_unchecked_ct(T x, T y) HAMON_NOEXCEPT
+{
+	return (x - (hamon::round_half_even(x / y) * y));
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+remainder_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::remainder(x, y);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 remainder_unchecked(float x, float y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_remainderf(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_remainderf)
+	return hamon::is_constant_evaluated() ? remainder_unchecked_ct(x, y) : __builtin_remainderf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? remainder_unchecked_ct(x, y) : remainder_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 remainder_unchecked(double x, double y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_remainder(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_remainder)
+	return hamon::is_constant_evaluated() ? remainder_unchecked_ct(x, y) : __builtin_remainder(x, y);
+#else
+	return hamon::is_constant_evaluated() ? remainder_unchecked_ct(x, y) : remainder_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 remainder_unchecked(long double x, long double y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_remainderl(x, y);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_remainderl)
+	return hamon::is_constant_evaluated() ? remainder_unchecked_ct(x, y) : __builtin_remainderl(x, y);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-remainder_unchecked(T x, T y) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		(x - (hamon::round_half_even(x / y) * y)) : std::remainder(x, y);
-}
-
+	return hamon::is_constant_evaluated() ? remainder_unchecked_ct(x, y) : remainder_unchecked_rt(x, y);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -138,7 +143,5 @@ remainderl(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_REMAINDER_HPP

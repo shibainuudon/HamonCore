@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_LOGB_HPP
 #define HAMON_CMATH_LOGB_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::logb;
-using std::logbf;
-using std::logbl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
@@ -38,6 +23,7 @@ using std::logbl;
 #include <hamon/numbers/ln10.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -47,7 +33,7 @@ namespace detail
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-log_a(T x, T y)
+logb_unchecked_ct_a(T x, T y)
 {
 	return
 		x ==  2 ? hamon::log(y) / hamon::numbers::ln2_v<T> :
@@ -55,37 +41,13 @@ log_a(T x, T y)
 		hamon::log(y) / hamon::log(x);
 }
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-logb_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_logbf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-logb_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_logb(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-logb_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_logbl(x);
-}
-
-#else
-
-#if defined(HAMON_HAS_CXX14_CONSTEXPR)
-
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
 logb_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	T const radix = hamon::numeric_limits<T>::radix;
 	x = hamon::fabs(x);
-	T exp = hamon::trunc(log_a(radix, x));
+	T exp = hamon::trunc(logb_unchecked_ct_a(radix, x));
 	T x0 = hamon::detail::pow_n(radix, static_cast<hamon::intmax_t>(exp));
 	T base = x / x0;
 
@@ -110,54 +72,49 @@ logb_unchecked_ct(T x) HAMON_NOEXCEPT
 	}
 }
 
+template <typename T>
+HAMON_CXX14_CONSTEXPR T
+logb_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::logb(x);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+logb_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_logbf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_logbf)
+	return hamon::is_constant_evaluated() ? logb_unchecked_ct(x) : __builtin_logbf(x);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix)
-{
-	return
-		base < 1 ?
-			logb_unchecked_ct_3(x, x0 * radix, x / (x0 / radix), exp - 1, radix) :
-		base >= radix ?
-			logb_unchecked_ct_3(x, x0 / radix, x / (x0 * radix), exp + 1, radix) :
-		exp;
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_2(T x, T x0, T exp, T radix)
-{
-	return logb_unchecked_ct_3(x, x0, x / x0, exp, radix);
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_1(T x, T exp, T radix)
-{
-	return logb_unchecked_ct_2(
-		x, hamon::detail::pow_n(radix, static_cast<hamon::intmax_t>(exp)), exp, radix);
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct(T x, T radix = hamon::numeric_limits<T>::radix) HAMON_NOEXCEPT
-{
-	return logb_unchecked_ct_1(
-		hamon::fabs(x), hamon::trunc(log_a(radix, hamon::fabs(x))), radix);
-}
-
+	return hamon::is_constant_evaluated() ? logb_unchecked_ct(x) : logb_unchecked_rt(x);
 #endif
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked(T x) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		logb_unchecked_ct(x) : std::logb(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR double
+logb_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_logb(x);
+#elif HAMON_HAS_BUILTIN(__builtin_logb)
+	return hamon::is_constant_evaluated() ? logb_unchecked_ct(x) : __builtin_logb(x);
+#else
+	return hamon::is_constant_evaluated() ? logb_unchecked_ct(x) : logb_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+logb_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_logbl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_logbl)
+	return hamon::is_constant_evaluated() ? logb_unchecked_ct(x) : __builtin_logbl(x);
+#else
+	return hamon::is_constant_evaluated() ? logb_unchecked_ct(x) : logb_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -213,7 +170,5 @@ logbl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_LOGB_HPP

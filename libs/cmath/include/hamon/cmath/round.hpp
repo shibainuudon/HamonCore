@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_ROUND_HPP
 #define HAMON_CMATH_ROUND_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::round;
-using std::roundf;
-using std::roundl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -32,6 +17,7 @@ using std::roundl;
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -39,32 +25,11 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-round_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_roundf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-round_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_round(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-round_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_roundl(x);
-}
-
-#else
-
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-round_unchecked_ct_1(T x, T x0) HAMON_NOEXCEPT
+round_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	T const x0 = trunc_unchecked(x);
 	return hamon::fabs(x - x0) < T(0.5) ?
 		x0 :
 		x0 + (x < 0 ? -T(1) : T(1));
@@ -72,20 +37,47 @@ round_unchecked_ct_1(T x, T x0) HAMON_NOEXCEPT
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-round_unchecked_ct(T x) HAMON_NOEXCEPT
+round_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return round_unchecked_ct_1(x, trunc_unchecked(x));
+	// TODO
+	return std::round(x);
 }
 
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-round_unchecked(T x) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR float
+round_unchecked(float x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		round_unchecked_ct(x) : std::round(x);
-}
-
+#if defined(HAMON_GCC)
+	return __builtin_roundf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_roundf)
+	return hamon::is_constant_evaluated() ? round_unchecked_ct(x) : __builtin_roundf(x);
+#else
+	return hamon::is_constant_evaluated() ? round_unchecked_ct(x) : round_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+round_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_round(x);
+#elif HAMON_HAS_BUILTIN(__builtin_round)
+	return hamon::is_constant_evaluated() ? round_unchecked_ct(x) : __builtin_round(x);
+#else
+	return hamon::is_constant_evaluated() ? round_unchecked_ct(x) : round_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+round_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_roundl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_roundl)
+	return hamon::is_constant_evaluated() ? round_unchecked_ct(x) : __builtin_roundl(x);
+#else
+	return hamon::is_constant_evaluated() ? round_unchecked_ct(x) : round_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -142,7 +134,5 @@ roundl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_ROUND_HPP

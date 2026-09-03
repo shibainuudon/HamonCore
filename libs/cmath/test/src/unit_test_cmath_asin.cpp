@@ -8,6 +8,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/fabs.hpp>	// HAMON_CXX11_CONSTEXPR_EXPECT_NEAR
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -45,15 +46,21 @@ void AsinTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.84806207898148100805294433899841808007336621326311, (double)hamon::asin(T( 0.75)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.5707963267948966192313216916397514420985846996876,  (double)hamon::asin(T( 1.00)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asin(T(+0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asin(T(-0.0)));
+	// If the argument is ±0, it is returned unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::asin(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::asin(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::asin(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::asin(T(-0.0))));
 
+	// If |num| > 1, a domain error occurs and NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(T(+1.0) + eps)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(T(-1.0) - eps)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(-nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(-inf)));
+
+	// if the argument is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(-nan)));
 }
 
 template <typename T>

@@ -47,12 +47,15 @@ void CoshTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 6.132289479663686116619852312817562995510285955539, (double)hamon::cosh(T( 2.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(10.067661995777765841953936035115889836809803715371, (double)hamon::cosh(T( 3.0)), error);
 
+	// if the argument is ±0, 1 is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1.0, hamon::cosh(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1.0, hamon::cosh(T(-0.0)));
 
+	// If the argument is ±∞, +∞ is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::cosh(+inf));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::cosh(-inf));
 
+	// if the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cosh(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cosh(-nan)));
 }

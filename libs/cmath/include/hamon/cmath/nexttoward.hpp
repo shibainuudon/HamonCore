@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_NEXTTOWARD_HPP
 #define HAMON_CMATH_NEXTTOWARD_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::nexttoward;
-using std::nexttowardf;
-using std::nexttowardl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/nextafter.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
@@ -58,7 +43,5 @@ nexttowardl(long double from, long double to) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_NEXTTOWARD_HPP

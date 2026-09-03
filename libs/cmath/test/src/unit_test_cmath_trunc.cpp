@@ -67,20 +67,21 @@ void TruncTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-2.0), hamon::trunc(T(-3.0) + eps));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-3.0), hamon::trunc(T(-3.0)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf, hamon::trunc(+inf));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::trunc(-inf));
+	// If num is ±∞, it is returned, unmodified.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::trunc(+inf)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::trunc(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::trunc(+inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::trunc(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::trunc(-inf)));
+
+	// If num is ±0, it is returned, unmodified.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::trunc(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::trunc(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::trunc(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::trunc(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::trunc(T(-0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::trunc(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::trunc(-nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::trunc(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::trunc(-nan)));
+
+	// If num is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::trunc(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::trunc(-nan)));
 }
 
 template <typename T>

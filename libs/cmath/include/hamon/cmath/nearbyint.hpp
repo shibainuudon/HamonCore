@@ -13,6 +13,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
 
@@ -24,9 +25,54 @@ namespace detail
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-nearbyint_unchecked(T x) HAMON_NOEXCEPT
+nearbyint_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	// TODO
 	return std::nearbyint(x);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+nearbyint_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::nearbyint(x);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+nearbyint_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_nearbyintf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_nearbyintf)
+	return hamon::is_constant_evaluated() ? nearbyint_unchecked_ct(x) : __builtin_nearbyintf(x);
+#else
+	return hamon::is_constant_evaluated() ? nearbyint_unchecked_ct(x) : nearbyint_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+nearbyint_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_nearbyint(x);
+#elif HAMON_HAS_BUILTIN(__builtin_nearbyint)
+	return hamon::is_constant_evaluated() ? nearbyint_unchecked_ct(x) : __builtin_nearbyint(x);
+#else
+	return hamon::is_constant_evaluated() ? nearbyint_unchecked_ct(x) : nearbyint_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+nearbyint_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_nearbyintl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_nearbyintl)
+	return hamon::is_constant_evaluated() ? nearbyint_unchecked_ct(x) : __builtin_nearbyintl(x);
+#else
+	return hamon::is_constant_evaluated() ? nearbyint_unchecked_ct(x) : nearbyint_unchecked_rt(x);
+#endif
 }
 
 template <typename FloatType>

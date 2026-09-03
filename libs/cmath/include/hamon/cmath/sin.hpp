@@ -26,47 +26,59 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-sin_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_sinf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-sin_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_sin(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-sin_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_sinl(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 sin_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return -cos_unchecked(x + hamon::numbers::pi_v<T> / 2);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-sin_unchecked(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+sin_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		sin_unchecked_ct(x) : std::sin(x);
+	// TODO
+	return std::sin(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+sin_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_sinf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_sinf)
+	return hamon::is_constant_evaluated() ? sin_unchecked_ct(x) : __builtin_sinf(x);
+#else
+	return hamon::is_constant_evaluated() ? sin_unchecked_ct(x) : sin_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+sin_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_sin(x);
+#elif HAMON_HAS_BUILTIN(__builtin_sin)
+	return hamon::is_constant_evaluated() ? sin_unchecked_ct(x) : __builtin_sin(x);
+#else
+	return hamon::is_constant_evaluated() ? sin_unchecked_ct(x) : sin_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+sin_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_sinl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_sinl)
+	return hamon::is_constant_evaluated() ? sin_unchecked_ct(x) : __builtin_sinl(x);
+#else
+	return hamon::is_constant_evaluated() ? sin_unchecked_ct(x) : sin_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 sin_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -91,7 +103,7 @@ sin_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 sin(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(arg);
@@ -110,7 +122,7 @@ sinl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 sin(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(static_cast<double>(arg));

@@ -24,30 +24,6 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-sqrt_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_sqrtf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-sqrt_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_sqrt(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-sqrt_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_sqrtl(x);
-}
-
-#else
-
-#if defined(HAMON_HAS_CXX14_CONSTEXPR)
-
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
 sqrt_unchecked_ct(T x) HAMON_NOEXCEPT
@@ -65,42 +41,49 @@ sqrt_unchecked_ct(T x) HAMON_NOEXCEPT
 	return s;
 }
 
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+sqrt_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::sqrt(x);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+sqrt_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_sqrtf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_sqrtf)
+	return hamon::is_constant_evaluated() ? sqrt_unchecked_ct(x) : __builtin_sqrtf(x);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-sqrt_unchecked_ct_2(T x, T s, T s2) HAMON_NOEXCEPT
-{
-	return !(s < s2) ?
-		s2 :
-		detail::sqrt_unchecked_ct_2(x, (x / s + s) / 2, s);
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-sqrt_unchecked_ct_1(T x, T s) HAMON_NOEXCEPT
-{
-	return detail::sqrt_unchecked_ct_2(x, (x / s + s) / 2, s);
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-sqrt_unchecked_ct(T x) HAMON_NOEXCEPT
-{
-	return detail::sqrt_unchecked_ct_1(x, x > 1 ? x : T(1));
-}
-
+	return hamon::is_constant_evaluated() ? sqrt_unchecked_ct(x) : sqrt_unchecked_rt(x);
 #endif
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-sqrt_unchecked(T x) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		sqrt_unchecked_ct(x) : std::sqrt(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR double
+sqrt_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_sqrt(x);
+#elif HAMON_HAS_BUILTIN(__builtin_sqrt)
+	return hamon::is_constant_evaluated() ? sqrt_unchecked_ct(x) : __builtin_sqrt(x);
+#else
+	return hamon::is_constant_evaluated() ? sqrt_unchecked_ct(x) : sqrt_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+sqrt_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_sqrtl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_sqrtl)
+	return hamon::is_constant_evaluated() ? sqrt_unchecked_ct(x) : __builtin_sqrtl(x);
+#else
+	return hamon::is_constant_evaluated() ? sqrt_unchecked_ct(x) : sqrt_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType

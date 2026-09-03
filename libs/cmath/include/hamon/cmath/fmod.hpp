@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_FMOD_HPP
 #define HAMON_CMATH_FMOD_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::fmod;
-using std::fmodf;
-using std::fmodl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -42,10 +27,53 @@ namespace detail
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-fmod_unchecked(T x, T y) HAMON_NOEXCEPT
+fmod_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		(x - (hamon::trunc(x / y) * y)) : std::fmod(x, y);
+	return (x - (hamon::trunc(x / y) * y));
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fmod_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::fmod(x, y);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+fmod_unchecked(float x, float y) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_fmodf(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_fmodf)
+	return hamon::is_constant_evaluated() ? fmod_unchecked_ct(x, y) : __builtin_fmodf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmod_unchecked_ct(x, y) : fmod_unchecked_rt(x, y);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+fmod_unchecked(double x, double y) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_fmod(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_fmod)
+	return hamon::is_constant_evaluated() ? fmod_unchecked_ct(x, y) : __builtin_fmod(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmod_unchecked_ct(x, y) : fmod_unchecked_rt(x, y);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+fmod_unchecked(long double x, long double y) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_fmodl(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_fmodl)
+	return hamon::is_constant_evaluated() ? fmod_unchecked_ct(x, y) : __builtin_fmodl(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmod_unchecked_ct(x, y) : fmod_unchecked_rt(x, y);
+#endif
 }
 
 template <typename FloatType>
@@ -107,7 +135,5 @@ fmodl(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FMOD_HPP

@@ -32,7 +32,7 @@ HAMON_CXX11_CONSTEXPR bool
 signbit_impl(FloatType x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_GCC) || (defined(HAMON_CLANG) && HAMON_CLANG >= 200000)
-	// gcc または clang-20以上 なら __builtin_signbit は constexpr
+	// gcc または clang-20以上 なら constexpr
 	return __builtin_signbit(x);
 #elif defined(HAMON_CLANG)
 	return hamon::is_constant_evaluated() ? signbit_impl_ct(x) : __builtin_signbit(x);

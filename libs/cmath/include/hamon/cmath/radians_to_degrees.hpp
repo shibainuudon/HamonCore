@@ -22,14 +22,14 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 radians_to_degrees_unchecked(T x) HAMON_NOEXCEPT
 {
 	return x * 180 / hamon::numbers::pi_v<T>;
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 radians_to_degrees_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -53,7 +53,7 @@ radians_to_degrees_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN  の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
 radians_to_degrees(Arithmetic x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;

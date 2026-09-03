@@ -5,8 +5,10 @@
  */
 
 #include <hamon/cmath/floor.hpp>
-#include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -64,15 +66,21 @@ void FloorTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)-1000.0,  hamon::floor(T(-1000.0) + (eps*1000)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)-1001.0,  hamon::floor(T(-1000.0) - (eps*1000)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf,  hamon::floor(+inf));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf,  hamon::floor(-inf));
+	// If num is ±∞, it is returned, unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::floor(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(+inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::floor(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::floor(-inf)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::floor(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::floor(-nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::floor(-nan)));
+	// If num is ±0, it is returned, unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::floor(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::floor(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::floor(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::floor(T(-0.0))));
+
+	// If num is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::floor(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::floor(-nan)));
 }
 
 template <typename T>

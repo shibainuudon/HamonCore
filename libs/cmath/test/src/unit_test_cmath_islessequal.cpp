@@ -84,15 +84,15 @@ void IsLessEqualTestInteger(void)
 
 GTEST_TEST(CMathTest, IsLessEqualTest)
 {
-//	IsLessEqualTestFloat<float,       float>      ();
+	IsLessEqualTestFloat<float,       float>      ();
 	IsLessEqualTestFloat<float,       double>     ();
 //	IsLessEqualTestFloat<float,       long double>();
 	IsLessEqualTestFloat<double,      float>      ();
-//	IsLessEqualTestFloat<double,      double>     ();
+	IsLessEqualTestFloat<double,      double>     ();
 	IsLessEqualTestFloat<double,      long double>();
 //	IsLessEqualTestFloat<long double, float>      ();
 	IsLessEqualTestFloat<long double, double>     ();
-//	IsLessEqualTestFloat<long double, long double>();
+	IsLessEqualTestFloat<long double, long double>();
 
 	IsLessEqualTestInteger<int, int>();
 //	IsLessEqualTestInteger<int, float>();

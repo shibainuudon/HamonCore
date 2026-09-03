@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_FABS_HPP
 #define HAMON_CMATH_FABS_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::fabs;
-using std::fabsf;
-using std::fabsl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
@@ -34,36 +19,42 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename FloatType>
+HAMON_CXX11_CONSTEXPR FloatType
+fabs_impl_ct(FloatType x) HAMON_NOEXCEPT
+{
+	return hamon::copysign(x, FloatType(1));
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 fabs_impl(float x) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_fabsf)
 	return __builtin_fabsf(x);
+#else
+	return fabs_impl_ct(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 fabs_impl(double x) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_fabs)
 	return __builtin_fabs(x);
+#else
+	return fabs_impl_ct(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 fabs_impl(long double x) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_fabsl)
 	return __builtin_fabsl(x);
-}
-
 #else
-
-template <typename FloatType>
-HAMON_CXX11_CONSTEXPR FloatType
-fabs_impl(FloatType x) HAMON_NOEXCEPT
-{
-	return hamon::copysign(x, FloatType(1));
-}
-
+	return fabs_impl_ct(x);
 #endif
+}
 
 }	// namespace detail
 
@@ -97,7 +88,5 @@ fabsl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FABS_HPP

@@ -70,6 +70,8 @@ void Log1pTestFloat()
 	//If the argument is ±0, it is returned unmodified
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(+0.0), hamon::log1p(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-0.0), hamon::log1p(T(-0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::log1p(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::log1p(T(-0.0))));
 
 	//If the argument is -1, -∞ is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::log1p(T(-1.0)));

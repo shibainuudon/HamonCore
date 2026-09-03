@@ -5,6 +5,7 @@
  */
 
 #include <hamon/cmath/exp2.hpp>
+#include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
@@ -84,9 +85,20 @@ void Exp2TestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.06250000000, (double)hamon::exp2(T(-4.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.04419417382, (double)hamon::exp2(T(-4.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.03125000000, (double)hamon::exp2(T(-5.0)), error);
-	
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0,   hamon::exp2(-inf));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(inf, hamon::exp2(+inf));
+
+	// If the argument is ±0, 1 is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::exp2(T(+0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::exp2(T(-0.0)));
+
+	// If the argument is -∞, +0 is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::exp2(-inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::exp2(-inf)));
+
+	// If the argument is +∞, +∞ is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::exp2(+inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::exp2(+inf)));
+
+	// If the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::exp2(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::exp2(-nan)));
 }

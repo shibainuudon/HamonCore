@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_NEXTAFTER_HPP
 #define HAMON_CMATH_NEXTAFTER_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::nextafter;
-using std::nextafterf;
-using std::nextafterl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/ilogb.hpp>
 #include <hamon/cmath/isinf.hpp>
@@ -35,6 +20,7 @@ using std::nextafterl;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -42,31 +28,9 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-nextafter_unchecked(float x, float y) HAMON_NOEXCEPT
-{
-	return __builtin_nextafterf(x, y);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-nextafter_unchecked(double x, double y) HAMON_NOEXCEPT
-{
-	return __builtin_nextafter(x, y);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-nextafter_unchecked(long double x, long double y) HAMON_NOEXCEPT
-{
-	return __builtin_nextafterl(x, y);
-}
-
-#else
-
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
-nextafter_unchecked_impl_next(T x) HAMON_NOEXCEPT
+nextafter_unchecked_ct_impl_next(T x) HAMON_NOEXCEPT
 {
 	if (hamon::isinf(x))
 	{
@@ -105,7 +69,7 @@ nextafter_unchecked_impl_next(T x) HAMON_NOEXCEPT
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
-nextafter_unchecked_impl_prior(T x) HAMON_NOEXCEPT
+nextafter_unchecked_ct_impl_prior(T x) HAMON_NOEXCEPT
 {
 	if (hamon::isinf(x))
 	{
@@ -144,11 +108,11 @@ nextafter_unchecked_impl_prior(T x) HAMON_NOEXCEPT
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
-nextafter_unchecked_impl(T x, T y) HAMON_NOEXCEPT
+nextafter_unchecked_ct_impl(T x, T y) HAMON_NOEXCEPT
 {
 	if (x < y)
 	{
-		return nextafter_unchecked_impl_next(x);
+		return nextafter_unchecked_ct_impl_next(x);
 	}
 	else if (x == y)
 	{
@@ -156,19 +120,54 @@ nextafter_unchecked_impl(T x, T y) HAMON_NOEXCEPT
 	}
 	else
 	{
-		return nextafter_unchecked_impl_prior(x);
+		return nextafter_unchecked_ct_impl_prior(x);
 	}
 }
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-nextafter_unchecked(T x, T y) HAMON_NOEXCEPT
+nextafter_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		nextafter_unchecked_impl(x, y) : std::nextafter(x, y);
+	return nextafter_unchecked_ct_impl(x, y);
 }
 
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+nextafter_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::nextafter(x, y);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+nextafter_unchecked(float x, float y) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_nextafterf)
+	return hamon::is_constant_evaluated() ? nextafter_unchecked_ct(x, y) : __builtin_nextafterf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? nextafter_unchecked_ct(x, y) : nextafter_unchecked_rt(x, y);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+nextafter_unchecked(double x, double y) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_nextafter)
+	return hamon::is_constant_evaluated() ? nextafter_unchecked_ct(x, y) : __builtin_nextafter(x, y);
+#else
+	return hamon::is_constant_evaluated() ? nextafter_unchecked_ct(x, y) : nextafter_unchecked_rt(x, y);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+nextafter_unchecked(long double x, long double y) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_nextafterl)
+	return hamon::is_constant_evaluated() ? nextafter_unchecked_ct(x, y) : __builtin_nextafterl(x, y);
+#else
+	return hamon::is_constant_evaluated() ? nextafter_unchecked_ct(x, y) : nextafter_unchecked_rt(x, y);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -213,7 +212,5 @@ nextafterl(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_NEXTAFTER_HPP

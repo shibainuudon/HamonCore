@@ -25,54 +25,60 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+cosh_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	T const y = hamon::exp(x);
+	return T(0.5) * y + T(0.5) / y;
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+cosh_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::cosh(x);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 cosh_unchecked(float x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_coshf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_coshf)
+	return hamon::is_constant_evaluated() ? cosh_unchecked_ct(x) : __builtin_coshf(x);
+#else
+	return hamon::is_constant_evaluated() ? cosh_unchecked_ct(x) : cosh_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 cosh_unchecked(double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_cosh(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cosh)
+	return hamon::is_constant_evaluated() ? cosh_unchecked_ct(x) : __builtin_cosh(x);
+#else
+	return hamon::is_constant_evaluated() ? cosh_unchecked_ct(x) : cosh_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 cosh_unchecked(long double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_coshl(x);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_coshl)
+	return hamon::is_constant_evaluated() ? cosh_unchecked_ct(x) : __builtin_coshl(x);
 #else
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cosh_unchecked_ct_1(T x) HAMON_NOEXCEPT
-{
-	return T(0.5) * x + T(0.5) / x;
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cosh_unchecked_ct(T x) HAMON_NOEXCEPT
-{
-	return cosh_unchecked_ct_1(hamon::exp(x));
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cosh_unchecked(T x) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		cosh_unchecked_ct(x) : std::cosh(x);
-}
-
+	return hamon::is_constant_evaluated() ? cosh_unchecked_ct(x) : cosh_unchecked_rt(x);
 #endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 cosh_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -99,7 +105,7 @@ cosh_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 cosh(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::cosh_impl(arg);
@@ -118,7 +124,7 @@ coshl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 cosh(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::cosh_impl(static_cast<double>(arg));

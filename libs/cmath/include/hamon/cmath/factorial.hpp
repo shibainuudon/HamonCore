@@ -84,7 +84,7 @@ static HAMON_CXX11_CONSTEXPR hamon::uintmax_t s_factorial_tbl_int[] =
 };
 
 template <HAMON_CONSTRAINT(hamon::integral, T)>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 unchecked_factorial_impl(unsigned int n, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 {
 	return static_cast<T>(s_factorial_tbl_int[n]);
@@ -266,21 +266,21 @@ static HAMON_CXX11_CONSTEXPR long double s_factorial_tbl_flt[] =
 };
 
 template <HAMON_CONSTRAINT(hamon::floating_point, T)>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 unchecked_factorial_impl(unsigned int n, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
 	return static_cast<T>(s_factorial_tbl_flt[n]);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 unchecked_factorial(unsigned int n) HAMON_NOEXCEPT
 {
 	return unchecked_factorial_impl<T>(n, hamon::detail::overload_priority<2>{});
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 factorial_impl(unsigned int n) HAMON_NOEXCEPT
 {
 	return
@@ -303,7 +303,7 @@ factorial_impl(unsigned int n) HAMON_NOEXCEPT
  *	を返す。
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR Arithmetic
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Arithmetic
 factorial(unsigned int n) HAMON_NOEXCEPT
 {
 	return detail::factorial_impl<Arithmetic>(n);
