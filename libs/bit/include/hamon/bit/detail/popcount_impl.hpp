@@ -11,6 +11,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cstdint>	// UINT8_C, UINT16_C, UINT32_C, UINT64_C
 
 #if defined(HAMON_MSVC)
 #include <intrin.h>	// __popcnt16, __popcnt, __popcnt64
