@@ -51,6 +51,10 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(1);
+		VERIFY(f.to_float()             == -0.0);
+		VERIFY(f.sign()                 == 1);
 	}
 	{
 		binary64 f{uint_type{0x0000000000000000ULL}};
@@ -115,6 +119,10 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(0);
+		VERIFY(f.to_float()             == 0.0);
+		VERIFY(f.sign()                 == 0);
 	}
 	{
 		binary64 f{uint_type{0x8000000000000000ULL}};
@@ -179,6 +187,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(0);
+		VERIFY(f.to_float()             == 1.5);
 	}
 	{
 		binary64 f{uint_type{0xbff8000000000000ULL}};
@@ -221,6 +232,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(1);
+		VERIFY(f.to_float()             == -123.0);
 	}
 	{
 		binary64 f{0, 0, 123};
@@ -263,6 +277,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(1);
+		VERIFY(f.to_float()             == -hamon::numeric_limits<T>::min());
 	}
 	{
 		binary64 f{uint_type{0x0010000000000000ULL}};
@@ -305,6 +322,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(0);
+		VERIFY(f.to_float()             == hamon::numeric_limits<T>::min());
 	}
 	{
 		binary64 f{1, -1022, 1};
@@ -348,6 +368,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(1);
+		VERIFY(f.to_float()             == -hamon::numeric_limits<T>::denorm_min());
 	}
 	{
 		binary64 f{uint_type{0x0000000000000001ULL}};
@@ -390,6 +413,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(0);
+		VERIFY(f.to_float()             == hamon::numeric_limits<T>::denorm_min());
 	}
 	{
 		binary64 f{1, -1074, 1};
@@ -433,6 +459,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(1);
+		VERIFY(f.to_float()             == -hamon::numeric_limits<T>::infinity());
 	}
 	{
 		binary64 f{uint_type{0x7ff0000000000000ULL}};
@@ -476,6 +505,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f.is_nan()               == false);
 		VERIFY(f.is_signaling_nan()     == false);
 		VERIFY(f.is_quiet_nan()         == false);
+
+		f.set_sign(0);
+		VERIFY(f.to_float()             == hamon::numeric_limits<T>::infinity());
 	}
 	{
 		binary64 f{1, 2047, 0};
