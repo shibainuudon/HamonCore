@@ -19,7 +19,7 @@ namespace binary64_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX20_CONSTEXPR bool make_floating_point_test(double f)
+inline HAMON_CXX14_CONSTEXPR bool make_floating_point_test(double f)
 {
 	using hamon::ieee754::binary64;
 	binary64 b1(f);
@@ -27,7 +27,7 @@ inline HAMON_CXX20_CONSTEXPR bool make_floating_point_test(double f)
 	return b1.to_uint() == b2.to_uint();
 }
 
-HAMON_CXX20_CONSTEXPR bool test()
+HAMON_CXX14_CONSTEXPR bool test()
 {
 	using T = double;
 	using hamon::ieee754::binary64;
@@ -609,40 +609,40 @@ GTEST_TEST(IEEE754Test, Binary64Test)
 {
 	using T = double;
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+0.0));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-0.0));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+0.5));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-0.5));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+0.0001));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-0.0001));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+1.5));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-1.5));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+1.125));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-1.125));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+123.456));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-123.456));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+1.0 / 3.0));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-1.0 / 3.0));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min() * 2));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min() * 3));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min() * 4));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::max()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::lowest()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min() * 2));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min() * 2));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min() * 3));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min() * 3));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min() * 4));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min() * 4));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::infinity()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::infinity()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::quiet_NaN()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::quiet_NaN()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+0.0));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-0.0));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+0.5));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-0.5));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+0.0001));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-0.0001));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+1.5));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-1.5));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+1.125));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-1.125));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+123.456));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-123.456));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(+1.0 / 3.0));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-1.0 / 3.0));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min() * 2));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min() * 3));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::min() * 4));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::max()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(hamon::numeric_limits<T>::lowest()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min() * 2));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min() * 2));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min() * 3));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min() * 3));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::denorm_min() * 4));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::denorm_min() * 4));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::infinity()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::infinity()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test( hamon::numeric_limits<T>::quiet_NaN()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(make_floating_point_test(-hamon::numeric_limits<T>::quiet_NaN()));
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test());
 }
 
 }	// namespace binary64_test
