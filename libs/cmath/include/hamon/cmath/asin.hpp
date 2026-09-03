@@ -26,32 +26,11 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-asin_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_asinf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-asin_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_asin(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-asin_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_asinl(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-asin_impl_center_1(T x, T x2) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+asin_unchecked_ct_center(T x) HAMON_NOEXCEPT
 {
+	T const x2 = x * x;
 	return ((((((((((((
 		T( 0.0316658385792867081040808)) * x2 +
 		T(-0.0158620440988475212803145)) * x2 +
@@ -68,15 +47,8 @@ asin_impl_center_1(T x, T x2) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-asin_impl_center(T x) HAMON_NOEXCEPT
-{
-	return asin_impl_center_1(x, x * x);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-asin_impl_tail(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+asin_unchecked_ct_tail(T x) HAMON_NOEXCEPT
 {
 	return (hamon::numbers::pi_v<T> / 2) + hamon::sqrt(T(1) - x) *
 		(((((((((((((
@@ -96,29 +68,63 @@ asin_impl_tail(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 asin_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return
 		x < T(-0.5) ?
-			-asin_impl_tail(-x) :
+			-asin_unchecked_ct_tail(-x) :
 		x > T(0.5) ?
-			asin_impl_tail(x) :
-			asin_impl_center(x);
+			asin_unchecked_ct_tail(x) :
+			asin_unchecked_ct_center(x);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-asin_unchecked(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+asin_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		asin_unchecked_ct(x) : std::asin(x);
+	// TODO
+	return std::asin(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+asin_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_asinf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_asinf)
+	return hamon::is_constant_evaluated() ? asin_unchecked_ct(x) : __builtin_asinf(x);
+#else
+	return hamon::is_constant_evaluated() ? asin_unchecked_ct(x) : asin_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+asin_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_asin(x);
+#elif HAMON_HAS_BUILTIN(__builtin_asin)
+	return hamon::is_constant_evaluated() ? asin_unchecked_ct(x) : __builtin_asin(x);
+#else
+	return hamon::is_constant_evaluated() ? asin_unchecked_ct(x) : asin_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+asin_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_asinl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_asinl)
+	return hamon::is_constant_evaluated() ? asin_unchecked_ct(x) : __builtin_asinl(x);
+#else
+	return hamon::is_constant_evaluated() ? asin_unchecked_ct(x) : asin_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 asin_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -145,7 +151,7 @@ asin_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 asin(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(arg);
@@ -164,7 +170,7 @@ asinl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 asin(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(static_cast<double>(arg));

@@ -84,15 +84,15 @@ void IsGreaterTestInteger(void)
 
 GTEST_TEST(CMathTest, IsGreaterTest)
 {
-//	IsGreaterTestFloat<float,       float>      ();
+	IsGreaterTestFloat<float,       float>      ();
 	IsGreaterTestFloat<float,       double>     ();
 //	IsGreaterTestFloat<float,       long double>();
 	IsGreaterTestFloat<double,      float>      ();
-//	IsGreaterTestFloat<double,      double>     ();
+	IsGreaterTestFloat<double,      double>     ();
 	IsGreaterTestFloat<double,      long double>();
 //	IsGreaterTestFloat<long double, float>      ();
 	IsGreaterTestFloat<long double, double>     ();
-//	IsGreaterTestFloat<long double, long double>();
+	IsGreaterTestFloat<long double, long double>();
 
 	IsGreaterTestInteger<int, int>();
 //	IsGreaterTestInteger<int, float>();

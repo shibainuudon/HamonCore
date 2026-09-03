@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_REMQUO_HPP
 #define HAMON_CMATH_REMQUO_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::remquo;
-using std::remquof;
-using std::remquol;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/ilogb.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -36,6 +21,7 @@ using std::remquol;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 #include <hamon/pair.hpp>
 
@@ -45,31 +31,9 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-remquo_unchecked(float x, float y, int* quo) HAMON_NOEXCEPT
-{
-	return __builtin_remquof(x, y, quo);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-remquo_unchecked(double x, double y, int* quo) HAMON_NOEXCEPT
-{
-	return __builtin_remquo(x, y, quo);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-remquo_unchecked(long double x, long double y, int* quo) HAMON_NOEXCEPT
-{
-	return __builtin_remquol(x, y, quo);
-}
-
-#else
-
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
-remquo_unchecked_impl(T x, T y, int* quo)
+remquo_unchecked_ct(T x, T y, int* quo)
 {
 	T const x1 = hamon::fabs(x);
 	T const y1 = hamon::fabs(y);
@@ -120,17 +84,47 @@ remquo_unchecked_impl(T x, T y, int* quo)
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR T
-remquo_unchecked(T x, T y, int* quo) HAMON_NOEXCEPT
+remquo_unchecked_rt(T x, T y, int* quo) HAMON_NOEXCEPT
 {
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::remquo(x, y, quo);
-	}
-
-	return remquo_unchecked_impl(x, y, quo);
+	// TODO
+	return std::remquo(x, y, quo);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+remquo_unchecked(float x, float y, int* quo) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_remquof(x, y, quo);
+#elif HAMON_HAS_BUILTIN(__builtin_remquof)
+	return hamon::is_constant_evaluated() ? remquo_unchecked_ct(x, y, quo) : __builtin_remquof(x, y, quo);
+#else
+	return hamon::is_constant_evaluated() ? remquo_unchecked_ct(x, y, quo) : remquo_unchecked_rt(x, y, quo);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+remquo_unchecked(double x, double y, int* quo) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_remquo(x, y, quo);
+#elif HAMON_HAS_BUILTIN(__builtin_remquo)
+	return hamon::is_constant_evaluated() ? remquo_unchecked_ct(x, y, quo) : __builtin_remquo(x, y, quo);
+#else
+	return hamon::is_constant_evaluated() ? remquo_unchecked_ct(x, y, quo) : remquo_unchecked_rt(x, y, quo);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+remquo_unchecked(long double x, long double y, int* quo) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_remquol(x, y, quo);
+#elif HAMON_HAS_BUILTIN(__builtin_remquol)
+	return hamon::is_constant_evaluated() ? remquo_unchecked_ct(x, y, quo) : __builtin_remquol(x, y, quo);
+#else
+	return hamon::is_constant_evaluated() ? remquo_unchecked_ct(x, y, quo) : remquo_unchecked_rt(x, y, quo);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -194,7 +188,5 @@ remquol(long double x, long double y, int* quo) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_REMQUO_HPP

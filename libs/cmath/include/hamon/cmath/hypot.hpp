@@ -28,98 +28,92 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+hypot_unchecked_ct(T x, T y) HAMON_NOEXCEPT
+{
+	T const a = hamon::fmax(hamon::fabs(x), hamon::fabs(y));
+	x = x / a;
+	y = y / a;
+	return a * hamon::sqrt(x * x + y * y);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+hypot_unchecked_ct(T x, T y, T z) HAMON_NOEXCEPT
+{
+	T const a = hamon::fmax(hamon::fabs(x), hamon::fmax(hamon::fabs(y), hamon::fabs(z)));
+	x = x / a;
+	y = y / a;
+	z = z / a;
+	return a * hamon::sqrt(x * x + y * y + z * z);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+hypot_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::hypot(x, y);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+hypot_unchecked_rt(T x, T y, T z) HAMON_NOEXCEPT
+{
+// Apple Clang の std::hypot はオーバーフローを避けるように実装されていないので使わない
+#if defined(__cpp_lib_hypot) && (__cpp_lib_hypot >= 201603) && !defined(HAMON_APPLE_CLANG)
+	return std::hypot(x, y, z);
+#else
+	return hypot_unchecked_ct(x, y, z);
+#endif
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 hypot_unchecked(float x, float y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_hypotf(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_hypotf)
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y) : __builtin_hypotf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y) : hypot_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 hypot_unchecked(double x, double y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_hypot(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_hypot)
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y) : __builtin_hypot(x, y);
+#else
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y) : hypot_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 hypot_unchecked(long double x, long double y) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_hypotl(x, y);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_hypotl)
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y) : __builtin_hypotl(x, y);
 #else
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked_ct_2(T x, T y, T a) HAMON_NOEXCEPT
-{
-	return a * hamon::sqrt(x * x + y * y);
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y) : hypot_unchecked_rt(x, y);
+#endif
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked_ct_2(T x, T y, T z, T a) HAMON_NOEXCEPT
-{
-	return a * hamon::sqrt(x * x + y * y + z * z);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked_ct_1(T x, T y, T a) HAMON_NOEXCEPT
-{
-	return hypot_unchecked_ct_2(x / a, y / a, a);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked_ct_1(T x, T y, T z, T a) HAMON_NOEXCEPT
-{
-	return hypot_unchecked_ct_2(x / a, y / a, z / a, a);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked_ct(T x, T y) HAMON_NOEXCEPT
-{
-	return hypot_unchecked_ct_1(x, y, hamon::fmax(hamon::fabs(x), hamon::fabs(y)));
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked_ct(T x, T y, T z) HAMON_NOEXCEPT
-{
-	return hypot_unchecked_ct_1(x, y, z, hamon::fmax(hamon::fabs(x), hamon::fmax(hamon::fabs(y), hamon::fabs(z))));
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-hypot_unchecked(T x, T y) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		hypot_unchecked_ct(x, y) : std::hypot(x, y);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 hypot_unchecked(T x, T y, T z) HAMON_NOEXCEPT
 {
-// Apple Clang の std::hypot はオーバーフローを避けるように実装されていないので使わない
-#if !defined(HAMON_APPLE_CLANG)
-#if defined(__cpp_lib_hypot) && (__cpp_lib_hypot >= 201603)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::hypot(x, y, z);
-	}
-#endif
-#endif
-	return hypot_unchecked_ct(x, y, z);
+	return hamon::is_constant_evaluated() ? hypot_unchecked_ct(x, y, z) : hypot_unchecked_rt(x, y, z);
 }
 
-#endif
-
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 hypot_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return
@@ -135,7 +129,7 @@ hypot_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 hypot_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
 {
 	return
@@ -168,7 +162,7 @@ hypot_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
  *	上記を満たさずに、x と y のどちらか一方でもNaNの場合、NaNを返す
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 hypot(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::hypot_impl(x, y);
@@ -201,7 +195,7 @@ template <
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 hypot(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;
@@ -224,7 +218,7 @@ hypot(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
  *	上記を満たさずに、引数のどれか1個でも NaN の場合、NaN を返す
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 hypot(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
 {
 	return detail::hypot_impl(x, y, z);
@@ -242,7 +236,7 @@ template <
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic3)
 >
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 hypot(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

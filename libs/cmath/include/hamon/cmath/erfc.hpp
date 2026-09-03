@@ -25,22 +25,58 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erfc_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return T(1) - hamon::erf(x);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-erfc_unchecked(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+erfc_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		erfc_unchecked_ct(x) : std::erfc(x);
+	// TODO
+	return std::erfc(x);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+erfc_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_erfcf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_erfcf)
+	return hamon::is_constant_evaluated() ? erfc_unchecked_ct(x) : __builtin_erfcf(x);
+#else
+	return hamon::is_constant_evaluated() ? erfc_unchecked_ct(x) : erfc_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+erfc_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_erfc(x);
+#elif HAMON_HAS_BUILTIN(__builtin_erfc)
+	return hamon::is_constant_evaluated() ? erfc_unchecked_ct(x) : __builtin_erfc(x);
+#else
+	return hamon::is_constant_evaluated() ? erfc_unchecked_ct(x) : erfc_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+erfc_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_erfcl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_erfcl)
+	return hamon::is_constant_evaluated() ? erfc_unchecked_ct(x) : __builtin_erfcl(x);
+#else
+	return hamon::is_constant_evaluated() ? erfc_unchecked_ct(x) : erfc_unchecked_rt(x);
+#endif
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 erfc_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -67,7 +103,7 @@ erfc_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 erfc(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::erfc_impl(arg);
@@ -86,7 +122,7 @@ erfcl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 erfc(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::erfc_impl(static_cast<double>(arg));

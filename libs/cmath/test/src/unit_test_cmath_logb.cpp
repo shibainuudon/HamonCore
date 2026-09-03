@@ -71,10 +71,15 @@ void LogbTestFloat(void)
 	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<T>::min_exponent - 1, hamon::logb(min));
 	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<T>::min_exponent - 1, hamon::logb(-min));
 
+	// If num is ±0, -∞ is returned and FE_DIVBYZERO is raised.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::logb(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::logb(T(-0.0)));
+
+	// If num is ±∞, +∞ is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::logb(+inf));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::logb(-inf));
+
+	// If num is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::logb(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::logb(-nan)));
 }

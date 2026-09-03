@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_TRUNC_HPP
 #define HAMON_CMATH_TRUNC_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::trunc;
-using std::truncf;
-using std::truncl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -29,7 +14,9 @@ using std::truncl;
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -37,38 +24,58 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-trunc_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_truncf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-trunc_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_trunc(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-trunc_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_truncl(x);
-}
-
-#else
-
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-trunc_unchecked(T x) HAMON_NOEXCEPT
+trunc_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return x < 0 ?
 		-static_cast<T>(static_cast<hamon::uintmax_t>(-x)) :
 		 static_cast<T>(static_cast<hamon::uintmax_t>( x));
 }
 
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+trunc_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::trunc(x);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+trunc_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_truncf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_truncf)
+	return hamon::is_constant_evaluated() ? trunc_unchecked_ct(x) : __builtin_truncf(x);
+#else
+	return hamon::is_constant_evaluated() ? trunc_unchecked_ct(x) : trunc_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+trunc_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_trunc(x);
+#elif HAMON_HAS_BUILTIN(__builtin_trunc)
+	return hamon::is_constant_evaluated() ? trunc_unchecked_ct(x) : __builtin_trunc(x);
+#else
+	return hamon::is_constant_evaluated() ? trunc_unchecked_ct(x) : trunc_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+trunc_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_truncl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_truncl)
+	return hamon::is_constant_evaluated() ? trunc_unchecked_ct(x) : __builtin_truncl(x);
+#else
+	return hamon::is_constant_evaluated() ? trunc_unchecked_ct(x) : trunc_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -122,7 +129,5 @@ truncl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_TRUNC_HPP

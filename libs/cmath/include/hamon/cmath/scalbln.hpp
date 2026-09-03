@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_SCALBLN_HPP
 #define HAMON_CMATH_SCALBLN_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::scalbln;
-using std::scalblnf;
-using std::scalblnl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -32,6 +17,7 @@ using std::scalblnl;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -39,44 +25,56 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-scalbln_unchecked(float x, long exp) HAMON_NOEXCEPT
-{
-	return __builtin_scalblnf(x, exp);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-scalbln_unchecked(double x, long exp) HAMON_NOEXCEPT
-{
-	return __builtin_scalbln(x, exp);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-scalbln_unchecked(long double x, long exp) HAMON_NOEXCEPT
-{
-	return __builtin_scalblnl(x, exp);
-}
-
-#else
-
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-scalbln_unchecked_ct(T x, long exp)
+scalbln_unchecked_ct(T x, long exp) HAMON_NOEXCEPT
 {
 	return x * hamon::detail::pow_n(T(hamon::numeric_limits<T>::radix), exp);
 }
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-scalbln_unchecked(T x, long exp) HAMON_NOEXCEPT
+scalbln_unchecked_rt(T x, long exp) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		scalbln_unchecked_ct(x, exp) : std::scalbln(x, exp);
+	// TODO
+	return std::scalbln(x, exp);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+scalbln_unchecked(float x, long exp) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_scalblnf(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_scalblnf)
+	return hamon::is_constant_evaluated() ? scalbln_unchecked_ct(x, exp) : __builtin_scalblnf(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? scalbln_unchecked_ct(x, exp) : scalbln_unchecked_rt(x, exp);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+scalbln_unchecked(double x, long exp) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_scalbln(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_scalbln)
+	return hamon::is_constant_evaluated() ? scalbln_unchecked_ct(x, exp) : __builtin_scalbln(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? scalbln_unchecked_ct(x, exp) : scalbln_unchecked_rt(x, exp);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+scalbln_unchecked(long double x, long exp) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_scalblnl(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_scalblnl)
+	return hamon::is_constant_evaluated() ? scalbln_unchecked_ct(x, exp) : __builtin_scalblnl(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? scalbln_unchecked_ct(x, exp) : scalbln_unchecked_rt(x, exp);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -130,7 +128,5 @@ scalblnl(long double x, long exp) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_SCALBLN_HPP

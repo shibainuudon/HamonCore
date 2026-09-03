@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_FREXP_HPP
 #define HAMON_CMATH_FREXP_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::frexp;
-using std::frexpf;
-using std::frexpl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -32,6 +17,7 @@ using std::frexpl;
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -39,16 +25,56 @@ namespace hamon
 namespace detail
 {
 
-template <typename FloatType>
-HAMON_CXX14_CONSTEXPR FloatType
-frexp_unchecked(FloatType x, int* exp) HAMON_NOEXCEPT
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+frexp_unchecked_ct(T x, int* exp) HAMON_NOEXCEPT
 {
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::frexp(x, exp);
-	}
 	*exp = static_cast<int>(1 + hamon::logb(x));
 	return hamon::scalbn(x, -(*exp));
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+frexp_unchecked_rt(T x, int* exp) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::frexp(x, exp);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+frexp_unchecked(float x, int* exp) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_frexpf(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_frexpf)
+	return hamon::is_constant_evaluated() ? frexp_unchecked_ct(x, exp) : __builtin_frexpf(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? frexp_unchecked_ct(x, exp) : frexp_unchecked_rt(x, exp);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+frexp_unchecked(double x, int* exp) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_frexp(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_frexp)
+	return hamon::is_constant_evaluated() ? frexp_unchecked_ct(x, exp) : __builtin_frexp(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? frexp_unchecked_ct(x, exp) : frexp_unchecked_rt(x, exp);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+frexp_unchecked(long double x, int* exp) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_frexpl(x, exp);
+#elif HAMON_HAS_BUILTIN(__builtin_frexpl)
+	return hamon::is_constant_evaluated() ? frexp_unchecked_ct(x, exp) : __builtin_frexpl(x, exp);
+#else
+	return hamon::is_constant_evaluated() ? frexp_unchecked_ct(x, exp) : frexp_unchecked_rt(x, exp);
+#endif
 }
 
 template <typename FloatType>
@@ -110,7 +136,5 @@ frexpl(long double arg, int* exp) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FREXP_HPP

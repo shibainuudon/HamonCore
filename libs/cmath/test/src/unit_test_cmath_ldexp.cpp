@@ -6,6 +6,8 @@
 
 #include <hamon/cmath/ldexp.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -78,12 +80,25 @@ void LdexpTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-2.0,    hamon::ldexp(T(-0.5),  2));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-4.0,    hamon::ldexp(T(-0.5),  3));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(+0.0), hamon::ldexp(T(+0.0), 1));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-0.0), hamon::ldexp(T(-0.0), 1));
+	// If num is ±0, it is returned, unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ldexp(T(+0.0), 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ldexp(T(+0.0), 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ldexp(T(+0.0), -2)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ldexp(T(+0.0), -2)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ldexp(T(-0.0), -1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ldexp(T(-0.0), -1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ldexp(T(-0.0), 2)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ldexp(T(-0.0), 2)));
+
+	// If num is ±∞, it is returned, unmodified.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf,    hamon::ldexp(+inf, 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf,    hamon::ldexp(-inf, 1));
+
+	// If exp is 0, then num is returned, unmodified.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(2.0),  hamon::ldexp(T(2.0), 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(3.0),  hamon::ldexp(T(3.0), 0));
+
+	// If num is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ldexp(+nan, 1)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ldexp(-nan, 1)));
 }

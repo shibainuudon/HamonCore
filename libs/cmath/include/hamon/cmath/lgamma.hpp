@@ -30,28 +30,6 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-lgamma_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_lgammaf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-lgamma_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_lgamma(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-lgamma_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_lgammal(x);
-}
-
-#else
-
 template<typename T>
 HAMON_CXX11_CONSTEXPR T
 lgamma_unchecked_ct_3(T x, T y)
@@ -250,15 +228,43 @@ lgamma_unchecked_ct(T x)
 	return lgamma_unchecked_ct_1(x, x < 0 ? -x : x);
 }
 
-template <typename T>
+template<typename T>
 HAMON_CXX11_CONSTEXPR T
-lgamma_unchecked(T x) HAMON_NOEXCEPT
+lgamma_unchecked_rt(T x)
 {
-	return hamon::is_constant_evaluated() ?
-		lgamma_unchecked_ct(x) : std::lgamma(x);
+	// TODO
+	return std::lgamma(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+lgamma_unchecked(float x) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_lgammaf)
+	return hamon::is_constant_evaluated() ? lgamma_unchecked_ct(x) : __builtin_lgammaf(x);
+#else
+	return hamon::is_constant_evaluated() ? lgamma_unchecked_ct(x) : lgamma_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+lgamma_unchecked(double x) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_lgamma)
+	return hamon::is_constant_evaluated() ? lgamma_unchecked_ct(x) : __builtin_lgamma(x);
+#else
+	return hamon::is_constant_evaluated() ? lgamma_unchecked_ct(x) : lgamma_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+lgamma_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if HAMON_HAS_BUILTIN(__builtin_lgammal)
+	return hamon::is_constant_evaluated() ? lgamma_unchecked_ct(x) : __builtin_lgammal(x);
+#else
+	return hamon::is_constant_evaluated() ? lgamma_unchecked_ct(x) : lgamma_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType

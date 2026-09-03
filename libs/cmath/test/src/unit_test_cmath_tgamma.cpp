@@ -7,6 +7,8 @@
 #include <hamon/cmath/tgamma.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -68,15 +70,27 @@ void TgammaTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 2.36327180120735470306, (double)hamon::tgamma(T(-1.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.94530872048294188123, (double)hamon::tgamma(T(-2.5)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf(hamon::tgamma(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf(hamon::tgamma(T(-0.0))));
+	// If the argument is ±0, ±∞ is returned and FE_DIVBYZERO is raised.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::tgamma(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::tgamma(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::tgamma(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::tgamma(T(-0.0))));
+
+	// If the argument is a negative integer, NaN is returned and FE_INVALID is raised.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(T(-1.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(T(-2.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(T(-3.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(T(-4.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(T(-5.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf(hamon::tgamma(+inf)));
+
+	// If the argument is -∞, NaN is returned and FE_INVALID is raised.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(-inf)));
+
+	// If the argument is +∞, +∞ is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::tgamma(+inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::tgamma(+inf)));
+
+	// If the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tgamma(-nan)));
 }

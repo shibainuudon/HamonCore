@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_ILOGB_HPP
 #define HAMON_CMATH_ILOGB_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::ilogb;
-using std::ilogbf;
-using std::ilogbl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/logb.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
@@ -29,6 +14,7 @@ using std::ilogbl;
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <cmath>	// FP_ILOGB0, FP_ILOGBNAN
 #include <climits>	// INT_MAX
@@ -47,36 +33,56 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR int
+ilogb_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	return static_cast<int>(hamon::detail::logb_unchecked(x));
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR int
+ilogb_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::ilogb(x);
+}
 
 inline HAMON_CXX11_CONSTEXPR int
 ilogb_unchecked(float x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_ilogbf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_ilogbf)
+	return hamon::is_constant_evaluated() ? ilogb_unchecked_ct(x) : __builtin_ilogbf(x);
+#else
+	return hamon::is_constant_evaluated() ? ilogb_unchecked_ct(x) : ilogb_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR int
 ilogb_unchecked(double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_ilogb(x);
+#elif HAMON_HAS_BUILTIN(__builtin_ilogb)
+	return hamon::is_constant_evaluated() ? ilogb_unchecked_ct(x) : __builtin_ilogb(x);
+#else
+	return hamon::is_constant_evaluated() ? ilogb_unchecked_ct(x) : ilogb_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR int
 ilogb_unchecked(long double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_ilogbl(x);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_ilogbl)
+	return hamon::is_constant_evaluated() ? ilogb_unchecked_ct(x) : __builtin_ilogbl(x);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR int
-ilogb_unchecked(T x) HAMON_NOEXCEPT
-{
-	return static_cast<int>(hamon::detail::logb_unchecked(x));
-}
-
+	return hamon::is_constant_evaluated() ? ilogb_unchecked_ct(x) : ilogb_unchecked_rt(x);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR int
@@ -126,7 +132,5 @@ ilogbl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_ILOGB_HPP

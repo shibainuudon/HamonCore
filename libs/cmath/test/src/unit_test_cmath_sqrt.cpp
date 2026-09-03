@@ -53,15 +53,19 @@ void SqrtTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(11.111075555498666484621494041182192341186325190118,   (double)hamon::sqrt(T(123.456)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1000.00000000000, (double)hamon::sqrt(T(1000000.00)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::sqrt(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::sqrt(T(-0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::sqrt(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::sqrt(T(-0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::sqrt(+inf));
-
+	// If the argument is less than -0, FE_INVALID is raised and NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::sqrt(-eps)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::sqrt(T(-1.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::sqrt(-inf)));
+
+	// If the argument is +∞ or ±0, it is returned, unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::sqrt(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::sqrt(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::sqrt(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::sqrt(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::sqrt(+inf));
+
+	// If the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::sqrt(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::sqrt(-nan)));
 }

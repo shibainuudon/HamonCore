@@ -51,10 +51,16 @@ void LLRoundTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 2L,  hamon::llround(T( 1.5)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 2L,  hamon::llround(T( 1.5) + eps));
 
+	// If num is ±∞, FE_INVALID is raised and an implementation-defined value is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmax, hamon::llround(+inf));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmin, hamon::llround(-inf));
+
+	// If the result of the rounding is outside the range of the return type,
+	// FE_INVALID is raised and an implementation-defined value is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmin, hamon::llround(min));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmax, hamon::llround(max));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmin, hamon::llround(-inf));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmax, hamon::llround(+inf));
+
+	// If num is NaN, FE_INVALID is raised and an implementation-defined value is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(llmin, hamon::llround(nan));
 }
 

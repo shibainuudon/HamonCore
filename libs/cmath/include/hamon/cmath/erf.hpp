@@ -28,14 +28,14 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erf_unchecked_ct_3(T x, T y) HAMON_NOEXCEPT
 {
 	return x < 0 ? -y : y;
 }
 
 template <typename T, typename U>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erf_unchecked_ct_2_a_1(T x, T w, T t,
 	U r0, U r1, U r2, U r3, U r4, U r5, U r6,
 	U r7, U r8, U r9, U r10, U r11, U r12) HAMON_NOEXCEPT
@@ -49,7 +49,7 @@ erf_unchecked_ct_2_a_1(T x, T w, T t,
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erf_unchecked_ct_2_a(T x, T w, T t, int k) HAMON_NOEXCEPT
 {
 	return
@@ -86,14 +86,14 @@ erf_unchecked_ct_2_a(T x, T w, T t, int k) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erf_unchecked_ct_2_b_2(T x, T y) HAMON_NOEXCEPT
 {
 	return erf_unchecked_ct_3(x, T(1) - hamon::detail::pow_n(y, 16));
 }
 
 template <typename T, typename U>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erf_unchecked_ct_2_b_1(T x, T t,
 	U r0, U r1, U r2, U r3, U r4, U r5, U r6,
 	U r7, U r8, U r9, U r10, U r11, U r12) HAMON_NOEXCEPT
@@ -107,7 +107,7 @@ erf_unchecked_ct_2_b_1(T x, T t,
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 erf_unchecked_ct_2_b(T x, T t, int k) HAMON_NOEXCEPT
 {
 	return
@@ -144,9 +144,10 @@ erf_unchecked_ct_2_b(T x, T t, int k) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-erf_unchecked_ct_1(T x, T w) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+erf_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	T const w = hamon::fabs(x);
 	return
 		w < T(2.2) ?
 			erf_unchecked_ct_2_a(x, w, hamon::frac(w * w), static_cast<int>(w * w)) :
@@ -156,22 +157,51 @@ erf_unchecked_ct_1(T x, T w) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-erf_unchecked_ct(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+erf_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return erf_unchecked_ct_1(x, hamon::fabs(x));
+	// TODO
+	return std::erf(x);
 }
 
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-erf_unchecked(T x) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR float
+erf_unchecked(float x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		erf_unchecked_ct(x) : std::erf(x);
+#if defined(HAMON_GCC)
+	return __builtin_erff(x);
+#elif HAMON_HAS_BUILTIN(__builtin_erff)
+	return hamon::is_constant_evaluated() ? erf_unchecked_ct(x) : __builtin_erff(x);
+#else
+	return hamon::is_constant_evaluated() ? erf_unchecked_ct(x) : erf_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+erf_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_erf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_erf)
+	return hamon::is_constant_evaluated() ? erf_unchecked_ct(x) : __builtin_erf(x);
+#else
+	return hamon::is_constant_evaluated() ? erf_unchecked_ct(x) : erf_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+erf_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_erfl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_erfl)
+	return hamon::is_constant_evaluated() ? erf_unchecked_ct(x) : __builtin_erfl(x);
+#else
+	return hamon::is_constant_evaluated() ? erf_unchecked_ct(x) : erf_unchecked_rt(x);
+#endif
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 erf_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -196,7 +226,7 @@ erf_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 erf(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::erf_impl(arg);
@@ -215,7 +245,7 @@ erfl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 erf(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::erf_impl(static_cast<double>(arg));

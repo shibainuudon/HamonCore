@@ -66,8 +66,11 @@ void FMaxTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf3, hamon::fmax( inf1,    -inf2));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf3, hamon::fmax(-inf1,    -inf2));
 
+	// If one of the two arguments is NaN, the value of the other argument is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.5, hamon::fmax(nan1,    T2(0.5)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.5, hamon::fmax(T1(0.5), nan2));
+
+	// Only if both arguments are NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::fmax(nan1, nan2)));
 }
 
@@ -97,15 +100,15 @@ void FMaxTestUnsignedInt(void)
 
 GTEST_TEST(CMathTest, FMaxTest)
 {
-//	FMaxTestFloat<float,       float>();
+	FMaxTestFloat<float,       float>();
 	FMaxTestFloat<float,       double>();
 //	FMaxTestFloat<float,       long double>();
 	FMaxTestFloat<double,      float>();
-//	FMaxTestFloat<double,      double>();
+	FMaxTestFloat<double,      double>();
 	FMaxTestFloat<double,      long double>();
 //	FMaxTestFloat<long double, float>();
 	FMaxTestFloat<long double, double>();
-//	FMaxTestFloat<long double, long double>();
+	FMaxTestFloat<long double, long double>();
 
 	FMaxTestSignedInt<int,         int>();
 //	FMaxTestSignedInt<int,         float>();

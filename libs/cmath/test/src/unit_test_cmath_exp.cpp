@@ -270,12 +270,21 @@ void ExpTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(485165195.40979027796910683054154055868463898894485, (double)hamon::exp(T(20.0)), error3);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(536190464.42938890236465169867112395974277398302222, (double)hamon::exp(T(20.1)), error3);
 
+	// If the argument is ±0, 1 is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::exp(T(+0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0, hamon::exp(T(-0.0)));
+
+	// If the argument is -∞, +0 is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::exp(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::exp(-inf)));
+
+	// If the argument is +∞, +∞ is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::exp(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::exp(+inf)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::exp(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::exp(-nan)));
+
+	// If the argument is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::exp(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::exp(-nan)));
 }
 
 inline void ExpTestSingle()

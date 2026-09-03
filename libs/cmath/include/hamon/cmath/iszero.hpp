@@ -18,7 +18,7 @@ namespace hamon
  *	@brief
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 iszero(Arithmetic arg) HAMON_NOEXCEPT
 {
 	return arg == Arithmetic(0);

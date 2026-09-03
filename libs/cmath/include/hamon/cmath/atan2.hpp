@@ -30,59 +30,65 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+atan2_unchecked_ct(T y, T x) HAMON_NOEXCEPT
+{
+	T const pi = hamon::numbers::pi_v<T>;
+	return x < 0 ?
+		hamon::atan(y / x) + (y < 0 ? -pi : pi) :
+		hamon::atan(y / x);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+atan2_unchecked_rt(T y, T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::atan2(y, x);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 atan2_unchecked(float y, float x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_atan2f(y, x);
+#elif HAMON_HAS_BUILTIN(__builtin_atan2f)
+	return hamon::is_constant_evaluated() ? atan2_unchecked_ct(y, x) : __builtin_atan2f(y, x);
+#else
+	return hamon::is_constant_evaluated() ? atan2_unchecked_ct(y, x) : atan2_unchecked_rt(y, x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 atan2_unchecked(double y, double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_atan2(y, x);
+#elif HAMON_HAS_BUILTIN(__builtin_atan2)
+	return hamon::is_constant_evaluated() ? atan2_unchecked_ct(y, x) : __builtin_atan2(y, x);
+#else
+	return hamon::is_constant_evaluated() ? atan2_unchecked_ct(y, x) : atan2_unchecked_rt(y, x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 atan2_unchecked(long double y, long double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_atan2l(y, x);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_atan2l)
+	return hamon::is_constant_evaluated() ? atan2_unchecked_ct(y, x) : __builtin_atan2l(y, x);
 #else
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-atan2_unchecked_ct_1(T y, T x, T pi) HAMON_NOEXCEPT
-{
-	return
-		x < 0 ?
-			hamon::atan(y / x) + (y < 0 ? -pi : pi) :
-			hamon::atan(y / x);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-atan2_unchecked_ct(T y, T x) HAMON_NOEXCEPT
-{
-	return atan2_unchecked_ct_1(y, x, hamon::numbers::pi_v<T>);
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-atan2_unchecked(T y, T x) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		atan2_unchecked_ct(y, x) : std::atan2(y, x);
-}
-
+	return hamon::is_constant_evaluated() ? atan2_unchecked_ct(y, x) : atan2_unchecked_rt(y, x);
 #endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
-atan2_impl_1(FloatType y, FloatType x, FloatType pi) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR FloatType
+atan2_impl(FloatType y, FloatType x) HAMON_NOEXCEPT
 {
+	FloatType const pi = hamon::numbers::pi_v<FloatType>;
 	return
 		hamon::isnan(x) || hamon::isnan(y) ?
 			hamon::numeric_limits<FloatType>::quiet_NaN() :
@@ -103,13 +109,6 @@ atan2_impl_1(FloatType y, FloatType x, FloatType pi) HAMON_NOEXCEPT
 				hamon::copysign(pi, y) :
 				hamon::copysign(FloatType(0), y) :
 		atan2_unchecked(y, x);
-}
-
-template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
-atan2_impl(FloatType y, FloatType x) HAMON_NOEXCEPT
-{
-	return atan2_impl_1(y, x, hamon::numbers::pi_v<FloatType>);
 }
 
 }	// namespace detail
@@ -136,7 +135,7 @@ atan2_impl(FloatType y, FloatType x) HAMON_NOEXCEPT
  *	x か y の少なくともどちらかが NaN の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 atan2(FloatType y, FloatType x) HAMON_NOEXCEPT
 {
 	return detail::atan2_impl(y, x);
@@ -158,7 +157,7 @@ template <
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 atan2(Arithmetic1 y, Arithmetic2 x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

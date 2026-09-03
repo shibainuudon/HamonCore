@@ -20,7 +20,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 sign_unchecked(T x) HAMON_NOEXCEPT
 {
 	return
@@ -30,7 +30,7 @@ sign_unchecked(T x) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 sign_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -54,7 +54,7 @@ sign_impl(FloatType x) HAMON_NOEXCEPT
  *	x >  0 の場合、 1を返す。
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
 sign(Arithmetic arg) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;

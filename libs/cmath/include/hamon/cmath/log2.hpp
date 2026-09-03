@@ -29,47 +29,59 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-log2_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_log2f(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-log2_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_log2(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-log2_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_log2l(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 log2_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return hamon::log(x) / hamon::numbers::ln2_v<T>;
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-log2_unchecked(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+log2_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		log2_unchecked_ct(x) : std::log2(x);
+	// TODO
+	return std::log2(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+log2_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_log2f(x);
+#elif HAMON_HAS_BUILTIN(__builtin_log2f)
+	return hamon::is_constant_evaluated() ? log2_unchecked_ct(x) : __builtin_log2f(x);
+#else
+	return hamon::is_constant_evaluated() ? log2_unchecked_ct(x) : log2_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+log2_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_log2(x);
+#elif HAMON_HAS_BUILTIN(__builtin_log2)
+	return hamon::is_constant_evaluated() ? log2_unchecked_ct(x) : __builtin_log2(x);
+#else
+	return hamon::is_constant_evaluated() ? log2_unchecked_ct(x) : log2_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+log2_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_log2l(x);
+#elif HAMON_HAS_BUILTIN(__builtin_log2l)
+	return hamon::is_constant_evaluated() ? log2_unchecked_ct(x) : __builtin_log2l(x);
+#else
+	return hamon::is_constant_evaluated() ? log2_unchecked_ct(x) : log2_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 log2_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -87,7 +99,7 @@ log2_impl(FloatType x) HAMON_NOEXCEPT
 }
 
 template <typename IntegralType>
-inline HAMON_CXX11_CONSTEXPR double
+HAMON_CXX11_CONSTEXPR double
 log2_integral(IntegralType x) HAMON_NOEXCEPT
 {
 	using UT = hamon::make_unsigned_t<IntegralType>;
@@ -119,7 +131,7 @@ log2_integral(IntegralType x) HAMON_NOEXCEPT
  *	x が NaN だった場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 log2(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::log2_impl(arg);
@@ -138,7 +150,7 @@ log2l(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 log2(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::log2_integral(arg);

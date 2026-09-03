@@ -15,7 +15,9 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -23,39 +25,59 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+expm1_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	return hamon::exp(x) - T(1);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+expm1_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::expm1(x);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 expm1_unchecked(float x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_expm1f(x);
+#elif HAMON_HAS_BUILTIN(__builtin_expm1f)
+	return hamon::is_constant_evaluated() ? expm1_unchecked_ct(x) : __builtin_expm1f(x);
+#else
+	return hamon::is_constant_evaluated() ? expm1_unchecked_ct(x) : expm1_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 expm1_unchecked(double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_expm1(x);
+#elif HAMON_HAS_BUILTIN(__builtin_expm1)
+	return hamon::is_constant_evaluated() ? expm1_unchecked_ct(x) : __builtin_expm1(x);
+#else
+	return hamon::is_constant_evaluated() ? expm1_unchecked_ct(x) : expm1_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 expm1_unchecked(long double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_expm1l(x);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_expm1l)
+	return hamon::is_constant_evaluated() ? expm1_unchecked_ct(x) : __builtin_expm1l(x);
 #else
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-expm1_unchecked(T x) HAMON_NOEXCEPT
-{
-	return hamon::exp(x) - T(1);
-}
-
+	return hamon::is_constant_evaluated() ? expm1_unchecked_ct(x) : expm1_unchecked_rt(x);
 #endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 expm1_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -87,7 +109,7 @@ expm1_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN  の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 expm1(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::expm1_impl(arg);
@@ -106,7 +128,7 @@ expm1l(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 expm1(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::expm1_impl(static_cast<double>(arg));

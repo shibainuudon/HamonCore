@@ -7,21 +7,6 @@
 #ifndef HAMON_CMATH_FMA_HPP
 #define HAMON_CMATH_FMA_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::fma;
-using std::fmaf;
-using std::fmal;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -33,6 +18,7 @@ using std::fmal;
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -40,37 +26,50 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fma_unchecked_ct(T x, T y, T z) HAMON_NOEXCEPT
+{
+	return (x * y + z);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fma_unchecked_rt(T x, T y, T z) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::fma(x, y, z);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 fma_unchecked(float x, float y, float z) HAMON_NOEXCEPT
 {
-	return __builtin_fmaf(x, y, z);
+#if HAMON_HAS_BUILTIN(__builtin_fmaf)
+	return hamon::is_constant_evaluated() ? fma_unchecked_ct(x, y, z) : __builtin_fmaf(x, y, z);
+#else
+	return hamon::is_constant_evaluated() ? fma_unchecked_ct(x, y, z) : fma_unchecked_rt(x, y, z);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 fma_unchecked(double x, double y, double z) HAMON_NOEXCEPT
 {
-	return __builtin_fma(x, y, z);
+#if HAMON_HAS_BUILTIN(__builtin_fma)
+	return hamon::is_constant_evaluated() ? fma_unchecked_ct(x, y, z) : __builtin_fma(x, y, z);
+#else
+	return hamon::is_constant_evaluated() ? fma_unchecked_ct(x, y, z) : fma_unchecked_rt(x, y, z);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 fma_unchecked(long double x, long double y, long double z) HAMON_NOEXCEPT
 {
-	return __builtin_fmal(x, y, z);
-}
-
+#if HAMON_HAS_BUILTIN(__builtin_fmal)
+	return hamon::is_constant_evaluated() ? fma_unchecked_ct(x, y, z) : __builtin_fmal(x, y, z);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-fma_unchecked(T x, T y, T z) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		(x * y + z) : std::fma(x, y, z);
-}
-
+	return hamon::is_constant_evaluated() ? fma_unchecked_ct(x, y, z) : fma_unchecked_rt(x, y, z);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -141,7 +140,5 @@ fmal(long double x, long double y, long double z) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FMA_HPP

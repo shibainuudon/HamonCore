@@ -22,28 +22,28 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_negative_impl_2(FloatType x, hamon::detail::overload_priority<2>)
 {
 	return !hamon::isnan(x) && (x < 0);
 }
 
 template <HAMON_CONSTRAINT(hamon::signed_integral, SignedType)>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_negative_impl_2(SignedType x, hamon::detail::overload_priority<1>)
 {
 	return x < 0;
 }
 
 template <typename UnsignedType>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_negative_impl_2(UnsignedType /*x*/, hamon::detail::overload_priority<0>)
 {
 	return false;
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 is_negative_impl(T x) HAMON_NOEXCEPT
 {
 	return is_negative_impl_2(x, hamon::detail::overload_priority<2>{});
@@ -64,7 +64,7 @@ is_negative_impl(T x) HAMON_NOEXCEPT
  *	x が NaN の場合、falseを返す。
  */
 template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 is_negative(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::is_negative_impl(x);

@@ -29,28 +29,6 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-tgamma_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_tgammaf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-tgamma_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_tgamma(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-tgamma_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_tgammal(x);
-}
-
-#else
-
 template<typename T>
 HAMON_CXX11_CONSTEXPR T
 tgamma_unchecked_ct_y(T w)
@@ -145,13 +123,47 @@ tgamma_unchecked_ct(T x)
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-tgamma_unchecked(T x) HAMON_NOEXCEPT
+tgamma_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		tgamma_unchecked_ct(x) : std::tgamma(x);
+	// TODO
+	return std::tgamma(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+tgamma_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_tgammaf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_tgammaf)
+	return hamon::is_constant_evaluated() ? tgamma_unchecked_ct(x) : __builtin_tgammaf(x);
+#else
+	return hamon::is_constant_evaluated() ? tgamma_unchecked_ct(x) : tgamma_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+tgamma_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_tgamma(x);
+#elif HAMON_HAS_BUILTIN(__builtin_tgamma)
+	return hamon::is_constant_evaluated() ? tgamma_unchecked_ct(x) : __builtin_tgamma(x);
+#else
+	return hamon::is_constant_evaluated() ? tgamma_unchecked_ct(x) : tgamma_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+tgamma_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_tgammal(x);
+#elif HAMON_HAS_BUILTIN(__builtin_tgammal)
+	return hamon::is_constant_evaluated() ? tgamma_unchecked_ct(x) : __builtin_tgammal(x);
+#else
+	return hamon::is_constant_evaluated() ? tgamma_unchecked_ct(x) : tgamma_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -161,7 +173,9 @@ tgamma_impl(FloatType x) HAMON_NOEXCEPT
 		hamon::isnan(x) ?
 			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::iszero(x) ?
-			hamon::numeric_limits<FloatType>::infinity() :
+			hamon::signbit(x) ?
+				-hamon::numeric_limits<FloatType>::infinity() :
+				hamon::numeric_limits<FloatType>::infinity() :
 		(x < 0 && hamon::is_integer(x)) ?
 			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::isinf(x)  ?
@@ -182,7 +196,7 @@ tgamma_impl(FloatType x) HAMON_NOEXCEPT
  *
  *	@return	x のガンマ関数を返します。
  *
- *	x が ±0      の場合、+∞ を返す。
+ *	x が ±0      の場合、±∞ を返す。
  *	x が 負の整数 の場合、NaN を返す。
  *	x が -∞      の場合、NaN を返す。
  *	x が +∞      の場合、+∞ を返す。

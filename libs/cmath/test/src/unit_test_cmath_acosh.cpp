@@ -8,7 +8,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
-#include <hamon/cmath/fabs.hpp>
+#include <hamon/cmath/fabs.hpp>	// HAMON_CXX11_CONSTEXPR_EXPECT_NEAR
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -53,7 +53,8 @@ void AcoshTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acosh(-inf)));
 
 	// if the argument is 1, +0 is returned
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::acosh(T(+1.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::acosh(T(+1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::acosh(T(+1.0))));
 
 	// if the argument is +∞, +∞ is returned
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(+inf, hamon::acosh(+inf));

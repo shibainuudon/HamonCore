@@ -235,7 +235,7 @@ void SmoothStepTestInteger(void)
 
 GTEST_TEST(CMathTest, SmoothStepTest)
 {
-//	SmoothStepTestFloat<float, float,       float>      ();
+	SmoothStepTestFloat<float, float,       float>      ();
 	SmoothStepTestFloat<float, float,       double>     ();
 //	SmoothStepTestFloat<float, float,       long double>();
 	SmoothStepTestFloat<float, double,      float>      ();
@@ -263,7 +263,7 @@ GTEST_TEST(CMathTest, SmoothStepTest)
 	SmoothStepTestFloat<long double, double,      long double>();
 //	SmoothStepTestFloat<long double, long double, float>      ();
 	SmoothStepTestFloat<long double, long double, double>     ();
-//	SmoothStepTestFloat<long double, long double, long double>();
+	SmoothStepTestFloat<long double, long double, long double>();
 
 	SmoothStepTestInteger<int, int,         int>();
 //	SmoothStepTestInteger<int, int,         float>();

@@ -25,7 +25,7 @@ namespace detail
 
 template <typename FloatType>
 HAMON_CXX14_CONSTEXPR FloatType
-copysign_impl_fallback(FloatType x, FloatType y) HAMON_NOEXCEPT
+copysign_impl_ct(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	using Binary = hamon::ieee754::binary<FloatType>;
 	Binary a(x);
@@ -40,7 +40,7 @@ copysign_impl(float x, float y) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_copysignf)
 	return __builtin_copysignf(x, y);
 #else
-	return copysign_impl_fallback(x, y);
+	return copysign_impl_ct(x, y);
 #endif
 }
 
@@ -50,7 +50,7 @@ copysign_impl(double x, double y) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_copysign)
 	return __builtin_copysign(x, y);
 #else
-	return copysign_impl_fallback(x, y);
+	return copysign_impl_ct(x, y);
 #endif
 }
 
@@ -60,7 +60,7 @@ copysign_impl(long double x, long double y) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_copysignl)
 	return __builtin_copysignl(x, y);
 #else
-	return copysign_impl_fallback(x, y);
+	return copysign_impl_ct(x, y);
 #endif
 }
 

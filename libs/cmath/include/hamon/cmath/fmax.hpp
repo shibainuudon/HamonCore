@@ -7,27 +7,14 @@
 #ifndef HAMON_CMATH_FMAX_HPP
 #define HAMON_CMATH_FMAX_HPP
 
-#include <cmath>
-
-#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
-
-namespace hamon
-{
-
-using std::fmax;
-using std::fmaxf;
-using std::fmaxl;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
+#include <cmath>
 
 namespace hamon
 {
@@ -35,36 +22,50 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fmax_unchecked_ct(T x, T y) HAMON_NOEXCEPT
+{
+	return x < y ? y : x;
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+fmax_unchecked_rt(T x, T y) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::fmax(x, y);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 fmax_unchecked(float x, float y) HAMON_NOEXCEPT
 {
-	return __builtin_fmaxf(x, y);
+#if HAMON_HAS_BUILTIN(__builtin_fmaxf)
+	return hamon::is_constant_evaluated() ? fmax_unchecked_ct(x, y) : __builtin_fmaxf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmax_unchecked_ct(x, y) : fmax_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 fmax_unchecked(double x, double y) HAMON_NOEXCEPT
 {
-	return __builtin_fmax(x, y);
+#if HAMON_HAS_BUILTIN(__builtin_fmax)
+	return hamon::is_constant_evaluated() ? fmax_unchecked_ct(x, y) : __builtin_fmax(x, y);
+#else
+	return hamon::is_constant_evaluated() ? fmax_unchecked_ct(x, y) : fmax_unchecked_rt(x, y);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 fmax_unchecked(long double x, long double y) HAMON_NOEXCEPT
 {
-	return __builtin_fmaxl(x, y);
-}
-
+#if HAMON_HAS_BUILTIN(__builtin_fmaxl)
+	return hamon::is_constant_evaluated() ? fmax_unchecked_ct(x, y) : __builtin_fmaxl(x, y);
 #else
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-fmax_unchecked(T x, T y) HAMON_NOEXCEPT
-{
-	return x < y ? y : x;
-}
-
+	return hamon::is_constant_evaluated() ? fmax_unchecked_ct(x, y) : fmax_unchecked_rt(x, y);
 #endif
+}
 
 template <typename FloatType>
 HAMON_CXX11_CONSTEXPR FloatType
@@ -125,7 +126,5 @@ fmaxl(long double x, long double y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CMATH_FMAX_HPP

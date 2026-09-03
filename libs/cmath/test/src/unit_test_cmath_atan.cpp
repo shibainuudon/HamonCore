@@ -8,7 +8,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
-#include <hamon/cmath/fabs.hpp>
+#include <hamon/cmath/fabs.hpp>	// HAMON_CXX11_CONSTEXPR_EXPECT_NEAR
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/numbers.hpp>
 #include <hamon/limits.hpp>
@@ -50,12 +50,19 @@ void AtanTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.1902899496825317329277337748293183376011789860295,  (double)hamon::atan(T(  2.50)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.550798992821746086170568494738154954149351501001,   (double)hamon::atan(T( 50.00)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atan(T(+0.0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atan(T(-0.0)));
+	// If the argument is ±0, it is returned unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::atan(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::atan(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::atan(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::atan(T(-0.0))));
 
+	// If the argument is +∞, +π/2 is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( hamon::numbers::pi_v<double> / 2, (double)hamon::atan(+inf), 0.000001);
+
+	// If the argument is -∞, -π/2 is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-hamon::numbers::pi_v<double> / 2, (double)hamon::atan(-inf), 0.000001);
 
+	// If the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::atan(+nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::atan(-nan)));
 }

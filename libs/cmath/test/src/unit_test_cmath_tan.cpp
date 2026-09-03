@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/tan.hpp>
 #include <hamon/cmath/iszero.hpp>
-#include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/numbers.hpp>
@@ -72,15 +72,19 @@ void TanTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::tan( hamon::numbers::pi_v<T>), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0, (double)hamon::tan(-hamon::numbers::pi_v<T>), error);
 
+	// if the argument is ±0, it is returned unmodified.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::tan(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::tan(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::tan(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::tan(T(-0.0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::tan(T(-0.0))));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tan(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tan(-nan)));
+	// if the argument is ±∞, NaN is returned and FE_INVALID is raised.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tan(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tan(-inf)));
+
+	// if the argument is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tan(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::tan(-nan)));
 }
 
 template <typename T>

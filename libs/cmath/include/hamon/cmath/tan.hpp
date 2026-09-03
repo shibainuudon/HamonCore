@@ -26,40 +26,59 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+tan_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	return sin_unchecked_ct(x) / cos_unchecked_ct(x);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+tan_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::tan(x);
+}
 
 inline HAMON_CXX11_CONSTEXPR float
 tan_unchecked(float x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_tanf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_tanf)
+	return hamon::is_constant_evaluated() ? tan_unchecked_ct(x) : __builtin_tanf(x);
+#else
+	return hamon::is_constant_evaluated() ? tan_unchecked_ct(x) : tan_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR double
 tan_unchecked(double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_tan(x);
+#elif HAMON_HAS_BUILTIN(__builtin_tan)
+	return hamon::is_constant_evaluated() ? tan_unchecked_ct(x) : __builtin_tan(x);
+#else
+	return hamon::is_constant_evaluated() ? tan_unchecked_ct(x) : tan_unchecked_rt(x);
+#endif
 }
 
 inline HAMON_CXX11_CONSTEXPR long double
 tan_unchecked(long double x) HAMON_NOEXCEPT
 {
+#if defined(HAMON_GCC)
 	return __builtin_tanl(x);
-}
-
+#elif HAMON_HAS_BUILTIN(__builtin_tanl)
+	return hamon::is_constant_evaluated() ? tan_unchecked_ct(x) : __builtin_tanl(x);
 #else
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-tan_unchecked(T x) HAMON_NOEXCEPT
-{
-	return hamon::is_constant_evaluated() ?
-		(sin_unchecked_ct(x) / cos_unchecked_ct(x)) : std::tan(x);
-}
-
+	return hamon::is_constant_evaluated() ? tan_unchecked_ct(x) : tan_unchecked_rt(x);
 #endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 tan_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -84,7 +103,7 @@ tan_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 tan(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
@@ -103,7 +122,7 @@ tanl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 tan(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(static_cast<double>(arg));

@@ -13,6 +13,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
 
@@ -24,9 +25,54 @@ namespace detail
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-rint_unchecked(T x) HAMON_NOEXCEPT
+rint_unchecked_ct(T x) HAMON_NOEXCEPT
 {
+	// TODO
 	return std::rint(x);
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
+rint_unchecked_rt(T x) HAMON_NOEXCEPT
+{
+	// TODO
+	return std::rint(x);
+}
+
+inline HAMON_CXX11_CONSTEXPR float
+rint_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_rintf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_rintf)
+	return hamon::is_constant_evaluated() ? rint_unchecked_ct(x) : __builtin_rintf(x);
+#else
+	return hamon::is_constant_evaluated() ? rint_unchecked_ct(x) : rint_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+rint_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_rint(x);
+#elif HAMON_HAS_BUILTIN(__builtin_rint)
+	return hamon::is_constant_evaluated() ? rint_unchecked_ct(x) : __builtin_rint(x);
+#else
+	return hamon::is_constant_evaluated() ? rint_unchecked_ct(x) : rint_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+rint_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_rintl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_rintl)
+	return hamon::is_constant_evaluated() ? rint_unchecked_ct(x) : __builtin_rintl(x);
+#else
+	return hamon::is_constant_evaluated() ? rint_unchecked_ct(x) : rint_unchecked_rt(x);
+#endif
 }
 
 template <typename FloatType>

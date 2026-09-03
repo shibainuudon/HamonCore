@@ -64,13 +64,31 @@ void LgammaTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.86004701537648101451, (double)hamon::lgamma(T(-1.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.05624371649767405067, (double)hamon::lgamma(T(-2.5)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::iszero(hamon::lgamma(T( 1.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::iszero(hamon::lgamma(T( 2.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf (hamon::lgamma(T(+0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf (hamon::lgamma(T(-0.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf (hamon::lgamma(T(-1.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf (hamon::lgamma(T(-2.0))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf (hamon::lgamma(inf)));
+	// If the argument is 1, +0 is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::lgamma(T( 1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(T( 1.0))));
+
+	// If the argument is 2, +0 is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::lgamma(T( 2.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(T( 2.0))));
+
+	// If the argument is ±0, +∞ is returned and FE_DIVBYZERO is raised.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::lgamma(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::lgamma(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(T(-0.0))));
+
+	// If the argument is a negative integer, +∞ is returned and FE_DIVBYZERO is raised.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::lgamma(T(-1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(T(-1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::lgamma(T(-2.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(T(-2.0))));
+
+	// If the argument is ±∞, +∞ is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::lgamma(inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::lgamma(inf)));
+
+	// If the argument is NaN, NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan (hamon::lgamma(nan)));
 }
 

@@ -32,30 +32,8 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-pow_unchecked(float x, float y) HAMON_NOEXCEPT
-{
-	return __builtin_powf(x, y);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-pow_unchecked(double x, double y) HAMON_NOEXCEPT
-{
-	return __builtin_pow(x, y);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-pow_unchecked(long double x, long double y) HAMON_NOEXCEPT
-{
-	return __builtin_powl(x, y);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 pow_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 {
 	return
@@ -67,17 +45,51 @@ pow_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-pow_unchecked(T x, T y) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+pow_unchecked_rt(T x, T y) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		pow_unchecked_ct(x, y) : std::pow(x, y);
+	// TODO
+	return std::pow(x, y);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+pow_unchecked(float x, float y) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_powf(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_powf)
+	return hamon::is_constant_evaluated() ? pow_unchecked_ct(x, y) : __builtin_powf(x, y);
+#else
+	return hamon::is_constant_evaluated() ? pow_unchecked_ct(x, y) : pow_unchecked_rt(x, y);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+pow_unchecked(double x, double y) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_pow(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_pow)
+	return hamon::is_constant_evaluated() ? pow_unchecked_ct(x, y) : __builtin_pow(x, y);
+#else
+	return hamon::is_constant_evaluated() ? pow_unchecked_ct(x, y) : pow_unchecked_rt(x, y);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+pow_unchecked(long double x, long double y) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_powl(x, y);
+#elif HAMON_HAS_BUILTIN(__builtin_powl)
+	return hamon::is_constant_evaluated() ? pow_unchecked_ct(x, y) : __builtin_powl(x, y);
+#else
+	return hamon::is_constant_evaluated() ? pow_unchecked_ct(x, y) : pow_unchecked_rt(x, y);
+#endif
+}
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 pow_impl_2(T x, T y, T inf, T nan) HAMON_NOEXCEPT
 {
 	//pow(+0, exp), where exp is a negative odd integer, returns +∞ and raises FE_DIVBYZERO
@@ -146,7 +158,7 @@ pow_impl_2(T x, T y, T inf, T nan) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return pow_impl_2(x, y,
@@ -186,7 +198,7 @@ pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	上記以外で、xかyの少なくともどちらかがNaNの場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 pow(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
@@ -208,7 +220,8 @@ template <
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+hamon::float_promote_t<Arithmetic1, Arithmetic2>
 pow(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

@@ -8,6 +8,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/fabs.hpp>	// HAMON_CXX11_CONSTEXPR_EXPECT_NEAR
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
@@ -45,14 +46,19 @@ void AcosTestFloat()
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.7227342478134156111783773526413333620252184864244, (double)hamon::acos(T( 0.75)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0000000000000000000000000000000000000000000000000, (double)hamon::acos(T( 1.00)), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::acos(T(+1.0)));
+	// If the argument is +1, the value +0 is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::acos(T(+1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::acos(T(+1.0))));
 
+	// If |num| > 1, a domain error occurs and NaN is returned.
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(T(+1.0) + eps)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(T(-1.0) - eps)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(-nan)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(-inf)));
+
+	// if the argument is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(-nan)));
 }
 
 template <typename T>

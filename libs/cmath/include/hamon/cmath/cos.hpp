@@ -28,30 +28,8 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-cos_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_cosf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-cos_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_cos(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-cos_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_cosl(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return
@@ -62,7 +40,7 @@ cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 cos_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return T(1) + cos_unchecked_ct_1(
@@ -71,17 +49,51 @@ cos_unchecked_ct(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-cos_unchecked(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+cos_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		cos_unchecked_ct(x) : std::cos(x);
+	// TODO
+	return std::cos(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+cos_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_cosf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cosf)
+	return hamon::is_constant_evaluated() ? cos_unchecked_ct(x) : __builtin_cosf(x);
+#else
+	return hamon::is_constant_evaluated() ? cos_unchecked_ct(x) : cos_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+cos_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_cos(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cos)
+	return hamon::is_constant_evaluated() ? cos_unchecked_ct(x) : __builtin_cos(x);
+#else
+	return hamon::is_constant_evaluated() ? cos_unchecked_ct(x) : cos_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+cos_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_cosl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_cosl)
+	return hamon::is_constant_evaluated() ? cos_unchecked_ct(x) : __builtin_cosl(x);
+#else
+	return hamon::is_constant_evaluated() ? cos_unchecked_ct(x) : cos_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 cos_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -106,7 +118,7 @@ cos_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 cos(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::cos_impl(arg);
@@ -125,7 +137,7 @@ cosl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 cos(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::cos_impl(static_cast<double>(arg));

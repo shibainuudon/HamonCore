@@ -29,30 +29,8 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
-
-inline HAMON_CXX11_CONSTEXPR float
-atan_unchecked(float x) HAMON_NOEXCEPT
-{
-	return __builtin_atanf(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR double
-atan_unchecked(double x) HAMON_NOEXCEPT
-{
-	return __builtin_atan(x);
-}
-
-inline HAMON_CXX11_CONSTEXPR long double
-atan_unchecked(long double x) HAMON_NOEXCEPT
-{
-	return __builtin_atanl(x);
-}
-
-#else
-
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 atan_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
@@ -62,7 +40,7 @@ atan_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last) HAMON_NOEXCEPT
 {
 	return
@@ -74,7 +52,7 @@ atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 atan_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return x < 0 ?
@@ -87,17 +65,51 @@ atan_unchecked_ct(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
-atan_unchecked(T x) HAMON_NOEXCEPT
+HAMON_CXX11_CONSTEXPR T
+atan_unchecked_rt(T x) HAMON_NOEXCEPT
 {
-	return hamon::is_constant_evaluated() ?
-		atan_unchecked_ct(x) : std::atan(x);
+	// TODO
+	return std::atan(x);
 }
 
+inline HAMON_CXX11_CONSTEXPR float
+atan_unchecked(float x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_atanf(x);
+#elif HAMON_HAS_BUILTIN(__builtin_atanf)
+	return hamon::is_constant_evaluated() ? atan_unchecked_ct(x) : __builtin_atanf(x);
+#else
+	return hamon::is_constant_evaluated() ? atan_unchecked_ct(x) : atan_unchecked_rt(x);
 #endif
+}
+
+inline HAMON_CXX11_CONSTEXPR double
+atan_unchecked(double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_atan(x);
+#elif HAMON_HAS_BUILTIN(__builtin_atan)
+	return hamon::is_constant_evaluated() ? atan_unchecked_ct(x) : __builtin_atan(x);
+#else
+	return hamon::is_constant_evaluated() ? atan_unchecked_ct(x) : atan_unchecked_rt(x);
+#endif
+}
+
+inline HAMON_CXX11_CONSTEXPR long double
+atan_unchecked(long double x) HAMON_NOEXCEPT
+{
+#if defined(HAMON_GCC)
+	return __builtin_atanl(x);
+#elif HAMON_HAS_BUILTIN(__builtin_atanl)
+	return hamon::is_constant_evaluated() ? atan_unchecked_ct(x) : __builtin_atanl(x);
+#else
+	return hamon::is_constant_evaluated() ? atan_unchecked_ct(x) : atan_unchecked_rt(x);
+#endif
+}
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 atan_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -125,7 +137,7 @@ atan_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 atan(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::atan_impl(arg);
@@ -144,7 +156,7 @@ atanl(long double arg) HAMON_NOEXCEPT
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 atan(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::atan_impl(static_cast<double>(arg));

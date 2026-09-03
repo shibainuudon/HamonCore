@@ -6,6 +6,7 @@
 
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -66,15 +67,21 @@ void CeilTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T) -999.0,  hamon::ceil(T(-1000.0) + (eps*1000)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)-1000.0,  hamon::ceil(T(-1000.0) - (eps*1000)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( inf,  hamon::ceil(+inf));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf,  hamon::ceil(-inf));
+	// If num is ±0, it is returned, unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ceil(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(T(+0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::ceil(T(-0.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ceil(T(-0.0))));
+
+	// If num is ±∞, it is returned unmodified.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::ceil(+inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(+inf)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isinf  (hamon::ceil(-inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ceil(-inf)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::ceil(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::isnan  (hamon::ceil(-nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::ceil(+nan)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::signbit(hamon::ceil(-nan)));
+	// If num is NaN, NaN is returned.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ceil(+nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::ceil(-nan)));
 }
 
 template <typename T>
