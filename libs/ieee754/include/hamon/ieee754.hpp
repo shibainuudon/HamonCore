@@ -7,6 +7,8 @@
 #ifndef HAMON_IEEE754_HPP
 #define HAMON_IEEE754_HPP
 
+#include <hamon/ieee754/binary.hpp>
+#include <hamon/ieee754/binary_traits.hpp>
 #include <hamon/ieee754/binary32.hpp>
 #include <hamon/ieee754/binary64.hpp>
 
