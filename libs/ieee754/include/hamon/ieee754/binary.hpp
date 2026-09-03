@@ -242,6 +242,16 @@ public:
 	}
 
 	/**
+	 *	@brief 符号を設定
+	 */
+	HAMON_CXX14_CONSTEXPR
+	void set_sign(sign_type s) HAMON_NOEXCEPT
+	{
+		m_uint_value &= ~sign_mask;
+		m_uint_value |= (static_cast<uint_type>(s) << sign_shift);
+	}
+
+	/**
 	 *	@brief 指数を取得
 	 */
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
