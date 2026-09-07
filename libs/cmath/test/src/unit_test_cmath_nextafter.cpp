@@ -73,11 +73,11 @@ void NextAfterTestFloat()
 
 	HAMON_CXX14_CONSTEXPR T t2 = hamon::nextafter(T(), T());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t2 == T());
-	EXPECT_TRUE(!std::signbit(t2));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(!hamon::signbit(t2));
 
 	HAMON_CXX14_CONSTEXPR T t3 = hamon::nextafter(denorm_min, T(-2.0));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t3 == T());
-	EXPECT_TRUE(!std::signbit(t3));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(!hamon::signbit(t3));
 
 	HAMON_CXX14_CONSTEXPR T t4 = hamon::nextafter(min, T(-0.0));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t4 > T());
@@ -108,7 +108,7 @@ void NextAfterTestFloat()
 
 	HAMON_CXX14_CONSTEXPR T t12 = hamon::nextafter(t11, inf);
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::fpclassify(t12) == FP_INFINITE);
-	EXPECT_TRUE(!std::signbit(t12));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(!hamon::signbit(t12));
 
 	HAMON_CXX14_CONSTEXPR T t13 = hamon::nextafter(inf, t12);
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t13 == t12);
@@ -124,7 +124,7 @@ void NextAfterTestFloat()
 
 	HAMON_CXX14_CONSTEXPR T t17 = hamon::nextafter(T(), T(-0.0));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t17 == T());
-	EXPECT_TRUE(std::signbit(t17));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::signbit(t17));
 
 	HAMON_CXX14_CONSTEXPR T t20 = hamon::nextafter(T(-0.0), T(-2.0));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t20 == -denorm_min);
@@ -134,11 +134,11 @@ void NextAfterTestFloat()
 
 	HAMON_CXX14_CONSTEXPR T t22 = hamon::nextafter(T(-0.0), T(-0.0));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t22 == T());
-	EXPECT_TRUE(std::signbit(t22));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::signbit(t22));
 
 	HAMON_CXX14_CONSTEXPR T t23 = hamon::nextafter(-denorm_min, T(2.0));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t23 == T());
-	EXPECT_TRUE(std::signbit(t23));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::signbit(t23));
 
 	HAMON_CXX14_CONSTEXPR T t24 = hamon::nextafter(-min, T());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t24 < T());
@@ -169,7 +169,7 @@ void NextAfterTestFloat()
 
 	HAMON_CXX14_CONSTEXPR T t32 = hamon::nextafter(t31, -inf);
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::fpclassify(t32) == FP_INFINITE);
-	EXPECT_TRUE(std::signbit(t32));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::signbit(t32));
 
 	HAMON_CXX14_CONSTEXPR T t33 = hamon::nextafter(-inf, t32);
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t33 == t32);
@@ -185,7 +185,7 @@ void NextAfterTestFloat()
 
 	HAMON_CXX14_CONSTEXPR T t37 = hamon::nextafter(T(-0.0), T());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(t37 == T());
-	EXPECT_TRUE(!std::signbit(t37));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(!hamon::signbit(t37));
 
 	// if either from or to is NaN, NaN is returned
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::nextafter(nan,  T(1))));
