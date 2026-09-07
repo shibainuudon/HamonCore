@@ -59,10 +59,10 @@ struct bitset_impl
 private:
 	static_assert(hamon::is_unsigned<T>::value, "");
 
-	static const hamon::size_t BitsPerWord = hamon::bitsof<T>();
-	static const hamon::size_t HighestWordBits =
+	static constexpr hamon::size_t BitsPerWord = hamon::bitsof<T>();
+	static constexpr hamon::size_t HighestWordBits =
 		(NBits % BitsPerWord) == 0 ? BitsPerWord : (NBits % BitsPerWord);
-	static const hamon::size_t WordsPerULongLong = sizeof(unsigned long long) / sizeof(T);
+	static constexpr hamon::size_t WordsPerULongLong = sizeof(unsigned long long) / sizeof(T);
 
 	hamon::array<T, NWords>	m_value;
 
@@ -400,7 +400,7 @@ struct bitset_impl<T, NBits, 1>
 private:
 	static_assert(hamon::is_unsigned<T>::value, "");
 
-	static const hamon::size_t BitsPerWord = hamon::bitsof<T>();
+	static constexpr hamon::size_t BitsPerWord = hamon::bitsof<T>();
 
 	T	m_value;
 
@@ -577,8 +577,8 @@ private:
 			hamon::uint16_t,
 			hamon::uint32_t
 		>>;
-	static const hamon::size_t BitsPerWord = hamon::bitsof<WordType>();
-	static const hamon::size_t NWords = static_cast<hamon::size_t>(hamon::round_up(N, BitsPerWord)) / BitsPerWord;
+	static constexpr hamon::size_t BitsPerWord = hamon::bitsof<WordType>();
+	static constexpr hamon::size_t NWords = static_cast<hamon::size_t>(hamon::round_up(N, BitsPerWord)) / BitsPerWord;
 
 	using Impl = bitset_detail::bitset_impl<WordType, N, NWords>;
 	Impl	m_impl;
