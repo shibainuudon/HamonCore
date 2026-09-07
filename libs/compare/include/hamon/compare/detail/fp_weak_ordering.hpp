@@ -12,10 +12,11 @@
 #include <hamon/compare/is_lt.hpp>
 #include <hamon/compare/is_gt.hpp>
 #include <hamon/compare/is_eq.hpp>
+#include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/signbit.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -61,8 +62,8 @@ fp_weak_ordering(T e, T f)
 		// return -1 for negative nan, +1 for positive nan, 0 otherwise.
 		auto isnan_sign = [](T fp) -> int
 		{
-			return std::isnan(fp) ?
-				std::signbit(fp) ? -1 : 1
+			return hamon::isnan(fp) ?
+				hamon::signbit(fp) ? -1 : 1
 				: 0;
 		};
 
@@ -100,8 +101,8 @@ fp_weak_ordering(T e, T f)
 	{
 		auto isnan_sign = [](T fp) -> int
 		{
-			return std::isnan(fp) ?
-				std::signbit(fp) ? -1 : 1
+			return hamon::isnan(fp) ?
+				hamon::signbit(fp) ? -1 : 1
 				: 0;
 		};
 
