@@ -10,11 +10,13 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/mutex/adopt_lock_t.hpp>
+#include <hamon/mutex/defer_lock_t.hpp>
+#include <hamon/mutex/try_to_lock_t.hpp>
 #include <hamon/system_error/system_error.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/system_error/make_error_code.hpp>
 #include <hamon/utility/swap.hpp>
-#include <mutex>
 
 namespace hamon
 {
@@ -41,17 +43,17 @@ public:
 		m.lock_shared();
 	}
 
-	shared_lock(mutex_type& m, std::defer_lock_t) noexcept
+	shared_lock(mutex_type& m, hamon::defer_lock_t) noexcept
 		// [thread.lock.shared.cons]/4
 		: pm(hamon::addressof(m)), owns(false)
 	{}
 
-	shared_lock(mutex_type& m, std::try_to_lock_t)
+	shared_lock(mutex_type& m, hamon::try_to_lock_t)
 		// [thread.lock.shared.cons]/5,6
 		: pm(hamon::addressof(m)), owns(m.try_lock_shared())
 	{}
 
-	shared_lock(mutex_type& m, std::adopt_lock_t)
+	shared_lock(mutex_type& m, hamon::adopt_lock_t)
 		// [thread.lock.shared.cons]/8
 		: pm(hamon::addressof(m)), owns(true)
 	{}

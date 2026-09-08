@@ -8,7 +8,9 @@
 #define HAMON_SHARED_MUTEX_DETAIL_SHARED_MUTEX_BASE_HPP
 
 #include <hamon/chrono/time_point.hpp>
-#include <mutex>
+#include <hamon/mutex/lock_guard.hpp>
+#include <hamon/mutex/mutex.hpp>
+#include <hamon/mutex/unique_lock.hpp>
 #include <condition_variable>
 #include <climits>
 #include <chrono>
@@ -22,7 +24,7 @@ namespace detail
 struct shared_mutex_base
 {
 private:
-	std::mutex m_mut;
+	hamon::mutex m_mut;
 	std::condition_variable m_gate1;
 	std::condition_variable m_gate2;
 	unsigned m_state;
@@ -40,7 +42,7 @@ public:
 	// Exclusive ownership
 	void lock()	// blocking
 	{
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 
 		while (m_state & kWriteEntered)
 		{
@@ -57,7 +59,7 @@ public:
 
 	bool try_lock()
 	{
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 
 		if (m_state == 0)
 		{
@@ -77,7 +79,7 @@ public:
 		using std_time_point = std::chrono::time_point<std::chrono::system_clock, std_duration>;
 		auto const std_abs_time = std_time_point{std_duration{abs_time.time_since_epoch().count()}};
 
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 		if (m_state & kWriteEntered)
 		{
 			while (true)
@@ -122,7 +124,7 @@ public:
 	void unlock()
 	{
 		{
-			std::lock_guard<std::mutex> _(m_mut);
+			hamon::lock_guard<hamon::mutex> _(m_mut);
 			m_state = 0;
 		}
 		m_gate1.notify_all();
@@ -131,7 +133,7 @@ public:
 	// Shared ownership
 	void lock_shared() // blocking
 	{
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 
 		while ((m_state & kWriteEntered) || (m_state & kNReaders) == kNReaders)
 		{
@@ -145,7 +147,7 @@ public:
 
 	bool try_lock_shared()
 	{
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 		unsigned num_readers = m_state & kNReaders;
 
 		if (!(m_state & kWriteEntered) && num_readers != kNReaders)
@@ -168,7 +170,7 @@ public:
 		using std_time_point = std::chrono::time_point<std::chrono::system_clock, std_duration>;
 		auto const std_abs_time = std_time_point{std_duration{abs_time.time_since_epoch().count()}};
 
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 		if ((m_state & kWriteEntered) ||
 			(m_state & kNReaders) == kNReaders)
 		{
@@ -196,7 +198,7 @@ public:
 
 	void unlock_shared()
 	{
-		std::unique_lock<std::mutex> lk(m_mut);
+		hamon::unique_lock<hamon::mutex> lk(m_mut);
 		unsigned num_readers = (m_state & kNReaders) - 1;
 		m_state &= ~kNReaders;
 		m_state |= num_readers;

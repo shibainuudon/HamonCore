@@ -5,6 +5,10 @@
  */
 
 #include <hamon/mutex/scoped_lock.hpp>
+#include <hamon/mutex/adopt_lock_t.hpp>
+#include <hamon/mutex/mutex.hpp>
+#include <hamon/mutex/recursive_mutex.hpp>
+#include <hamon/mutex/recursive_timed_mutex.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -110,7 +114,7 @@ void test_adopt_lock()
 	{
 		using LG = hamon::scoped_lock<>;
 		static_assert(!has_mutex_type<LG>::value, "");
-		LG lg(std::adopt_lock);
+		LG lg(hamon::adopt_lock);
 	}
 	{
 		using LG = hamon::scoped_lock<TestMutex>;
@@ -120,7 +124,7 @@ void test_adopt_lock()
 		TestMutex m1;
 		m1.lock();
 		{
-			LG lg(std::adopt_lock, m1);
+			LG lg(hamon::adopt_lock, m1);
 			EXPECT_TRUE(m1.locked);
 		}
 		EXPECT_TRUE(!m1.locked);
@@ -132,7 +136,7 @@ void test_adopt_lock()
 		TestMutex m1, m2;
 		m1.lock(); m2.lock();
 		{
-			LG lg(std::adopt_lock, m1, m2);
+			LG lg(hamon::adopt_lock, m1, m2);
 			EXPECT_TRUE(m1.locked && m2.locked);
 		}
 		EXPECT_TRUE(!m1.locked && !m2.locked);
@@ -144,7 +148,7 @@ void test_adopt_lock()
 		TestMutex m1, m2, m3;
 		m1.lock(); m2.lock(); m3.lock();
 		{
-			LG lg(std::adopt_lock, m1, m2, m3);
+			LG lg(hamon::adopt_lock, m1, m2, m3);
 			EXPECT_TRUE(m1.locked && m2.locked && m3.locked);
 		}
 		EXPECT_TRUE(!m1.locked && !m2.locked && !m3.locked);
@@ -248,22 +252,22 @@ void test_ctad()
 		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<TestMutex>>::value, "");
 	}
 	{
-		std::mutex m;
+		hamon::mutex m;
 		hamon::scoped_lock lk(m);
-		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<std::mutex>>::value, "");
+		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<hamon::mutex>>::value, "");
 	}
 	{
-		std::mutex m1;
-		std::recursive_mutex m2;
+		hamon::mutex m1;
+		hamon::recursive_mutex m2;
 		hamon::scoped_lock lk(m1, m2);
-		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<std::mutex, std::recursive_mutex>>::value, "");
+		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<hamon::mutex, hamon::recursive_mutex>>::value, "");
 	}
 	{
-		std::recursive_mutex m1;
-		std::recursive_timed_mutex m2;
-		std::mutex m3;
+		hamon::recursive_mutex m1;
+		hamon::recursive_timed_mutex m2;
+		hamon::mutex m3;
 		hamon::scoped_lock lk(m1, m2, m3);
-		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<std::recursive_mutex, std::recursive_timed_mutex, std::mutex>>::value, "");
+		static_assert(hamon::is_same<decltype(lk), hamon::scoped_lock<hamon::recursive_mutex, hamon::recursive_timed_mutex, hamon::mutex>>::value, "");
 	}
 #endif
 }

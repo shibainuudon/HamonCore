@@ -11,9 +11,10 @@
 #include <hamon/memory_resource/pool_options.hpp>
 #include <hamon/memory_resource/get_default_resource.hpp>
 #include <hamon/memory_resource/unsynchronized_pool_resource.hpp>
+#include <hamon/mutex/lock_guard.hpp>
+#include <hamon/mutex/mutex.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <mutex>
 
 namespace hamon
 {
@@ -52,7 +53,7 @@ public:
 	void release()
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::lock_guard<std::mutex> lk(m_mut);
+		hamon::lock_guard<hamon::mutex> lk(m_mut);
 #endif
 		m_unsync.release();
 	}
@@ -71,7 +72,7 @@ protected:
 	void* do_allocate(hamon::size_t bytes, hamon::size_t alignment) override
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::lock_guard<std::mutex> lk(m_mut);
+		hamon::lock_guard<hamon::mutex> lk(m_mut);
 #endif
 		return m_unsync.allocate(bytes, alignment);
 	}
@@ -79,7 +80,7 @@ protected:
 	void do_deallocate(void* p, hamon::size_t bytes, hamon::size_t alignment) override
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::lock_guard<std::mutex> lk(m_mut);
+		hamon::lock_guard<hamon::mutex> lk(m_mut);
 #endif
 		return m_unsync.deallocate(p, bytes, alignment);
 	}
@@ -92,7 +93,7 @@ protected:
 
 private:
 #if !defined(HAMON_NO_THREADS)
-	std::mutex m_mut;
+	hamon::mutex m_mut;
 #endif
 	unsynchronized_pool_resource	m_unsync;
 };

@@ -7,6 +7,9 @@
 #include <hamon/shared_mutex/shared_lock.hpp>
 #include <hamon/shared_mutex/shared_mutex.hpp>
 #include <hamon/shared_mutex/shared_timed_mutex.hpp>
+#include <hamon/mutex/adopt_lock_t.hpp>
+#include <hamon/mutex/defer_lock_t.hpp>
+#include <hamon/mutex/try_to_lock_t.hpp>
 #include <hamon/chrono.hpp>
 #include <hamon/system_error.hpp>
 #include <hamon/type_traits.hpp>
@@ -43,20 +46,20 @@ void ctor_test1()
 	static_assert(!hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&&>::value, "");
 	static_assert(!hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex const&&>::value, "");
 
-	static_assert( hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&, std::defer_lock_t>::value, "");
-	static_assert( hamon::is_nothrow_constructible<hamon::shared_lock<Mutex>, Mutex&, std::defer_lock_t>::value, "");
-	static_assert(!hamon::is_trivially_constructible<hamon::shared_lock<Mutex>, Mutex&, std::defer_lock_t>::value, "");
-	static_assert( hamon::is_implicitly_constructible<hamon::shared_lock<Mutex>, Mutex&, std::defer_lock_t>::value, "");
+	static_assert( hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::defer_lock_t>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::defer_lock_t>::value, "");
+	static_assert(!hamon::is_trivially_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::defer_lock_t>::value, "");
+	static_assert( hamon::is_implicitly_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::defer_lock_t>::value, "");
 
-	static_assert( hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&, std::try_to_lock_t>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<hamon::shared_lock<Mutex>, Mutex&, std::try_to_lock_t>::value, "");
-	static_assert(!hamon::is_trivially_constructible<hamon::shared_lock<Mutex>, Mutex&, std::try_to_lock_t>::value, "");
-	static_assert( hamon::is_implicitly_constructible<hamon::shared_lock<Mutex>, Mutex&, std::try_to_lock_t>::value, "");
+	static_assert( hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::try_to_lock_t>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::try_to_lock_t>::value, "");
+	static_assert(!hamon::is_trivially_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::try_to_lock_t>::value, "");
+	static_assert( hamon::is_implicitly_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::try_to_lock_t>::value, "");
 
-	static_assert( hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&, std::adopt_lock_t>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<hamon::shared_lock<Mutex>, Mutex&, std::adopt_lock_t>::value, "");
-	static_assert(!hamon::is_trivially_constructible<hamon::shared_lock<Mutex>, Mutex&, std::adopt_lock_t>::value, "");
-	static_assert( hamon::is_implicitly_constructible<hamon::shared_lock<Mutex>, Mutex&, std::adopt_lock_t>::value, "");
+	static_assert( hamon::is_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::adopt_lock_t>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::adopt_lock_t>::value, "");
+	static_assert(!hamon::is_trivially_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::adopt_lock_t>::value, "");
+	static_assert( hamon::is_implicitly_constructible<hamon::shared_lock<Mutex>, Mutex&, hamon::adopt_lock_t>::value, "");
 
 	Mutex mtx;
 
@@ -78,7 +81,7 @@ void ctor_test1()
 
 	// defer lock ctor
 	{
-		hamon::shared_lock<Mutex> lk(mtx, std::defer_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::defer_lock);
 		EXPECT_FALSE(lk.owns_lock());
 		EXPECT_FALSE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);
@@ -86,7 +89,7 @@ void ctor_test1()
 
 	// try to lock ctor
 	{
-		hamon::shared_lock<Mutex> lk(mtx, std::try_to_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::try_to_lock);
 		EXPECT_TRUE(lk.owns_lock());
 		EXPECT_TRUE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);
@@ -95,7 +98,7 @@ void ctor_test1()
 	// adopt lock ctor
 	{
 		mtx.lock_shared();
-		hamon::shared_lock<Mutex> lk(mtx, std::adopt_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::adopt_lock);
 		EXPECT_TRUE(lk.owns_lock());
 		EXPECT_TRUE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);
@@ -201,7 +204,7 @@ void lock_test()
 
 	Mutex mtx;
 	{
-		hamon::shared_lock<Mutex> lk(mtx, std::defer_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::defer_lock);
 		EXPECT_FALSE(lk.owns_lock());
 		EXPECT_FALSE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);
@@ -260,7 +263,7 @@ void try_lock_test()
 
 	Mutex mtx;
 	{
-		hamon::shared_lock<Mutex> lk(mtx, std::defer_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::defer_lock);
 		EXPECT_FALSE(lk.owns_lock());
 		EXPECT_FALSE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);
@@ -319,7 +322,7 @@ void try_lock_until_test()
 
 	Mutex mtx;
 	{
-		hamon::shared_lock<Mutex> lk(mtx, std::defer_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::defer_lock);
 		EXPECT_FALSE(lk.owns_lock());
 		EXPECT_FALSE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);
@@ -378,7 +381,7 @@ void try_lock_for_test()
 
 	Mutex mtx;
 	{
-		hamon::shared_lock<Mutex> lk(mtx, std::defer_lock);
+		hamon::shared_lock<Mutex> lk(mtx, hamon::defer_lock);
 		EXPECT_FALSE(lk.owns_lock());
 		EXPECT_FALSE((bool)lk);
 		EXPECT_TRUE(lk.mutex() == &mtx);

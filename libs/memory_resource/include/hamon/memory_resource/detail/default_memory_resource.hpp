@@ -9,8 +9,9 @@
 
 #include <hamon/memory_resource/memory_resource.hpp>
 #include <hamon/memory_resource/new_delete_resource.hpp>
+#include <hamon/mutex/lock_guard.hpp>
+#include <hamon/mutex/mutex.hpp>
 #include <hamon/utility/exchange.hpp>
-#include <mutex>
 
 namespace hamon
 {
@@ -23,7 +24,7 @@ inline memory_resource* default_memory_resource(bool set, memory_resource* new_r
 {
 	static memory_resource* res = hamon::pmr::new_delete_resource();
 #if !defined(HAMON_NO_THREADS)
-	static std::mutex mut;
+	static hamon::mutex mut;
 #endif
 	if (set)
 	{
@@ -33,14 +34,14 @@ inline memory_resource* default_memory_resource(bool set, memory_resource* new_r
 		}
 
 #if !defined(HAMON_NO_THREADS)
-		std::lock_guard<std::mutex> lk(mut);
+		hamon::lock_guard<hamon::mutex> lk(mut);
 #endif
 		return hamon::exchange(res, new_res);
 	}
 	else
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::lock_guard<std::mutex> lk(mut);
+		hamon::lock_guard<hamon::mutex> lk(mut);
 #endif
 		return res;
 	}

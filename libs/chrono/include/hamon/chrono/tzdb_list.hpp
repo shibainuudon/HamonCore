@@ -14,8 +14,9 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/mutex/mutex.hpp>
+#include <hamon/mutex/unique_lock.hpp>
 #include <hamon/config.hpp>
-#include <mutex>
 
 namespace hamon {
 namespace chrono {
@@ -39,7 +40,7 @@ public:
 	hamon::chrono::tzdb const& front() const noexcept
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::unique_lock<std::mutex> lk{ m_mutex };
+		hamon::unique_lock<hamon::mutex> lk{ m_mutex };
 #endif
 		return m_tzdb.front();
 	}
@@ -47,7 +48,7 @@ public:
 	const_iterator erase_after(const_iterator p)
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::unique_lock<std::mutex> lk{ m_mutex };
+		hamon::unique_lock<hamon::mutex> lk{ m_mutex };
 #endif
 		m_rules.erase_after(hamon::next(m_rules.cbegin(), hamon::distance(m_tzdb.cbegin(), p)));
 		return m_tzdb.erase_after(p);
@@ -56,7 +57,7 @@ public:
 	const_iterator begin() const noexcept
 	{
 #if !defined(HAMON_NO_THREADS)
-		std::unique_lock<std::mutex> lk{ m_mutex };
+		hamon::unique_lock<hamon::mutex> lk{ m_mutex };
 #endif
 		return m_tzdb.begin();
 	}
@@ -81,7 +82,7 @@ public:
 
 private:
 #if !defined(HAMON_NO_THREADS)
-	mutable std::mutex m_mutex;
+	mutable hamon::mutex m_mutex;
 #endif
 	hamon::forward_list<hamon::chrono::tzdb> m_tzdb;
 	hamon::forward_list<detail::tz::rules_storage_type> m_rules;
