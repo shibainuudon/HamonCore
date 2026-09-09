@@ -7,13 +7,27 @@
 #ifndef HAMON_THREAD_THREAD_HPP
 #define HAMON_THREAD_THREAD_HPP
 
+#include <hamon/thread/detail/impl.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/invoke.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/memory/make_unique.hpp>
+#include <hamon/memory/unique_ptr.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/tuple.hpp>
+#include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/nth.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/utility/exchange.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/index_sequence.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -24,8 +38,22 @@ namespace hamon
 class thread
 {
 public:
-	// [thread.thread.id], class thread​::​id
-	class id;
+	// 32.4.3.3 Class thread​::​id[thread.thread.id]
+	class id
+	{
+	public:
+		id() noexcept
+			// [thread.thread.id]/5
+			: m_id(0)
+		{}
+
+	private:
+	public:	// TODO
+		id(hamon::detail::thread_id id_) : m_id(id_) {}
+		hamon::detail::thread_id	m_id;
+
+		friend bool operator==(thread::id x, thread::id y) noexcept;
+	};
 
 	// 32.4.3.2.2 Class thread​::​name_hint[thread.attributes.hint]
 	template <HAMON_CONSTRAINT(hamon::same_as, char, T)>
@@ -68,20 +96,46 @@ public:
 		: m_handle()
 	{}
 
+	template <typename Tuple, hamon::size_t... Indices>
+	static void thread_proxy_impl(Tuple& t, hamon::index_sequence<Indices...>)
+	{
+		hamon::invoke(hamon::move(hamon::get<Indices>(t))...);
+	}
+
+	template <typename Tuple>
+	static unsigned thread_proxy(void* vp)
+	{
+		hamon::unique_ptr<Tuple> up(static_cast<Tuple*>(vp));
+		thread_proxy_impl(*up.get(), hamon::make_index_sequence<std::tuple_size_v<Tuple>>());
+		return 0;
+	}
+
 	template <typename... Args,
 		typename = hamon::enable_if_t<sizeof...(Args) != 0>,	// [thread.thread.constr]/3.1
 		typename = hamon::enable_if_t<!hamon::is_same_v<hamon::remove_cvref_t<hamon::nth_t<0, Args...>>, thread>>// [thread.thread.constr]/3.2
 	>
 	explicit thread(Args&&... args)
-	{}
-
-private:
-	template <typename F, typename... FArgs>
-	thread(F&& f, FArgs&&... fargs)
 	{
+        using Tuple = hamon::tuple<hamon::decay_t<Args>...>;
+        auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<Args>(args)...);
+		int ec = hamon::detail::thread_create(&m_handle, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
+		if (ec == 0)
+		{
+			decay_copied.release();
+		}
+		else
+		{
+			//__throw_system_error(__ec, "thread constructor failed");
+		}
 	}
 
-public:
+//private:
+//	template <typename F, typename... FArgs>
+//	thread(F&& f, FArgs&&... fargs)
+//	{
+//	}
+//
+//public:
 	~thread()
 	{
 		// [thread.thread.destr]/1
@@ -117,7 +171,7 @@ public:
 	void swap(thread& x) noexcept
 	{
 		// [thread.thread.member]/1
-		hamon::swap(_Thr, x._Thr);
+		hamon::swap(m_handle, x.m_handle);
 	}
 
 	bool joinable() const noexcept
@@ -136,6 +190,9 @@ public:
 		if (!joinable())
 		{
 		}
+
+		auto ec = hamon::detail::thread_join(&m_handle);
+		(void)ec;
 
 		// [thread.thread.member]/5
 		m_handle = {};
@@ -165,11 +222,11 @@ public:
 	}
 
 	// static members
-	static unsigned int hardware_concurrency() noexcept
+	static unsigned int hardware_concurrency() noexcept;/*
 	{
 		// [thread.thread.static]/1
 		return hamon::detail::thread_hardware_concurrency();
-	}
+	}*/
 
 private:
 	native_handle_type	m_handle;
@@ -182,18 +239,6 @@ inline void swap(thread& x, thread& y) noexcept
 }
 
 // 32.4.3.3 Class thread​::​id[thread.thread.id]
-
-class thread::id
-{
-public:
-	id() noexcept
-		// [thread.thread.id]/5
-		: m_id(0)
-	{}
-
-private:
-	hamon::detail::thread_id	m_id;
-};
 
 inline bool operator==(thread::id x, thread::id y) noexcept
 {
