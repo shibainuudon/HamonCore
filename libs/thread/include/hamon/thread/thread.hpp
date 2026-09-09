@@ -60,48 +60,156 @@ public:
 		hamon::size_t size;
 	};
 
-//	using native_handle_type = implementation-defined;         // see [thread.req.native]
+	using native_handle_type = hamon::detail::thread_t;         // see [thread.req.native]
 
 	// construct/copy/destroy
-	thread() noexcept;
+	thread() noexcept
+		// [thread.thread.constr]/1
+		: m_handle()
+	{}
 
-	template <typename... Args>
-	explicit thread(Args&&... args);
+	template <typename... Args,
+		typename = hamon::enable_if_t<sizeof...(Args) != 0>,	// [thread.thread.constr]/3.1
+		typename = hamon::enable_if_t<!hamon::is_same_v<hamon::remove_cvref_t<hamon::nth_t<0, Args...>>, thread>>// [thread.thread.constr]/3.2
+	>
+	explicit thread(Args&&... args)
+	{}
 
-	~thread();
+private:
+	template <typename F, typename... FArgs>
+	thread(F&& f, FArgs&&... fargs)
+	{
+	}
+
+public:
+	~thread()
+	{
+		// [thread.thread.destr]/1
+		if (joinable())
+		{
+			std::terminate();
+		}
+	}
 
 	thread(thread const&) = delete;
-	thread(thread&&) noexcept;
+
+	thread(thread&& x) noexcept
+		: m_handle(hamon::exchange(x.m_handle, native_handle_type{}))
+	{}
+
 	thread& operator=(thread const&) = delete;
-	thread& operator=(thread&&) noexcept;
+
+	thread& operator=(thread&& x) noexcept
+	{
+		// [thread.thread.assign]/1
+		if (joinable())
+		{
+			std::terminate();
+		}
+
+		m_handle = hamon::exchange(x.m_handle, native_handle_type{});
+
+		// [thread.thread.assign]/3
+		return *this;
+	}
 
 	// [thread.thread.member], members
-	void swap(thread&) noexcept;
-	bool joinable() const noexcept;
-	void join();
-	void detach();
-	id get_id() const noexcept;
+	void swap(thread& x) noexcept
+	{
+		// [thread.thread.member]/1
+		hamon::swap(_Thr, x._Thr);
+	}
 
-//	native_handle_type native_handle();                         // see [thread.req.native]
+	bool joinable() const noexcept
+	{
+		// [thread.thread.member]/2
+		return get_id() != id();
+	}
+
+	void join()
+	{
+		// [thread.thread.member]/7.1
+
+		// [thread.thread.member]/7.2
+
+		// [thread.thread.member]/7.3
+		if (!joinable())
+		{
+		}
+
+		// [thread.thread.member]/5
+		m_handle = {};
+	}
+
+	void detach()
+	{
+		// [thread.thread.member]/11.1
+
+		// [thread.thread.member]/11.2
+		if (!joinable())
+		{
+		}
+
+		// [thread.thread.member]/9
+		m_handle = {};
+	}
+
+	id get_id() const noexcept
+	{
+		return hamon::detail::thread_get_id(&m_handle);
+	}
+
+	native_handle_type native_handle()                         // see [thread.req.native]
+	{
+		return m_handle;
+	}
 
 	// static members
-	static unsigned int hardware_concurrency() noexcept;
+	static unsigned int hardware_concurrency() noexcept
+	{
+		// [thread.thread.static]/1
+		return hamon::detail::thread_hardware_concurrency();
+	}
+
+private:
+	native_handle_type	m_handle;
 };
 
-void swap(thread& x, thread& y) noexcept;
+inline void swap(thread& x, thread& y) noexcept
+{
+	// [thread.thread.algorithm]/1
+	x.swap(y);
+}
 
 // 32.4.3.3 Class thread​::​id[thread.thread.id]
 
 class thread::id
 {
 public:
-	id() noexcept;
+	id() noexcept
+		// [thread.thread.id]/5
+		: m_id(0)
+	{}
+
+private:
+	hamon::detail::thread_id	m_id;
 };
 
-bool operator==(thread::id x, thread::id y) noexcept;
+inline bool operator==(thread::id x, thread::id y) noexcept
+{
+	// [thread.thread.id]/6
+	return x.m_id == y.m_id;
+}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-hamon::strong_ordering operator<=>(thread::id x, thread::id y) noexcept;
+
+inline hamon::strong_ordering operator<=>(thread::id x, thread::id y) noexcept
+{
+	return x.m_id <=> y.m_id;
+}
+
+#else
+
 #endif
 
 template <typename charT, typename traits>
