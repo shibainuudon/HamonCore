@@ -1,0 +1,16 @@
+name: stop_token
+
+on:
+  push:
+    paths:
+      - libs/stop_token/**
+      - .github/workflows/stop_token.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/stop_token

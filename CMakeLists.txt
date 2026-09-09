@@ -79,6 +79,7 @@ set(SUBDIRECTORIES
 	stack
 	static_typeinfo
 	stdexcept
+	stop_token
 	string
 	string_view
 	system_error
