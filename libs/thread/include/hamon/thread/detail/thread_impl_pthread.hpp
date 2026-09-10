@@ -148,16 +148,29 @@ typedef unsigned long long thread_id;
 typedef pthread_t thread_id;
 #endif
 
-// Returns non-zero if the thread ids are equal, otherwise 0
 inline bool __libcpp_thread_id_equal(thread_id __t1, thread_id __t2)
 {
 	return __t1 == __t2;
 }
 
-// Returns non-zero if t1 < t2, otherwise 0
 inline bool __libcpp_thread_id_less(thread_id __t1, thread_id __t2)
 {
 	return __t1 < __t2;
+}
+
+//
+// Thread attribute
+//
+using thread_attr_t = pthread_attr_t;
+
+inline int thread_attr_init(thread_attr_t* attr)
+{
+	return pthread_attr_init(attr);
+}
+
+inline int thread_attr_setstacksize(thread_attr_t* attr, int stacksize)
+{
+	return pthread_attr_setstacksize(attr, stacksize);
 }
 
 //
@@ -182,17 +195,23 @@ inline thread_id thread_get_id(const thread_t* __t)
 #endif
 }
 
-inline bool __libcpp_thread_isnull(const thread_t* __t)
+inline bool thread_isnull(const thread_t* __t)
 {
 	return thread_get_id(__t) == 0;
 }
 
 using thread_proc_return_type = void*;
 #define HAMON_THREAD_PROC_RETURN()	return nullptr
+#define HAMON_THREAD_PROC_CALLING_CONVENTION
 
-inline int thread_create(thread_t* __t, void* (*__func)(void*), void* __arg)
+inline int thread_create(thread_t* __t, thread_attr_t* attr, void* (*__func)(void*), void* __arg)
 {
-	return pthread_create(__t, nullptr, __func, __arg);
+	return pthread_create(__t, attr, __func, __arg);
+}
+
+inline int thread_setname(thread_t* __t, const char* name)
+{
+	return pthread_setname_np(*__t, name);
 }
 
 inline thread_id __libcpp_thread_get_current_id()

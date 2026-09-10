@@ -22,6 +22,7 @@
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/nth.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
@@ -50,9 +51,8 @@ public:
 	private:
 	public:	// TODO
 		id(hamon::detail::thread_id id_) : m_id(id_) {}
-		hamon::detail::thread_id	m_id;
 
-		friend bool operator==(thread::id x, thread::id y) noexcept;
+		hamon::detail::thread_id	m_id;
 	};
 
 	// 32.4.3.2.2 Class thread​::​name_hint[thread.attributes.hint]
@@ -61,13 +61,17 @@ public:
 	{
 	public:
 		constexpr explicit
-		name_hint(hamon::basic_string_view<T> n) noexcept;
+		name_hint(hamon::basic_string_view<T> n) noexcept
+			: name(n)
+		{}
 
 		name_hint(name_hint&&) = delete;
 		name_hint(name_hint const&) = delete;
 
 	private:
 		hamon::basic_string_view<T> name;
+
+		friend thread;
 	};
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
@@ -82,10 +86,15 @@ public:
 	class stack_size_hint
 	{
 	public:
-		constexpr explicit stack_size_hint(hamon::size_t s) noexcept;
+		constexpr explicit
+		stack_size_hint(hamon::size_t s) noexcept
+			: size(s)
+		{}
 
 	private:
 		hamon::size_t size;
+
+		friend thread;
 	};
 
 	using native_handle_type = hamon::detail::thread_t;         // see [thread.req.native]
@@ -104,12 +113,47 @@ private:
 	}
 
 	template <typename Tuple>
-	static hamon::detail::thread_proc_return_type WINAPI
+	static hamon::detail::thread_proc_return_type
+	HAMON_THREAD_PROC_CALLING_CONVENTION
 	thread_proxy(void* vp)
 	{
 		hamon::unique_ptr<Tuple> up(static_cast<Tuple*>(vp));
 		thread_proxy_invoke(*up.get(), hamon::make_index_sequence<std::tuple_size_v<Tuple>>());
 		HAMON_THREAD_PROC_RETURN();
+	}
+
+	template <typename T, typename... Args>
+	void create_thread(hamon::detail::thread_attr_t* pattr, name_hint<T> const& name, Args&&... args)
+	{
+		create_thread(pattr, hamon::forward<Args>(args)...);
+		hamon::detail::thread_setname(&m_handle, name.name.data());
+	}
+
+	template <typename... Args>
+	void create_thread(hamon::detail::thread_attr_t* pattr, stack_size_hint const& stacksize, Args&&... args)
+	{
+		hamon::detail::thread_attr_setstacksize(pattr, static_cast<int>(stacksize.size));
+		create_thread(pattr, hamon::forward<Args>(args)...);
+	}
+
+	template <typename F, typename... FArgs,
+		typename = hamon::enable_if_t<
+			hamon::is_invocable_v<hamon::decay_t<F>, hamon::decay_t<FArgs>...>
+		>
+	>
+	void create_thread(hamon::detail::thread_attr_t* pattr, F&& f, FArgs&&... fargs)
+	{
+        using Tuple = hamon::tuple<hamon::decay_t<F>, hamon::decay_t<FArgs>...>;
+        auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+		int ec = hamon::detail::thread_create(&m_handle, pattr, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
+		if (ec == 0)
+		{
+			decay_copied.release();
+		}
+		else
+		{
+			//__throw_system_error(__ec, "thread constructor failed");
+		}
 	}
 
 public:
@@ -119,17 +163,9 @@ public:
 	>
 	explicit thread(Args&&... args)
 	{
-        using Tuple = hamon::tuple<hamon::decay_t<Args>...>;
-        auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<Args>(args)...);
-		int ec = hamon::detail::thread_create(&m_handle, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
-		if (ec == 0)
-		{
-			decay_copied.release();
-		}
-		else
-		{
-			//__throw_system_error(__ec, "thread constructor failed");
-		}
+		hamon::detail::thread_attr_t attr;
+		hamon::detail::thread_attr_init(&attr);
+		create_thread(&attr, hamon::forward<Args>(args)...);
 	}
 
 	~thread()
@@ -173,7 +209,8 @@ public:
 	bool joinable() const noexcept
 	{
 		// [thread.thread.member]/2
-		return get_id() != id();
+		//return get_id() != id();
+		return !hamon::detail::thread_isnull(&m_handle);
 	}
 
 	void join()

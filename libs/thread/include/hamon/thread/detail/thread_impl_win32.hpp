@@ -157,30 +157,70 @@ inline bool __libcpp_thread_id_less(thread_id __lhs, thread_id __rhs)
 }
 
 //
+// Thread attribute
+//
+struct thread_attr_t
+{
+	int stacksize;
+};
+
+inline int thread_attr_init(thread_attr_t* attr)
+{
+	attr->stacksize = 0;
+	return 0;
+}
+
+inline int thread_attr_setstacksize(thread_attr_t* attr, int stacksize)
+{
+	attr->stacksize = stacksize;
+	return 0;
+}
+
+//
 // Thread
 //
 #define _LIBCPP_NULL_THREAD 0U
 typedef void* thread_t;
 
-inline bool __libcpp_thread_isnull(const thread_t* __t)
+inline bool thread_isnull(const thread_t* __t)
 {
 	return *__t == 0;
 }
 
 using thread_proc_return_type = unsigned int;
 #define HAMON_THREAD_PROC_RETURN()	return 0u
+#define HAMON_THREAD_PROC_CALLING_CONVENTION	__stdcall
 
-inline int thread_create(thread_t* __t, unsigned int (WINAPI*__func)(void*), void* __arg)
+inline int thread_create(thread_t* __t, thread_attr_t* attr, unsigned int (__stdcall *__func)(void*), void* __arg)
 {
-	*__t = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, __func, __arg, 0, nullptr));
+	*__t = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, attr->stacksize, __func, __arg, 0, nullptr));
 
 	if (*__t)
 	{
-		//SetThreadDescription(*__t, L"test");
 		return 0;
 	}
 
 	return GetLastError();
+}
+
+inline int thread_setname(thread_t* __t, const char* name)
+{
+	// TODO: utf16に変換する
+	// 今はとりあえずwchar_tにコピーするだけ(ascii限定)
+	wchar_t buf[256]{};
+	const char* src = name;
+	wchar_t* dst = buf;
+	while (*src != 0)
+	{
+		*dst++ = static_cast<wchar_t>(*src++);
+	}
+
+	HRESULT hr = SetThreadDescription(*__t, buf);
+	if (FAILED(hr))
+	{
+		// TODO
+	}
+	return 0;
 }
 
 inline thread_id __libcpp_thread_get_current_id()

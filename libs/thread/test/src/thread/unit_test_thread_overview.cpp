@@ -10,7 +10,7 @@
 namespace hamon_thread_test
 {
 
-namespace thread_test
+namespace overview_test
 {
 
 GTEST_TEST(ThreadTest, OverviewTest)
@@ -27,6 +27,6 @@ GTEST_TEST(ThreadTest, OverviewTest)
 	}
 }
 
-}	// namespace thread_test
+}	// namespace overview_test
 
 }	// namespace hamon_thread_test
