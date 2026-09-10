@@ -13,7 +13,7 @@ namespace hamon_thread_test
 namespace thread_test
 {
 
-GTEST_TEST(ComplexTest, AbsTest)
+GTEST_TEST(ThreadTest, OverviewTest)
 {
 	// https://cpprefjp.github.io/reference/thread/thread.html
 	{

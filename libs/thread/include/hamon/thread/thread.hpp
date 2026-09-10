@@ -7,7 +7,7 @@
 #ifndef HAMON_THREAD_THREAD_HPP
 #define HAMON_THREAD_THREAD_HPP
 
-#include <hamon/thread/detail/impl.hpp>
+#include <hamon/thread/detail/thread_impl.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -96,20 +96,23 @@ public:
 		: m_handle()
 	{}
 
+private:
 	template <typename Tuple, hamon::size_t... Indices>
-	static void thread_proxy_impl(Tuple& t, hamon::index_sequence<Indices...>)
+	static void thread_proxy_invoke(Tuple& t, hamon::index_sequence<Indices...>)
 	{
 		hamon::invoke(hamon::move(hamon::get<Indices>(t))...);
 	}
 
 	template <typename Tuple>
-	static unsigned thread_proxy(void* vp)
+	static hamon::detail::thread_proc_return_type WINAPI
+	thread_proxy(void* vp)
 	{
 		hamon::unique_ptr<Tuple> up(static_cast<Tuple*>(vp));
-		thread_proxy_impl(*up.get(), hamon::make_index_sequence<std::tuple_size_v<Tuple>>());
-		return 0;
+		thread_proxy_invoke(*up.get(), hamon::make_index_sequence<std::tuple_size_v<Tuple>>());
+		HAMON_THREAD_PROC_RETURN();
 	}
 
+public:
 	template <typename... Args,
 		typename = hamon::enable_if_t<sizeof...(Args) != 0>,	// [thread.thread.constr]/3.1
 		typename = hamon::enable_if_t<!hamon::is_same_v<hamon::remove_cvref_t<hamon::nth_t<0, Args...>>, thread>>// [thread.thread.constr]/3.2
@@ -129,13 +132,6 @@ public:
 		}
 	}
 
-//private:
-//	template <typename F, typename... FArgs>
-//	thread(F&& f, FArgs&&... fargs)
-//	{
-//	}
-//
-//public:
 	~thread()
 	{
 		// [thread.thread.destr]/1
