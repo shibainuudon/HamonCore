@@ -12,6 +12,7 @@
 #include <hamon/atomic/detail/interlocked_compare_exchange.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -21,9 +22,23 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINT(hamon::integral, T)>
-bool atomic_compare_exchange(T* ptr, T* expected, T desired, bool weak,
+HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange(T* ptr, T* expected, T desired, bool weak,
 	hamon::memory_order success_memorder, hamon::memory_order failure_memorder)
 {
+	if (hamon::is_constant_evaluated())
+	{
+		if (*ptr == *expected)
+		{
+			*ptr = desired;
+			return true;
+		}
+		else
+		{
+			*expected = *ptr;
+			return false;
+		}
+	}
+
 #if defined(HAMON_MSVC)
 	(void)weak;
 	(void)success_memorder;

@@ -12,6 +12,7 @@
 #include <hamon/atomic/detail/interlocked_exchange.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -21,8 +22,14 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINT(hamon::integral, T)>
-void atomic_store(T* ptr, T val, hamon::memory_order order)
+HAMON_CXX14_CONSTEXPR void atomic_store(T* ptr, T val, hamon::memory_order order)
 {
+	if (hamon::is_constant_evaluated())
+	{
+		*ptr = val;
+		return;
+	}
+
 #if defined(HAMON_MSVC)
 	(void)order;
 	hamon::detail::interlocked_exchange(ptr, val);
@@ -32,7 +39,7 @@ void atomic_store(T* ptr, T val, hamon::memory_order order)
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, T)>
-void atomic_store(T* ptr, T val)
+HAMON_CXX14_CONSTEXPR void atomic_store(T* ptr, T val)
 {
 	hamon::detail::atomic_store(ptr, val, hamon::memory_order::seq_cst);
 }
