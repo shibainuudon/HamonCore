@@ -7,7 +7,6 @@
 #include <hamon/atomic/detail/atomic_compare_exchange_strong.hpp>
 #include <hamon/atomic/memory_order.hpp>
 #include <gtest/gtest.h>
-#include <thread>
 
 namespace hamon_atomic_test
 {
