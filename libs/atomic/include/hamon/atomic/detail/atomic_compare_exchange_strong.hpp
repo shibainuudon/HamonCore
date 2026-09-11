@@ -20,7 +20,7 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINT(hamon::integral, T)>
-bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired,
+HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired,
 	hamon::memory_order success_memorder, hamon::memory_order failure_memorder)
 {
 	return hamon::detail::atomic_compare_exchange(
@@ -28,7 +28,7 @@ bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired,
 }
 
 template <HAMON_CONSTRAINT(hamon::integral, T)>
-bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired)
+HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired)
 {
 	return hamon::detail::atomic_compare_exchange_strong(ptr, expected, desired,
 		hamon::memory_order::seq_cst, hamon::memory_order::seq_cst);
