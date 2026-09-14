@@ -19,8 +19,11 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		bit
+		cmath
 		concepts
 		config
+		detail
 		memory
 		type_traits
 		utility)
@@ -37,6 +40,15 @@ if (MSVC)
 endif()
 
 target_include_directories(${TARGET_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/include)
+
+# 大きなサイズに対するアトミック演算の組み込み関数(__atomic_load_16など)
+# を使えるようにするために、libatomic をリンクする
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
+	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	if (NOT MSVC)
+		target_link_libraries(${TARGET_NAME} INTERFACE atomic)
+	endif()
+endif()
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	if(HAMON_BUILD_TESTING)
