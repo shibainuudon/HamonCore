@@ -43,9 +43,9 @@ struct atomic_base_general
 	// [atomics.types.operations], operations on atomic types
 	constexpr atomic_base_general() noexcept(is_nothrow_default_constructible_v<T>);
 	constexpr atomic_base_general(T) noexcept;
-	atomic_base_general(const atomic_base_general&) = delete;
-	atomic_base_general& operator=(const atomic_base_general&) = delete;
-	atomic_base_general& operator=(const atomic_base_general&) volatile = delete;
+	atomic_base_general(atomic_base_general const&) = delete;
+	atomic_base_general& operator=(atomic_base_general const&) = delete;
+	atomic_base_general& operator=(atomic_base_general const&) volatile = delete;
 
 	T load(memory_order = memory_order::seq_cst) const volatile noexcept;
 	constexpr T load(memory_order = memory_order::seq_cst) const noexcept;

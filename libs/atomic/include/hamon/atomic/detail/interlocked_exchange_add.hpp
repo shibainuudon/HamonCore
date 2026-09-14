@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
+
 #if defined(HAMON_MSVC)
 #include <intrin.h>
 

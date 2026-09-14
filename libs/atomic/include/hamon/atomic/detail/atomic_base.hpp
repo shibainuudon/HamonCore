@@ -54,6 +54,12 @@ template <typename T>
 struct atomic_base<T, false, true>
 	: public hamon::detail::atomic_base_floating_point<T>
 {
+private:
+	using base = hamon::detail::atomic_base_floating_point<T>;
+
+public:
+	using base::base;
+	using base::operator=;
 };
 
 // struct atomic_base<T, true, true> は有り得ない

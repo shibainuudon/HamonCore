@@ -7,31 +7,33 @@
 #ifndef HAMON_ATOMIC_DETAIL_ATOMIC_BASE_INTEGRAL_HPP
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_INTEGRAL_HPP
 
-#include <hamon/atomic/detail/atomic_is_always_lock_free.hpp>
-#include <hamon/atomic/detail/atomic_is_lock_free.hpp>
-#include <hamon/atomic/detail/atomic_load.hpp>
-#include <hamon/atomic/detail/atomic_store.hpp>
+#include <hamon/atomic/memory_order.hpp>
 #include <hamon/atomic/detail/atomic_exchange.hpp>
 #include <hamon/atomic/detail/atomic_compare_exchange_weak.hpp>
 #include <hamon/atomic/detail/atomic_compare_exchange_strong.hpp>
 #include <hamon/atomic/detail/atomic_fetch_add.hpp>
-#include <hamon/atomic/detail/atomic_fetch_sub.hpp>
 #include <hamon/atomic/detail/atomic_fetch_and.hpp>
-#include <hamon/atomic/detail/atomic_fetch_or.hpp>
-#include <hamon/atomic/detail/atomic_fetch_xor.hpp>
 #include <hamon/atomic/detail/atomic_fetch_max.hpp>
 #include <hamon/atomic/detail/atomic_fetch_min.hpp>
+#include <hamon/atomic/detail/atomic_fetch_or.hpp>
+#include <hamon/atomic/detail/atomic_fetch_sub.hpp>
+#include <hamon/atomic/detail/atomic_fetch_xor.hpp>
+#include <hamon/atomic/detail/atomic_is_always_lock_free.hpp>
+#include <hamon/atomic/detail/atomic_is_lock_free.hpp>
+#include <hamon/atomic/detail/atomic_load.hpp>
+#include <hamon/atomic/detail/atomic_store.hpp>
 #include <hamon/atomic/detail/atomic_store_add.hpp>
-#include <hamon/atomic/detail/atomic_store_sub.hpp>
 #include <hamon/atomic/detail/atomic_store_and.hpp>
-#include <hamon/atomic/detail/atomic_store_or.hpp>
-#include <hamon/atomic/detail/atomic_store_xor.hpp>
 #include <hamon/atomic/detail/atomic_store_max.hpp>
 #include <hamon/atomic/detail/atomic_store_min.hpp>
-#include <hamon/atomic/detail/atomic_wait.hpp>
-#include <hamon/atomic/detail/atomic_notify_one.hpp>
-#include <hamon/atomic/detail/atomic_notify_all.hpp>
+#include <hamon/atomic/detail/atomic_store_or.hpp>
+#include <hamon/atomic/detail/atomic_store_sub.hpp>
+#include <hamon/atomic/detail/atomic_store_xor.hpp>
+//#include <hamon/atomic/detail/atomic_notify_all.hpp>
+//#include <hamon/atomic/detail/atomic_notify_one.hpp>
+//#include <hamon/atomic/detail/atomic_wait.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/assert.hpp>
 
 namespace hamon
@@ -86,7 +88,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.operations]/8
-		hamon::detail::atomic_store((T*)hamon::addressof(m_value), desired, order);
+		hamon::detail::atomic_store(data(), desired, order);
 	}
 
 	constexpr void store(T desired, memory_order order = memory_order::seq_cst) noexcept
@@ -98,7 +100,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.operations]/8
-		hamon::detail::atomic_store(hamon::addressof(m_value), desired, order);
+		hamon::detail::atomic_store(data(), desired, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/9
@@ -130,7 +132,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.operations]/14,15
-		return hamon::detail::atomic_load((T*)hamon::addressof(m_value), order);
+		return hamon::detail::atomic_load(data(), order);
 	}
 
 	constexpr T load(memory_order order = memory_order::seq_cst) const noexcept
@@ -142,7 +144,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.operations]/14,15
-		return hamon::detail::atomic_load(hamon::addressof(m_value), order);
+		return hamon::detail::atomic_load(data(), order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/16
@@ -162,13 +164,13 @@ struct atomic_base_integral
 	T exchange(T desired, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.operations]/19,20
-		return hamon::detail::atomic_exchange((T*)hamon::addressof(m_value), desired, order);
+		return hamon::detail::atomic_exchange(data(), desired, order);
 	}
 
 	constexpr T exchange(T desired, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.operations]/19,20
-		return hamon::detail::atomic_exchange(hamon::addressof(m_value), desired, order);
+		return hamon::detail::atomic_exchange(data(), desired, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/21
@@ -182,7 +184,7 @@ struct atomic_base_integral
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_weak(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	constexpr bool compare_exchange_weak(T& expected, T desired, memory_order success, memory_order failure) noexcept
@@ -195,7 +197,7 @@ struct atomic_base_integral
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_weak(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/21
@@ -209,7 +211,7 @@ struct atomic_base_integral
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_strong(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	constexpr bool compare_exchange_strong(T& expected, T desired, memory_order success, memory_order failure) noexcept
@@ -222,7 +224,7 @@ struct atomic_base_integral
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_strong(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/21
@@ -235,7 +237,7 @@ struct atomic_base_integral
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
 		return hamon::detail::atomic_compare_exchange_weak(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	constexpr bool compare_exchange_weak(T& expected, T desired, memory_order order = memory_order::seq_cst) noexcept
@@ -247,7 +249,7 @@ struct atomic_base_integral
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
 		return hamon::detail::atomic_compare_exchange_weak(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/21
@@ -260,7 +262,7 @@ struct atomic_base_integral
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
 		return hamon::detail::atomic_compare_exchange_strong(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	constexpr bool compare_exchange_strong(T& expected, T desired, memory_order order = memory_order::seq_cst) noexcept
@@ -272,98 +274,98 @@ struct atomic_base_integral
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
 		return hamon::detail::atomic_compare_exchange_strong(
-			(T*)hamon::addressof(m_value), hamon::addressof(expected), desired, success, failure);
+			data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_add(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_add((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_add(data(), operand, order);
 	}
 
 	constexpr T fetch_add(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_add((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_add(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_sub(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_sub((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_sub(data(), operand, order);
 	}
 
 	constexpr T fetch_sub(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_sub((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_sub(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_and(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_and((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_and(data(), operand, order);
 	}
 
 	constexpr T fetch_and(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_and((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_and(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_or(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_or((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_or(data(), operand, order);
 	}
 
 	constexpr T fetch_or(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_or((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_or(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_xor(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_xor((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_xor(data(), operand, order);
 	}
 
 	constexpr T fetch_xor(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_xor((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_xor(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_max(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_max((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_max(data(), operand, order);
 	}
 
 	constexpr T fetch_max(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_max((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_max(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/5
 	T fetch_min(T operand, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_min((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_min(data(), operand, order);
 	}
 
 	constexpr T fetch_min(T operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.int]/6,7
-		return hamon::detail::atomic_fetch_min((T*)hamon::addressof(m_value), operand, order);
+		return hamon::detail::atomic_fetch_min(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -376,7 +378,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_add((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_add(data(), operand, order);
 	}
 
 	constexpr void store_add(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -388,7 +390,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_add((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_add(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -401,7 +403,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_sub((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_sub(data(), operand, order);
 	}
 
 	constexpr void store_sub(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -413,7 +415,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_sub((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_sub(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -426,7 +428,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_and((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_and(data(), operand, order);
 	}
 
 	constexpr void store_and(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -438,7 +440,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_and((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_and(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -451,7 +453,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_or((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_or(data(), operand, order);
 	}
 
 	constexpr void store_or(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -463,7 +465,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_or((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_or(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -476,7 +478,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_xor((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_xor(data(), operand, order);
 	}
 
 	constexpr void store_xor(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -488,7 +490,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_xor((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_xor(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -501,7 +503,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_max((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_max(data(), operand, order);
 	}
 
 	constexpr void store_max(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -513,7 +515,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_max((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_max(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.int]/10
@@ -526,7 +528,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_min((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_min(data(), operand, order);
 	}
 
 	constexpr void store_min(T operand, memory_order order = memory_order::seq_cst) noexcept
@@ -538,7 +540,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.int]/12
-		hamon::detail::atomic_store_min((T*)hamon::addressof(m_value), operand, order);
+		hamon::detail::atomic_store_min(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.memop]/1
@@ -668,7 +670,7 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.operations]/31
-		hamon::detail::atomic_wait((T*)hamon::addressof(m_value), old, order);
+		hamon::detail::atomic_wait(data(), old, order);
 	}*/
 
 	constexpr void wait(T old, memory_order order = memory_order::seq_cst) const noexcept;/*
@@ -680,36 +682,56 @@ struct atomic_base_integral
 			order == memory_order::seq_cst);
 
 		// [atomics.types.operations]/31
-		hamon::detail::atomic_wait((T*)hamon::addressof(m_value), old, order);
+		hamon::detail::atomic_wait(data(), old, order);
 	}*/
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/33
 	void notify_one() volatile noexcept;/*
 	{
 		// [atomics.types.operations]/34
-		hamon::detail::atomic_notify_one((T*)hamon::addressof(m_value));
+		hamon::detail::atomic_notify_one(data());
 	}*/
 
 	constexpr void notify_one() noexcept;/*
 	{
 		// [atomics.types.operations]/34
-		hamon::detail::atomic_notify_one((T*)hamon::addressof(m_value));
+		hamon::detail::atomic_notify_one(data());
 	}*/
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/36
 	void notify_all() volatile noexcept;/*
 	{
 		// [atomics.types.operations]/37
-		hamon::detail::atomic_notify_all((T*)hamon::addressof(m_value));
+		hamon::detail::atomic_notify_all(data());
 	}*/
 
 	constexpr void notify_all() noexcept;/*
 	{
 		// [atomics.types.operations]/37
-		hamon::detail::atomic_notify_all((T*)hamon::addressof(m_value));
+		hamon::detail::atomic_notify_all(data());
 	}*/
 
 private:
+	constexpr T* data() noexcept
+	{
+		return const_cast<T*>(hamon::addressof(m_value));
+	}
+
+	constexpr T* data() const noexcept
+	{
+		return const_cast<T*>(hamon::addressof(m_value));
+	}
+
+	constexpr T* data() volatile noexcept
+	{
+		return const_cast<T*>(hamon::addressof(m_value));
+	}
+
+	constexpr T* data() const volatile noexcept
+	{
+		return const_cast<T*>(hamon::addressof(m_value));
+	}
+
 	T m_value;
 };
 
