@@ -48,7 +48,11 @@
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/fma.hpp>
 #include <hamon/cmath/fmax.hpp>
+#include <hamon/cmath/fmaximum.hpp>		// since C++26
+#include <hamon/cmath/fmaximum_num.hpp>	// since C++26
 #include <hamon/cmath/fmin.hpp>
+#include <hamon/cmath/fminimum.hpp>		// since C++26
+#include <hamon/cmath/fminimum_num.hpp>	// since C++26
 #include <hamon/cmath/fmod.hpp>
 #include <hamon/cmath/fpclassify.hpp>
 #include <hamon/cmath/frac.hpp>
@@ -91,7 +95,9 @@
 #include <hamon/cmath/nan.hpp>
 #include <hamon/cmath/nearbyint.hpp>
 #include <hamon/cmath/nextafter.hpp>
+//#include <hamon/cmath/nextdown.hpp>	// since C++26
 #include <hamon/cmath/nexttoward.hpp>
+//#include <hamon/cmath/nextup.hpp>	// since C++26
 #include <hamon/cmath/pow.hpp>
 #include <hamon/cmath/radians_to_degrees.hpp>
 #include <hamon/cmath/ranges.hpp>
