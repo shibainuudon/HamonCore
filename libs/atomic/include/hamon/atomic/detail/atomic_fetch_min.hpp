@@ -20,7 +20,6 @@
 
 namespace hamon
 {
-
 namespace detail
 {
 
@@ -55,7 +54,6 @@ HAMON_CXX14_CONSTEXPR T atomic_fetch_min(T* ptr, T val)
 }
 
 }	// namespace detail
-
 }	// namespace hamon
 
 #endif // HAMON_ATOMIC_DETAIL_ATOMIC_FETCH_MIN_HPP

@@ -15,7 +15,6 @@
 
 namespace hamon
 {
-
 namespace detail
 {
 
@@ -33,7 +32,6 @@ HAMON_CXX14_CONSTEXPR void atomic_store_min(T* ptr, T val)
 }
 
 }	// namespace detail
-
 }	// namespace hamon
 
 #endif // HAMON_ATOMIC_DETAIL_ATOMIC_STORE_MIN_HPP

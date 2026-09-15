@@ -16,7 +16,6 @@
 
 namespace hamon
 {
-
 namespace detail
 {
 
@@ -38,7 +37,6 @@ T atomic_decrement(T* ptr)
 }
 
 }	// namespace detail
-
 }	// namespace hamon
 
 #endif // HAMON_ATOMIC_DETAIL_ATOMIC_DECREMENT_HPP

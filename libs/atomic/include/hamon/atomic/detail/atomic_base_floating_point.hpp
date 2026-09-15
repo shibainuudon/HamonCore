@@ -8,6 +8,7 @@
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_FLOATING_POINT_HPP
 
 #include <hamon/atomic/detail/atomic_is_always_lock_free.hpp>
+#include <hamon/atomic/detail/clear_padding_if_needed.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/assert.hpp>
@@ -48,7 +49,9 @@ struct atomic_base_floating_point
 	constexpr atomic_base_floating_point(T desired) noexcept
 		// [atomics.types.operations]/3
 		: m_value(desired)
-	{}
+	{
+		hamon::detail::clear_padding_if_needed(m_value);
+	}
 
 	atomic_base_floating_point(atomic_base_floating_point const&) = delete;
 	atomic_base_floating_point& operator=(atomic_base_floating_point const&) = delete;
@@ -63,6 +66,8 @@ struct atomic_base_floating_point
 			order == memory_order::release ||
 			order == memory_order::seq_cst);
 
+		hamon::detail::clear_padding_if_needed(desired);
+
 		// [atomics.types.operations]/8
 		hamon::detail::atomic_store(data(), desired, order);
 	}
@@ -74,6 +79,8 @@ struct atomic_base_floating_point
 			order == memory_order::relaxed ||
 			order == memory_order::release ||
 			order == memory_order::seq_cst);
+
+		hamon::detail::clear_padding_if_needed(desired);
 
 		// [atomics.types.operations]/8
 		hamon::detail::atomic_store(data(), desired, order);
@@ -139,12 +146,16 @@ struct atomic_base_floating_point
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/18
 	T exchange(T desired, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
+		hamon::detail::clear_padding_if_needed(desired);
+
 		// [atomics.types.operations]/19,20
 		return hamon::detail::atomic_exchange(data(), desired, order);
 	}
 
 	constexpr T exchange(T desired, memory_order order = memory_order::seq_cst) noexcept
 	{
+		hamon::detail::clear_padding_if_needed(desired);
+
 		// [atomics.types.operations]/19,20
 		return hamon::detail::atomic_exchange(data(), desired, order);
 	}
@@ -158,6 +169,9 @@ struct atomic_base_floating_point
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
 
+		hamon::detail::clear_padding_if_needed(expected);
+		hamon::detail::clear_padding_if_needed(desired);
+
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_weak(
 			data(), hamon::addressof(expected), desired, success, failure);
@@ -170,6 +184,9 @@ struct atomic_base_floating_point
 			failure == memory_order::relaxed ||
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
+
+		hamon::detail::clear_padding_if_needed(expected);
+		hamon::detail::clear_padding_if_needed(desired);
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_weak(
@@ -185,6 +202,9 @@ struct atomic_base_floating_point
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
 
+		hamon::detail::clear_padding_if_needed(expected);
+		hamon::detail::clear_padding_if_needed(desired);
+
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_strong(
 			data(), hamon::addressof(expected), desired, success, failure);
@@ -197,6 +217,9 @@ struct atomic_base_floating_point
 			failure == memory_order::relaxed ||
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
+
+		hamon::detail::clear_padding_if_needed(expected);
+		hamon::detail::clear_padding_if_needed(desired);
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_strong(
@@ -212,8 +235,7 @@ struct atomic_base_floating_point
 			(order == memory_order::acq_rel) ? memory_order::acquire :
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
-		return hamon::detail::atomic_compare_exchange_weak(
-			data(), hamon::addressof(expected), desired, success, failure);
+		return compare_exchange_weak(expected, desired, success, failure);
 	}
 
 	constexpr bool compare_exchange_weak(T& expected, T desired, memory_order order = memory_order::seq_cst) noexcept
@@ -224,8 +246,7 @@ struct atomic_base_floating_point
 			(order == memory_order::acq_rel) ? memory_order::acquire :
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
-		return hamon::detail::atomic_compare_exchange_weak(
-			data(), hamon::addressof(expected), desired, success, failure);
+		return compare_exchange_weak(expected, desired, success, failure);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/21
@@ -237,8 +258,7 @@ struct atomic_base_floating_point
 			(order == memory_order::acq_rel) ? memory_order::acquire :
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
-		return hamon::detail::atomic_compare_exchange_strong(
-			data(), hamon::addressof(expected), desired, success, failure);
+		return compare_exchange_strong(expected, desired, success, failure);
 	}
 
 	constexpr bool compare_exchange_strong(T& expected, T desired, memory_order order = memory_order::seq_cst) noexcept
@@ -249,8 +269,7 @@ struct atomic_base_floating_point
 			(order == memory_order::acq_rel) ? memory_order::acquire :
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
-		return hamon::detail::atomic_compare_exchange_strong(
-			data(), hamon::addressof(expected), desired, success, failure);
+		return compare_exchange_strong(expected, desired, success, failure);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.float]/5

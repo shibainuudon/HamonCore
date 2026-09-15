@@ -12,7 +12,6 @@
 
 namespace hamon
 {
-
 namespace detail
 {
 
@@ -33,7 +32,6 @@ to_gcc_memory_order(hamon::memory_order order)
 #endif
 
 }	// namespace detail
-
 }	// namespace hamon
 
 #endif // HAMON_ATOMIC_DETAIL_TO_GCC_MEMORY_ORDER_HPP
