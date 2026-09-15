@@ -97,7 +97,7 @@
 #include <hamon/cmath/nextafter.hpp>
 //#include <hamon/cmath/nextdown.hpp>	// since C++26
 #include <hamon/cmath/nexttoward.hpp>
-//#include <hamon/cmath/nextup.hpp>	// since C++26
+#include <hamon/cmath/nextup.hpp>	// since C++26
 #include <hamon/cmath/pow.hpp>
 #include <hamon/cmath/radians_to_degrees.hpp>
 #include <hamon/cmath/ranges.hpp>
