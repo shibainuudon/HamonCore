@@ -58,6 +58,9 @@ private:
 //	static uint_type constexpr exponent_component_min = 0;
 	static uint_type constexpr exponent_component_max = (uint_type(1) << exponent_bits) - 1;
 
+	static uint_type constexpr fraction_component_infinity =
+		Traits::has_fraction_implicit_bits ? 0 : fraction_msb_mask;
+
 public:
 	static exponent_type constexpr exponent_max = exponent_component_max >> 1;
 	static exponent_type constexpr exponent_min = 1 - exponent_max;
@@ -309,13 +312,13 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_infinity() const HAMON_NOEXCEPT
 	{
-		return exponent_component() == exponent_component_max && fraction_component() == 0;
+		return exponent_component() == exponent_component_max && fraction_component() == fraction_component_infinity;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_nan() const HAMON_NOEXCEPT
 	{
-		return exponent_component() == exponent_component_max && fraction_component() != 0;
+		return exponent_component() == exponent_component_max && fraction_component() != fraction_component_infinity;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR

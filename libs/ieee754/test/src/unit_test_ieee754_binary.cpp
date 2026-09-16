@@ -5,6 +5,7 @@
  */
 
 #include <hamon/ieee754/binary.hpp>
+#include <hamon/cmath.hpp>
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -15,14 +16,37 @@ namespace hamon_ieee754_test
 namespace binary_test
 {
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool test_impl(T f)
 {
 	using binary = hamon::ieee754::binary<T>;
 	binary b1(f);
+
+	if (hamon::signbit(f))
+	{
+		VERIFY(b1.sign() == 1);
+	}
+	else
+	{
+		VERIFY(b1.sign() == 0);
+	}
+
+	VERIFY(hamon::iszero(f)      == b1.is_zero());
+	VERIFY(hamon::issubnormal(f) == b1.is_subnormal());
+	VERIFY(hamon::isnormal(f)    == b1.is_normal());
+	VERIFY(hamon::isfinite(f)    == b1.is_finite());
+	VERIFY(hamon::isinf(f)       == b1.is_infinity());
+	VERIFY(hamon::isnan(f)       == b1.is_nan());
+
 	binary b2(b1.sign(), b1.exponent(), b1.fraction());
-	return b1.to_uint() == b2.to_uint();
+	VERIFY(b1.to_uint() == b2.to_uint());
+
+	return true;
 }
+
+#undef VERIFY
 
 template <typename T>
 void test()
