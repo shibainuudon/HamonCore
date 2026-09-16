@@ -339,6 +339,118 @@ public:
 	}
 
 private:
+	HAMON_CXX14_CONSTEXPR
+	void increment_fraction() HAMON_NOEXCEPT
+	{
+		if (Traits::has_fraction_implicit_bits)
+		{
+			m_uint_value++;
+		}
+		else
+		{
+			auto s = sign_component();
+			auto e = exponent_component();
+			auto f = fraction_component() & ~fraction_msb_mask;
+			auto f_msb = fraction_component() & fraction_msb_mask;
+
+			f++;
+
+			if (f == fraction_msb_mask)
+			{
+				e++;
+			}
+
+			m_uint_value =
+				((static_cast<uint_type>(s) << sign_shift)     & sign_mask) |
+				((static_cast<uint_type>(f) << fraction_shift) & (fraction_mask ^ fraction_msb_mask)) |
+				static_cast<uint_type>(f_msb) |
+				((static_cast<uint_type>(e) << exponent_shift) & exponent_mask);
+		}
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	void decrement_fraction() HAMON_NOEXCEPT
+	{
+		if (Traits::has_fraction_implicit_bits)
+		{
+			m_uint_value--;
+		}
+		else
+		{
+			auto s = sign_component();
+			auto e = exponent_component();
+			auto f = fraction_component() & ~fraction_msb_mask;
+			auto f_msb = fraction_component() & fraction_msb_mask;
+
+			if (f == 0)
+			{
+				e--;
+				if (e == 0)
+				{
+					f_msb = 0;
+				}
+			}
+
+			f--;
+
+			m_uint_value =
+				((static_cast<uint_type>(s) << sign_shift)     & sign_mask) |
+				((static_cast<uint_type>(f) << fraction_shift) & (fraction_mask ^ fraction_msb_mask)) |
+				static_cast<uint_type>(f_msb) |
+				((static_cast<uint_type>(e) << exponent_shift) & exponent_mask);
+		}
+	}
+
+public:
+	HAMON_CXX14_CONSTEXPR
+	void next_up() HAMON_NOEXCEPT
+	{
+		if (is_nan())
+		{
+			return;
+		}
+
+		if (is_zero())
+		{
+			// -0 は +0 として扱う
+			set_sign(0);
+		}
+
+		if (sign() != 0)
+		{
+			decrement_fraction();
+		}
+		else if (is_finite())
+		{
+			increment_fraction();
+		}
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	void next_down() HAMON_NOEXCEPT
+	{
+		if (is_nan())
+		{
+			return;
+		}
+
+		if (is_zero())
+		{
+			// +0 は -0 として扱う
+			set_sign(1);
+		}
+
+		if (sign() == 0)
+		{
+			decrement_fraction();
+		}
+		else if (is_finite())
+		{
+			increment_fraction();
+		}
+	}
+
+private:
 	uint_type  m_uint_value;
 };
 
