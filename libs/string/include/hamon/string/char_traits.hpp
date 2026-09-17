@@ -16,13 +16,14 @@
 #include <hamon/cstring/memcpy.hpp>
 #include <hamon/cstring/memmove.hpp>
 #include <hamon/cstring/memset.hpp>
+#include <hamon/cstring/strlen.hpp>
 #include <hamon/ios/streamoff.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// streampos, u8streampos, u16streampos, u32streampos, wstreampos
-#include <cwchar>	// mbstate_t, wmemcmp, wcslen, wmemchr, wmemmove, wmemcpy, wmemset
+#include <cwchar>	// mbstate_t, wmemcmp, wmemchr, wmemmove, wmemcpy, wmemset
 #include <cstdio>	// EOF
-#include <cstring>	// strlen, memchr
+#include <cstring>	// memchr
 
 namespace hamon
 {
@@ -45,20 +46,6 @@ struct char_traits_fallback
 		}
 
 		return 0;
-	}
-
-	template <typename char_type>
-	static HAMON_CXX14_CONSTEXPR
-	hamon::size_t length(char_type const* s)
-	{
-		size_t count = 0;
-		while (*s != char_type())
-		{
-			++count;
-			++s;
-		}
-
-		return count;
 	}
 
 	template <typename char_type>
@@ -171,15 +158,7 @@ struct char_traits<char>
 	static HAMON_CXX14_CONSTEXPR
 	hamon::size_t length(char_type const* s)
 	{
-#if defined(HAMON_MSVC) || defined(HAMON_CLANG)
-		return __builtin_strlen(s);
-#else
-		if (!hamon::is_constant_evaluated())
-		{
-			return std::strlen(s);
-		}
-		return detail::char_traits_fallback::length(s);
-#endif
+		return hamon::strlen(s);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -284,15 +263,7 @@ struct char_traits<char8_t>
 	static HAMON_CXX14_CONSTEXPR
 	hamon::size_t length(char_type const* s)
 	{
-#if defined(HAMON_MSVC)
-		return __builtin_u8strlen(s);
-#else
-		if (!hamon::is_constant_evaluated())
-		{
-			return std::strlen(reinterpret_cast<char const*>(s));
-		}
-		return detail::char_traits_fallback::length(s);
-#endif
+		return hamon::strlen(s);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -398,7 +369,7 @@ struct char_traits<char16_t>
 	static HAMON_CXX14_CONSTEXPR
 	hamon::size_t length(char_type const* s)
 	{
-		return detail::char_traits_fallback::length(s);
+		return hamon::strlen(s);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -496,7 +467,7 @@ struct char_traits<char32_t>
 	static HAMON_CXX14_CONSTEXPR
 	hamon::size_t length(char_type const* s)
 	{
-		return detail::char_traits_fallback::length(s);
+		return hamon::strlen(s);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -601,15 +572,7 @@ struct char_traits<wchar_t>
 	static HAMON_CXX14_CONSTEXPR
 	hamon::size_t length(char_type const* s)
 	{
-#if HAMON_HAS_BUILTIN(__builtin_wcslen) || defined(HAMON_MSVC)
-		return __builtin_wcslen(s);
-#else
-		if (!hamon::is_constant_evaluated())
-		{
-			return std::wcslen(s);
-		}
-		return detail::char_traits_fallback::length(s);
-#endif
+		return hamon::strlen(s);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
