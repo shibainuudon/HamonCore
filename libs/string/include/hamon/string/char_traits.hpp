@@ -12,13 +12,14 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint_least16_t.hpp>
 #include <hamon/cstdint/uint_least32_t.hpp>
+#include <hamon/cstring/memcmp.hpp>
 #include <hamon/ios/streamoff.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// streampos, u8streampos, u16streampos, u32streampos, wstreampos
 #include <cwchar>	// mbstate_t, wmemcmp, wcslen, wmemchr, wmemmove, wmemcpy, wmemset
 #include <cstdio>	// EOF
-#include <cstring>	// memcmp, strlen, memchr, memmove, memcpy, memset
+#include <cstring>	// strlen, memchr, memmove, memcpy, memset
 
 namespace hamon
 {
@@ -161,15 +162,7 @@ struct char_traits<char>
 	static HAMON_CXX14_CONSTEXPR
 	int compare(char_type const* s1, char_type const* s2, hamon::size_t n)
 	{
-#if defined(HAMON_MSVC) || defined(HAMON_CLANG)
-		return __builtin_memcmp(s1, s2, n);
-#else
-		if (!hamon::is_constant_evaluated())
-		{
-			return std::memcmp(s1, s2, n);
-		}
-		return detail::char_traits_fallback::compare(s1, s2, n);
-#endif
+		return hamon::memcmp(s1, s2, n);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -294,15 +287,7 @@ struct char_traits<char8_t>
 	static HAMON_CXX14_CONSTEXPR
 	int compare(char_type const* s1, char_type const* s2, hamon::size_t n)
 	{
-#if defined(HAMON_MSVC)
-		return __builtin_memcmp(s1, s2, n);
-#else
-		if (!hamon::is_constant_evaluated())
-		{
-			return std::memcmp(s1, s2, n);
-		}
-		return detail::char_traits_fallback::compare(s1, s2, n);
-#endif
+		return hamon::memcmp(s1, s2, n);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
