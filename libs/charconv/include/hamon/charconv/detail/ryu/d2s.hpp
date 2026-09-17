@@ -522,7 +522,7 @@ static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const 
 
     if (ryu_exponent > 0) { // case "172900" with can_use_ryu
       // Performance note: it might be more efficient to do this immediately after setting mid.
-      hamon::ct::memset(first + olength, '0', static_cast<size_t>(ryu_exponent));
+      hamon::memset(first + olength, '0', static_cast<size_t>(ryu_exponent));
     } else if (ryu_exponent == 0) { // case "1729"
       // Done!
     } else if (whole_digits > 0) { // case "17.29"
@@ -533,7 +533,7 @@ static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const 
       // Performance note: a larger memset() followed by overwriting '.' might be more efficient.
       first[0] = '0';
       first[1] = '.';
-      hamon::ct::memset(first + 2, '0', static_cast<size_t>(-whole_digits));
+      hamon::memset(first + 2, '0', static_cast<size_t>(-whole_digits));
     }
 
     return { first + total_fixed_length, errc{} };

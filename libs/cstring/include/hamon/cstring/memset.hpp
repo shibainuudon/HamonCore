@@ -7,44 +7,70 @@
 #ifndef HAMON_CSTRING_MEMSET_HPP
 #define HAMON_CSTRING_MEMSET_HPP
 
+#include <hamon/bit/bit_cast.hpp>
+#include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
+#include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 #include <cstring>
 
 namespace hamon
 {
 
-namespace ct
+namespace detail
 {
 
-/**
- *	constexpr版のmemset
- *	実行時のパフォーマンスはstd::memsetより劣る可能性がある
- *	is_constant_evaluatedが使える場合は、実行時にはstd::memsetを呼ぶ
- */
-inline HAMON_CXX14_CONSTEXPR
-char* memset(char* dest, char ch, std::size_t count) HAMON_NOEXCEPT
+// (1) is_trivially_copyable_v<T> な場合
+template <typename T, typename = hamon::enable_if_t<hamon::is_trivially_copyable_v<T>>>
+HAMON_CXX14_CONSTEXPR
+T* memset_impl(T* s, unsigned char c, hamon::size_t n, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return static_cast<char*>(std::memset(dest, ch, count));
-	}
-#endif
+	constexpr hamon::size_t N = sizeof(T);
 
-	for (std::size_t i = 0; i < count; ++i)
+	// 配列をcで埋めて、コピー用の値を作る
+	unsigned char a[N]{};
+	for (hamon::size_t i = 0; i < N; ++i)
 	{
-		dest[i] = ch;
+		a[i] = c;
 	}
-	return dest;
+	T const value = hamon::bit_cast<T>(a);
+
+	auto ret = s;
+	for (hamon::size_t i = 0; i < n; i += N)
+	{
+		*s++ = value;
+	}
+	return ret;
 }
 
-}	// namespace ct
-
-inline void* memset(void* dest, int ch, std::size_t count) HAMON_NOEXCEPT
+// (2) 上記のいずれでもない場合、constexprにはできない
+template <typename T>
+HAMON_CXX14_CONSTEXPR
+T* memset_impl(T* s, unsigned char c, hamon::size_t n, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
-	return std::memset(dest, ch, count);
+	return static_cast<T*>(std::memset(s, c, n));
+}
+
+}	// namespace detail
+
+/**
+ *	@brief	memset
+ *
+ *	この関数は以下の条件を全て満たす場合、constexpr関数として評価される
+ *	・is_trivially_copyable_v<T> == trueであること
+ */
+template <typename T>
+HAMON_CXX14_CONSTEXPR
+T* memset(T* s, int c, hamon::size_t n) HAMON_NOEXCEPT
+{
+	if (!hamon::is_constant_evaluated())
+	{
+		return static_cast<T*>(std::memset(s, c, n));
+	}
+
+	return hamon::detail::memset_impl(s, static_cast<unsigned char>(c), n, hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace hamon

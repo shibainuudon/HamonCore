@@ -15,13 +15,14 @@
 #include <hamon/cstring/memcmp.hpp>
 #include <hamon/cstring/memcpy.hpp>
 #include <hamon/cstring/memmove.hpp>
+#include <hamon/cstring/memset.hpp>
 #include <hamon/ios/streamoff.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// streampos, u8streampos, u16streampos, u32streampos, wstreampos
 #include <cwchar>	// mbstate_t, wmemcmp, wcslen, wmemchr, wmemmove, wmemcpy, wmemset
 #include <cstdio>	// EOF
-#include <cstring>	// strlen, memchr, memset
+#include <cstring>	// strlen, memchr
 
 namespace hamon
 {
@@ -210,11 +211,7 @@ struct char_traits<char>
 	static HAMON_CXX14_CONSTEXPR
 	char_type* assign(char_type* s, hamon::size_t n, char_type a)
 	{
-		if (!hamon::is_constant_evaluated())
-		{
-			return static_cast<char_type*>(std::memset(s, a, n));
-		}
-		return detail::char_traits_fallback::assign(s, n, a);
+		return hamon::memset(s, a, n);
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -327,11 +324,7 @@ struct char_traits<char8_t>
 	static HAMON_CXX14_CONSTEXPR
 	char_type* assign(char_type* s, hamon::size_t n, char_type a)
 	{
-		if (!hamon::is_constant_evaluated())
-		{
-			return static_cast<char_type*>(std::memset(s, a, n));
-		}
-		return detail::char_traits_fallback::assign(s, n, a);
+		return hamon::memset(s, a, n);
 	}
 
 	static HAMON_CXX14_CONSTEXPR

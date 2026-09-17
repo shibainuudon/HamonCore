@@ -305,7 +305,7 @@ static inline HAMON_CXX20_CONSTEXPR void append_nine_digits(uint32_t digits, cha
   printf("DIGITS=%u\n", digits);
 #endif
   if (digits == 0) {
-    hamon::ct::memset(result, '0', 9);
+    hamon::memset(result, '0', 9);
     return;
   }
 
@@ -393,7 +393,7 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2fixed_buffered_n(char* fir
     *first++ = '0';
     if (precision > 0) {
       *first++ = '.';
-      hamon::ct::memset(first, '0', precision);
+      hamon::memset(first, '0', precision);
       first += precision;
     }
     return { first, errc{} };
@@ -477,27 +477,27 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2fixed_buffered_n(char* fir
       if (last - first < static_cast<ptrdiff_t>(precision)) {
         return { last, errc::value_too_large };
       }
-      hamon::ct::memset(first, '0', precision);
+      hamon::memset(first, '0', precision);
       first += precision;
     } else if (i < MIN_BLOCK_2[idx]) {
       i = MIN_BLOCK_2[idx];
       if (last - first < static_cast<ptrdiff_t>(9 * i)) {
         return { last, errc::value_too_large };
       }
-      hamon::ct::memset(first, '0', 9 * i);
+      hamon::memset(first, '0', 9 * i);
       first += 9 * i;
     }
     for (; i < blocks; ++i) {
       const int32_t j = ADDITIONAL_BITS_2 + (-e2 - 16 * idx);
       const uint32_t p = POW10_OFFSET_2[idx] + i - MIN_BLOCK_2[idx];
       if (p >= POW10_OFFSET_2[idx + 1]) {
-        // If the remaining digits are all 0, then we might as well use hamon::ct::memset.
+        // If the remaining digits are all 0, then we might as well use hamon::memset.
         // No rounding required in this case.
         const uint32_t fill = precision - 9 * i;
         if (last - first < static_cast<ptrdiff_t>(fill)) {
           return { last, errc::value_too_large };
         }
-        hamon::ct::memset(first, '0', fill);
+        hamon::memset(first, '0', fill);
         first += fill;
         break;
       }
@@ -584,7 +584,7 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2fixed_buffered_n(char* fir
     if (last - first < static_cast<ptrdiff_t>(precision)) {
       return { last, errc::value_too_large };
     }
-    hamon::ct::memset(first, '0', precision);
+    hamon::memset(first, '0', precision);
     first += precision;
   }
   return { first, errc{} };
@@ -615,7 +615,7 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2exp_buffered_n(char* first
     *first++ = '0';
     if (precision > 0) {
       *first++ = '.';
-      hamon::ct::memset(first, '0', precision);
+      hamon::memset(first, '0', precision);
       first += precision;
     }
     hamon::memcpy(first, "e+00", 4);
@@ -790,7 +790,7 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2exp_buffered_n(char* first
       return { last, errc::value_too_large };
     }
     if (digits == 0) {
-      hamon::ct::memset(first, '0', maximum);
+      hamon::memset(first, '0', maximum);
     } else {
       append_c_digits(maximum, digits, first);
     }

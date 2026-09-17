@@ -229,7 +229,7 @@ to_chars_floating_point_precision_hex(char* first, char* const last, const Float
 			if (number_of_bits_remaining == 0)
 			{
 				// We've finished printing adjusted_fraction, so all remaining hexits are '0'.
-				hamon::ct::memset(first, '0', static_cast<size_t>(precision));
+				hamon::memset(first, '0', static_cast<size_t>(precision));
 				first += precision;
 				break;
 			}

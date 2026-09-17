@@ -17,11 +17,11 @@ namespace memset_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
+inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	{
 		char a[3]{1,2,3};
-		auto p = hamon::ct::memset(a, 0, sizeof(a));
+		auto p = hamon::memset(a, 0, sizeof(a));
 
 		VERIFY(0 == a[0]);
 		VERIFY(0 == a[1]);
@@ -30,7 +30,7 @@ inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
 	}
 	{
 		char a[5] = {};
-		auto p = hamon::ct::memset(a, 42, sizeof(char) * 3);
+		auto p = hamon::memset(a, 42, sizeof(char) * 3);
 
 		VERIFY(42 == a[0]);
 		VERIFY(42 == a[1]);
@@ -38,6 +38,23 @@ inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
 		VERIFY( 0 == a[3]);
 		VERIFY( 0 == a[4]);
 		VERIFY( p == a);
+	}
+	{
+		hamon::uint32_t a[4]{};
+		auto p = hamon::memset(a, 0x12, sizeof(a));
+
+		VERIFY(0x12121212UL == a[0]);
+		VERIFY(0x12121212UL == a[1]);
+		VERIFY(0x12121212UL == a[2]);
+		VERIFY(0x12121212UL == a[3]);
+		VERIFY(p == a);
+	}
+	{
+		float f = 0.1f;
+		auto p = hamon::memset(&f, 0, sizeof(f));
+
+		VERIFY(0 == f);
+		VERIFY(p == &f);
 	}
 
 	return true;
@@ -47,25 +64,7 @@ inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
 
 GTEST_TEST(CStringTest, MemSetTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(constexpr_test());
-
-	{
-		hamon::uint32_t a[4];
-		auto p = hamon::memset(a, 0x12, sizeof(a));
-
-		EXPECT_EQ(0x12121212UL, a[0]);
-		EXPECT_EQ(0x12121212UL, a[1]);
-		EXPECT_EQ(0x12121212UL, a[2]);
-		EXPECT_EQ(0x12121212UL, a[3]);
-		EXPECT_EQ(p, a);
-	}
-	{
-		float f;
-		auto p = hamon::memset(&f, 0, sizeof(f));
-
-		EXPECT_EQ(0, f);
-		EXPECT_EQ(p, &f);
-	}
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test());
 }
 
 }	// namespace memset_test
