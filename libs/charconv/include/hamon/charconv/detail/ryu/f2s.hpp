@@ -539,7 +539,7 @@ static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const 
       // Done!
     } else if (whole_digits > 0) { // case "17.29"
       // Performance note: moving digits might not be optimal.
-      hamon::ct::memmove(first, first + 1, static_cast<size_t>(whole_digits));
+      hamon::memmove(first, first + 1, static_cast<size_t>(whole_digits));
       first[whole_digits] = '.';
     } else { // case "0.001729"
       // Performance note: a larger memset() followed by overwriting '.' might be more efficient.

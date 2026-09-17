@@ -7,7 +7,11 @@
 #ifndef HAMON_CSTRING_MEMMOVE_HPP
 #define HAMON_CSTRING_MEMMOVE_HPP
 
+#include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
+#include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
 #include <cstring>
@@ -15,53 +19,65 @@
 namespace hamon
 {
 
-namespace ct
+namespace detail
 {
 
-/**
- *	constexpr版のmemmove
- *	実行時のパフォーマンスはstd::memmoveより劣る可能性がある
- *	is_constant_evaluatedが使える場合は、実行時にはstd::memmoveを呼ぶ
- *
- *	destとsrcが同じ配列の要素を指していない場合constexprにできない。
- *	その場合はmemcpyを使ってください。
- */
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR
-T* memmove(T* dest, T const* src, std::size_t count) HAMON_NOEXCEPT
+// (1) T == U で is_trivially_copyable_v<T> な場合
+template <typename T, typename = hamon::enable_if_t<hamon::is_trivially_copyable_v<T>>>
+HAMON_CXX14_CONSTEXPR
+T* memmove_impl(T* s1, T const* s2, hamon::size_t n, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return static_cast<T*>(std::memmove(dest, src, count));
-	}
-#endif
+	HAMON_ASSERT((n % sizeof(T)) == 0u);
+	n /= sizeof(T);
 
-	HAMON_ASSERT((count % sizeof(T)) == 0u);
-	count /= sizeof(T);
-
-	if (dest < src)
+	if (s2 < s1 && s1 < s2 + n)
 	{
-		for (std::size_t i = 0; i < count; ++i)
+		// copy backward
+		for (hamon::size_t i = n; i != 0; --i)
 		{
-			dest[i] = src[i];
+			s1[i - 1] = s2[i - 1];
 		}
 	}
 	else
 	{
-		for (std::size_t i = count; i > 0; --i)
+		// copy forward
+		for (hamon::size_t i = 0; i != n; ++i)
 		{
-			dest[i - 1] = src[i - 1];
+			s1[i] = s2[i];
 		}
 	}
-	return dest;
+
+	return s1;
 }
 
-}	// namespace ct
-
-inline void* memmove(void* dest, void const* src, std::size_t count) HAMON_NOEXCEPT
+// (2) 上記のいずれでもない場合、constexprにはできない
+template <typename T, typename U>
+T* memmove_impl(T* s1, U const* s2, hamon::size_t n, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
-	return std::memmove(dest, src, count);
+	return static_cast<T*>(std::memmove(s1, s2, n));
+}
+
+}	// namespace detail
+
+/**
+ *	@brief	メモリ領域の移動
+ *
+ *	この関数は以下の条件を全て満たす場合、constexpr関数として評価される
+ *	・sizeof(T) == sizeof(U)であること
+ *	・is_trivially_copyable_v<T> == trueであること
+ *	・is_trivially_copyable_v<U> == trueであること
+ *	・s1とs2が同じ配列の要素を指している
+ */
+template <typename T, typename U>
+HAMON_CXX14_CONSTEXPR
+T* memmove(T* s1, U const* s2, hamon::size_t n) HAMON_NOEXCEPT
+{
+	if (!hamon::is_constant_evaluated())
+	{
+		return static_cast<T*>(std::memmove(s1, s2, n));
+	}
+
+	return hamon::detail::memmove_impl(s1, s2, n, hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace hamon

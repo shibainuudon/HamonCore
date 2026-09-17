@@ -19,23 +19,9 @@ namespace memmove_test
 inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
 {
 	{
-		int a1[] = { 0, 1, 2, 3, 4, 5, };
-
-		auto p = hamon::ct::memmove(&a1[0], &a1[2], sizeof(int) * 3);
-
-		VERIFY(2 == a1[0]);
-		VERIFY(3 == a1[1]);
-		VERIFY(4 == a1[2]);
-		VERIFY(3 == a1[3]);
-		VERIFY(4 == a1[4]);
-		VERIFY(5 == a1[5]);
-
-		VERIFY(p == &a1[0]);
-	}
-	{
 		char a1[] = { 0, 1, 2, 3, 4, 5, };
 
-		auto p = hamon::ct::memmove(&a1[2], &a1[0], sizeof(char) * 3);
+		auto p = hamon::memmove(&a1[2], &a1[0], sizeof(char) * 3);
 
 		VERIFY(0 == a1[0]);
 		VERIFY(1 == a1[1]);
@@ -47,9 +33,23 @@ inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
 		VERIFY(p == &a1[2]);
 	}
 	{
+		char a1[] = { 0, 1, 2, 3, 4, 5, };
+
+		auto p = hamon::memmove(&a1[0], &a1[2], sizeof(char) * 3);
+
+		VERIFY(2 == a1[0]);
+		VERIFY(3 == a1[1]);
+		VERIFY(4 == a1[2]);
+		VERIFY(3 == a1[3]);
+		VERIFY(4 == a1[4]);
+		VERIFY(5 == a1[5]);
+
+		VERIFY(p == &a1[0]);
+	}
+	{
 		short a1[] = { 0, 1, 2, 3, 4, 5, };
 
-		auto p = hamon::ct::memmove(&a1[1], &a1[3], sizeof(short) * 3);
+		auto p = hamon::memmove(&a1[1], &a1[3], sizeof(short) * 3);
 
 		VERIFY(0 == a1[0]);
 		VERIFY(3 == a1[1]);
@@ -59,6 +59,34 @@ inline HAMON_CXX14_CONSTEXPR bool constexpr_test()
 		VERIFY(5 == a1[5]);
 
 		VERIFY(p == &a1[1]);
+	}
+	{
+		int a1[] = { 0, 1, 2, 3, 4, 5, };
+
+		auto p = hamon::memmove(&a1[0], &a1[2], sizeof(int) * 3);
+
+		VERIFY(2 == a1[0]);
+		VERIFY(3 == a1[1]);
+		VERIFY(4 == a1[2]);
+		VERIFY(3 == a1[3]);
+		VERIFY(4 == a1[4]);
+		VERIFY(5 == a1[5]);
+
+		VERIFY(p == &a1[0]);
+	}
+	{
+		int a1[] = { 0, 1, 2, 3, 4, 5, };
+
+		auto p = hamon::memmove(&a1[2], &a1[0], sizeof(int) * 4);
+
+		VERIFY(0 == a1[0]);
+		VERIFY(1 == a1[1]);
+		VERIFY(0 == a1[2]);
+		VERIFY(1 == a1[3]);
+		VERIFY(2 == a1[4]);
+		VERIFY(3 == a1[5]);
+
+		VERIFY(p == &a1[2]);
 	}
 
 	return true;
@@ -92,48 +120,6 @@ GTEST_TEST(CStringTest, MemMoveTest)
 		EXPECT_EQ(3, a2[2]);
 
 		EXPECT_EQ(p, a2);
-	}
-	{
-		char a1[] = { 0, 1, 2, 3, 4, 5, };
-
-		auto p = hamon::memmove(&a1[0], &a1[2], sizeof(char) * 3);
-
-		EXPECT_EQ(2, a1[0]);
-		EXPECT_EQ(3, a1[1]);
-		EXPECT_EQ(4, a1[2]);
-		EXPECT_EQ(3, a1[3]);
-		EXPECT_EQ(4, a1[4]);
-		EXPECT_EQ(5, a1[5]);
-
-		EXPECT_EQ(p, &a1[0]);
-	}
-	{
-		int a1[] = { 0, 1, 2, 3, 4, 5, };
-
-		auto p = hamon::memmove(&a1[2], &a1[0], sizeof(int) * 4);
-
-		EXPECT_EQ(0, a1[0]);
-		EXPECT_EQ(1, a1[1]);
-		EXPECT_EQ(0, a1[2]);
-		EXPECT_EQ(1, a1[3]);
-		EXPECT_EQ(2, a1[4]);
-		EXPECT_EQ(3, a1[5]);
-
-		EXPECT_EQ(p, &a1[2]);
-	}
-	{
-		short a1[] = { 0, 1, 2, 3, 4, 5, };
-
-		auto p = hamon::ct::memmove(&a1[1], &a1[3], sizeof(short) * 3);
-
-		EXPECT_EQ(0, a1[0]);
-		EXPECT_EQ(3, a1[1]);
-		EXPECT_EQ(4, a1[2]);
-		EXPECT_EQ(5, a1[3]);
-		EXPECT_EQ(4, a1[4]);
-		EXPECT_EQ(5, a1[5]);
-
-		EXPECT_EQ(p, &a1[1]);
 	}
 }
 
