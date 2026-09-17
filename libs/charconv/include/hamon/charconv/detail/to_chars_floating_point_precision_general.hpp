@@ -339,7 +339,7 @@ to_chars_floating_point_precision_general(char* first, char* last, Floating valu
 	{
 		return { last, hamon::errc::value_too_large };
 	}
-	hamon::ct::memcpy(first, significand_first, static_cast<hamon::size_t>(significand_distance));
+	hamon::memcpy(first, significand_first, static_cast<hamon::size_t>(significand_distance));
 	first += significand_distance;
 
 	// Copy the exponent to the output range.
@@ -350,7 +350,7 @@ to_chars_floating_point_precision_general(char* first, char* last, Floating valu
 		{
 			return { last, hamon::errc::value_too_large };
 		}
-		hamon::ct::memcpy(first, exponent_first, static_cast<hamon::size_t>(_Exponent_distance));
+		hamon::memcpy(first, exponent_first, static_cast<hamon::size_t>(_Exponent_distance));
 		first += _Exponent_distance;
 	}
 

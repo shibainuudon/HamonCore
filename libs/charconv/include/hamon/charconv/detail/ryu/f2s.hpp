@@ -517,17 +517,17 @@ static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const 
       output /= 10000;
       const uint32_t c0 = (c % 100) << 1;
       const uint32_t c1 = (c / 100) << 1;
-      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
-      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
+      hamon::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
+      hamon::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
     }
     if (output >= 100) {
       const uint32_t c = (output % 100) << 1;
       output /= 100;
-      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
+      hamon::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
     }
     if (output >= 10) {
       const uint32_t c = output << 1;
-      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
+      hamon::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
     } else {
       *--mid = static_cast<char>('0' + output);
     }
@@ -575,14 +575,14 @@ static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const 
     output /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
-    hamon::ct::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
+    hamon::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
+    hamon::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (output >= 100) {
     const uint32_t c = (output % 100) << 1;
     output /= 100;
-    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c, 2);
+    hamon::memcpy(result + olength - i - 1, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (output >= 10) {
@@ -612,7 +612,7 @@ static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const 
     result[index++] = '+';
   }
 
-  hamon::ct::memcpy(result + index, DIGIT_TABLE + 2 * scientific_exponent, 2);
+  hamon::memcpy(result + index, DIGIT_TABLE + 2 * scientific_exponent, 2);
   index += 2;
 
   return { first + total_scientific_length, errc{} };

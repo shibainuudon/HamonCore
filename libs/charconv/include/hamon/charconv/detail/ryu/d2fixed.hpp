@@ -220,19 +220,19 @@ static inline HAMON_CXX20_CONSTEXPR void append_n_digits(const uint32_t olength,
     digits /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    hamon::ct::memcpy(result + olength - i - 2, DIGIT_TABLE + c0, 2);
-    hamon::ct::memcpy(result + olength - i - 4, DIGIT_TABLE + c1, 2);
+    hamon::memcpy(result + olength - i - 2, DIGIT_TABLE + c0, 2);
+    hamon::memcpy(result + olength - i - 4, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (digits >= 100) {
     const uint32_t c = (digits % 100) << 1;
     digits /= 100;
-    hamon::ct::memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
+    hamon::memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (digits >= 10) {
     const uint32_t c = digits << 1;
-    hamon::ct::memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
+    hamon::memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
   } else {
     result[0] = (char) ('0' + digits);
   }
@@ -257,14 +257,14 @@ static inline HAMON_CXX20_CONSTEXPR void append_d_digits(const uint32_t olength,
     digits /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    hamon::ct::memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c0, 2);
-    hamon::ct::memcpy(result + olength + 1 - i - 4, DIGIT_TABLE + c1, 2);
+    hamon::memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c0, 2);
+    hamon::memcpy(result + olength + 1 - i - 4, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (digits >= 100) {
     const uint32_t c = (digits % 100) << 1;
     digits /= 100;
-    hamon::ct::memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c, 2);
+    hamon::memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (digits >= 10) {
@@ -289,7 +289,7 @@ static inline HAMON_CXX20_CONSTEXPR void append_c_digits(const uint32_t count, u
   for (; i < count - 1; i += 2) {
     const uint32_t c = (digits % 100) << 1;
     digits /= 100;
-    hamon::ct::memcpy(result + count - i - 2, DIGIT_TABLE + c, 2);
+    hamon::memcpy(result + count - i - 2, DIGIT_TABLE + c, 2);
   }
   // Generate the last digit if count is odd.
   if (i < count) {
@@ -318,8 +318,8 @@ static inline HAMON_CXX20_CONSTEXPR void append_nine_digits(uint32_t digits, cha
     digits /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    hamon::ct::memcpy(result + 7 - i, DIGIT_TABLE + c0, 2);
-    hamon::ct::memcpy(result + 5 - i, DIGIT_TABLE + c1, 2);
+    hamon::memcpy(result + 7 - i, DIGIT_TABLE + c0, 2);
+    hamon::memcpy(result + 5 - i, DIGIT_TABLE + c1, 2);
   }
   result[0] = (char) ('0' + digits);
 }
@@ -345,22 +345,22 @@ static inline int copy_special_str_printf(char* const result, const bool sign, c
   }
   if (mantissa) {
     if (mantissa < (1ull << (DOUBLE_MANTISSA_BITS - 1))) {
-      hamon::ct::memcpy(result + sign, "nan(snan)", 9);
+      hamon::memcpy(result + sign, "nan(snan)", 9);
       return sign + 9;
     }
-    hamon::ct::memcpy(result + sign, "nan", 3);
+    hamon::memcpy(result + sign, "nan", 3);
     return sign + 3;
   }
 #else
   if (mantissa) {
-    hamon::ct::memcpy(result, "nan", 3);
+    hamon::memcpy(result, "nan", 3);
     return 3;
   }
   if (sign) {
     result[0] = '-';
   }
 #endif
-  hamon::ct::memcpy(result + sign, "Infinity", 8);
+  hamon::memcpy(result + sign, "Infinity", 8);
   return sign + 8;
 }
 
@@ -618,7 +618,7 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2exp_buffered_n(char* first
       hamon::ct::memset(first, '0', precision);
       first += precision;
     }
-    hamon::ct::memcpy(first, "e+00", 4);
+    hamon::memcpy(first, "e+00", 4);
     first += 4;
     return { first, errc{} };
   }
@@ -858,11 +858,11 @@ inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2exp_buffered_n(char* first
 
   if (exp >= 100) {
     const int32_t c = exp % 10;
-    hamon::ct::memcpy(first, DIGIT_TABLE + 2 * (exp / 10), 2);
+    hamon::memcpy(first, DIGIT_TABLE + 2 * (exp / 10), 2);
     first[2] = (char) ('0' + c);
     first += 3;
   } else {
-    hamon::ct::memcpy(first, DIGIT_TABLE + 2 * exp, 2);
+    hamon::memcpy(first, DIGIT_TABLE + 2 * exp, 2);
     first += 2;
   }
 

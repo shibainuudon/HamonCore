@@ -13,13 +13,14 @@
 #include <hamon/cstdint/uint_least16_t.hpp>
 #include <hamon/cstdint/uint_least32_t.hpp>
 #include <hamon/cstring/memcmp.hpp>
+#include <hamon/cstring/memcpy.hpp>
 #include <hamon/ios/streamoff.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <ios>		// streampos, u8streampos, u16streampos, u32streampos, wstreampos
 #include <cwchar>	// mbstate_t, wmemcmp, wcslen, wmemchr, wmemmove, wmemcpy, wmemset
 #include <cstdio>	// EOF
-#include <cstring>	// strlen, memchr, memmove, memcpy, memset
+#include <cstring>	// strlen, memchr, memmove, memset
 
 namespace hamon
 {
@@ -206,11 +207,7 @@ struct char_traits<char>
 	static HAMON_CXX14_CONSTEXPR
 	char_type* copy(char_type* s1, char_type const* s2, hamon::size_t n)
 	{
-		if (!hamon::is_constant_evaluated())
-		{
-			return static_cast<char_type*>(std::memcpy(s1, s2, n * sizeof(char_type)));
-		}
-		return detail::char_traits_fallback::copy(s1, s2, n);
+		return hamon::memcpy(s1, s2, n * sizeof(char_type));
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -331,11 +328,7 @@ struct char_traits<char8_t>
 	static HAMON_CXX14_CONSTEXPR
 	char_type* copy(char_type* s1, char_type const* s2, hamon::size_t n)
 	{
-		if (!hamon::is_constant_evaluated())
-		{
-			return static_cast<char_type*>(std::memcpy(s1, s2, n * sizeof(char_type)));
-		}
-		return detail::char_traits_fallback::copy(s1, s2, n);
+		return hamon::memcpy(s1, s2, n * sizeof(char_type));
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -441,11 +434,7 @@ struct char_traits<char16_t>
 	static HAMON_CXX14_CONSTEXPR
 	char_type* copy(char_type* s1, char_type const* s2, hamon::size_t n)
 	{
-		if (!hamon::is_constant_evaluated())
-		{
-			return static_cast<char_type*>(std::memcpy(s1, s2, n * sizeof(char_type)));
-		}
-		return detail::char_traits_fallback::copy(s1, s2, n);
+		return hamon::memcpy(s1, s2, n * sizeof(char_type));
 	}
 
 	static HAMON_CXX14_CONSTEXPR
@@ -547,11 +536,7 @@ struct char_traits<char32_t>
 	static HAMON_CXX14_CONSTEXPR
 	char_type* copy(char_type* s1, char_type const* s2, hamon::size_t n)
 	{
-		if (!hamon::is_constant_evaluated())
-		{
-			return static_cast<char_type*>(std::memcpy(s1, s2, n * sizeof(char_type)));
-		}
-		return detail::char_traits_fallback::copy(s1, s2, n);
+		return hamon::memcpy(s1, s2, n * sizeof(char_type));
 	}
 
 	static HAMON_CXX14_CONSTEXPR

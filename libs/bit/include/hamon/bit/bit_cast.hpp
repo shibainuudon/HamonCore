@@ -7,7 +7,7 @@
 #ifndef HAMON_BIT_BIT_CAST_HPP
 #define HAMON_BIT_BIT_CAST_HPP
 
-#include <hamon/cstring/memcpy.hpp>
+//#include <hamon/cstring/memcpy.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
@@ -55,9 +55,9 @@ To bit_cast(From const& src) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_bit_cast) || defined(HAMON_MSVC)
 	return __builtin_bit_cast(To, src);
 #else
-	alignas(To) unsigned char dst[sizeof(To)];
-	hamon::memcpy(dst, &src, sizeof(To));
-	return *(reinterpret_cast<To*>(&dst));
+	//alignas(To) unsigned char dst[sizeof(To)];
+	//hamon::memcpy(dst, &src, sizeof(To));
+	//return *(reinterpret_cast<To*>(&dst));
 #endif
 }
 

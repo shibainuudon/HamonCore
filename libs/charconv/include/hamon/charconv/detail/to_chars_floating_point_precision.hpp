@@ -74,7 +74,7 @@ to_chars_floating_point_precision_impl(char* first, char* last, T value, hamon::
 				return {last, hamon::errc::value_too_large};
 			}
 
-			hamon::ct::memcpy(first, str, len);
+			hamon::memcpy(first, str, len);
 
 			return {first + len, hamon::errc{}};
 		}
