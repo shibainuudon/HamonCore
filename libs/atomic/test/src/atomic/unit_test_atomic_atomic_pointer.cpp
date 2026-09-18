@@ -45,7 +45,7 @@ bool lock_free_test()
 template <bool Volatile, typename T>
 HAMON_CXX14_CONSTEXPR bool test()
 {
-	using Atomic = hamon::conditional_t<Volatile, std::atomic<T*> volatile, hamon::atomic<T*>>;
+	using Atomic = hamon::conditional_t<Volatile, hamon::atomic<T*> volatile, hamon::atomic<T*>>;
 
 	static_assert(hamon::is_same_v<T*, typename Atomic::value_type>, "");
 	static_assert(hamon::is_same_v<hamon::ptrdiff_t, typename Atomic::difference_type>, "");
@@ -154,38 +154,35 @@ HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(a.load() == &x);
 		VERIFY(expected == &x);
 	}
-#if 0
 	{
 		T arr[] = {1,2,3};
 		Atomic a(&arr[0]);
-		T* before = a.fetch_add(1);
+		T* before = a.fetch_add(2);
 		VERIFY(before == &arr[0]);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[2]);
+		T* before = a.fetch_add(-1);
+		VERIFY(before == &arr[2]);
 		VERIFY(a.load() == &arr[1]);
 	}
 	{
-		Atomic a(T(3));
-		T before = a.fetch_sub(T(2));
-		VERIFY(before == T(3));
-		VERIFY(a.load() == T(1));
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		T* before = a.fetch_sub(1);
+		VERIFY(before == &arr[1]);
+		VERIFY(a.load() == &arr[0]);
 	}
 	{
-		Atomic a(T(0x0b));
-		T before = a.fetch_and(T(0x0e));
-		VERIFY(before == T(0x0b));
-		VERIFY(a.load() == T(0x0a));
+		T arr[] = {1,2,3};
+		Atomic a(&arr[0]);
+		T* before = a.fetch_sub(-2);
+		VERIFY(before == &arr[0]);
+		VERIFY(a.load() == &arr[2]);
 	}
-	{
-		Atomic a(T(0x0b));
-		T before = a.fetch_or(T(0x0e));
-		VERIFY(before == T(0x0b));
-		VERIFY(a.load() == T(0x0f));
-	}
-	{
-		Atomic a(T(0x0b));
-		T before = a.fetch_xor(T(0x0e));
-		VERIFY(before == T(0x0b));
-		VERIFY(a.load() == T(0x05));
-	}
+#if 0
 	{
 		Atomic a(T(2));
 		T before = a.fetch_max(T(3));
@@ -219,21 +216,6 @@ HAMON_CXX14_CONSTEXPR bool test()
 		Atomic a(T(3));
 		a.store_sub(T(2));
 		VERIFY(a.load() == T(1));
-	}
-	{
-		Atomic a(T(0x09));
-		a.store_and(T(0x05));
-		VERIFY(a.load() == T(0x01));
-	}
-	{
-		Atomic a(T(0x09));
-		a.store_or(T(0x05));
-		VERIFY(a.load() == T(0x0d));
-	}
-	{
-		Atomic a(T(0x09));
-		a.store_xor(T(0x05));
-		VERIFY(a.load() == T(0x0c));
 	}
 	{
 		Atomic a(T(3));
@@ -290,24 +272,6 @@ HAMON_CXX14_CONSTEXPR bool test()
 		auto t = a -= T(2);
 		VERIFY(a.load() == T(1));
 		VERIFY(t == T(1));
-	}
-	{
-		Atomic a(T(0x0b));
-		auto t = a &= T(0x0e);
-		VERIFY(a.load() == T(0x0a));
-		VERIFY(t == T(0x0a));
-	}
-	{
-		Atomic a(T(0x0b));
-		auto t = a |= T(0x0e);
-		VERIFY(a.load() == T(0x0f));
-		VERIFY(t == T(0x0f));
-	}
-	{
-		Atomic a(T(0x0b));
-		auto t = a ^= T(0x0e);
-		VERIFY(a.load() == T(0x05));
-		VERIFY(t == T(0x05));
 	}
 #endif
 	return true;

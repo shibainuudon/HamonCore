@@ -274,12 +274,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/6
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/7,8
+		return hamon::detail::atomic_fetch_sub(data(), operand, order);
 	}
 
 	constexpr T* fetch_sub(hamon::ptrdiff_t operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/6
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/7,8
+		return hamon::detail::atomic_fetch_sub(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.pointer]/5
@@ -287,12 +293,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/6
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/7,8
+		return hamon::detail::atomic_fetch_max(data(), operand, order);
 	}
 
 	constexpr T* fetch_max(T* operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/6
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/7,8
+		return hamon::detail::atomic_fetch_max(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.pointer]/5
@@ -300,12 +312,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/6
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/7,8
+		return hamon::detail::atomic_fetch_min(data(), operand, order);
 	}
 
 	constexpr T* fetch_min(T* operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/6
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/7,8
+		return hamon::detail::atomic_fetch_min(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.pointer]/11
@@ -313,12 +331,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_add(data(), operand, order);
 	}
 
 	constexpr void store_add(hamon::ptrdiff_t operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_add(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.pointer]/11
@@ -326,12 +350,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_sub(data(), operand, order);
 	}
 
 	constexpr void store_sub(hamon::ptrdiff_t operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_sub(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.pointer]/11
@@ -339,12 +369,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_max(data(), operand, order);
 	}
 
 	constexpr void store_max(T* operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_max(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.pointer]/11
@@ -352,12 +388,18 @@ struct atomic_base_pointer
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_min(data(), operand, order);
 	}
 
 	constexpr void store_min(T* operand, memory_order order = memory_order::seq_cst) noexcept
 	{
 		// [atomics.types.pointer]/12
 		static_assert(hamon::is_object_v<T>, "");
+
+		// [atomics.types.pointer]/13
+		hamon::detail::atomic_store_min(data(), operand, order);
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.memop]/1
