@@ -7,9 +7,10 @@
 #ifndef HAMON_ATOMIC_DETAIL_ATOMIC_BASE_HPP
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_HPP
 
+#include <hamon/atomic/detail/atomic_base_floating_point.hpp>
 #include <hamon/atomic/detail/atomic_base_general.hpp>
 #include <hamon/atomic/detail/atomic_base_integral.hpp>
-#include <hamon/atomic/detail/atomic_base_floating_point.hpp>
+#include <hamon/atomic/detail/atomic_base_pointer.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 
@@ -75,6 +76,19 @@ public:
 };
 
 // struct atomic_base<T, true, true> は有り得ない
+
+// Partial specialization for pointers
+template <typename T>
+struct atomic_base<T*, false, false>
+	: public hamon::detail::atomic_base_pointer<T>
+{
+private:
+	using base = hamon::detail::atomic_base_pointer<T>;
+
+public:
+	using base::base;
+	using base::operator=;
+};
 
 }	// namespace detail
 }	// namespace hamon

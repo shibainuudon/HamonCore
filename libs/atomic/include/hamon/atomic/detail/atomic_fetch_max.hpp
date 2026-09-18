@@ -11,8 +11,6 @@
 #include <hamon/atomic/detail/atomic_load.hpp>
 #include <hamon/atomic/detail/atomic_compare_exchange_weak.hpp>
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
-#include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -61,7 +59,7 @@ atomic_fetch_max_impl(T* ptr, T val, hamon::memory_order order, hamon::detail::o
 	return ret;
 }
 
-template <HAMON_CONSTRAINT(hamon::arithmetic, T)>
+template <typename T>
 HAMON_CXX14_CONSTEXPR T atomic_fetch_max(T* ptr, T val, hamon::memory_order order)
 {
 	if (hamon::is_constant_evaluated())
@@ -72,7 +70,7 @@ HAMON_CXX14_CONSTEXPR T atomic_fetch_max(T* ptr, T val, hamon::memory_order orde
 	return hamon::detail::atomic_fetch_max_impl(ptr, val, order, hamon::detail::overload_priority<2>{});
 }
 
-template <HAMON_CONSTRAINT(hamon::arithmetic, T)>
+template <typename T>
 HAMON_CXX14_CONSTEXPR T atomic_fetch_max(T* ptr, T val)
 {
 	return hamon::detail::atomic_fetch_max(ptr, val, hamon::memory_order::seq_cst);
