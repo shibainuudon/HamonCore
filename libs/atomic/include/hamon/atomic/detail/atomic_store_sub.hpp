@@ -11,7 +11,6 @@
 #include <hamon/atomic/detail/atomic_fetch_sub.hpp>
 #include <hamon/atomic/detail/interlocked_exchange_add.hpp>
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
-#include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -56,16 +55,16 @@ atomic_store_sub_impl(T* ptr, T val, hamon::memory_order order, hamon::detail::o
 }
 #endif
 
-template <typename T>
+template <typename T, typename U>
 HAMON_CXX14_CONSTEXPR void
-atomic_store_sub_impl(T* ptr, T val, hamon::memory_order order, hamon::detail::overload_priority<0>)
+atomic_store_sub_impl(T* ptr, U val, hamon::memory_order order, hamon::detail::overload_priority<0>)
 {
 	// TODO: __atomic_store_subビルトイン関数が実装されるまでは atomic_fetch_sub で代用する
 	hamon::detail::atomic_fetch_sub(ptr, val, order);
 }
 
-template <HAMON_CONSTRAINT(hamon::arithmetic, T)>
-HAMON_CXX14_CONSTEXPR void atomic_store_sub(T* ptr, T val, hamon::memory_order order)
+template <typename T, typename U>
+HAMON_CXX14_CONSTEXPR void atomic_store_sub(T* ptr, U val, hamon::memory_order order)
 {
 	if (hamon::is_constant_evaluated())
 	{
@@ -76,8 +75,8 @@ HAMON_CXX14_CONSTEXPR void atomic_store_sub(T* ptr, T val, hamon::memory_order o
 	hamon::detail::atomic_store_sub_impl(ptr, val, order, hamon::detail::overload_priority<2>{});
 }
 
-template <HAMON_CONSTRAINT(hamon::arithmetic, T)>
-HAMON_CXX14_CONSTEXPR void atomic_store_sub(T* ptr, T val)
+template <typename T, typename U>
+HAMON_CXX14_CONSTEXPR void atomic_store_sub(T* ptr, U val)
 {
 	hamon::detail::atomic_store_sub(ptr, val, hamon::memory_order::seq_cst);
 }
