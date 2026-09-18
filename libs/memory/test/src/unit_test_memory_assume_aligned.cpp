@@ -15,7 +15,6 @@ namespace hamon_memory_test
 namespace assume_aligned_test
 {
 
-
 GTEST_TEST(MemoryTest, AssumeAlignedTest)
 {
 	char* buf = new char[32];
