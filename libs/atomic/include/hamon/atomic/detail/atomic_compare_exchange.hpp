@@ -12,7 +12,9 @@
 #include <hamon/atomic/detail/interlocked_compare_exchange.hpp>
 #include <hamon/cstring/memcmp.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
+#include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/config.hpp>
 
 HAMON_WARNING_PUSH()
@@ -23,13 +25,25 @@ namespace hamon
 namespace detail
 {
 
+template <typename T, hamon::enable_if_t<!hamon::is_pointer_v<T>>* = nullptr>
+HAMON_CXX14_CONSTEXPR bool mem_compare(T* lhs, T* rhs)
+{
+	return hamon::memcmp(lhs, rhs, sizeof(T)) == 0;
+}
+
+template <typename T, hamon::enable_if_t<hamon::is_pointer_v<T>>* = nullptr>
+HAMON_CXX14_CONSTEXPR bool mem_compare(T* lhs, T* rhs)
+{
+	return *lhs == *rhs;
+}
+
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange(T* ptr, T* expected, T desired, bool weak,
 	hamon::memory_order success_memorder, hamon::memory_order failure_memorder)
 {
 	if (hamon::is_constant_evaluated())
 	{
-		if (hamon::memcmp(ptr, expected, sizeof(T)) == 0)
+		if (hamon::detail::mem_compare(ptr, expected))
 		{
 			*ptr = desired;
 			return true;
@@ -47,7 +61,7 @@ HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange(T* ptr, T* expected, T desire
 	(void)failure_memorder;
 	T previous = *expected;
 	*expected = hamon::detail::interlocked_compare_exchange(ptr, desired, previous);
-	return hamon::memcmp(&previous, expected, sizeof(T)) == 0;
+	return hamon::detail::mem_compare(&previous, expected);
 #else
 	return __atomic_compare_exchange(
 		ptr, expected, hamon::addressof(desired), weak,
