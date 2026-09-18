@@ -30,12 +30,24 @@ template <>
 struct atomic_base<bool>
 	: public hamon::detail::atomic_base_general<bool>
 {
+private:
+	using base = hamon::detail::atomic_base_general<bool>;
+
+public:
+	using base::base;
+	using base::operator=;
 };
 
 template <typename T>
 struct atomic_base<T, false, false>
 	: public hamon::detail::atomic_base_general<T>
 {
+private:
+	using base = hamon::detail::atomic_base_general<T>;
+
+public:
+	using base::base;
+	using base::operator=;
 };
 
 template <typename T>
