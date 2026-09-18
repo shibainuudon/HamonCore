@@ -43,8 +43,11 @@ target_include_directories(${TARGET_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/includ
 
 # 大きなサイズに対するアトミック演算の組み込み関数(__atomic_load_16など)
 # を使えるようにするために、libatomic をリンクする
-if (NOT MSVC)
-	target_link_libraries(${TARGET_NAME} INTERFACE atomic)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
+	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	if (NOT MSVC)
+		target_link_libraries(${TARGET_NAME} INTERFACE atomic)
+	endif()
 endif()
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
