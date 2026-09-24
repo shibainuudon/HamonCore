@@ -1482,6 +1482,10 @@
 #if (_MSC_FULL_VER >= 195136257)
 #endif
 
+// Visual Studio 2026 Version: 18.10.2
+#if (_MSC_FULL_VER >= 195136260)
+#endif
+
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION
 #define HAMON_NO_TWO_PHASE_NAME_LOOKUP					// Two-phase name lookup
 //#define HAMON_HAS_CXX11_PRAGMA_OPERATOR				// Pragma演算子
