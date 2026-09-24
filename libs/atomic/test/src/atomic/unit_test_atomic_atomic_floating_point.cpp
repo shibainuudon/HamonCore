@@ -11,6 +11,8 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+#include <thread>
+
 namespace hamon_atomic_test
 {
 namespace atomic_floating_point_test
@@ -634,6 +636,33 @@ GTEST_TEST(AtomicTest, AtomicFloatingPointTest)
 	//EXPECT_TRUE((wait_test<float>()));
 	//EXPECT_TRUE((wait_test<double>()));
 	//EXPECT_TRUE((wait_test<long double>()));
+
+	{
+		hamon::atomic<float> x{0};
+		std::thread t1
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x += 0.5;
+				}
+			}
+		};
+		std::thread t2
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x -= 1.5;
+				}
+			}
+		};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(-1000, x);
+	}
 }
 
 }	// namespace atomic_floating_point_test
