@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-//#include <thread>
+#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -387,6 +387,109 @@ GTEST_TEST(AtomicTest, AtomicIntegralTest)
 	EXPECT_TRUE((wait_test<unsigned int>()));
 	EXPECT_TRUE((wait_test<unsigned long>()));
 	EXPECT_TRUE((wait_test<unsigned long long>()));
+
+	{
+		hamon::atomic<int> x{0};
+		std::thread t1
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x++;
+				}
+			}
+		};
+		std::thread t2
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x++;
+				}
+			}
+		};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(2000, x);
+	}
+	{
+		hamon::atomic<int> x{0};
+		std::thread t1
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x--;
+				}
+			}
+		};
+		std::thread t2
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x--;
+				}
+			}
+		};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(-2000, x);
+	}
+	{
+		hamon::atomic<int> x{0};
+		std::thread t1
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x += 3;
+				}
+			}
+		};
+		std::thread t2
+		{
+			[&x]()
+			{
+				for (int i = 0; i < 1000; ++i)
+				{
+					x -= 2;
+				}
+			}
+		};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(1000, x);
+	}
+	{
+		hamon::atomic<int> x{0b1111};
+		std::thread t1{[&x]() { x &= 0b0111; }};
+		std::thread t2{[&x]() { x &= 0b0101; }};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(0b0101, x);
+	}
+	{
+		hamon::atomic<int> x{0b0110};
+		std::thread t1{[&x]() { x |= 0b0001; }};
+		std::thread t2{[&x]() { x |= 0b1000; }};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(0b1111, x);
+	}
+	{
+		hamon::atomic<int> x{0b1111};
+		std::thread t1{[&x]() { x ^= 0b1011; }};
+		std::thread t2{[&x]() { x ^= 0b0101; }};
+		t1.join();
+		t2.join();
+		EXPECT_EQ(0b0001, x);
+	}
 }
 
 }	// namespace atomic_integral_test
