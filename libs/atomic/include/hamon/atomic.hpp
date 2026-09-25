@@ -11,6 +11,7 @@
 #include <hamon/atomic/atomic_alias.hpp>
 #include <hamon/atomic/atomic_flag.hpp>
 #include <hamon/atomic/atomic_nonmember.hpp>
+#include <hamon/atomic/atomic_ref.hpp>
 #include <hamon/atomic/memory_order.hpp>
 
 #if 0
@@ -29,9 +30,6 @@
 #define ATOMIC_POINTER_LOCK_FREE unspecified
 
 namespace std {
-  // [atomics.ref.generic], class template atomic_ref
-  template<class T> struct atomic_ref;
-
 
   // [atomics.fences], fences
   extern "C" constexpr void atomic_thread_fence(memory_order) noexcept;

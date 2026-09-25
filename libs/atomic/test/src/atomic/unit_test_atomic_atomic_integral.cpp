@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_atomic_atomic_integral.cpp
  *
- *	@brief	atomic のテスト
+ *	@brief	atomic<integral-type> のテスト
  */
 
 #include <hamon/atomic/atomic.hpp>

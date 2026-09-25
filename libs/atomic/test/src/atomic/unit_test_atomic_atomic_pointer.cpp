@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_atomic_atomic_pointer.cpp
  *
- *	@brief	atomic のテスト
+ *	@brief	atomic<pointer-type> のテスト
  */
 
 #include <hamon/atomic/atomic.hpp>
