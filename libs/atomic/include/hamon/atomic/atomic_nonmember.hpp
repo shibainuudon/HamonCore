@@ -4,8 +4,8 @@
  *	@brief	[atomics.nonmembers] の定義
  */
 
-#ifndef HAMON_ATOMIC_DETAIL_ATOMIC_NONMEMBER_HPP
-#define HAMON_ATOMIC_DETAIL_ATOMIC_NONMEMBER_HPP
+#ifndef HAMON_ATOMIC_ATOMIC_NONMEMBER_HPP
+#define HAMON_ATOMIC_ATOMIC_NONMEMBER_HPP
 
 #include <hamon/atomic/atomic.hpp>
 #include <hamon/atomic/memory_order.hpp>
@@ -529,4 +529,4 @@ constexpr void atomic_notify_all(atomic<T>* a) noexcept;
 
 }	// namespace hamon
 
-#endif // HAMON_ATOMIC_DETAIL_ATOMIC_NONMEMBER_HPP
+#endif // HAMON_ATOMIC_ATOMIC_NONMEMBER_HPP
