@@ -30,6 +30,7 @@ bool lock_free_test()
 		if (hamon::atomic<T*>::is_always_lock_free)
 		{
 			VERIFY(a.is_lock_free());
+			VERIFY(hamon::atomic_is_lock_free(&a));
 		}
 	}
 	{
@@ -37,6 +38,7 @@ bool lock_free_test()
 		if (hamon::atomic<T*>::is_always_lock_free)
 		{
 			VERIFY(a.is_lock_free());
+			VERIFY(hamon::atomic_is_lock_free(&a));
 		}
 	}
 	return true;
@@ -298,6 +300,229 @@ HAMON_CXX14_CONSTEXPR bool test()
 	return true;
 }
 
+template <bool Volatile, typename T>
+HAMON_CXX14_CONSTEXPR bool nonmember_test()
+{
+	using Atomic = hamon::conditional_t<Volatile, hamon::atomic<T*> volatile, hamon::atomic<T*>>;
+
+	{
+		Atomic a;
+		VERIFY(hamon::atomic_load(&a) == nullptr);
+	}
+	{
+		T x = 13;
+		Atomic a(&x);
+		VERIFY(hamon::atomic_load_explicit(&a, hamon::memory_order::seq_cst) == &x);
+	}
+	{
+		Atomic a(nullptr);
+		T x = 2;
+		hamon::atomic_store(&a, &x);
+		VERIFY(a.load() == &x);
+	}
+	{
+		Atomic a(nullptr);
+		T x = 2;
+		hamon::atomic_store_explicit(&a, &x, hamon::memory_order::seq_cst);
+		VERIFY(a.load() == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		Atomic a(&x);
+		VERIFY(hamon::atomic_exchange(&a, &y) == &x);
+		VERIFY(a.load() == &y);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		Atomic a(&x);
+		VERIFY(hamon::atomic_exchange_explicit(&a, &y, hamon::memory_order::seq_cst) == &x);
+		VERIFY(a.load() == &y);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		Atomic a(&x);
+		T* expected = &x;
+		VERIFY(true == hamon::atomic_compare_exchange_weak_explicit(&a, &expected, &y, hamon::memory_order::seq_cst, hamon::memory_order::seq_cst));
+		VERIFY(a.load() == &y);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		T z = 3;
+		Atomic a(&x);
+		T* expected = &z;
+		VERIFY(false == hamon::atomic_compare_exchange_weak_explicit(&a, &expected, &y, hamon::memory_order::seq_cst, hamon::memory_order::seq_cst));
+		VERIFY(a.load() == &x);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		Atomic a(&x);
+		T* expected = &x;
+		VERIFY(true == hamon::atomic_compare_exchange_strong_explicit(&a, &expected, &y, hamon::memory_order::seq_cst, hamon::memory_order::seq_cst));
+		VERIFY(a.load() == &y);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		T z = 3;
+		Atomic a(&x);
+		T* expected = &z;
+		VERIFY(false == hamon::atomic_compare_exchange_strong_explicit(&a, &expected, &y, hamon::memory_order::seq_cst, hamon::memory_order::seq_cst));
+		VERIFY(a.load() == &x);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		Atomic a(&x);
+		T* expected = &x;
+		VERIFY(true == hamon::atomic_compare_exchange_weak(&a, &expected, &y));
+		VERIFY(a.load() == &y);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		T z = 3;
+		Atomic a(&x);
+		T* expected = &z;
+		VERIFY(false == hamon::atomic_compare_exchange_weak(&a, &expected, &y));
+		VERIFY(a.load() == &x);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		Atomic a(&x);
+		T* expected = &x;
+		VERIFY(true == hamon::atomic_compare_exchange_strong(&a, &expected, &y));
+		VERIFY(a.load() == &y);
+		VERIFY(expected == &x);
+	}
+	{
+		T x = 1;
+		T y = 2;
+		T z = 3;
+		Atomic a(&x);
+		T* expected = &z;
+		VERIFY(false == hamon::atomic_compare_exchange_strong(&a, &expected, &y));
+		VERIFY(a.load() == &x);
+		VERIFY(expected == &x);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[0]);
+		T* before = hamon::atomic_fetch_add(&a, 2);
+		VERIFY(before == &arr[0]);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[2]);
+		T* before = hamon::atomic_fetch_add_explicit(&a, -1, hamon::memory_order::seq_cst);
+		VERIFY(before == &arr[2]);
+		VERIFY(a.load() == &arr[1]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		T* before = hamon::atomic_fetch_sub(&a, 1);
+		VERIFY(before == &arr[1]);
+		VERIFY(a.load() == &arr[0]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[0]);
+		T* before = hamon::atomic_fetch_sub_explicit(&a, -2, hamon::memory_order::seq_cst);
+		VERIFY(before == &arr[0]);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		T* before = hamon::atomic_fetch_max(&a, &arr[2]);
+		VERIFY(before == &arr[1]);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		T* before = hamon::atomic_fetch_max_explicit(&a, &arr[0], hamon::memory_order::seq_cst);
+		VERIFY(before == &arr[1]);
+		VERIFY(a.load() == &arr[1]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		T* before = hamon::atomic_fetch_min(&a, &arr[2]);
+		VERIFY(before == &arr[1]);
+		VERIFY(a.load() == &arr[1]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		T* before = hamon::atomic_fetch_min_explicit(&a, &arr[0], hamon::memory_order::seq_cst);
+		VERIFY(before == &arr[1]);
+		VERIFY(a.load() == &arr[0]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[0]);
+		hamon::atomic_store_add(&a, 2);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[0]);
+		hamon::atomic_store_add_explicit(&a, 2, hamon::memory_order::seq_cst);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		hamon::atomic_store_sub(&a, 1);
+		VERIFY(a.load() == &arr[0]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		hamon::atomic_store_sub_explicit(&a, 1, hamon::memory_order::seq_cst);
+		VERIFY(a.load() == &arr[0]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		hamon::atomic_store_max(&a, &arr[2]);
+		VERIFY(a.load() == &arr[2]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		hamon::atomic_store_max_explicit(&a, &arr[0], hamon::memory_order::seq_cst);
+		VERIFY(a.load() == &arr[1]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		hamon::atomic_store_min(&a, &arr[2]);
+		VERIFY(a.load() == &arr[1]);
+	}
+	{
+		T arr[] = {1,2,3};
+		Atomic a(&arr[1]);
+		hamon::atomic_store_min_explicit(&a, &arr[0], hamon::memory_order::seq_cst);
+		VERIFY(a.load() == &arr[0]);
+	}
+	return true;
+}
+
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
@@ -322,6 +547,12 @@ GTEST_TEST(AtomicTest, AtomicPointerTest)
 
 	EXPECT_TRUE((test<true, char>()));
 	EXPECT_TRUE((test<true, int>()));
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((nonmember_test<false, char>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((nonmember_test<false, int>()));
+
+	EXPECT_TRUE((nonmember_test<true, char>()));
+	EXPECT_TRUE((nonmember_test<true, int>()));
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<char>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<int>()));
