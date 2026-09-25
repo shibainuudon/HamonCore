@@ -28,4 +28,7 @@ public:
 
 }	// namespace hamon
 
+// [atomics.nonmembers], non-member functions
+#include <hamon/atomic/atomic_nonmember.hpp>
+
 #endif // HAMON_ATOMIC_ATOMIC_HPP
