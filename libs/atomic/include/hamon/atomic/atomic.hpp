@@ -31,4 +31,7 @@ public:
 // [atomics.nonmembers], non-member functions
 #include <hamon/atomic/atomic_nonmember.hpp>
 
+// [atomics.alias], type aliases
+#include <hamon/atomic/atomic_alias.hpp>
+
 #endif // HAMON_ATOMIC_ATOMIC_HPP
