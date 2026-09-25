@@ -7,7 +7,27 @@
 #ifndef HAMON_ATOMIC_DETAIL_ATOMIC_BASE_POINTER_HPP
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_POINTER_HPP
 
+#include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_compare_exchange_weak.hpp>
+#include <hamon/atomic/detail/atomic_compare_exchange_strong.hpp>
+#include <hamon/atomic/detail/atomic_exchange.hpp>
+#include <hamon/atomic/detail/atomic_fetch_add.hpp>
+#include <hamon/atomic/detail/atomic_fetch_sub.hpp>
+#include <hamon/atomic/detail/atomic_fetch_max.hpp>
+#include <hamon/atomic/detail/atomic_fetch_min.hpp>
+#include <hamon/atomic/detail/atomic_is_always_lock_free.hpp>
+#include <hamon/atomic/detail/atomic_is_lock_free.hpp>
+#include <hamon/atomic/detail/atomic_load.hpp>
+#include <hamon/atomic/detail/atomic_store.hpp>
+#include <hamon/atomic/detail/atomic_store_add.hpp>
+#include <hamon/atomic/detail/atomic_store_sub.hpp>
+#include <hamon/atomic/detail/atomic_store_max.hpp>
+#include <hamon/atomic/detail/atomic_store_min.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_object.hpp>
+#include <hamon/assert.hpp>
 
 namespace hamon
 {
@@ -28,13 +48,13 @@ struct atomic_base_pointer
 	bool is_lock_free() const volatile noexcept
 	{
 		// [atomics.types.operations]/5
-		return hamon::detail::atomic_is_lock_free<T>();
+		return hamon::detail::atomic_is_lock_free<T*>();
 	}
 
 	bool is_lock_free() const noexcept
 	{
 		// [atomics.types.operations]/5
-		return hamon::detail::atomic_is_lock_free<T>();
+		return hamon::detail::atomic_is_lock_free<T*>();
 	}
 
 	constexpr atomic_base_pointer() noexcept
