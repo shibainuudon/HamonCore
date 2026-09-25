@@ -7,7 +7,6 @@
 #ifndef HAMON_ATOMIC_ATOMIC_HPP
 #define HAMON_ATOMIC_ATOMIC_HPP
 
-#include <hamon/atomic/memory_order.hpp>
 #include <hamon/atomic/detail/atomic_base.hpp>
 
 namespace hamon

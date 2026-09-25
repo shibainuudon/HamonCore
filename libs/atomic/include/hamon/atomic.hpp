@@ -11,6 +11,7 @@
 #include <hamon/atomic/atomic_alias.hpp>
 #include <hamon/atomic/atomic_flag.hpp>
 #include <hamon/atomic/atomic_nonmember.hpp>
+#include <hamon/atomic/atomic_ref.hpp>
 #include <hamon/atomic/memory_order.hpp>
 
 #if 0
