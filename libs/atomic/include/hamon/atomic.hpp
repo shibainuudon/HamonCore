@@ -12,6 +12,7 @@
 #include <hamon/atomic/atomic_flag.hpp>
 #include <hamon/atomic/atomic_nonmember.hpp>
 #include <hamon/atomic/atomic_ref.hpp>
+#include <hamon/atomic/atomic_thread_fence.hpp>
 #include <hamon/atomic/memory_order.hpp>
 
 #if 0
@@ -32,7 +33,6 @@
 namespace std {
 
   // [atomics.fences], fences
-  extern "C" constexpr void atomic_thread_fence(memory_order) noexcept;
   extern "C" constexpr void atomic_signal_fence(memory_order) noexcept;
 }
 
