@@ -318,8 +318,83 @@ HAMON_CXX14_CONSTEXPR bool test()
 }
 
 template <typename T>
-HAMON_CXX14_CONSTEXPR bool wait_test()
+HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
+	{
+		T x = 0;
+		hamon::atomic_ref<T> a(x);
+		a.wait(T(1));
+		a.notify_one();
+	}
+	{
+		T x = 1;
+		hamon::atomic_ref<T> a(x);
+		a.wait(T(0), hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+	return true;
+}
+
+template <typename T>
+inline bool wait_test()
+{
+	{
+		T x = 0;
+		hamon::atomic_ref<T> a{x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(0);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(1);
+				a.notify_one();
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		T x = 10;
+		hamon::atomic_ref<T> a{x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(10, hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(10);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(20);
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+
 	return true;
 }
 
@@ -349,16 +424,27 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<unsigned long>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<unsigned long long>()));
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<signed char>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<signed short>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<signed int>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<signed long>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<signed long long>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<unsigned char>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<unsigned short>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<unsigned int>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<unsigned long>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<unsigned long long>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<signed char>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<signed short>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<signed int>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<signed long>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<signed long long>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<unsigned char>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<unsigned short>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<unsigned int>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<unsigned long>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<unsigned long long>()));
+
+	EXPECT_TRUE((wait_test<signed char>()));
+	EXPECT_TRUE((wait_test<signed short>()));
+	EXPECT_TRUE((wait_test<signed int>()));
+	EXPECT_TRUE((wait_test<signed long>()));
+	EXPECT_TRUE((wait_test<signed long long>()));
+	EXPECT_TRUE((wait_test<unsigned char>()));
+	EXPECT_TRUE((wait_test<unsigned short>()));
+	EXPECT_TRUE((wait_test<unsigned int>()));
+	EXPECT_TRUE((wait_test<unsigned long>()));
+	EXPECT_TRUE((wait_test<unsigned long long>()));
 
 	{
 		int x{0};

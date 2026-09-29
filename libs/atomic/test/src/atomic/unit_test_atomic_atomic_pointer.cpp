@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-//#include <thread>
+#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -526,12 +526,139 @@ HAMON_CXX14_CONSTEXPR bool nonmember_test()
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
+	{
+		T x = 1;
+		hamon::atomic<T*> a;
+		a.wait(&x);
+		a.notify_one();
+	}
+	{
+		T x = 1;
+		hamon::atomic<T*> a(&x);
+		a.wait(nullptr, hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+
 	return true;
 }
 
 template <typename T>
 bool wait_test()
 {
+	{
+		T x = 1;
+		hamon::atomic<T*> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(nullptr);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(&x);
+				a.notify_one();
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		T x = 1;
+		hamon::atomic<T*> volatile a{&x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(&x, hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(&x);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(nullptr);
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+	{
+		T x = 1;
+		hamon::atomic<T*> volatile a{&x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, &x);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, nullptr);
+				hamon::atomic_notify_one(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		T x = 1;
+		T y = 1;
+		hamon::atomic<T*> volatile a{&x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, &x);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				hamon::atomic_wait_explicit(&a, &x, hamon::memory_order::seq_cst);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, &y);
+				hamon::atomic_notify_all(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+
 	return true;
 }
 

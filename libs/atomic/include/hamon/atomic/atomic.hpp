@@ -15,6 +15,9 @@
 #include <hamon/atomic/detail/atomic_is_lock_free.hpp>
 #include <hamon/atomic/detail/atomic_load.hpp>
 #include <hamon/atomic/detail/atomic_store.hpp>
+#include <hamon/atomic/detail/atomic_wait.hpp>
+#include <hamon/atomic/detail/atomic_notify_one.hpp>
+#include <hamon/atomic/detail/atomic_notify_all.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
@@ -280,19 +283,55 @@ public:
 	}
 
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/29
-	void wait(T, memory_order = memory_order::seq_cst) const volatile noexcept;
+	void wait(T old, memory_order order = memory_order::seq_cst) const volatile noexcept
+	{
+		// [atomics.types.operations]/30
+		HAMON_ASSERT(
+			order == memory_order::relaxed ||
+			order == memory_order::acquire ||
+			order == memory_order::seq_cst);
 
-	constexpr void wait(T, memory_order = memory_order::seq_cst) const noexcept;
+		// [atomics.types.operations]/31
+		hamon::detail::atomic_wait(this->data(), old, order);
+	}
 
-	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/29
-	void notify_one() volatile noexcept;
+	constexpr void wait(T old, memory_order order = memory_order::seq_cst) const noexcept
+	{
+		// [atomics.types.operations]/30
+		HAMON_ASSERT(
+			order == memory_order::relaxed ||
+			order == memory_order::acquire ||
+			order == memory_order::seq_cst);
 
-	constexpr void notify_one() noexcept;
+		// [atomics.types.operations]/31
+		hamon::detail::atomic_wait(this->data(), old, order);
+	}
 
-	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/29
-	void notify_all() volatile noexcept;
+	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/33
+	void notify_one() volatile noexcept
+	{
+		// [atomics.types.operations]/34
+		hamon::detail::atomic_notify_one(this->data());
+	}
 
-	constexpr void notify_all() noexcept;
+	constexpr void notify_one() noexcept
+	{
+		// [atomics.types.operations]/34
+		hamon::detail::atomic_notify_one(this->data());
+	}
+
+	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/36
+	void notify_all() volatile noexcept
+	{
+		// [atomics.types.operations]/37
+		hamon::detail::atomic_notify_all(this->data());
+	}
+
+	constexpr void notify_all() noexcept
+	{
+		// [atomics.types.operations]/37
+		hamon::detail::atomic_notify_all(this->data());
+	}
 };
 
 }	// namespace hamon

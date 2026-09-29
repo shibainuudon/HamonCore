@@ -824,12 +824,141 @@ HAMON_CXX14_CONSTEXPR bool nonmember_test()
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
+	{
+		hamon::atomic<T> a(T(1));
+		a.wait(T(2));
+		a.notify_one();
+	}
+	{
+		hamon::atomic<T> a(T(3));
+		a.wait(T(4), hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+	{
+		hamon::atomic<T> a(T(1));
+		hamon::atomic_wait(&a, T(2));
+		hamon::atomic_notify_one(&a);
+	}
+	{
+		hamon::atomic<T> a(T(3));
+		hamon::atomic_wait_explicit(&a, T(4), hamon::memory_order::relaxed);
+		hamon::atomic_notify_all(&a);
+	}
+
 	return true;
 }
 
 template <typename T>
 bool wait_test()
 {
+	{
+		hamon::atomic<T> volatile a{T(0.5)};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(T(0.5));
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(T(1.5));
+				a.notify_one();
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		hamon::atomic<T> volatile a{T(2.5)};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(T(2.5), hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(T(2.5));
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(T(3.5));
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+	{
+		hamon::atomic<T> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, 0);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, 1);
+				hamon::atomic_notify_one(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		hamon::atomic<T> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, 0);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				hamon::atomic_wait_explicit(&a, 0, hamon::memory_order::seq_cst);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, 1);
+				hamon::atomic_notify_all(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
 	return true;
 }
 
@@ -862,12 +991,12 @@ GTEST_TEST(AtomicTest, AtomicFloatingPointTest)
 	EXPECT_TRUE((nonmember_test<true, float>()));
 	EXPECT_TRUE((nonmember_test<true, double>()));
 
-	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<float>()));
-	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<float>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<double>()));
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<long double>()));
 
-	//EXPECT_TRUE((wait_test<float>()));
-	//EXPECT_TRUE((wait_test<double>()));
+	EXPECT_TRUE((wait_test<float>()));
+	EXPECT_TRUE((wait_test<double>()));
 	//EXPECT_TRUE((wait_test<long double>()));
 
 	{
