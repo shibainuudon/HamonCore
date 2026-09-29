@@ -12,6 +12,7 @@
 #include <hamon/atomic/atomic_flag.hpp>
 #include <hamon/atomic/atomic_nonmember.hpp>
 #include <hamon/atomic/atomic_ref.hpp>
+#include <hamon/atomic/atomic_signal_fence.hpp>
 #include <hamon/atomic/atomic_thread_fence.hpp>
 #include <hamon/atomic/memory_order.hpp>
 
@@ -29,12 +30,6 @@
 #define ATOMIC_LONG_LOCK_FREE unspecified
 #define ATOMIC_LLONG_LOCK_FREE unspecified
 #define ATOMIC_POINTER_LOCK_FREE unspecified
-
-namespace std {
-
-  // [atomics.fences], fences
-  extern "C" constexpr void atomic_signal_fence(memory_order) noexcept;
-}
 
 #endif
 
