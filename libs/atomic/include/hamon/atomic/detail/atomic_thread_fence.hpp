@@ -10,11 +10,8 @@
 #include <hamon/atomic/memory_order.hpp>
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
+#include <hamon/detail/windows.hpp>		// MemoryBarrier
 #include <hamon/config.hpp>
-
-#if defined(HAMON_MSVC)
-#include <windows.h>
-#endif
 
 namespace hamon
 {

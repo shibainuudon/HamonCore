@@ -10,8 +10,8 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/sys_time.hpp>
-#include <hamon/chrono/detail/windows.hpp>
 #include <hamon/chrono/detail/filetime_to_timespec.hpp>
+#include <hamon/detail/windows.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/ostream/basic_ostream.hpp>

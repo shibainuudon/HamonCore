@@ -4,8 +4,8 @@
  *	@brief	windows.h をインクルードするためのファイル
  */
 
-#ifndef HAMON_CHRONO_DETAIL_WINDOWS_HPP
-#define HAMON_CHRONO_DETAIL_WINDOWS_HPP
+#ifndef HAMON_DETAIL_WINDOWS_HPP
+#define HAMON_DETAIL_WINDOWS_HPP
 
 #include <hamon/config.hpp>
 
@@ -19,4 +19,4 @@
 #include <windows.h>
 #endif
 
-#endif // HAMON_CHRONO_DETAIL_WINDOWS_HPP
+#endif // HAMON_DETAIL_WINDOWS_HPP

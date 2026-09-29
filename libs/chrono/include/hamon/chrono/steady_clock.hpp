@@ -9,8 +9,8 @@
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/detail/windows.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/config.hpp>
 

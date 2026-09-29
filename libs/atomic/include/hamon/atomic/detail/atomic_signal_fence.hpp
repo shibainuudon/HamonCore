@@ -13,7 +13,7 @@
 #include <hamon/config.hpp>
 
 #if defined(HAMON_MSVC)
-#include <intrin.h>
+#include <intrin.h>		// _ReadWriteBarrier
 #endif
 
 namespace hamon

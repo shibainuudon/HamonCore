@@ -10,9 +10,9 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
-#include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/detail/statically_widen.hpp>
+#include <hamon/detail/windows.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ratio.hpp>
