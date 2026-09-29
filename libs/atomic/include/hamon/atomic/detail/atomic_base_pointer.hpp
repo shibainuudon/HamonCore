@@ -8,6 +8,7 @@
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_POINTER_HPP
 
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_base_common.hpp>
 #include <hamon/atomic/detail/atomic_fetch_add.hpp>
 #include <hamon/atomic/detail/atomic_fetch_sub.hpp>
 #include <hamon/atomic/detail/atomic_fetch_max.hpp>
@@ -18,7 +19,6 @@
 #include <hamon/atomic/detail/atomic_store_max.hpp>
 #include <hamon/atomic/detail/atomic_store_min.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
-#include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
@@ -31,8 +31,13 @@ namespace detail
 // 32.5.8.5 Partial specialization for pointers[atomics.types.pointer]
 
 template <typename pointer_type>
-struct atomic_base_pointer
+struct atomic_base_pointer : public hamon::detail::atomic_base_common<pointer_type>
 {
+private:
+	using base = hamon::detail::atomic_base_common<pointer_type>;
+	using base::base;
+
+public:
 	using value_type = pointer_type;
 	using difference_type = hamon::ptrdiff_t;
 
@@ -268,38 +273,6 @@ struct atomic_base_pointer
 		// [atomics.types.pointer]/16
 		return fetch_sub(operand) - operand;
 	}
-
-protected:
-	constexpr atomic_base_pointer()
-		: m_value()
-	{}
-
-	constexpr atomic_base_pointer(pointer_type desired)
-		: m_value(desired)
-	{}
-
-	constexpr pointer_type* data() noexcept
-	{
-		return const_cast<pointer_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr pointer_type* data() const noexcept
-	{
-		return const_cast<pointer_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr pointer_type* data() volatile noexcept
-	{
-		return const_cast<pointer_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr pointer_type* data() const volatile noexcept
-	{
-		return const_cast<pointer_type*>(hamon::addressof(m_value));
-	}
-
-private:
-	pointer_type m_value;
 };
 
 }	// namespace detail

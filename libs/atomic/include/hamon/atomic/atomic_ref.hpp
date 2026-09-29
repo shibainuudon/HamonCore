@@ -95,7 +95,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.ops]/13
-		hamon::detail::atomic_store(this->ptr, desired, order);
+		hamon::detail::atomic_store(this->data(), desired, order);
 	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/14
@@ -115,7 +115,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.ops]/17,18
-		return hamon::detail::atomic_load(this->ptr, order);
+		return hamon::detail::atomic_load(this->data(), order);
 	}
 
 	constexpr operator value_type() const noexcept
@@ -128,7 +128,7 @@ public:
 	constexpr value_type exchange(value_type desired, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.ops]/21,22
-		return hamon::detail::atomic_exchange(this->ptr, desired, order);
+		return hamon::detail::atomic_exchange(this->data(), desired, order);
 	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/23
@@ -142,7 +142,7 @@ public:
 
 		// [atomics.ref.ops]/25,26
 		return hamon::detail::atomic_compare_exchange_weak(
-			this->ptr, hamon::addressof(expected), desired, success, failure);
+			this->data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/23
@@ -156,7 +156,7 @@ public:
 
 		// [atomics.ref.ops]/25,26
 		return hamon::detail::atomic_compare_exchange_strong(
-			this->ptr, hamon::addressof(expected), desired, success, failure);
+			this->data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/23
@@ -169,7 +169,7 @@ public:
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
 		return hamon::detail::atomic_compare_exchange_weak(
-			this->ptr, hamon::addressof(expected), desired, success, failure);
+			this->data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/23
@@ -182,7 +182,7 @@ public:
 			(order == memory_order::release) ? memory_order::relaxed :
 			order;
 		return hamon::detail::atomic_compare_exchange_strong(
-			this->ptr, hamon::addressof(expected), desired, success, failure);
+			this->data(), hamon::addressof(expected), desired, success, failure);
 	}
 
 	constexpr void wait(value_type old, memory_order order = memory_order::seq_cst) const noexcept;
@@ -196,7 +196,7 @@ public:
 	constexpr address_return_type address() const noexcept
 	{
 		// [atomics.ref.ops]/37
-		return this->ptr;
+		return this->data();
 	}
 };
 

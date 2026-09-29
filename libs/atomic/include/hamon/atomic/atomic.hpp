@@ -15,7 +15,6 @@
 #include <hamon/atomic/detail/atomic_is_lock_free.hpp>
 #include <hamon/atomic/detail/atomic_load.hpp>
 #include <hamon/atomic/detail/atomic_store.hpp>
-#include <hamon/atomic/detail/clear_padding_if_needed.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
@@ -90,8 +89,6 @@ public:
 			order == memory_order::release ||
 			order == memory_order::seq_cst);
 
-		hamon::detail::clear_padding_if_needed(desired);
-
 		// [atomics.types.operations]/8
 		hamon::detail::atomic_store(this->data(), desired, order);
 	}
@@ -103,8 +100,6 @@ public:
 			order == memory_order::relaxed ||
 			order == memory_order::release ||
 			order == memory_order::seq_cst);
-
-		hamon::detail::clear_padding_if_needed(desired);
 
 		// [atomics.types.operations]/8
 		hamon::detail::atomic_store(this->data(), desired, order);
@@ -170,16 +165,12 @@ public:
 	template <bool B = is_always_lock_free, typename = hamon::enable_if_t<B>>	// [atomics.types.operations]/18
 	T exchange(T desired, memory_order order = memory_order::seq_cst) volatile noexcept
 	{
-		hamon::detail::clear_padding_if_needed(desired);
-
 		// [atomics.types.operations]/19,20
 		return hamon::detail::atomic_exchange(this->data(), desired, order);
 	}
 
 	constexpr T exchange(T desired, memory_order order = memory_order::seq_cst) noexcept
 	{
-		hamon::detail::clear_padding_if_needed(desired);
-
 		// [atomics.types.operations]/19,20
 		return hamon::detail::atomic_exchange(this->data(), desired, order);
 	}
@@ -193,9 +184,6 @@ public:
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
 
-		hamon::detail::clear_padding_if_needed(expected);
-		hamon::detail::clear_padding_if_needed(desired);
-
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_weak(
 			this->data(), hamon::addressof(expected), desired, success, failure);
@@ -208,9 +196,6 @@ public:
 			failure == memory_order::relaxed ||
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
-
-		hamon::detail::clear_padding_if_needed(expected);
-		hamon::detail::clear_padding_if_needed(desired);
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_weak(
@@ -226,9 +211,6 @@ public:
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
 
-		hamon::detail::clear_padding_if_needed(expected);
-		hamon::detail::clear_padding_if_needed(desired);
-
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_strong(
 			this->data(), hamon::addressof(expected), desired, success, failure);
@@ -241,9 +223,6 @@ public:
 			failure == memory_order::relaxed ||
 			failure == memory_order::acquire ||
 			failure == memory_order::seq_cst);
-
-		hamon::detail::clear_padding_if_needed(expected);
-		hamon::detail::clear_padding_if_needed(desired);
 
 		// [atomics.types.operations]/23,24
 		return hamon::detail::atomic_compare_exchange_strong(

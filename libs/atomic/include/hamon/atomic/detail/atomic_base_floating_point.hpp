@@ -8,6 +8,7 @@
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_FLOATING_POINT_HPP
 
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_base_common.hpp>
 #include <hamon/atomic/detail/atomic_fetch_add.hpp>
 #include <hamon/atomic/detail/atomic_fetch_fmaximum.hpp>
 #include <hamon/atomic/detail/atomic_fetch_fmaximum_num.hpp>
@@ -23,8 +24,6 @@
 #include <hamon/atomic/detail/atomic_store_min.hpp>
 #include <hamon/atomic/detail/atomic_store_sub.hpp>
 #include <hamon/atomic/detail/atomic_is_always_lock_free.hpp>
-#include <hamon/atomic/detail/clear_padding_if_needed.hpp>
-#include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/assert.hpp>
 
@@ -36,8 +35,13 @@ namespace detail
 // 32.5.8.4 Specializations for floating-point types[atomics.types.float]
 
 template <typename floating_point_type>
-struct atomic_base_floating_point
+struct atomic_base_floating_point : public hamon::detail::atomic_base_common<floating_point_type>
 {
+private:
+	using base = hamon::detail::atomic_base_common<floating_point_type>;
+	using base::base;
+
+public:
 	using value_type = floating_point_type;
 	using difference_type = value_type;
 
@@ -373,40 +377,6 @@ struct atomic_base_floating_point
 		// [atomics.types.float]/18
 		return fetch_sub(operand) - operand;
 	}
-
-protected:
-	constexpr atomic_base_floating_point()
-		: m_value()
-	{}
-
-	constexpr atomic_base_floating_point(floating_point_type desired)
-		: m_value(desired)
-	{
-		hamon::detail::clear_padding_if_needed(m_value);
-	}
-
-	constexpr floating_point_type* data() noexcept
-	{
-		return const_cast<floating_point_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr floating_point_type* data() const noexcept
-	{
-		return const_cast<floating_point_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr floating_point_type* data() volatile noexcept
-	{
-		return const_cast<floating_point_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr floating_point_type* data() const volatile noexcept
-	{
-		return const_cast<floating_point_type*>(hamon::addressof(m_value));
-	}
-
-private:
-	floating_point_type m_value;
 };
 
 }	// namespace detail

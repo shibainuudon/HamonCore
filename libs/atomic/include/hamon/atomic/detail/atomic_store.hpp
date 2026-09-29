@@ -10,6 +10,7 @@
 #include <hamon/atomic/memory_order.hpp>
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
 #include <hamon/atomic/detail/interlocked_exchange.hpp>
+#include <hamon/atomic/detail/clear_padding_if_needed.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
@@ -30,6 +31,8 @@ HAMON_CXX14_CONSTEXPR void atomic_store(T* ptr, T val, hamon::memory_order order
 		*ptr = val;
 		return;
 	}
+
+	hamon::detail::clear_padding_if_needed(val);
 
 #if defined(HAMON_MSVC)
 	(void)order;

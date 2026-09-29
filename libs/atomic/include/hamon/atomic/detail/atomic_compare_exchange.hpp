@@ -10,7 +10,9 @@
 #include <hamon/atomic/memory_order.hpp>
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
 #include <hamon/atomic/detail/interlocked_compare_exchange.hpp>
+#include <hamon/atomic/detail/clear_padding_if_needed.hpp>
 #include <hamon/cstring/memcmp.hpp>
+#include <hamon/cstring/memcpy.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -25,12 +27,17 @@ namespace hamon
 namespace detail
 {
 
+// atomic_compare_exchangeでの比較はビット単位で行う。
+// 例えば、floating-point type の +0.0 と -0.0 は区別される。
 template <typename T, hamon::enable_if_t<!hamon::is_pointer_v<T>>* = nullptr>
 HAMON_CXX14_CONSTEXPR bool mem_compare(T* lhs, T* rhs)
 {
 	return hamon::memcmp(lhs, rhs, sizeof(T)) == 0;
 }
 
+// Tがポインタ型の場合は以下の理由からmemcmpを使わない。
+// ・異なるオブジェクトを指すポインタの大小比較を避けるため
+// ・ポインタはbit_castできないため
 template <typename T, hamon::enable_if_t<hamon::is_pointer_v<T>>* = nullptr>
 HAMON_CXX14_CONSTEXPR bool mem_compare(T* lhs, T* rhs)
 {
@@ -55,18 +62,29 @@ HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange(T* ptr, T* expected, T desire
 		}
 	}
 
+	hamon::detail::clear_padding_if_needed(desired);
+	T expected_copy = *expected;
+	hamon::detail::clear_padding_if_needed(expected_copy);
+
 #if defined(HAMON_MSVC)
 	(void)weak;
 	(void)success_memorder;
 	(void)failure_memorder;
-	T previous = *expected;
-	*expected = hamon::detail::interlocked_compare_exchange(ptr, desired, previous);
-	return hamon::detail::mem_compare(&previous, expected);
+	*expected = hamon::detail::interlocked_compare_exchange(ptr, desired, expected_copy);
+	return hamon::detail::mem_compare(&expected_copy, expected);
 #else
-	return __atomic_compare_exchange(
-		ptr, expected, hamon::addressof(desired), weak,
+	if (__atomic_compare_exchange(
+		ptr, hamon::addressof(expected_copy), hamon::addressof(desired), weak,
 		hamon::detail::to_gcc_memory_order(success_memorder),
-		hamon::detail::to_gcc_memory_order(failure_memorder));
+		hamon::detail::to_gcc_memory_order(failure_memorder)))
+	{
+		return true;
+	}
+	else
+	{
+		hamon::memcpy(expected, hamon::addressof(expected_copy), sizeof(T));
+		return false;
+	}
 #endif
 }
 

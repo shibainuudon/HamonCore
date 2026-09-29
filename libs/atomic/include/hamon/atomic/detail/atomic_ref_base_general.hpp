@@ -7,7 +7,7 @@
 #ifndef HAMON_ATOMIC_DETAIL_ATOMIC_REF_BASE_GENERAL_HPP
 #define HAMON_ATOMIC_DETAIL_ATOMIC_REF_BASE_GENERAL_HPP
 
-#include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/atomic/detail/atomic_ref_base_common.hpp>
 
 namespace hamon
 {
@@ -17,26 +17,14 @@ namespace detail
 // 32.5.7.1 General[atomics.ref.generic.general]
 
 template <typename T>
-struct atomic_ref_base_general
+struct atomic_ref_base_general : public hamon::detail::atomic_ref_base_common<T>
 {
+private:
+	using base = hamon::detail::atomic_ref_base_common<T>;
+	using base::base;
+
 public:
-	using value_type = hamon::remove_cv_t<T>;
-
-protected:
-	constexpr atomic_ref_base_general(T* p)
-		: ptr(const_cast<value_type*>(p))
-	{}
-
-	template <typename U>
-	constexpr atomic_ref_base_general(atomic_ref_base_general<U> const& ref)
-		: ptr(ref.ptr)
-	{}
-
-protected:
-	value_type* ptr;
-
-	template <typename>
-	friend struct atomic_ref_base_general;
+	using value_type = typename base::value_type;
 };
 
 }	// namespace detail

@@ -8,6 +8,7 @@
 #define HAMON_ATOMIC_DETAIL_ATOMIC_REF_BASE_POINTER_HPP
 
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_ref_base_common.hpp>
 #include <hamon/atomic/detail/atomic_fetch_add.hpp>
 #include <hamon/atomic/detail/atomic_fetch_max.hpp>
 #include <hamon/atomic/detail/atomic_fetch_min.hpp>
@@ -20,7 +21,6 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_object.hpp>
-#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/assert.hpp>
 
@@ -32,10 +32,14 @@ namespace detail
 // 32.5.7.5 Specialization for pointers[atomics.ref.pointer]
 
 template <typename pointer_type>
-struct atomic_ref_base_pointer
+struct atomic_ref_base_pointer : public hamon::detail::atomic_ref_base_common<pointer_type>
 {
+private:
+	using base = hamon::detail::atomic_ref_base_common<pointer_type>;
+	using base::base;
+
 public:
-	using value_type = hamon::remove_cv_t<pointer_type>;
+	using value_type = typename base::value_type;
 	using difference_type = hamon::ptrdiff_t;
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/6
@@ -45,7 +49,7 @@ public:
 		static_assert(hamon::is_object_v<hamon::remove_pointer_t<pointer_type>>, "");
 
 		// [atomics.ref.pointer]/8,9
-		return hamon::detail::atomic_fetch_add(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_add(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/6
@@ -55,7 +59,7 @@ public:
 		static_assert(hamon::is_object_v<hamon::remove_pointer_t<pointer_type>>, "");
 
 		// [atomics.ref.pointer]/8,9
-		return hamon::detail::atomic_fetch_sub(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_sub(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/6
@@ -65,7 +69,7 @@ public:
 		static_assert(hamon::is_object_v<hamon::remove_pointer_t<pointer_type>>, "");
 
 		// [atomics.ref.pointer]/8,9,11
-		return hamon::detail::atomic_fetch_max(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_max(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/6
@@ -75,7 +79,7 @@ public:
 		static_assert(hamon::is_object_v<hamon::remove_pointer_t<pointer_type>>, "");
 
 		// [atomics.ref.pointer]/8,9,11
-		return hamon::detail::atomic_fetch_min(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_min(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/12
@@ -91,7 +95,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.pointer]/15
-		hamon::detail::atomic_store_add(this->ptr, operand, order);
+		hamon::detail::atomic_store_add(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/12
@@ -107,7 +111,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.pointer]/15
-		hamon::detail::atomic_store_sub(this->ptr, operand, order);
+		hamon::detail::atomic_store_sub(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/12
@@ -123,7 +127,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.pointer]/15
-		hamon::detail::atomic_store_max(this->ptr, operand, order);
+		hamon::detail::atomic_store_max(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.pointer]/12
@@ -139,7 +143,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.pointer]/15
-		hamon::detail::atomic_store_min(this->ptr, operand, order);
+		hamon::detail::atomic_store_min(this->data(), operand, order);
 	}
 
 	template <typename U = pointer_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.memop]/2
@@ -183,22 +187,6 @@ public:
 		// [atomics.ref.pointer]/18
 		return fetch_sub(operand) - operand;
 	}
-
-protected:
-	constexpr atomic_ref_base_pointer(pointer_type* p)
-		: ptr(const_cast<value_type*>(p))
-	{}
-
-	template <typename U>
-	constexpr atomic_ref_base_pointer(atomic_ref_base_pointer<U> const& ref)
-		: ptr(ref.ptr)
-	{}
-
-protected:
-	value_type* ptr;
-
-	template <typename>
-	friend struct atomic_ref_base_pointer;
 };
 
 }	// namespace detail

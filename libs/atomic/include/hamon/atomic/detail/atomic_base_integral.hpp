@@ -8,6 +8,7 @@
 #define HAMON_ATOMIC_DETAIL_ATOMIC_BASE_INTEGRAL_HPP
 
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_base_common.hpp>
 #include <hamon/atomic/detail/atomic_fetch_add.hpp>
 #include <hamon/atomic/detail/atomic_fetch_and.hpp>
 #include <hamon/atomic/detail/atomic_fetch_max.hpp>
@@ -23,7 +24,6 @@
 #include <hamon/atomic/detail/atomic_store_or.hpp>
 #include <hamon/atomic/detail/atomic_store_sub.hpp>
 #include <hamon/atomic/detail/atomic_store_xor.hpp>
-#include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/assert.hpp>
 
@@ -35,8 +35,13 @@ namespace detail
 // 32.5.8.3 Specializations for integers[atomics.types.int]
 
 template <typename integral_type>
-struct atomic_base_integral
+struct atomic_base_integral : public hamon::detail::atomic_base_common<integral_type>
 {
+private:
+	using base = hamon::detail::atomic_base_common<integral_type>;
+	using base::base;
+
+public:
 	using value_type = integral_type;
 	using difference_type = value_type;
 
@@ -425,38 +430,6 @@ struct atomic_base_integral
 		// [atomics.types.int]/15
 		return fetch_xor(operand) ^ operand;
 	}
-
-protected:
-	constexpr atomic_base_integral()
-		: m_value()
-	{}
-
-	constexpr atomic_base_integral(integral_type desired)
-		: m_value(desired)
-	{}
-
-	constexpr integral_type* data() noexcept
-	{
-		return const_cast<integral_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr integral_type* data() const noexcept
-	{
-		return const_cast<integral_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr integral_type* data() volatile noexcept
-	{
-		return const_cast<integral_type*>(hamon::addressof(m_value));
-	}
-
-	constexpr integral_type* data() const volatile noexcept
-	{
-		return const_cast<integral_type*>(hamon::addressof(m_value));
-	}
-
-private:
-	integral_type m_value;
 };
 
 }	// namespace detail

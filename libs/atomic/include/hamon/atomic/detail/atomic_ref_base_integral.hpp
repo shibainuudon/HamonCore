@@ -8,6 +8,7 @@
 #define HAMON_ATOMIC_DETAIL_ATOMIC_REF_BASE_INTEGRAL_HPP
 
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_ref_base_common.hpp>
 #include <hamon/atomic/detail/atomic_fetch_add.hpp>
 #include <hamon/atomic/detail/atomic_fetch_and.hpp>
 #include <hamon/atomic/detail/atomic_fetch_max.hpp>
@@ -24,7 +25,6 @@
 #include <hamon/atomic/detail/atomic_store_xor.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
-#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/assert.hpp>
 
 namespace hamon
@@ -35,59 +35,63 @@ namespace detail
 // 32.5.7.3 Specializations for integral types[atomics.ref.int]
 
 template <typename integral_type>
-struct atomic_ref_base_integral
+struct atomic_ref_base_integral : public hamon::detail::atomic_ref_base_common<integral_type>
 {
+private:
+	using base = hamon::detail::atomic_ref_base_common<integral_type>;
+	using base::base;
+
 public:
-	using value_type = hamon::remove_cv_t<integral_type>;
+	using value_type = typename base::value_type;
 	using difference_type = value_type;
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_add(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_add(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_add(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_sub(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_sub(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_sub(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_and(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_and(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_and(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_or(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_or(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_or(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_xor(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_xor(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_xor(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_max(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_max(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_max(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/5
 	constexpr value_type fetch_min(value_type operand, memory_order order = memory_order::seq_cst) const noexcept
 	{
 		// [atomics.ref.int]/6,7
-		return hamon::detail::atomic_fetch_min(this->ptr, operand, order);
+		return hamon::detail::atomic_fetch_min(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -100,7 +104,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_add(this->ptr, operand, order);
+		hamon::detail::atomic_store_add(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -113,7 +117,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_sub(this->ptr, operand, order);
+		hamon::detail::atomic_store_sub(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -126,7 +130,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_and(this->ptr, operand, order);
+		hamon::detail::atomic_store_and(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -139,7 +143,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_or(this->ptr, operand, order);
+		hamon::detail::atomic_store_or(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -152,7 +156,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_xor(this->ptr, operand, order);
+		hamon::detail::atomic_store_xor(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -165,7 +169,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_max(this->ptr, operand, order);
+		hamon::detail::atomic_store_max(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.int]/10
@@ -178,7 +182,7 @@ public:
 			order == memory_order::seq_cst);
 
 		// [atomics.ref.int]/12
-		hamon::detail::atomic_store_min(this->ptr, operand, order);
+		hamon::detail::atomic_store_min(this->data(), operand, order);
 	}
 
 	template <typename U = integral_type, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.memop]/2
@@ -243,22 +247,6 @@ public:
 		// [atomics.ref.int]/15
 		return fetch_xor(operand) ^ operand;
 	}
-
-protected:
-	constexpr atomic_ref_base_integral(integral_type* p)
-		: ptr(const_cast<value_type*>(p))
-	{}
-
-	template <typename U>
-	constexpr atomic_ref_base_integral(atomic_ref_base_integral<U> const& ref)
-		: ptr(ref.ptr)
-	{}
-
-protected:
-	value_type* ptr;
-
-	template <typename>
-	friend struct atomic_ref_base_integral;
 };
 
 }	// namespace detail
