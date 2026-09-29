@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-//#include <thread>
+#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -142,8 +142,83 @@ HAMON_CXX14_CONSTEXPR bool test()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool wait_test()
+inline HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
+	{
+		bool x = true;
+		hamon::atomic_ref<bool> a(x);
+		a.wait(false);
+		a.notify_one();
+	}
+	{
+		bool x = false;
+		hamon::atomic_ref<bool> a(x);
+		a.wait(true, hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+
+	return true;
+}
+
+inline bool wait_test()
+{
+	{
+		bool x = false;
+		hamon::atomic_ref<bool> a{x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(false);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(true);
+				a.notify_one();
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		bool x = true;
+		hamon::atomic_ref<bool> a{x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(true, hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(true);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(false);
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+
 	return true;
 }
 
@@ -155,7 +230,9 @@ GTEST_TEST(AtomicTest, AtomicRefBoolTest)
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test()));
+
+	EXPECT_TRUE((wait_test()));
 }
 
 }	// namespace atomic_ref_bool_test

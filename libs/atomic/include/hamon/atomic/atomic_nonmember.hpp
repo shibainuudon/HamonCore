@@ -504,28 +504,52 @@ constexpr void atomic_store_min_explicit(atomic<T>* a, typename atomic<T>::value
 }
 
 template <typename T>
-void atomic_wait(atomic<T> const volatile* a, typename atomic<T>::value_type old) noexcept;
+void atomic_wait(atomic<T> const volatile* a, typename atomic<T>::value_type old) noexcept
+{
+	a->wait(old);
+}
 
 template <typename T>
-constexpr void atomic_wait(atomic<T> const* a, typename atomic<T>::value_type old) noexcept;
+constexpr void atomic_wait(atomic<T> const* a, typename atomic<T>::value_type old) noexcept
+{
+	a->wait(old);
+}
 
 template <typename T>
-void atomic_wait_explicit(atomic<T> const volatile* a, typename atomic<T>::value_type old, memory_order order) noexcept;
+void atomic_wait_explicit(atomic<T> const volatile* a, typename atomic<T>::value_type old, memory_order order) noexcept
+{
+	a->wait(old, order);
+}
 
 template <typename T>
-constexpr void atomic_wait_explicit(atomic<T> const* a, typename atomic<T>::value_type old, memory_order order) noexcept;
+constexpr void atomic_wait_explicit(atomic<T> const* a, typename atomic<T>::value_type old, memory_order order) noexcept
+{
+	a->wait(old, order);
+}
 
 template <typename T>
-void atomic_notify_one(atomic<T> volatile* a) noexcept;
+void atomic_notify_one(atomic<T> volatile* a) noexcept
+{
+	a->notify_one();
+}
 
 template <typename T>
-constexpr void atomic_notify_one(atomic<T>* a) noexcept;
+constexpr void atomic_notify_one(atomic<T>* a) noexcept
+{
+	a->notify_one();
+}
 
 template <typename T>
-void atomic_notify_all(atomic<T> volatile* a) noexcept;
+void atomic_notify_all(atomic<T> volatile* a) noexcept
+{
+	a->notify_all();
+}
 
 template <typename T>
-constexpr void atomic_notify_all(atomic<T>* a) noexcept;
+constexpr void atomic_notify_all(atomic<T>* a) noexcept
+{
+	a->notify_all();
+}
 
 }	// namespace hamon
 

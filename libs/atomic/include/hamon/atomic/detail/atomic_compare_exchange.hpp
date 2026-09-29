@@ -11,12 +11,10 @@
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
 #include <hamon/atomic/detail/interlocked_compare_exchange.hpp>
 #include <hamon/atomic/detail/clear_padding_if_needed.hpp>
-#include <hamon/cstring/memcmp.hpp>
+#include <hamon/atomic/detail/memcmp_equal.hpp>
 #include <hamon/cstring/memcpy.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
-#include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/config.hpp>
 
 HAMON_WARNING_PUSH()
@@ -27,30 +25,13 @@ namespace hamon
 namespace detail
 {
 
-// atomic_compare_exchangeでの比較はビット単位で行う。
-// 例えば、floating-point type の +0.0 と -0.0 は区別される。
-template <typename T, hamon::enable_if_t<!hamon::is_pointer_v<T>>* = nullptr>
-HAMON_CXX14_CONSTEXPR bool mem_compare(T* lhs, T* rhs)
-{
-	return hamon::memcmp(lhs, rhs, sizeof(T)) == 0;
-}
-
-// Tがポインタ型の場合は以下の理由からmemcmpを使わない。
-// ・異なるオブジェクトを指すポインタの大小比較を避けるため
-// ・ポインタはbit_castできないため
-template <typename T, hamon::enable_if_t<hamon::is_pointer_v<T>>* = nullptr>
-HAMON_CXX14_CONSTEXPR bool mem_compare(T* lhs, T* rhs)
-{
-	return *lhs == *rhs;
-}
-
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange(T* ptr, T* expected, T desired, bool weak,
 	hamon::memory_order success_memorder, hamon::memory_order failure_memorder)
 {
 	if (hamon::is_constant_evaluated())
 	{
-		if (hamon::detail::mem_compare(ptr, expected))
+		if (hamon::detail::memcmp_equal(ptr, expected))
 		{
 			*ptr = desired;
 			return true;
@@ -71,7 +52,7 @@ HAMON_CXX14_CONSTEXPR bool atomic_compare_exchange(T* ptr, T* expected, T desire
 	(void)success_memorder;
 	(void)failure_memorder;
 	*expected = hamon::detail::interlocked_compare_exchange(ptr, desired, expected_copy);
-	return hamon::detail::mem_compare(&expected_copy, expected);
+	return hamon::detail::memcmp_equal(&expected_copy, expected);
 #else
 	if (__atomic_compare_exchange(
 		ptr, hamon::addressof(expected_copy), hamon::addressof(desired), weak,

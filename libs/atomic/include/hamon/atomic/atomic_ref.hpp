@@ -17,6 +17,9 @@
 #include <hamon/atomic/detail/atomic_exchange.hpp>
 #include <hamon/atomic/detail/atomic_compare_exchange_weak.hpp>
 #include <hamon/atomic/detail/atomic_compare_exchange_strong.hpp>
+#include <hamon/atomic/detail/atomic_wait.hpp>
+#include <hamon/atomic/detail/atomic_notify_one.hpp>
+#include <hamon/atomic/detail/atomic_notify_all.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/copy_cv.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -185,13 +188,31 @@ public:
 			this->data(), hamon::addressof(expected), desired, success, failure);
 	}
 
-	constexpr void wait(value_type old, memory_order order = memory_order::seq_cst) const noexcept;
+	constexpr void wait(value_type old, memory_order order = memory_order::seq_cst) const noexcept
+	{
+		// [atomics.ref.ops]/28
+		HAMON_ASSERT(
+			order == memory_order::relaxed ||
+			order == memory_order::acquire ||
+			order == memory_order::seq_cst);
+
+		// [atomics.ref.ops]/29
+		hamon::detail::atomic_wait(this->data(), old, order);
+	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/31
-	constexpr void notify_one() const noexcept;
+	constexpr void notify_one() const noexcept
+	{
+		// [atomics.ref.ops]/32
+		hamon::detail::atomic_notify_one(this->data());
+	}
 
 	template <typename U = T, typename = hamon::enable_if_t<!hamon::is_const_v<U>>>	// [atomics.ref.ops]/34
-	constexpr void notify_all() const noexcept;
+	constexpr void notify_all() const noexcept
+	{
+		// [atomics.ref.ops]/35
+		hamon::detail::atomic_notify_all(this->data());
+	}
 
 	constexpr address_return_type address() const noexcept
 	{

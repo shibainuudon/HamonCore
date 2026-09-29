@@ -268,8 +268,84 @@ HAMON_CXX14_CONSTEXPR bool test()
 }
 
 template <typename T>
-HAMON_CXX14_CONSTEXPR bool wait_test()
+HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
+	{
+		T x = 1;
+		hamon::atomic_ref<T> a(x);
+		a.wait(T(2));
+		a.notify_one();
+	}
+	{
+		T x = 3;
+		hamon::atomic_ref<T> a(x);
+		a.wait(T(4), hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+
+	return true;
+}
+
+template <typename T>
+inline bool wait_test()
+{
+	{
+		T x = T(0.5);
+		hamon::atomic_ref<T> a{x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(T(0.5));
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(T(1.5));
+				a.notify_one();
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		T x = T(2.5);
+		hamon::atomic_ref<T> a{x};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(T(2.5), hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(T(2.5));
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(T(3.5));
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+
 	return true;
 }
 
@@ -285,9 +361,13 @@ GTEST_TEST(AtomicTest, AtomicRefFloatingPointTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<double>()));
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long double>()));
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<float>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<double>()));
-	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_test<long double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<float>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<double>()));
+	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((wait_constexpr_test<long double>()));
+
+	EXPECT_TRUE((wait_test<float>()));
+	EXPECT_TRUE((wait_test<double>()));
+	//EXPECT_TRUE((wait_test<long double>()));
 
 	{
 		float x{0};

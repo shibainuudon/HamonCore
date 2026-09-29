@@ -542,16 +542,26 @@ HAMON_CXX14_CONSTEXPR bool nonmember_test()
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
-	//{
-	//	hamon::atomic<T> a(T(5));
-	//	a.wait(T(5));
-	//	a.notify_one();
-	//}
-	//{
-	//	hamon::atomic<T> a(T(6));
-	//	a.wait(T(6), hamon::memory_order::relaxed);
-	//	a.notify_all();
-	//}
+	{
+		hamon::atomic<T> a(T(1));
+		a.wait(T(2));
+		a.notify_one();
+	}
+	{
+		hamon::atomic<T> a(T(3));
+		a.wait(T(4), hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+	{
+		hamon::atomic<T> a(T(1));
+		hamon::atomic_wait(&a, T(2));
+		hamon::atomic_notify_one(&a);
+	}
+	{
+		hamon::atomic<T> a(T(3));
+		hamon::atomic_wait_explicit(&a, T(4), hamon::memory_order::relaxed);
+		hamon::atomic_notify_all(&a);
+	}
 
 	return true;
 }
@@ -559,20 +569,114 @@ HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 template <typename T>
 bool wait_test()
 {
-	//hamon::atomic<T> a;
+	{
+		hamon::atomic<T> volatile a{};
 
-	//std::thread t
-	//{
-	//	[&]()
-	//	{
-	//		a.store(10);
-	//		a.notify_one();
-	//	}
-	//};
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(0);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(1);
+				a.notify_one();
+			}
+		};
 
-	//a.wait(0);
+		t1.join();
+		t2.join();
+	}
+	{
+		hamon::atomic<T> volatile a{};
 
-	//t.join();
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(0, hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(0);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(1);
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+	{
+		hamon::atomic<T> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, 0);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, 1);
+				hamon::atomic_notify_one(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		hamon::atomic<T> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, 0);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				hamon::atomic_wait_explicit(&a, 0, hamon::memory_order::seq_cst);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, 1);
+				hamon::atomic_notify_all(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
 
 	return true;
 }

@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-//#include <thread>
+#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -241,11 +241,141 @@ HAMON_CXX14_CONSTEXPR bool nonmember_test()
 
 inline HAMON_CXX14_CONSTEXPR bool wait_constexpr_test()
 {
+	{
+		hamon::atomic<bool> a(true);
+		a.wait(false);
+		a.notify_one();
+	}
+	{
+		hamon::atomic<bool> a(false);
+		a.wait(true, hamon::memory_order::relaxed);
+		a.notify_all();
+	}
+	{
+		hamon::atomic<bool> a(false);
+		hamon::atomic_wait(&a, true);
+		hamon::atomic_notify_one(&a);
+	}
+	{
+		hamon::atomic<bool> a(true);
+		hamon::atomic_wait_explicit(&a, false, hamon::memory_order::relaxed);
+		hamon::atomic_notify_all(&a);
+	}
+
 	return true;
 }
 
 inline bool wait_test()
 {
+	{
+		hamon::atomic<bool> volatile a{false};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(false);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(true);
+				a.notify_one();
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		hamon::atomic<bool> volatile a{true};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				a.wait(true, hamon::memory_order::relaxed);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				a.wait(true);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				a.store(false);
+				a.notify_all();
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+	{
+		hamon::atomic<bool> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, false);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, true);
+				hamon::atomic_notify_one(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+	}
+	{
+		hamon::atomic<bool> volatile a{};
+
+		std::thread t1
+		{
+			[&]()
+			{
+				hamon::atomic_wait(&a, false);
+			}
+		};
+		std::thread t2
+		{
+			[&]()
+			{
+				hamon::atomic_wait_explicit(&a, false, hamon::memory_order::seq_cst);
+			}
+		};
+		std::thread t3
+		{
+			[&]()
+			{
+				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::atomic_store(&a, true);
+				hamon::atomic_notify_all(&a);
+			}
+		};
+
+		t1.join();
+		t2.join();
+		t3.join();
+	}
+
 	return true;
 }
 

@@ -11,6 +11,9 @@
 #include <hamon/atomic/detail/atomic_load.hpp>
 #include <hamon/atomic/detail/atomic_test_and_set.hpp>
 #include <hamon/atomic/detail/atomic_clear.hpp>
+#include <hamon/atomic/detail/atomic_wait.hpp>
+#include <hamon/atomic/detail/atomic_notify_one.hpp>
+#include <hamon/atomic/detail/atomic_notify_all.hpp>
 #include <hamon/assert.hpp>
 
 namespace hamon
@@ -89,12 +92,53 @@ struct atomic_flag
 		return hamon::detail::atomic_clear(data(), order);
 	}
 
-	void wait(bool old, memory_order order = memory_order::seq_cst) const volatile noexcept;
-	constexpr void wait(bool old, memory_order order = memory_order::seq_cst) const noexcept;
-	void notify_one() volatile noexcept;
-	constexpr void notify_one() noexcept;
-	void notify_all() volatile noexcept;
-	constexpr void notify_all() noexcept;
+	void wait(bool old, memory_order order = memory_order::seq_cst) const volatile noexcept
+	{
+		// [atomics.flag]/14
+		HAMON_ASSERT(
+			order == memory_order::relaxed ||
+			order == memory_order::acquire ||
+			order == memory_order::seq_cst);
+
+		// [atomics.flag]/15
+		hamon::detail::atomic_wait(data(), old, order);
+	}
+
+	constexpr void wait(bool old, memory_order order = memory_order::seq_cst) const noexcept
+	{
+		// [atomics.flag]/14
+		HAMON_ASSERT(
+			order == memory_order::relaxed ||
+			order == memory_order::acquire ||
+			order == memory_order::seq_cst);
+
+		// [atomics.flag]/15
+		hamon::detail::atomic_wait(data(), old, order);
+	}
+
+	void notify_one() volatile noexcept
+	{
+		// [atomics.flag]/17
+		hamon::detail::atomic_notify_one(data());
+	}
+
+	constexpr void notify_one() noexcept
+	{
+		// [atomics.flag]/17
+		hamon::detail::atomic_notify_one(data());
+	}
+
+	void notify_all() volatile noexcept
+	{
+		// [atomics.flag]/19
+		hamon::detail::atomic_notify_all(data());
+	}
+
+	constexpr void notify_all() noexcept
+	{
+		// [atomics.flag]/19
+		hamon::detail::atomic_notify_all(data());
+	}
 
 private:
 	using value_type = bool;
@@ -182,14 +226,45 @@ inline constexpr void atomic_flag_clear_explicit(atomic_flag* object, memory_ord
 	object->clear(order);
 }
 
-void atomic_flag_wait(atomic_flag const volatile* object, bool old) noexcept;
-constexpr void atomic_flag_wait(atomic_flag const* object, bool old) noexcept;
-void atomic_flag_wait_explicit(atomic_flag const volatile* object, bool old, memory_order order) noexcept;
-constexpr void atomic_flag_wait_explicit(atomic_flag const* object, bool old, memory_order order) noexcept;
-void atomic_flag_notify_one(atomic_flag volatile* object) noexcept;
-constexpr void atomic_flag_notify_one(atomic_flag* object) noexcept;
-void atomic_flag_notify_all(atomic_flag volatile* object) noexcept;
-constexpr void atomic_flag_notify_all(atomic_flag* object) noexcept;
+inline void atomic_flag_wait(atomic_flag const volatile* object, bool old) noexcept
+{
+	object->wait(old);
+}
+
+inline constexpr void atomic_flag_wait(atomic_flag const* object, bool old) noexcept
+{
+	object->wait(old);
+}
+
+inline void atomic_flag_wait_explicit(atomic_flag const volatile* object, bool old, memory_order order) noexcept
+{
+	object->wait(old, order);
+}
+
+inline constexpr void atomic_flag_wait_explicit(atomic_flag const* object, bool old, memory_order order) noexcept
+{
+	object->wait(old, order);
+}
+
+inline void atomic_flag_notify_one(atomic_flag volatile* object) noexcept
+{
+	object->notify_one();
+}
+
+inline constexpr void atomic_flag_notify_one(atomic_flag* object) noexcept
+{
+	object->notify_one();
+}
+
+inline void atomic_flag_notify_all(atomic_flag volatile* object) noexcept
+{
+	object->notify_all();
+}
+
+inline constexpr void atomic_flag_notify_all(atomic_flag* object) noexcept
+{
+	object->notify_all();
+}
 
 }	// namespace hamon
 
