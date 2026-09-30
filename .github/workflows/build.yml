@@ -120,7 +120,6 @@ jobs:
         config:
         - { os: macos-26, cc: "clang", cxx: "clang++" }
         - { os: macos-15, cc: "clang", cxx: "clang++" }
-        - { os: macos-14, cc: "clang", cxx: "clang++" }
         cxx_standard: [14, 17, 20, 23]
         build_type: [Debug, Release]
     steps:
