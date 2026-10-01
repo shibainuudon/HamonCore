@@ -1,0 +1,16 @@
+name: thread
+
+on:
+  push:
+    paths:
+      - libs/thread/**
+      - .github/workflows/thread.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/thread
