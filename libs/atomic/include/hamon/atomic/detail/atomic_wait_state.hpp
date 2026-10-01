@@ -19,6 +19,7 @@ namespace detail
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4324)	// アラインメント指定子のために構造体がパッドされました
+HAMON_WARNING_DISABLE_GCC("-Winterference-size")
 
 // false sharing を避けるためにアラインを設定
 struct alignas(hamon::hardware_destructive_interference_size) atomic_wait_state
