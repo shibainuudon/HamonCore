@@ -1,0 +1,63 @@
+﻿/**
+ *	@file	unit_test_thread_thread_name_hint.cpp
+ *
+ *	@brief	thread::name_hint のテスト
+ */
+
+#include <hamon/thread/thread.hpp>
+#include <hamon/type_traits.hpp>
+#include <gtest/gtest.h>
+
+namespace hamon_thread_test
+{
+
+namespace name_hint_test
+{
+
+void work(int n)
+{
+	(void)n;
+}
+
+GTEST_TEST(ThreadTest, NameHintTest)
+{
+	static_assert(!hamon::is_default_constructible_v<hamon::thread::name_hint<char>>, "");
+	static_assert(!hamon::is_copy_constructible_v<hamon::thread::name_hint<char>>, "");
+	static_assert(!hamon::is_move_constructible_v<hamon::thread::name_hint<char>>, "");
+	static_assert( hamon::is_constructible_v<hamon::thread::name_hint<char>, hamon::string_view>, "");
+	static_assert( hamon::is_nothrow_constructible_v<hamon::thread::name_hint<char>, hamon::string_view>, "");
+	static_assert(!hamon::is_implicitly_constructible_v<hamon::thread::name_hint<char>, hamon::string_view>, "");
+	static_assert(!hamon::is_copy_assignable_v<hamon::thread::name_hint<char>>, "");
+	static_assert(!hamon::is_move_assignable_v<hamon::thread::name_hint<char>>, "");
+
+	// スレッド名"Worker"を指定してスレッドを生成する
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+	hamon::thread t{ hamon::thread::name_hint("Worker"), work, 42 };
+#else
+	hamon::thread t{ hamon::thread::name_hint<char>("Worker"), work, 42 };
+#endif
+
+	// 標準ライブラリにスレッド名を取得するAPIはないが、
+	// ネイティブハンドルを通じてプラットフォームのAPIで取得できる
+#if 0
+	{
+		char name[16]{};
+		pthread_getname_np(t.native_handle(), name, sizeof(name));
+		EXPECT_STREQ("Worker", name);
+	}
+#endif
+#if 0
+	{
+		wchar_t* name = nullptr;
+		GetThreadDescription(t.native_handle(), &name);
+		EXPECT_STREQ(L"Worker", name);
+		LocalFree(name);
+	}
+#endif
+
+	t.join();
+}
+
+}	// namespace name_hint_test
+
+}	// namespace hamon_thread_test

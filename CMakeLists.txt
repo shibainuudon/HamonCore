@@ -82,6 +82,7 @@ set(SUBDIRECTORIES
 	string
 	string_view
 	system_error
+	thread
 	tuple
 	type_traits
 	units
