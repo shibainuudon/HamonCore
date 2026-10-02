@@ -10,6 +10,7 @@
 #include <hamon/bit/bit_cast.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/make_uint_n.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_PLATFORM_LINUX)
@@ -122,7 +123,8 @@ template <typename T>
 void wait_on_address_native(T* ptr, T val)
 {
 	static_assert(hamon::detail::is_native_waitable<T>::value, "");
-	os_sync_wait_on_address(ptr, val, sizeof(T), OS_SYNC_WAIT_ON_ADDRESS_NONE);
+	using U = hamon::make_uint_n_t<sizeof(T) * 8>;
+	os_sync_wait_on_address(ptr, hamon::bit_cast<U>(val), sizeof(T), OS_SYNC_WAIT_ON_ADDRESS_NONE);
 }
 
 template <typename T>
