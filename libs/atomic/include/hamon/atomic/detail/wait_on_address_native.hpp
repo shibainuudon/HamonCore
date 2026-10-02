@@ -14,6 +14,7 @@
 #include <hamon/config.hpp>
 
 #if defined(HAMON_PLATFORM_LINUX)
+#include <unistd.h>
 #include <sys/syscall.h>
 #include <linux/futex.h>
 #elif defined(HAMON_PLATFORM_MACOS)
