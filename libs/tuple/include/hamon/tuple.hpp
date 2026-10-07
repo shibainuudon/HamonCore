@@ -24,5 +24,6 @@
 #include <hamon/tuple/tuple_last_type.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/tuple_sort_type.hpp>
+#include <hamon/tuple/tuple_tail.hpp>
 
 #endif // HAMON_TUPLE_HPP
