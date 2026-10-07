@@ -28,7 +28,9 @@
 #include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/in_range.hpp>
+#include <hamon/utility/make_index_range.hpp>	// expansion
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/utility/make_integer_range.hpp>	// expansion
 #include <hamon/utility/make_integer_sequence.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/move_if_noexcept.hpp>
