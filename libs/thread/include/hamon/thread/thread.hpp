@@ -206,7 +206,48 @@ private:
 		decay_copied.release();
 	}
 
+	//template <typename Attr0, typename... Attrs, typename F, typename... FArgs,
+	//	typename = hamon::enable_if_t<hamon::is_same_v<stack_size_hint, hamon::remove_cvref_t<Attr0>>>
+	//>
+	//void create_thread_3(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attr0, Attrs...> attrs, F&& f, FArgs&&... fargs)
+	//{
+	//}
+
+	template <typename... Attrs, typename F, typename... FArgs>
+	void create_thread_3(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attrs...> attr, F&& f, FArgs&&... fargs)
+	{
+		(void)attr;
+
+		using Tuple = hamon::tuple<hamon::decay_t<F>, hamon::decay_t<FArgs>...>;
+        auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+		int ec = hamon::detail::thread_create(&m_handle, pattr, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
+
+		// [thread.thread.constr]/9
+		if (ec != 0)
+		{
+			hamon::detail::throw_system_error(ec, hamon::generic_category());
+		}
+
+		decay_copied.release();
+	}
+
+	template <typename... Attrs, typename F, typename... FArgs>
+	void create_thread_2(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attrs...> attrs, F&& f, FArgs&&... fargs)
+	{
+		create_thread_3(pattr, attrs, hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+	}
+
+	template <hamon::size_t I, hamon::size_t... Js, hamon::size_t... Ks, typename... Args>
+	void create_thread_1(hamon::detail::thread_attr_t* pattr, hamon::index_sequence<Js...>, hamon::index_sequence<Ks...>, hamon::tuple<Args...> args)
+	{
+		create_thread_2(pattr,
+			hamon::forward_as_tuple(hamon::get<Js>(args)...),
+			hamon::get<I + Ks>(args)...);
+	}
+
 public:
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4180)
 	template <typename... Args,
 		typename = hamon::enable_if_t<sizeof...(Args) != 0>,	// [thread.thread.constr]/3.1
 		typename = hamon::enable_if_t<!hamon::is_same_v<hamon::remove_cvref_t<hamon::nth_t<0, Args...>>, thread>>// [thread.thread.constr]/3.2
@@ -218,8 +259,18 @@ public:
 
 		// [thread.thread.constr]/4
 		constexpr hamon::size_t i = hamon::detail::count_thread_attribute<hamon::decay_t<Args>...>::value;
+
+		// [thread.thread.constr]/5
+		static_assert(i < sizeof...(Args), "");
+
+		create_thread_1<i>(&attr,
+			hamon::make_index_sequence<i>{},
+			hamon::make_index_sequence<sizeof...(Args) - i>{},
+			hamon::forward_as_tuple(hamon::forward<Args>(args)...));
+
 		create_thread<i>(&attr, hamon::forward<Args>(args)...);
 	}
+HAMON_WARNING_POP()
 
 	~thread()
 	{
