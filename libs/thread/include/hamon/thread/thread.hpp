@@ -31,6 +31,7 @@
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/index_sequence.hpp>
+#include <hamon/utility/make_index_range.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -162,49 +163,49 @@ private:
 		HAMON_THREAD_PROC_RETURN();
 	}
 
-	template <hamon::size_t i, typename T, typename... Args>
-	void create_thread(hamon::detail::thread_attr_t* pattr, name_hint<T> const& name, Args&&... args)
-	{
-		create_thread<i - 1>(pattr, hamon::forward<Args>(args)...);
-		hamon::detail::thread_setname(&m_handle, name.name.data());
-	}
+	//template <hamon::size_t i, typename T, typename... Args>
+	//void create_thread(hamon::detail::thread_attr_t* pattr, name_hint<T> const& name, Args&&... args)
+	//{
+	//	create_thread<i - 1>(pattr, hamon::forward<Args>(args)...);
+	//	hamon::detail::thread_setname(&m_handle, name.name.data());
+	//}
 
-	template <hamon::size_t i, typename... Args>
-	void create_thread(hamon::detail::thread_attr_t* pattr, stack_size_hint const& stacksize, Args&&... args)
-	{
-		hamon::detail::thread_attr_setstacksize(pattr, stacksize.size);
-		create_thread<i - 1>(pattr, hamon::forward<Args>(args)...);
-	}
+	//template <hamon::size_t i, typename... Args>
+	//void create_thread(hamon::detail::thread_attr_t* pattr, stack_size_hint const& stacksize, Args&&... args)
+	//{
+	//	hamon::detail::thread_attr_setstacksize(pattr, stacksize.size);
+	//	create_thread<i - 1>(pattr, hamon::forward<Args>(args)...);
+	//}
 
-	template <hamon::size_t i, typename F, typename... FArgs,
-		typename = hamon::enable_if_t<i == 0>
-	>
-	void create_thread(hamon::detail::thread_attr_t* pattr, F&& f, FArgs&&... fargs)
-	{
-		// [thread.thread.constr]/5.1
-		static_assert(hamon::is_constructible_v<hamon::decay_t<F>, F>, "");
+	//template <hamon::size_t i, typename F, typename... FArgs,
+	//	typename = hamon::enable_if_t<i == 0>
+	//>
+	//void create_thread(hamon::detail::thread_attr_t* pattr, F&& f, FArgs&&... fargs)
+	//{
+	//	// [thread.thread.constr]/5.1
+	//	static_assert(hamon::is_constructible_v<hamon::decay_t<F>, F>, "");
 
-		// [thread.thread.constr]/5.2
-		static_assert((hamon::is_constructible_v<hamon::decay_t<FArgs>, FArgs> && ...), "");
+	//	// [thread.thread.constr]/5.2
+	//	static_assert((hamon::is_constructible_v<hamon::decay_t<FArgs>, FArgs> && ...), "");
 
-		// [thread.thread.constr]/5.3
-		static_assert(hamon::is_invocable_v<hamon::decay_t<F>, hamon::decay_t<FArgs>...>, "");
+	//	// [thread.thread.constr]/5.3
+	//	static_assert(hamon::is_invocable_v<hamon::decay_t<F>, hamon::decay_t<FArgs>...>, "");
 
-		// [thread.thread.constr]/5.4
-		// TODO
+	//	// [thread.thread.constr]/5.4
+	//	// TODO
 
-		using Tuple = hamon::tuple<hamon::decay_t<F>, hamon::decay_t<FArgs>...>;
-        auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
-		int ec = hamon::detail::thread_create(&m_handle, pattr, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
+	//	using Tuple = hamon::tuple<hamon::decay_t<F>, hamon::decay_t<FArgs>...>;
+ //       auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+	//	int ec = hamon::detail::thread_create(&m_handle, pattr, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
 
-		// [thread.thread.constr]/9
-		if (ec != 0)
-		{
-			hamon::detail::throw_system_error(ec, hamon::generic_category());
-		}
+	//	// [thread.thread.constr]/9
+	//	if (ec != 0)
+	//	{
+	//		hamon::detail::throw_system_error(ec, hamon::generic_category());
+	//	}
 
-		decay_copied.release();
-	}
+	//	decay_copied.release();
+	//}
 
 	//template <typename Attr0, typename... Attrs, typename F, typename... FArgs,
 	//	typename = hamon::enable_if_t<hamon::is_same_v<stack_size_hint, hamon::remove_cvref_t<Attr0>>>
@@ -213,13 +214,71 @@ private:
 	//{
 	//}
 
-	template <typename... Attrs, typename F, typename... FArgs>
-	void create_thread_3(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attrs...> attr, F&& f, FArgs&&... fargs)
+	//template <typename... Attrs, typename F, typename... FArgs>
+	//void create_thread_3(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attrs...> attr, F&& f, FArgs&&... fargs)
+	//{
+	//	(void)attr;
+
+	//	using Tuple = hamon::tuple<hamon::decay_t<F>, hamon::decay_t<FArgs>...>;
+	//	auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+	//	int ec = hamon::detail::thread_create(&m_handle, pattr, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
+
+	//	// [thread.thread.constr]/9
+	//	if (ec != 0)
+	//	{
+	//		hamon::detail::throw_system_error(ec, hamon::generic_category());
+	//	}
+
+	//	decay_copied.release();
+	//}
+
+	//template <typename... Attrs, typename F, typename... FArgs>
+	//void create_thread_2(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attrs...> attrs, F&& f, FArgs&&... fargs)
+	//{
+	//	create_thread_3(pattr, attrs, hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+	//}
+
+	//template <hamon::size_t... Js, hamon::size_t... Ks, typename... Args>
+	//void create_thread_1(hamon::detail::thread_attr_t* pattr, hamon::index_sequence<Js...>, hamon::index_sequence<Ks...>, hamon::tuple<Args...> args)
+	//{
+	//	create_thread_2(pattr,
+	//		hamon::forward_as_tuple(hamon::get<Js>(args)...),
+	//		hamon::get<Ks>(args)...);
+	//}
+
+	template <typename T>
+	void apply_attr_pre(hamon::detail::thread_attr_t*, T const&)
 	{
-		(void)attr;
+	}
+
+	void apply_attr_pre(hamon::detail::thread_attr_t* pattr, stack_size_hint const& stacksize)
+	{
+		hamon::detail::thread_attr_setstacksize(pattr, stacksize.size);
+	}
+
+	template <typename T>
+	void apply_attr_post(hamon::detail::thread_attr_t*, T const&)
+	{
+	}
+
+	template <typename T>
+	void apply_attr_post(hamon::detail::thread_attr_t*, name_hint<T> const& name)
+	{
+		hamon::detail::thread_setname(&m_handle, name.name.data());
+	}
+
+	template <typename F, typename... FArgs>
+	void do_create_thread(hamon::detail::thread_attr_t* pattr, F&& f, FArgs&&... fargs)
+	{
+		// [thread.thread.constr]/5.1
+		static_assert(hamon::is_constructible_v<hamon::decay_t<F>, F>, "");
+		// [thread.thread.constr]/5.2
+		static_assert((hamon::is_constructible_v<hamon::decay_t<FArgs>, FArgs> && ...), "");
+		// [thread.thread.constr]/5.3
+		static_assert(hamon::is_invocable_v<hamon::decay_t<F>, hamon::decay_t<FArgs>...>, "");
 
 		using Tuple = hamon::tuple<hamon::decay_t<F>, hamon::decay_t<FArgs>...>;
-        auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
+		auto decay_copied = hamon::make_unique<Tuple>(hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
 		int ec = hamon::detail::thread_create(&m_handle, pattr, hamon::addressof(thread_proxy<Tuple>), decay_copied.get());
 
 		// [thread.thread.constr]/9
@@ -231,18 +290,12 @@ private:
 		decay_copied.release();
 	}
 
-	template <typename... Attrs, typename F, typename... FArgs>
-	void create_thread_2(hamon::detail::thread_attr_t* pattr, hamon::tuple<Attrs...> attrs, F&& f, FArgs&&... fargs)
+	template <hamon::size_t... Js, hamon::size_t... Ks, typename... Args>
+	void create_thread(hamon::detail::thread_attr_t* pattr, hamon::tuple<Args...> args, hamon::index_sequence<Js...>, hamon::index_sequence<Ks...>)
 	{
-		create_thread_3(pattr, attrs, hamon::forward<F>(f), hamon::forward<FArgs>(fargs)...);
-	}
-
-	template <hamon::size_t I, hamon::size_t... Js, hamon::size_t... Ks, typename... Args>
-	void create_thread_1(hamon::detail::thread_attr_t* pattr, hamon::index_sequence<Js...>, hamon::index_sequence<Ks...>, hamon::tuple<Args...> args)
-	{
-		create_thread_2(pattr,
-			hamon::forward_as_tuple(hamon::get<Js>(args)...),
-			hamon::get<I + Ks>(args)...);
+		(apply_attr_pre(pattr, hamon::get<Js>(args)), ...);
+		do_create_thread(pattr, hamon::get<Ks>(args)...);
+		(apply_attr_post(pattr, hamon::get<Js>(args)), ...);
 	}
 
 public:
@@ -263,12 +316,12 @@ HAMON_WARNING_DISABLE_MSVC(4180)
 		// [thread.thread.constr]/5
 		static_assert(i < sizeof...(Args), "");
 
-		create_thread_1<i>(&attr,
-			hamon::make_index_sequence<i>{},
-			hamon::make_index_sequence<sizeof...(Args) - i>{},
-			hamon::forward_as_tuple(hamon::forward<Args>(args)...));
+		create_thread(&attr,
+			hamon::forward_as_tuple(hamon::forward<Args>(args)...),
+			hamon::make_index_range<0, i>{},
+			hamon::make_index_range<i, sizeof...(Args)>{});
 
-		create_thread<i>(&attr, hamon::forward<Args>(args)...);
+		//create_thread<i>(&attr, hamon::forward<Args>(args)...);
 	}
 HAMON_WARNING_POP()
 
