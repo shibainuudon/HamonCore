@@ -14,7 +14,7 @@ namespace hamon_thread_test
 namespace id_test
 {
 
-GTEST_TEST(ThreadTest, IDTest)
+GTEST_TEST(ThreadTest, IdTest)
 {
 	hamon::thread t1;
 	hamon::thread t2([](){});

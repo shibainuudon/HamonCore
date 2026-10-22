@@ -251,6 +251,24 @@ inline void thread_yield()
 //		;
 //}
 
+inline unsigned int thread_hardware_concurrency()
+{
+#if defined(_SC_NPROCESSORS_ONLN)
+	long result = sysconf(_SC_NPROCESSORS_ONLN);
+	// sysconf returns -1 if the name is invalid, the option does not exist or
+	// does not have a definite limit.
+	// if sysconf returns some other negative number, we have no idea
+	// what is going on. Default to something safe.
+	if (result < 0)
+	{
+		return 0;
+	}
+	return static_cast<unsigned>(result);
+#else
+	return 0;
+#endif
+}
+
 #if 0
 
 //

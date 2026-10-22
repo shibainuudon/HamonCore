@@ -103,6 +103,7 @@ public:
 	public:
 		constexpr explicit
 		name_hint(hamon::basic_string_view<T> n) noexcept
+			// [thread.attributes.hint]/2
 			: name(n)
 		{}
 
@@ -129,6 +130,7 @@ public:
 	public:
 		constexpr explicit
 		stack_size_hint(hamon::size_t s) noexcept
+			// [thread.attributes.size]/4
 			: size(s)
 		{}
 
@@ -253,7 +255,10 @@ private:
 
 	void apply_attr_pre(hamon::detail::thread_attr_t* pattr, stack_size_hint const& stacksize)
 	{
-		hamon::detail::thread_attr_setstacksize(pattr, stacksize.size);
+		if (stacksize.size != 0)	// [thread.attributes.size]/3
+		{
+			hamon::detail::thread_attr_setstacksize(pattr, stacksize.size);
+		}
 	}
 
 	template <typename T>
@@ -428,11 +433,11 @@ HAMON_WARNING_POP()
 	}
 
 	// static members
-	static unsigned int hardware_concurrency() noexcept;/*
+	static unsigned int hardware_concurrency() noexcept
 	{
 		// [thread.thread.static]/1
 		return hamon::detail::thread_hardware_concurrency();
-	}*/
+	}
 
 private:
 	native_handle_type	m_handle;
@@ -526,13 +531,20 @@ inline bool operator>=(thread::id x, thread::id y) noexcept
 
 #endif
 
+#if 0	// TODO
 template <typename charT, typename traits>
 hamon::basic_ostream<charT, traits>&
 operator<<(hamon::basic_ostream<charT, traits>& out, thread::id id);
+// [thread.thread.id]/9
+// [thread.thread.id]/10
+#endif
 
 #if 0	// TODO
 template <typename charT>
 struct formatter<thread::id, charT>;
+// [thread.thread.id]/11
+// [thread.thread.id]/12
+// [thread.thread.id]/13
 #endif
 
 #if 0	// TODO
@@ -542,6 +554,7 @@ struct hash;
 
 template <>
 struct hash<thread::id>;
+// [thread.thread.id]/14
 #endif
 
 }	// namespace hamon

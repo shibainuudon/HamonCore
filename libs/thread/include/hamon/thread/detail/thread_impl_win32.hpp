@@ -269,6 +269,11 @@ inline void thread_yield()
 
 //void __libcpp_thread_sleep_for(const chrono::nanoseconds& __ns);
 
+inline unsigned int thread_hardware_concurrency()
+{
+	return static_cast<unsigned int>(GetActiveProcessorCount(ALL_PROCESSOR_GROUPS));
+}
+
 #if 0
 
 //
