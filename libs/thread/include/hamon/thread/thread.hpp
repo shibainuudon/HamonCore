@@ -41,6 +41,7 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
+#include <exception>	// std::terminate
 
 namespace hamon
 {
