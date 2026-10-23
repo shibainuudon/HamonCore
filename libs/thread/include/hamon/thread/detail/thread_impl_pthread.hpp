@@ -10,7 +10,9 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint64_t.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/config.hpp>
 
+#include <cerrno>	// errno
 #include <pthread.h>
 #include <sched.h>
 
@@ -75,7 +77,15 @@ inline int thread_create(thread_t* t, thread_attr_t* attr, void* (*func)(void*),
 
 inline int thread_setname(thread_t* t, char const* name)
 {
+#if defined(HAMON_PLATFORM_MACOS)
+	// MacOSのpthread_setname_npは、pthread_t 引数が無く
+	// 呼び出し元スレッドの名前しか変更することができない。
+	(void)t;
+	(void)name;
+	return 0;
+#else
 	return ::pthread_setname_np(*t, name);
+#endif
 }
 
 inline thread_id thread_get_current_id()
