@@ -379,7 +379,9 @@
 #    define HAMON_HAS_CXX17_STATIC_ASSERT
 #  endif
 #  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_deduction_guides) && (__cpp_deduction_guides >= 201606)
-#    define HAMON_HAS_CXX17_DEDUCTION_GUIDES
+#    if (HAMON_GCC_VERSION >= 120000)	// GCC11まで、クラススコープでdeduction guidesを記述できないバグがあった
+#      define HAMON_HAS_CXX17_DEDUCTION_GUIDES
+#    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_nontype_template_parameter_auto) && (__cpp_nontype_template_parameter_auto >= 201606)
 #    define HAMON_HAS_CXX17_NONTYPE_TEMPLATE_PARAMETER_AUTO

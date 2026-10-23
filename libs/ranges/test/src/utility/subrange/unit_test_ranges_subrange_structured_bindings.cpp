@@ -33,7 +33,7 @@ namespace structured_bindings_test
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int a[4] = { 1,2,3,4 };
-	auto r = hamon::ranges::subrange(a, a+4);
+	auto r = hamon::ranges::make_subrange(a, a+4);
 	static_assert(hamon::ranges::sized_range<decltype(r)>, "");
 	{
 		auto [first, last] = r;
@@ -69,7 +69,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int a[4] = { 1,2,3,4 };
-	auto r = hamon::ranges::subrange(a, hamon::unreachable_sentinel);
+	auto r = hamon::ranges::make_subrange(a, hamon::unreachable_sentinel);
 	static_assert(!hamon::ranges::sized_range<decltype(r)>, "");
 	{
 		auto [first, last] = r;
@@ -106,7 +106,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	int a[4] = { 1,2,3,4 };
 	{
-		auto r = hamon::ranges::subrange(a, a+4);
+		auto r = hamon::ranges::make_subrange(a, a+4);
 		auto&& [first, last] = r;
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
 		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
@@ -124,7 +124,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(r.end() == a+4);
 	}
 	{
-		auto const r = hamon::ranges::subrange(a, a+4);
+		auto const r = hamon::ranges::make_subrange(a, a+4);
 		auto&& [first, last] = r;
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
 		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
