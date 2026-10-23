@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_assign_move.cpp
+ *	@file	unit_test_thread_thread_assign_move.cpp
  *
  *	@brief	ムーブ代入演算子のテスト
  *

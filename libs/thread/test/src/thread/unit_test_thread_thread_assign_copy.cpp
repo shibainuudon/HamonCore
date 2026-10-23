@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_assign_copy.cpp
+ *	@file	unit_test_thread_thread_assign_copy.cpp
  *
  *	@brief	コピー代入演算子のテスト
  *

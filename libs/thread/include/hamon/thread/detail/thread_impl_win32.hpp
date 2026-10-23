@@ -8,6 +8,7 @@
 #define HAMON_THREAD_DETAIL_THREAD_IMPL_WIN32_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uint64_t.hpp>
 
 #include <hamon/detail/windows.hpp>
 #include <process.h>
@@ -18,137 +19,10 @@ namespace hamon
 namespace detail
 {
 
-#if 0
-
-using __libcpp_timespec_t = ::timespec;
-
-//
-// Mutex
-//
-typedef void* __libcpp_mutex_t;
-#define _LIBCPP_MUTEX_INITIALIZER 0
-
-#if defined(_WIN64)
-typedef void* __libcpp_recursive_mutex_t[5];
-#else
-typedef void* __libcpp_recursive_mutex_t[6];
-#endif
-
-inline int __libcpp_recursive_mutex_init(__libcpp_recursive_mutex_t* __m)
-{
-	InitializeCriticalSection((LPCRITICAL_SECTION)__m);
-	return 0;
-}
-
-inline int __libcpp_recursive_mutex_lock(__libcpp_recursive_mutex_t* __m)
-{
-	EnterCriticalSection((LPCRITICAL_SECTION)__m);
-	return 0;
-}
-
-inline bool __libcpp_recursive_mutex_trylock(__libcpp_recursive_mutex_t* __m)
-{
-	return TryEnterCriticalSection((LPCRITICAL_SECTION)__m) != 0;
-}
-
-inline int __libcpp_recursive_mutex_unlock(__libcpp_recursive_mutex_t* __m)
-{
-	LeaveCriticalSection((LPCRITICAL_SECTION)__m);
-	return 0;
-}
-
-inline int __libcpp_recursive_mutex_destroy(__libcpp_recursive_mutex_t* __m)
-{
-	DeleteCriticalSection((LPCRITICAL_SECTION)__m);
-	return 0;
-}
-
-inline int __libcpp_mutex_lock(__libcpp_mutex_t* __m)
-{
-	AcquireSRWLockExclusive((PSRWLOCK)__m);
-	return 0;
-}
-
-inline bool __libcpp_mutex_trylock(__libcpp_mutex_t* __m)
-{
-	return TryAcquireSRWLockExclusive((PSRWLOCK)__m) != 0;
-}
-
-inline int __libcpp_mutex_unlock(__libcpp_mutex_t* __m)
-{
-	ReleaseSRWLockExclusive((PSRWLOCK)__m);
-	return 0;
-}
-
-inline int __libcpp_mutex_destroy(__libcpp_mutex_t* __m)
-{
-	static_cast<void>(__m);
-	return 0;
-}
-
-//
-// Condition variable
-//
-typedef void* __libcpp_condvar_t;
-#define _LIBCPP_CONDVAR_INITIALIZER 0
-
-inline int __libcpp_condvar_signal(__libcpp_condvar_t* __cv)
-{
-	WakeConditionVariable((PCONDITION_VARIABLE)__cv);
-	return 0;
-}
-
-inline int __libcpp_condvar_broadcast(__libcpp_condvar_t* __cv)
-{
-	WakeAllConditionVariable((PCONDITION_VARIABLE)__cv);
-	return 0;
-}
-
-inline int __libcpp_condvar_wait(__libcpp_condvar_t* __cv, __libcpp_mutex_t* __m)
-{
-	SleepConditionVariableSRW((PCONDITION_VARIABLE)__cv, (PSRWLOCK)__m, INFINITE, 0);
-	return 0;
-}
-
-#if 0
-inline int __libcpp_condvar_timedwait(__libcpp_condvar_t* __cv, __libcpp_mutex_t* __m, __libcpp_timespec_t* __ts)
-{
-	using namespace std::chrono;
-
-	auto duration = seconds(__ts->tv_sec) + nanoseconds(__ts->tv_nsec);
-	auto abstime = system_clock::time_point(duration_cast<system_clock::duration>(duration));
-	auto timeout_ms = duration_cast<milliseconds>(abstime - system_clock::now());
-
-	if (!SleepConditionVariableSRW(
-		(PCONDITION_VARIABLE)__cv, (PSRWLOCK)__m, timeout_ms.count() > 0 ? timeout_ms.count() : 0, 0))
-	{
-		auto __ec = GetLastError();
-		return __ec == ERROR_TIMEOUT ? ETIMEDOUT : __ec;
-	}
-	return 0;
-}
-#endif
-
-inline int __libcpp_condvar_destroy(__libcpp_condvar_t* __cv)
-{
-	static_cast<void>(__cv);
-	return 0;
-}
-
-//
-// Execute once
-//
-typedef void* __libcpp_exec_once_flag;
-#define _LIBCPP_EXEC_ONCE_INITIALIZER 0
-
-int __libcpp_execute_once(__libcpp_exec_once_flag* __flag, void (*__init_routine)());
-
-#endif
-
 //
 // Thread id
 //
-typedef long thread_id;
+using thread_id = long;
 
 inline bool thread_id_equal(thread_id lhs, thread_id rhs)
 {
@@ -183,10 +57,9 @@ inline int thread_attr_setstacksize(thread_attr_t* attr, hamon::size_t stacksize
 //
 // Thread
 //
-//#define _LIBCPP_NULL_THREAD 0U
-typedef void* thread_t;
+using thread_t = void*;
 
-inline bool thread_isnull(const thread_t* t)
+inline bool thread_isnull(thread_t const* t)
 {
 	return *t == 0;
 }
@@ -197,29 +70,29 @@ using thread_proc_return_type = unsigned int;
 
 inline int thread_create(thread_t* t, thread_attr_t* attr, unsigned int (__stdcall *func)(void*), void* arg)
 {
-	*t = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, static_cast<unsigned int>(attr->stacksize), func, arg, 0, nullptr));
+	*t = reinterpret_cast<HANDLE>(::_beginthreadex(nullptr, static_cast<unsigned int>(attr->stacksize), func, arg, 0, nullptr));
 
 	if (*t)
 	{
 		return 0;
 	}
 
-	return GetLastError();
+	return ::GetLastError();
 }
 
-inline int thread_setname(thread_t* t, const char* name)
+inline int thread_setname(thread_t* t, char const* name)
 {
 	// TODO: utf16に変換する
 	// 今はとりあえずwchar_tにコピーするだけ(ascii限定)
 	wchar_t buf[256]{};
-	const char* src = name;
+	char const* src = name;
 	wchar_t* dst = buf;
 	while (*src != 0)
 	{
 		*dst++ = static_cast<wchar_t>(*src++);
 	}
 
-	HRESULT hr = SetThreadDescription(*t, buf);
+	HRESULT hr = ::SetThreadDescription(*t, buf);
 	if (FAILED(hr))
 	{
 		// TODO
@@ -229,24 +102,24 @@ inline int thread_setname(thread_t* t, const char* name)
 
 inline thread_id thread_get_current_id()
 {
-	return GetCurrentThreadId();
+	return ::GetCurrentThreadId();
 }
 
-inline thread_id thread_get_id(const thread_t* t)
+inline thread_id thread_get_id(thread_t const* t)
 {
-	return GetThreadId(*t);
+	return ::GetThreadId(*t);
 }
 
 inline int thread_join(thread_t* t)
 {
-	if (WaitForSingleObjectEx(*t, INFINITE, FALSE) == WAIT_FAILED)
+	if (::WaitForSingleObjectEx(*t, INFINITE, FALSE) == WAIT_FAILED)
 	{
-		return GetLastError();
+		return ::GetLastError();
 	}
 
-	if (!CloseHandle(*t))
+	if (!::CloseHandle(*t))
 	{
-		return GetLastError();
+		return ::GetLastError();
 	}
 
 	return 0;
@@ -254,9 +127,9 @@ inline int thread_join(thread_t* t)
 
 inline int thread_detach(thread_t* t)
 {
-	if (!CloseHandle(*t))
+	if (!::CloseHandle(*t))
 	{
-		return GetLastError();
+		return ::GetLastError();
 	}
 
 	return 0;
@@ -264,32 +137,27 @@ inline int thread_detach(thread_t* t)
 
 inline void thread_yield()
 {
-	SwitchToThread();
+	::SwitchToThread();
 }
 
-//void __libcpp_thread_sleep_for(const chrono::nanoseconds& __ns);
+inline void thread_sleep_for(hamon::uint64_t ns)
+{
+	hamon::uint64_t const mega = 1000 * 1000;
+	hamon::uint64_t ms = (ns + mega - 1) / mega;	// round up to milliseconds
+
+	hamon::uint64_t const max_sleep = INFINITE - 1;
+	while (ms > max_sleep)
+	{
+		::Sleep(static_cast<DWORD>(max_sleep));
+		ms -= max_sleep;
+	}
+	::Sleep(static_cast<DWORD>(ms));
+}
 
 inline unsigned int thread_hardware_concurrency()
 {
-	return static_cast<unsigned int>(GetActiveProcessorCount(ALL_PROCESSOR_GROUPS));
+	return static_cast<unsigned int>(::GetActiveProcessorCount(ALL_PROCESSOR_GROUPS));
 }
-
-#if 0
-
-//
-// Thread local storage
-//
-typedef long __libcpp_tls_key;
-
-#define _LIBCPP_TLS_DESTRUCTOR_CC __stdcall
-
-int __libcpp_tls_create(__libcpp_tls_key* __key, void(_LIBCPP_TLS_DESTRUCTOR_CC* __at_exit)(void*));
-
-void* __libcpp_tls_get(__libcpp_tls_key __key);
-
-int __libcpp_tls_set(__libcpp_tls_key __key, void* __p);
-
-#endif
 
 }	// namespace detail
 }	// namespace hamon

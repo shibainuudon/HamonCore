@@ -1,9 +1,9 @@
 ﻿/**
- *	@file	unit_test_thread_detach.cpp
+ *	@file	unit_test_thread_thread_join.cpp
  *
- *	@brief	detach のテスト
+ *	@brief	join のテスト
  *
- *	void detach();
+ *	void join();
  */
 
 #include <hamon/thread/thread.hpp>
@@ -13,25 +13,25 @@
 namespace hamon_thread_test
 {
 
-namespace detach_test
+namespace join_test
 {
 
-GTEST_TEST(ThreadTest, DetachTest)
+GTEST_TEST(ThreadTest, JoinTest)
 {
 	int x = 0;
 	hamon::thread t([&] { ++x; });
 
-	static_assert(!noexcept(t.detach()), "");
-	static_assert(hamon::is_same_v<decltype(t.detach()), void>, "");
+	static_assert(!noexcept(t.join()), "");
+	static_assert(hamon::is_same_v<decltype(t.join()), void>, "");
 
-	t.detach();
+	t.join();
 
-	// [thread.thread.member]/9
+	// [thread.thread.member]/5
 	EXPECT_TRUE(t.get_id() == hamon::thread::id());
 
 	// TODO: Test throwing system_error
 }
 
-}	// namespace detach_test
+}	// namespace join_test
 
 }	// namespace hamon_thread_test

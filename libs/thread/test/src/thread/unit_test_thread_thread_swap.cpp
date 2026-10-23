@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_swap.cpp
+ *	@file	unit_test_thread_thread_swap.cpp
  *
  *	@brief	swap のテスト
  *

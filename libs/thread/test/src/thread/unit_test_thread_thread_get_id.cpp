@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_get_id.cpp
+ *	@file	unit_test_thread_thread_get_id.cpp
  *
  *	@brief	get_id のテスト
  *

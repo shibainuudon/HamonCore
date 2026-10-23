@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_hardware_concurrency.cpp
+ *	@file	unit_test_thread_thread_hardware_concurrency.cpp
  *
  *	@brief	hardware_concurrency のテスト
  *

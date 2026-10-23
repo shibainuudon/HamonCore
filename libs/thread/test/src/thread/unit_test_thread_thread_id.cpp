@@ -1,11 +1,12 @@
 ﻿/**
- *	@file	unit_test_thread_id.cpp
+ *	@file	unit_test_thread_thread_id.cpp
  *
  *	@brief	thread::id のテスト
  */
 
 #include <hamon/thread/thread.hpp>
 #include <hamon/compare.hpp>
+#include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_thread_test
@@ -16,6 +17,15 @@ namespace id_test
 
 GTEST_TEST(ThreadTest, IdTest)
 {
+	static_assert( hamon::is_default_constructible_v<hamon::thread::id>, "");
+	static_assert( hamon::is_nothrow_default_constructible_v<hamon::thread::id>, "");
+	static_assert(!hamon::is_trivially_default_constructible_v<hamon::thread::id>, "");
+	static_assert( hamon::is_implicitly_default_constructible_v<hamon::thread::id>, "");
+	static_assert( hamon::is_copy_constructible_v<hamon::thread::id>, "");
+	static_assert( hamon::is_move_constructible_v<hamon::thread::id>, "");
+	static_assert( hamon::is_copy_assignable_v<hamon::thread::id>, "");
+	static_assert( hamon::is_move_assignable_v<hamon::thread::id>, "");
+
 	hamon::thread t1;
 	hamon::thread t2([](){});
 	hamon::thread t3([](){});

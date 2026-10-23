@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_ctor_move.cpp
+ *	@file	unit_test_thread_thread_ctor_move.cpp
  *
  *	@brief	ムーブコンストラクタのテスト
  *

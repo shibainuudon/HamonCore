@@ -24,7 +24,9 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		concepts
 		config
 		cstddef
+		cstdint
 		functional
+		limits
 		memory
 		ostream
 		#stop_token

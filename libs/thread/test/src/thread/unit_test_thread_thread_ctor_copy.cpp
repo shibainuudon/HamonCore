@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_ctor_copy.cpp
+ *	@file	unit_test_thread_thread_ctor_copy.cpp
  *
  *	@brief	コピーコンストラクタのテスト
  *

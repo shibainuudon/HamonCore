@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_thread_joinable.cpp
+ *	@file	unit_test_thread_thread_joinable.cpp
  *
  *	@brief	joinable のテスト
  *
