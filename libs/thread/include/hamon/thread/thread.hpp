@@ -287,6 +287,7 @@ HAMON_WARNING_POP()
 		hamon::swap(m_handle, x.m_handle);
 	}
 
+	HAMON_NODISCARD	// nodiscard as an extension
 	bool joinable() const noexcept
 	{
 		// [thread.thread.member]/2
@@ -343,6 +344,7 @@ HAMON_WARNING_POP()
 		m_handle = {};
 	}
 
+	HAMON_NODISCARD	// nodiscard as an extension
 	id get_id() const noexcept;
 
 	native_handle_type native_handle()                         // see [thread.req.native]
@@ -351,6 +353,7 @@ HAMON_WARNING_POP()
 	}
 
 	// static members
+	HAMON_NODISCARD	// nodiscard as an extension
 	static unsigned int hardware_concurrency() noexcept
 	{
 		// [thread.thread.static]/1
@@ -395,6 +398,7 @@ struct is_thread_attribute<hamon::thread::stack_size_hint> : public hamon::true_
 
 }	// namespace detail
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline thread::id thread::get_id() const noexcept
 {
 	// [thread.thread.member]/12
@@ -402,6 +406,7 @@ inline thread::id thread::get_id() const noexcept
 		hamon::detail::thread_get_id(&m_handle));
 }
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline bool operator==(thread::id x, thread::id y) noexcept
 {
 	// [thread.thread.id]/6
@@ -412,6 +417,7 @@ inline bool operator==(thread::id x, thread::id y) noexcept
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline hamon::strong_ordering operator<=>(thread::id x, thread::id y) noexcept
 {
 	// [thread.thread.id]/7,8
@@ -433,11 +439,13 @@ inline hamon::strong_ordering operator<=>(thread::id x, thread::id y) noexcept
 
 #else
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline bool operator!=(thread::id x, thread::id y) noexcept
 {
 	return !(x == y);
 }
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline bool operator<(thread::id x, thread::id y) noexcept
 {
 	auto const& lhs = hamon::detail::thread_id_access::get_id(x);
@@ -445,16 +453,19 @@ inline bool operator<(thread::id x, thread::id y) noexcept
 	return hamon::detail::thread_id_less(lhs, rhs);
 }
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline bool operator<=(thread::id x, thread::id y) noexcept
 {
 	return !(y < x);
 }
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline bool operator>(thread::id x, thread::id y) noexcept
 {
 	return y < x;
 }
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline bool operator>=(thread::id x, thread::id y) noexcept
 {
 	return !(x < y);

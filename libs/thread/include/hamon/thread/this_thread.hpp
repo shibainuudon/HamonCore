@@ -13,6 +13,7 @@
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/cstdint/uint64_t.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -22,6 +23,7 @@ namespace hamon
 namespace this_thread
 {
 
+HAMON_NODISCARD	// nodiscard as an extension
 inline thread::id get_id() noexcept
 {
 	// [thread.thread.this]/1
