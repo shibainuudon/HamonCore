@@ -219,9 +219,9 @@ private:
 		// TODO: no type is present more than once in the pack remove_cvref_t<Attrs>.
 
 		using swallow = hamon::initializer_list<int>;
-		(void)swallow{(apply_attr_pre(pattr, hamon::get<Js>(args)), 0)...};
-		do_create_thread(pattr, hamon::get<Ks>(args)...);
-		(void)swallow{(apply_attr_post(pattr, hamon::get<Js>(args)), 0)...};
+		(void)swallow{(apply_attr_pre(pattr, hamon::forward<hamon::nth_t<Js, Args...>>(hamon::get<Js>(args))), 0)...};
+		do_create_thread(pattr, hamon::forward<hamon::nth_t<Ks, Args...>>(hamon::get<Ks>(args))...);
+		(void)swallow{(apply_attr_post(pattr, hamon::forward<hamon::nth_t<Js, Args...>>(hamon::get<Js>(args))), 0)...};
 	}
 
 public:
