@@ -47,7 +47,7 @@ target_include_directories(${TARGET_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/includ
 # を使えるようにするために、libatomic をリンクする
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
 	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	if (NOT MSVC)
+	if (NOT MSVC AND NOT EMSCRIPTEN)
 		target_link_libraries(${TARGET_NAME} INTERFACE atomic)
 	endif()
 endif()
