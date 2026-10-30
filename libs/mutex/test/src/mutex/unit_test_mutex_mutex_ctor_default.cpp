@@ -19,7 +19,7 @@ namespace ctor_default_test
 static_assert( hamon::is_default_constructible_v<hamon::mutex>, "");
 static_assert( hamon::is_nothrow_default_constructible_v<hamon::mutex>, "");
 static_assert(!hamon::is_trivially_default_constructible_v<hamon::mutex>, "");
-//static_assert( hamon::is_implicitly_default_constructible_v<hamon::mutex>, "");	// TODO
+static_assert( hamon::is_implicitly_default_constructible_v<hamon::mutex>, "");
 
 GTEST_TEST(MutexTest, CtorDefaultTest)
 {

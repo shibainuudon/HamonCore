@@ -3,7 +3,7 @@
  *
  *	@brief	try_lock のテスト
  *
- *	bool try_lock();
+ *	bool try_lock() noexcept;
  */
 
 #include <hamon/mutex/recursive_mutex.hpp>
@@ -19,7 +19,7 @@ namespace try_lock_test
 {
 
 static_assert(hamon::is_same_v<decltype(hamon::declval<hamon::recursive_mutex>().try_lock()), bool>, "");
-static_assert(noexcept(hamon::declval<hamon::recursive_mutex>().try_lock()), "");	// TODO
+static_assert(noexcept(hamon::declval<hamon::recursive_mutex>().try_lock()), "");
 
 bool is_lockable(hamon::recursive_mutex& m)
 {

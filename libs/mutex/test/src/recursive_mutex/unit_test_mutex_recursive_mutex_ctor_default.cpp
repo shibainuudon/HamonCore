@@ -17,7 +17,7 @@ namespace ctor_default_test
 {
 
 static_assert( hamon::is_default_constructible_v<hamon::recursive_mutex>, "");
-//static_assert(!hamon::is_nothrow_default_constructible_v<hamon::recursive_mutex>, "");	// TODO
+static_assert(!hamon::is_nothrow_default_constructible_v<hamon::recursive_mutex>, "");
 static_assert(!hamon::is_trivially_default_constructible_v<hamon::recursive_mutex>, "");
 static_assert( hamon::is_implicitly_default_constructible_v<hamon::recursive_mutex>, "");
 
