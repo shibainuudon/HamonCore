@@ -16,5 +16,12 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
+		atomic
+		chrono
+		functional
+		system_error
+		thread
 		type_traits
+		utility
+		vector
 		common_test)
