@@ -29,7 +29,9 @@ bool is_lockable(hamon::recursive_timed_mutex& m)
 	hamon::thread t([&] {
 		did_lock = m.try_lock();
 		if (did_lock)
+		{
 			m.unlock(); // undo side effects
+		}
 	});
 	t.join();
 
