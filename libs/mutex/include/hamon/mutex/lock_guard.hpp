@@ -7,33 +7,43 @@
 #ifndef HAMON_MUTEX_LOCK_GUARD_HPP
 #define HAMON_MUTEX_LOCK_GUARD_HPP
 
-#include <mutex>
+#include <hamon/mutex/adopt_lock_t.hpp>
 
 namespace hamon
 {
 
-using std::lock_guard;
+// 32.6.5.2 Class template lock_guard[thread.lock.guard]
 
-#if 0	// TODO
-
-template<class Mutex>
+template <typename Mutex>
 class lock_guard
 {
 public:
 	using mutex_type = Mutex;
 
-	explicit lock_guard(mutex_type& m);
-	lock_guard(mutex_type& m, adopt_lock_t);
-	~lock_guard();
+	explicit lock_guard(mutex_type& m)
+		// [thread.lock.guard]/2
+		: pm(m)
+	{
+		m.lock();
+	}
 
-	lock_guard(const lock_guard&) = delete;
-	lock_guard& operator=(const lock_guard&) = delete;
+	lock_guard(mutex_type& m, hamon::adopt_lock_t)
+		// [thread.lock.guard]/4
+		: pm(m)
+	{}
+
+	~lock_guard()
+	{
+		// [thread.lock.guard]/6
+		pm.unlock();
+	}
+
+	lock_guard(lock_guard const&) = delete;
+	lock_guard& operator=(lock_guard const&) = delete;
 
 private:
 	mutex_type& pm;             // exposition only
 };
-
-#endif
 
 }	// namespace hamon
 

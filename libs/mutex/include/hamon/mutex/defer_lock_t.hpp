@@ -7,21 +7,16 @@
 #ifndef HAMON_MUTEX_DEFER_LOCK_T_HPP
 #define HAMON_MUTEX_DEFER_LOCK_T_HPP
 
-#include <mutex>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-using std::defer_lock_t;
-using std::defer_lock;
-
-#if 0	// TODO
+// 32.6.5.1 General[thread.lock.general]
 
 struct defer_lock_t { explicit defer_lock_t() = default; };
 
-inline constexpr defer_lock_t  defer_lock { };
-
-#endif
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR defer_lock_t defer_lock{};
 
 }	// namespace hamon
 

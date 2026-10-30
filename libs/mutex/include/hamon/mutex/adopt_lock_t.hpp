@@ -7,21 +7,16 @@
 #ifndef HAMON_MUTEX_ADOPT_LOCK_T_HPP
 #define HAMON_MUTEX_ADOPT_LOCK_T_HPP
 
-#include <mutex>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-using std::adopt_lock_t;
-using std::adopt_lock;
-
-#if 0	// TODO
+// 32.6.5.1 General[thread.lock.general]
 
 struct adopt_lock_t { explicit adopt_lock_t() = default; };
 
-inline constexpr adopt_lock_t  adopt_lock { };
-
-#endif
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR adopt_lock_t adopt_lock{};
 
 }	// namespace hamon
 

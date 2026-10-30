@@ -17,7 +17,7 @@ using std::call_once;
 #if 0	// TODO
 
 // 32.6.7.2 Function call_once[thread.once.callonce]
-template<class Callable, class... Args>
+template <typename Callable, typename... Args>
 void call_once(once_flag& flag, Callable&& func, Args&&... args);
 
 #endif

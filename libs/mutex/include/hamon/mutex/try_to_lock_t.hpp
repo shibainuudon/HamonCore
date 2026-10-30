@@ -7,21 +7,16 @@
 #ifndef HAMON_MUTEX_TRY_TO_LOCK_T_HPP
 #define HAMON_MUTEX_TRY_TO_LOCK_T_HPP
 
-#include <mutex>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
 
-using std::try_to_lock_t;
-using std::try_to_lock;
-
-#if 0	// TODO
+// 32.6.5.1 General[thread.lock.general]
 
 struct try_to_lock_t { explicit try_to_lock_t() = default; };
 
-inline constexpr try_to_lock_t try_to_lock { };
-
-#endif
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR try_to_lock_t try_to_lock{};
 
 }	// namespace hamon
 

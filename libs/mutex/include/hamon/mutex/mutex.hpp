@@ -7,35 +7,63 @@
 #ifndef HAMON_MUTEX_MUTEX_HPP
 #define HAMON_MUTEX_MUTEX_HPP
 
-#include <mutex>
+#include <hamon/mutex/detail/mutex_impl.hpp>
+#include <hamon/system_error.hpp>
+#include <hamon/assert.hpp>
 
 namespace hamon
 {
-
-using std::mutex;
-
-#if 0	// TODO
 
 // 32.6.4.2.2 Class mutex[thread.mutex.class]
 
 class mutex
 {
 public:
-	constexpr mutex() noexcept;
-	~mutex();
+	constexpr mutex() noexcept
+		: m_mut(HAMON_MUTEX_INITIALIZER)
+	{
+	}
 
-	mutex(const mutex&) = delete;
-	mutex& operator=(const mutex&) = delete;
+	~mutex()
+	{
+		hamon::detail::mutex_destroy(&m_mut);
+	}
 
-	void lock();
-	bool try_lock();
-	void unlock();
+	mutex(mutex const&) = delete;
+	mutex& operator=(mutex const&) = delete;
 
-	using native_handle_type = implementation-defined;          // see [thread.req.native]
-	native_handle_type native_handle();                         // see [thread.req.native]
+	void lock()
+	{
+		int ec = hamon::detail::mutex_lock(&m_mut);
+		if (ec)
+		{
+			hamon::detail::throw_system_error(ec, hamon::generic_category());
+		}
+	}
+
+	bool try_lock()
+	{
+		return hamon::detail::mutex_trylock(&m_mut);
+	}
+
+	void unlock()
+	{
+		int ec = hamon::detail::mutex_unlock(&m_mut);
+		(void)ec;
+		HAMON_ASSERT(ec == 0);
+
+	}
+
+	using native_handle_type = hamon::detail::mutex_t*;	// see [thread.req.native]
+
+	native_handle_type native_handle()	// see [thread.req.native]
+	{
+		return &m_mut;
+	}
+
+private:
+	hamon::detail::mutex_t m_mut;
 };
-
-#endif
 
 }	// namespace hamon
 
