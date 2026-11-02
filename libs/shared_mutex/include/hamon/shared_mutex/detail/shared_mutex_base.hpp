@@ -11,9 +11,9 @@
 #include <hamon/mutex/lock_guard.hpp>
 #include <hamon/mutex/mutex.hpp>
 #include <hamon/mutex/unique_lock.hpp>
-#include <condition_variable>
-#include <climits>
-#include <chrono>
+#include <hamon/condition_variable/condition_variable.hpp>
+#include <hamon/condition_variable/cv_status.hpp>
+#include <climits>	// CHAR_BIT
 
 namespace hamon
 {
@@ -25,8 +25,8 @@ struct shared_mutex_base
 {
 private:
 	hamon::mutex m_mut;
-	std::condition_variable m_gate1;
-	std::condition_variable m_gate2;
+	hamon::condition_variable m_gate1;
+	hamon::condition_variable m_gate2;
 	unsigned m_state;
 
 	static unsigned const kWriteEntered = 1U << (sizeof(unsigned) * CHAR_BIT - 1);
@@ -73,24 +73,18 @@ public:
 	template <typename Clock, typename Duration>
 	bool try_lock_until(hamon::chrono::time_point<Clock, Duration> const& abs_time)
 	{
-		// TODO hamon::chrono::time_point から std::chrono::time_point への変換を簡単にする
-		using std_period = std::ratio<Duration::period::num, Duration::period::den>;
-		using std_duration = std::chrono::duration<typename Duration::rep, std_period>;
-		using std_time_point = std::chrono::time_point<std::chrono::system_clock, std_duration>;
-		auto const std_abs_time = std_time_point{std_duration{abs_time.time_since_epoch().count()}};
-
 		hamon::unique_lock<hamon::mutex> lk(m_mut);
 		if (m_state & kWriteEntered)
 		{
 			while (true)
 			{
-				std::cv_status status = m_gate1.wait_until(lk, std_abs_time);
+				hamon::cv_status status = m_gate1.wait_until(lk, abs_time);
 				if ((m_state & kWriteEntered) == 0)
 				{
 					break;
 				}
 
-				if (status == std::cv_status::timeout)
+				if (status == hamon::cv_status::timeout)
 				{
 					return false;
 				}
@@ -103,13 +97,13 @@ public:
 		{
 			while (true)
 			{
-				std::cv_status status = m_gate2.wait_until(lk, std_abs_time);
+				hamon::cv_status status = m_gate2.wait_until(lk, abs_time);
 				if ((m_state & kNReaders) == 0)
 				{
 					break;
 				}
 
-				if (status == std::cv_status::timeout)
+				if (status == hamon::cv_status::timeout)
 				{
 					m_state &= ~kWriteEntered;
 					m_gate1.notify_all();
@@ -164,26 +158,20 @@ public:
 	template <typename Clock, typename Duration>
 	bool try_lock_shared_until(hamon::chrono::time_point<Clock, Duration> const& abs_time)
 	{
-		// TODO hamon::chrono::time_point から std::chrono::time_point への変換を簡単にする
-		using std_period = std::ratio<Duration::period::num, Duration::period::den>;
-		using std_duration = std::chrono::duration<typename Duration::rep, std_period>;
-		using std_time_point = std::chrono::time_point<std::chrono::system_clock, std_duration>;
-		auto const std_abs_time = std_time_point{std_duration{abs_time.time_since_epoch().count()}};
-
 		hamon::unique_lock<hamon::mutex> lk(m_mut);
 		if ((m_state & kWriteEntered) ||
 			(m_state & kNReaders) == kNReaders)
 		{
 			while (true)
 			{
-				std::cv_status status = m_gate1.wait_until(lk, std_abs_time);
+				hamon::cv_status status = m_gate1.wait_until(lk, abs_time);
 				if ((m_state & kWriteEntered) == 0 &&
 					(m_state & kNReaders) < kNReaders)
 				{
 					break;
 				}
 
-				if (status == std::cv_status::timeout)
+				if (status == hamon::cv_status::timeout)
 				{
 					return false;
 				}
