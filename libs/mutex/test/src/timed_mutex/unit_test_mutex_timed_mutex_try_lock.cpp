@@ -19,7 +19,7 @@ namespace try_lock_test
 {
 
 static_assert(hamon::is_same_v<decltype(hamon::declval<hamon::timed_mutex>().try_lock()), bool>, "");
-static_assert(noexcept(hamon::declval<hamon::timed_mutex>().try_lock()), "");	// TODO
+static_assert(!noexcept(hamon::declval<hamon::timed_mutex>().try_lock()), "");
 
 GTEST_TEST(TimedMutexTest, TryLockTest)
 {

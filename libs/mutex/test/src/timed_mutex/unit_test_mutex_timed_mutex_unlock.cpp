@@ -12,4 +12,4 @@
 #include <gtest/gtest.h>
 
 static_assert(hamon::is_same_v<decltype(hamon::declval<hamon::timed_mutex>().unlock()), void>, "");
-//static_assert(!noexcept(hamon::declval<hamon::timed_mutex>().unlock()), "");	// TODO
+static_assert(!noexcept(hamon::declval<hamon::timed_mutex>().unlock()), "");

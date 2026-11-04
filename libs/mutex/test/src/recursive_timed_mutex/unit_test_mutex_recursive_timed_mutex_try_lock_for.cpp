@@ -21,7 +21,7 @@ namespace hamon_recursive_timed_mutex_test
 namespace try_lock_for_test
 {
 
-namespace chrono = std::chrono;
+namespace chrono = hamon::chrono;
 
 static_assert(hamon::is_same_v<decltype(hamon::declval<hamon::recursive_timed_mutex>().try_lock_for(chrono::milliseconds(1))), bool>, "");
 static_assert(!noexcept(hamon::declval<hamon::recursive_timed_mutex>().try_lock_for(chrono::milliseconds(1))), "");
@@ -83,7 +83,7 @@ GTEST_TEST(RecursiveTimedMutexTest, TryLockForTest)
 	// This is technically flaky, but we use such long durations that it should pass even
 	// in slow or contended environments.
 	{
-		chrono::milliseconds const wait_time(100);
+		chrono::milliseconds const wait_time(500);
 		chrono::milliseconds const tolerance = wait_time * 3;
 		hamon::atomic<bool> ready(false);
 
@@ -111,8 +111,7 @@ GTEST_TEST(RecursiveTimedMutexTest, TryLockForTest)
 		{
 			/* spin */;
 		}
-//		hamon::this_thread::sleep_for(wait_time / 5);	// TODO
-		hamon::this_thread::sleep_for(hamon::chrono::milliseconds((wait_time / 5).count()));
+		hamon::this_thread::sleep_for(wait_time / 5);
 
 		m.unlock(); // this should allow the thread to lock 'm'
 		t.join();

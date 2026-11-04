@@ -19,8 +19,11 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		condition_variable
 		config
 		cstddef
+		limits
+		system_error
 		thread
 		tuple
 		utility)
