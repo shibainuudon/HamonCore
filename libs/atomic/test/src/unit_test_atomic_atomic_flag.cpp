@@ -5,13 +5,13 @@
  */
 
 #include <hamon/atomic/atomic_flag.hpp>
+#include <hamon/chrono.hpp>
+#include <hamon/thread.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/is_trivially_destructible.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -103,18 +103,18 @@ inline bool wait_test()
 	{
 		hamon::atomic_flag volatile a;
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(false);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.test_and_set();
 				a.notify_one();
 			}
@@ -126,25 +126,25 @@ inline bool wait_test()
 	{
 		hamon::atomic_flag volatile a{};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(false, hamon::memory_order::relaxed);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
 				a.wait(false);
 			}
 		};
-		std::thread t3
+		hamon::thread t3
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.test_and_set();
 				a.notify_all();
 			}
@@ -157,18 +157,18 @@ inline bool wait_test()
 	{
 		hamon::atomic_flag volatile a;
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				hamon::atomic_flag_wait(&a, false);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				hamon::atomic_flag_test_and_set(&a);
 				hamon::atomic_flag_notify_one(&a);
 			}
@@ -180,25 +180,25 @@ inline bool wait_test()
 	{
 		hamon::atomic_flag volatile a{};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				hamon::atomic_flag_wait_explicit(&a, false, hamon::memory_order::relaxed);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
 				hamon::atomic_flag_wait(&a, false);
 			}
 		};
-		std::thread t3
+		hamon::thread t3
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				hamon::atomic_flag_test_and_set(&a);
 				hamon::atomic_flag_notify_all(&a);
 			}

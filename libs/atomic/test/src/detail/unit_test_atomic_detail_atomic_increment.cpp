@@ -6,8 +6,8 @@
 
 #include <hamon/atomic/detail/atomic_increment.hpp>
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/thread.hpp>
 #include <gtest/gtest.h>
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -45,14 +45,14 @@ GTEST_TEST(Atomic, AtomicIncrementTest)
 
 	{
 		int x = 0;
-		std::thread t1{[&x]{
+		hamon::thread t1{[&x]{
 			for (int i = 0; i < 10000; ++i)
 			{
 				// ++x;
 				hamon::detail::atomic_increment(&x);
 			}
 		}};
-		std::thread t2{[&x]{
+		hamon::thread t2{[&x]{
 			for (int i = 0; i < 10000; ++i)
 			{
 				// ++x;

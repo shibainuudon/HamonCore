@@ -6,9 +6,9 @@
 
 #include <hamon/atomic/detail/atomic_fetch_xor.hpp>
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/cstdint.hpp>
+#include <hamon/thread.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -47,16 +47,16 @@ GTEST_TEST(Atomic, AtomicFetchXorTest)
 	test<unsigned long long>(hamon::memory_order::release);
 
 	{
-		std::uint32_t x = 0x00000000;
-		std::thread t1{[&x]{
-			hamon::detail::atomic_fetch_xor(&x, std::uint32_t(0xf0f0f0f0));
+		hamon::uint32_t x = 0x00000000;
+		hamon::thread t1{[&x]{
+			hamon::detail::atomic_fetch_xor(&x, hamon::uint32_t(0xf0f0f0f0));
 		}};
-		std::thread t2{[&x]{
-			hamon::detail::atomic_fetch_xor(&x, std::uint32_t(0x0000ffff));
+		hamon::thread t2{[&x]{
+			hamon::detail::atomic_fetch_xor(&x, hamon::uint32_t(0x0000ffff));
 		}};
 		t1.join();
 		t2.join();
-		EXPECT_EQ(std::uint32_t(0xf0f00f0f), x);
+		EXPECT_EQ(hamon::uint32_t(0xf0f00f0f), x);
 	}
 }
 

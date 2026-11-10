@@ -5,11 +5,11 @@
  */
 
 #include <hamon/atomic/atomic_ref.hpp>
+#include <hamon/chrono.hpp>
+#include <hamon/thread.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -342,18 +342,18 @@ inline bool wait_test()
 		T x = 0;
 		hamon::atomic_ref<T> a{x};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(0);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.store(1);
 				a.notify_one();
 			}
@@ -366,25 +366,25 @@ inline bool wait_test()
 		T x = 10;
 		hamon::atomic_ref<T> a{x};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(10, hamon::memory_order::relaxed);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
 				a.wait(10);
 			}
 		};
-		std::thread t3
+		hamon::thread t3
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.store(20);
 				a.notify_all();
 			}
@@ -448,7 +448,7 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 
 	{
 		int x{0};
-		std::thread t1
+		hamon::thread t1
 		{
 			[&x]()
 			{
@@ -459,7 +459,7 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 				}
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&x]()
 			{
@@ -476,7 +476,7 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 	}
 	{
 		int x{0};
-		std::thread t1
+		hamon::thread t1
 		{
 			[&x]()
 			{
@@ -487,7 +487,7 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 				}
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&x]()
 			{
@@ -504,7 +504,7 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 	}
 	{
 		int x{0};
-		std::thread t1
+		hamon::thread t1
 		{
 			[&x]()
 			{
@@ -515,7 +515,7 @@ GTEST_TEST(AtomicTest, AtomicRefIntegralTest)
 				}
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&x]()
 			{

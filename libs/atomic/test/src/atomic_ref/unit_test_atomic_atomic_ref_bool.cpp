@@ -5,11 +5,11 @@
  */
 
 #include <hamon/atomic/atomic_ref.hpp>
+#include <hamon/chrono.hpp>
+#include <hamon/thread.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -166,18 +166,18 @@ inline bool wait_test()
 		bool x = false;
 		hamon::atomic_ref<bool> a{x};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(false);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.store(true);
 				a.notify_one();
 			}
@@ -190,25 +190,25 @@ inline bool wait_test()
 		bool x = true;
 		hamon::atomic_ref<bool> a{x};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(true, hamon::memory_order::relaxed);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
 				a.wait(true);
 			}
 		};
-		std::thread t3
+		hamon::thread t3
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.store(false);
 				a.notify_all();
 			}

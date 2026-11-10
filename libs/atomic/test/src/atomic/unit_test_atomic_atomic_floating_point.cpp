@@ -5,13 +5,13 @@
  */
 
 #include <hamon/atomic/atomic.hpp>
+#include <hamon/chrono.hpp>
 #include <hamon/cmath.hpp>
+#include <hamon/thread.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -854,18 +854,18 @@ bool wait_test()
 	{
 		hamon::atomic<T> volatile a{T(0.5)};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(T(0.5));
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.store(T(1.5));
 				a.notify_one();
 			}
@@ -877,25 +877,25 @@ bool wait_test()
 	{
 		hamon::atomic<T> volatile a{T(2.5)};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				a.wait(T(2.5), hamon::memory_order::relaxed);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
 				a.wait(T(2.5));
 			}
 		};
-		std::thread t3
+		hamon::thread t3
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				a.store(T(3.5));
 				a.notify_all();
 			}
@@ -908,18 +908,18 @@ bool wait_test()
 	{
 		hamon::atomic<T> volatile a{};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				hamon::atomic_wait(&a, 0);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				hamon::atomic_store(&a, 1);
 				hamon::atomic_notify_one(&a);
 			}
@@ -931,25 +931,25 @@ bool wait_test()
 	{
 		hamon::atomic<T> volatile a{};
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
 				hamon::atomic_wait(&a, 0);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{
 				hamon::atomic_wait_explicit(&a, 0, hamon::memory_order::seq_cst);
 			}
 		};
-		std::thread t3
+		hamon::thread t3
 		{
 			[&]()
 			{
-				//std::this_thread::sleep_for(std::chrono::milliseconds{1});
+				hamon::this_thread::sleep_for(hamon::chrono::milliseconds{1});
 				hamon::atomic_store(&a, 1);
 				hamon::atomic_notify_all(&a);
 			}
@@ -1001,7 +1001,7 @@ GTEST_TEST(AtomicTest, AtomicFloatingPointTest)
 
 	{
 		hamon::atomic<float> x{0};
-		std::thread t1
+		hamon::thread t1
 		{
 			[&x]()
 			{
@@ -1011,7 +1011,7 @@ GTEST_TEST(AtomicTest, AtomicFloatingPointTest)
 				}
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&x]()
 			{

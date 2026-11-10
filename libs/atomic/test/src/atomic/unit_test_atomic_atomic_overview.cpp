@@ -5,9 +5,8 @@
  */
 
 #include <hamon/atomic/atomic.hpp>
+#include <hamon/thread.hpp>
 #include <gtest/gtest.h>
-
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -79,8 +78,8 @@ GTEST_TEST(AtomicTest, AtomicOverviewTest)
 			}
 		};
 
-		std::thread t1{f};
-		std::thread t2{f};
+		hamon::thread t1{f};
+		hamon::thread t2{f};
 
 		t1.join();
 		t2.join();
@@ -101,8 +100,8 @@ GTEST_TEST(AtomicTest, AtomicOverviewTest)
 			}
 		};
 
-		std::thread t1{f};
-		std::thread t2{f};
+		hamon::thread t1{f};
+		hamon::thread t2{f};
 
 		t1.join();
 		t2.join();

@@ -7,9 +7,10 @@
 #include <hamon/atomic/detail/atomic_exchange.hpp>
 #include <hamon/atomic/detail/atomic_store.hpp>
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/chrono.hpp>
+#include <hamon/thread.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -51,7 +52,7 @@ GTEST_TEST(Atomic, AtomicExchangeTest)
 		auto f = [&](int n)
 		{
 			// ループに入る前に適当に待ち時間を入れて、できるだけ他のスレッドと同時に実行されるようにする
-			std::this_thread::sleep_for(std::chrono::milliseconds(10 * n));
+			hamon::this_thread::sleep_for(hamon::chrono::milliseconds(10 * n));
 
 			for (int i = 0; i < 1000; ++i)
 			{
@@ -65,7 +66,7 @@ GTEST_TEST(Atomic, AtomicExchangeTest)
 			}
 		};
 
-		hamon::vector<std::thread> ts;
+		hamon::vector<hamon::thread> ts;
 		for (int i = 0; i < 10; ++i)
 		{
 			ts.emplace_back(f, i);

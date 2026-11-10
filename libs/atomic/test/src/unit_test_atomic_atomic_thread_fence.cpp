@@ -6,10 +6,9 @@
 
 #include <hamon/atomic/atomic_thread_fence.hpp>
 #include <hamon/atomic/atomic.hpp>
+#include <hamon/thread.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-
-#include <thread>
 
 namespace hamon_atomic_test
 {
@@ -34,7 +33,7 @@ GTEST_TEST(Atomic, AtomicThreadFenceTest)
 		int data = 0;
 		hamon::atomic<bool> ready(false);
 
-		std::thread t1
+		hamon::thread t1
 		{
 			[&]()
 			{
@@ -43,7 +42,7 @@ GTEST_TEST(Atomic, AtomicThreadFenceTest)
 				ready.store(true, hamon::memory_order::relaxed);
 			}
 		};
-		std::thread t2
+		hamon::thread t2
 		{
 			[&]()
 			{

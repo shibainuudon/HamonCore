@@ -16,7 +16,10 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
+		chrono
 		cmath
+		cstdint
 		limits
+		thread
 		vector
 		common_test)
