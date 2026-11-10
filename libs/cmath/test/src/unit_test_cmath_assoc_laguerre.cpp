@@ -7,9 +7,9 @@
 #include <hamon/cmath/assoc_laguerre.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/abs.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -29,10 +29,10 @@ template <typename T>
 void AssocLaguerreTest(double error)
 {
 	using Promoted = hamon::float_promote_t<T>;
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<Promoted>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<Promoted>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<Promoted>::lowest();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<Promoted>::max();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<Promoted>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<Promoted>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<Promoted>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<Promoted>::max();
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerre(0, 0, nan)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerre(1, 1, nan)));
@@ -861,13 +861,13 @@ GTEST_TEST(CMathTest, AssocLaguerreTest)
 	AssocLaguerreTest<long double>(0.000000000001);
 	AssocLaguerreTest<int>        (0.000000000001);
 
-	HAMON_CXX11_CONSTEXPR auto nanf = std::numeric_limits<float>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nanf = hamon::numeric_limits<float>::quiet_NaN();
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerref(0, 0, nanf)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerref(1, 1, nanf)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerref(0, 2, -1.0f)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerref(1, 3, -1.0f)));
 
-	HAMON_CXX11_CONSTEXPR auto nanl = std::numeric_limits<long double>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nanl = hamon::numeric_limits<long double>::quiet_NaN();
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerrel(0, 0, nanl)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerrel(1, 1, nanl)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_laguerrel(0, 2, -1.0l)));

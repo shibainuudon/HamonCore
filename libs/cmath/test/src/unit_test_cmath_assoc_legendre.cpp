@@ -5,10 +5,10 @@
  */
 
 #include <hamon/cmath/assoc_legendre.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -27,11 +27,11 @@ static_assert(hamon::is_same<double,      decltype(hamon::assoc_legendre(0u, 0u,
 template <typename T>
 void AssocLegendreTest(double error)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::lowest();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon();
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendre(0, 0, nan)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendre(1, 1, nan)));
@@ -1203,15 +1203,15 @@ GTEST_TEST(CMathTest, AssocLegendreTest)
 
 	AssocLegendreTestInt<int>(0.00000000001);
 
-	HAMON_CXX11_CONSTEXPR auto nanf = std::numeric_limits<float>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto epsf = std::numeric_limits<float>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nanf = hamon::numeric_limits<float>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto epsf = hamon::numeric_limits<float>::epsilon();
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendref(0, 0, nanf)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendref(1, 1, nanf)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendref(0, 2,  1.0f + epsf)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendref(1, 3, -1.0f - epsf)));
 
-	HAMON_CXX11_CONSTEXPR auto nanl = std::numeric_limits<long double>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto epsl = std::numeric_limits<long double>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nanl = hamon::numeric_limits<long double>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto epsl = hamon::numeric_limits<long double>::epsilon();
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendrel(0, 0, nanl)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendrel(1, 1, nanl)));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::assoc_legendrel(0, 2,  1.0l + epsl)));
