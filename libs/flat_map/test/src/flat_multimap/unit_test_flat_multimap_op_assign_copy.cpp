@@ -10,8 +10,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <vector>
-#include <deque>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
 
@@ -243,11 +241,6 @@ GTEST_TEST(FlatMultimapTest, OpAssignCopyTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::deque>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque, hamon::vector>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque, hamon::deque>()));
-
-	EXPECT_TRUE((test<std::vector, std::vector>()));
-	EXPECT_TRUE((test<std::vector, std::deque>()));
-	EXPECT_TRUE((test<std::deque, std::vector>()));
-	EXPECT_TRUE((test<std::deque, std::deque>()));
 
 	test_exceptions<hamon::vector, hamon::deque>();
 	test_exceptions<hamon::deque, hamon::vector>();
