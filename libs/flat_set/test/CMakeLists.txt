@@ -17,6 +17,7 @@ target_link_libraries(${TARGET_NAME}
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
+		cstddef
 		deque
 		functional
 		initializer_list
@@ -25,6 +26,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		ranges
 		sstream
 		string
+		type_traits
 		utility
 		vector
 		common_test)

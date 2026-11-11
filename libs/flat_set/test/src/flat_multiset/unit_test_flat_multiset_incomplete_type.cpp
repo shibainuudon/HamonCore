@@ -13,7 +13,7 @@ namespace hamon_flat_multiset_test
 namespace incomplete_type_test
 {
 
-// Check that std::flat_multiset and its iterators can be instantiated with an incomplete
+// Check that hamon::flat_multiset and its iterators can be instantiated with an incomplete
 // type.
 
 struct A
