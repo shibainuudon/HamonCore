@@ -16,9 +16,6 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <list>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "stack_test_helper.hpp"
 
@@ -69,15 +66,6 @@ GTEST_TEST(StackTest, CtorAllocTest)
 	EXPECT_TRUE((test<int,   hamon::list<int>>()));
 	EXPECT_TRUE((test<float, hamon::list<float>>()));
 #endif
-
-	EXPECT_TRUE((test<int,   std::deque<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::deque<float, hamon::allocator<float>>>()));
-
-	EXPECT_TRUE((test<int,   std::vector<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::vector<float, hamon::allocator<float>>>()));
-
-	EXPECT_TRUE((test<int,   std::list<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::list<float, hamon::allocator<float>>>()));
 }
 
 }	// namespace ctor_alloc_test

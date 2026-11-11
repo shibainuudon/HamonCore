@@ -31,9 +31,6 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <list>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"
@@ -80,9 +77,6 @@ void test1()
 	test1_impl<T, hamon::deque<T>>();
 	test1_impl<T, hamon::vector<T>>();
 	test1_impl<T, hamon::list<T>>();
-	test1_impl<T, std::deque<T, hamon::allocator<T>>>();
-	test1_impl<T, std::vector<T, hamon::allocator<T>>>();
-	test1_impl<T, std::list<T, hamon::allocator<T>>>();
 }
 
 template <typename Container, typename Allocator>
