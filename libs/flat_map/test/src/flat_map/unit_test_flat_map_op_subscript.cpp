@@ -10,6 +10,7 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
@@ -107,7 +108,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v[0] = 0, std::bad_alloc);
+		EXPECT_THROW(v[0] = 0, hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -124,7 +125,7 @@ void test_exceptions()
 		throw_after = 1;
 
 		Key const k{0};
-		EXPECT_THROW(v[k] = 0, std::bad_alloc);
+		EXPECT_THROW(v[k] = 0, hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -166,7 +167,7 @@ void test_exceptions()
 		throw_after = 1;
 
 		Key const k{0};
-		EXPECT_THROW(v[k] = 0, std::bad_alloc);
+		EXPECT_THROW(v[k] = 0, hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -182,7 +183,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v[0] = 0, std::bad_alloc);
+		EXPECT_THROW(v[0] = 0, hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

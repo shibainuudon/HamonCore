@@ -5,6 +5,7 @@
  */
 
 #include <hamon/flat_map/flat_multimap.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
@@ -209,7 +210,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v2 = v, std::bad_alloc);
+		EXPECT_THROW(v2 = v, hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 		EXPECT_TRUE(check_invariant(v2));
 	}
@@ -229,7 +230,7 @@ void test_exceptions()
 
 		throw_after = 2;
 
-		EXPECT_THROW(v2 = v, std::bad_alloc);
+		EXPECT_THROW(v2 = v, hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 		EXPECT_TRUE(check_invariant(v2));
 	}

@@ -11,6 +11,7 @@
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/initializer_list.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -172,7 +173,7 @@ void test_exceptions()
 			{Key{15}, T{40}},
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
-		}), std::bad_alloc);
+		}), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -195,7 +196,7 @@ void test_exceptions()
 			{Key{15}, T{40}},
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
-		}), std::bad_alloc);
+		}), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -256,7 +257,7 @@ void test_exceptions()
 			{Key{15}, T{40}},
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
-		}), std::bad_alloc);
+		}), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -279,7 +280,7 @@ void test_exceptions()
 			{Key{15}, T{40}},
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
-		}), std::bad_alloc);
+		}), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

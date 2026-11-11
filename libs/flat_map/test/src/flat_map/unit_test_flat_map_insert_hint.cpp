@@ -10,6 +10,7 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
@@ -110,7 +111,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.begin(), ValueType(0, 0)), std::bad_alloc);
+		EXPECT_THROW(v.insert(v.begin(), ValueType(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -128,7 +129,7 @@ void test_exceptions()
 		throw_after = 1;
 
 		ValueType const x{0, 0};
-		EXPECT_THROW(v.insert(v.begin(), x), std::bad_alloc);
+		EXPECT_THROW(v.insert(v.begin(), x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -172,7 +173,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.begin(), ValueType(0, 0)), std::bad_alloc);
+		EXPECT_THROW(v.insert(v.begin(), ValueType(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -190,7 +191,7 @@ void test_exceptions()
 		throw_after = 1;
 
 		ValueType const x{0, 0};
-		EXPECT_THROW(v.insert(v.begin(), x), std::bad_alloc);
+		EXPECT_THROW(v.insert(v.begin(), x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

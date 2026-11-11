@@ -10,6 +10,7 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -133,7 +134,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert_range(x), std::bad_alloc);
+		EXPECT_THROW(v.insert_range(x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -159,7 +160,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert_range(x), std::bad_alloc);
+		EXPECT_THROW(v.insert_range(x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -229,7 +230,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert_range(x), std::bad_alloc);
+		EXPECT_THROW(v.insert_range(x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -255,7 +256,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert_range(x), std::bad_alloc);
+		EXPECT_THROW(v.insert_range(x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

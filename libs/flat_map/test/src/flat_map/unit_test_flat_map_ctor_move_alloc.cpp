@@ -10,6 +10,7 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
@@ -81,7 +82,7 @@ void test_exceptions()
 		int throw_after = 1;
 		ThrowAllocator<Key> alloc{&throw_after};
 
-		EXPECT_THROW(Map v2(hamon::move(v), alloc), std::bad_alloc);
+		EXPECT_THROW(Map v2(hamon::move(v), alloc), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -98,7 +99,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(Map v2(hamon::move(v), alloc), std::bad_alloc);
+		EXPECT_THROW(Map v2(hamon::move(v), alloc), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

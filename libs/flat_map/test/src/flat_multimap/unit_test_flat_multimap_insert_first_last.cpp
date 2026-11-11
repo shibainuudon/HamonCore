@@ -14,6 +14,7 @@
 #include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -170,7 +171,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert(hamon::ranges::begin(x), hamon::ranges::end(x)), std::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::ranges::begin(x), hamon::ranges::end(x)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -196,7 +197,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert(hamon::sorted_equivalent, hamon::ranges::begin(x), hamon::ranges::end(x)), std::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::sorted_equivalent, hamon::ranges::begin(x), hamon::ranges::end(x)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -266,7 +267,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert(hamon::ranges::begin(x), hamon::ranges::end(x)), std::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::ranges::begin(x), hamon::ranges::end(x)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -292,7 +293,7 @@ void test_exceptions()
 			{Key{16}, T{50}},
 			{Key{17}, T{60}},
 		};
-		EXPECT_THROW(v.insert(hamon::sorted_equivalent, hamon::ranges::begin(x), hamon::ranges::end(x)), std::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::sorted_equivalent, hamon::ranges::begin(x), hamon::ranges::end(x)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif
