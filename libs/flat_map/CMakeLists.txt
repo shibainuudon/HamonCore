@@ -20,19 +20,24 @@ include(AddSubLibrary)
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		algorithm
+		array
 		compare
 		concepts
 		config
 		container
 		cstddef
+		deque
 		detail
 		functional
 		initializer_list
 		iterator
 		memory
+		new
 		pair
 		ranges
 		stdexcept
+		string
+		tuple
 		type_traits
 		utility
 		vector)

@@ -8,15 +8,19 @@
  */
 
 #include <hamon/flat_map/flat_multimap.hpp>
+#include <hamon/array.hpp>
+#include <hamon/deque.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/new/bad_alloc.hpp>
+#include <hamon/pair.hpp>
+#include <hamon/string.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
-#include <hamon/deque.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
@@ -38,17 +42,17 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Iterator = typename Map::iterator;
 	using ConstIterator = typename Map::const_iterator;
 
-	// from std::pair
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::pair<int, int>>())), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::pair<char, float>>())), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::pair<double, long>>())), Iterator>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::pair<int, int>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::pair<char, float>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::pair<double, long>>())), "");
+	// from hamon::pair
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::pair<int, int>>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::pair<char, float>>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::pair<double, long>>())), Iterator>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::pair<int, int>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::pair<char, float>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::pair<double, long>>())), "");
 	{
 		Map v;
 		{
-			auto r = v.insert(v.cbegin(), std::make_pair(1, 10.0f));
+			auto r = v.insert(v.cbegin(), hamon::make_pair(1, 10.0f));
 			VERIFY(r->first == Key{1});
 			VERIFY(r->second == T{10});
 		}
@@ -58,7 +62,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{2}) == 0);
 		VERIFY(v.count(Key{3}) == 0);
 		{
-			auto const p = std::make_pair(char{2}, 20.0);
+			auto const p = hamon::make_pair(char{2}, 20.0);
 			auto r = v.insert(v.begin(), p);
 			VERIFY(r->first == Key{2});
 			VERIFY(r->second == T{20});
@@ -69,7 +73,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{2}) == 1);
 		VERIFY(v.count(Key{3}) == 0);
 		{
-			auto r = v.insert(v.cend(), std::make_pair(short{1}, 30.0f));
+			auto r = v.insert(v.cend(), hamon::make_pair(short{1}, 30.0f));
 			VERIFY(r->first == Key{1});
 			VERIFY(r->second == T{30});
 		}
@@ -80,17 +84,17 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{3}) == 0);
 	}
 
-	// from std::tuple
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::tuple<int, int>>())), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::tuple<char, float>>())), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::tuple<double, long>>())), Iterator>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::tuple<int, int>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::tuple<char, float>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::tuple<double, long>>())), "");
+	// from hamon::tuple
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::tuple<int, int>>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::tuple<char, float>>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::tuple<double, long>>())), Iterator>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::tuple<int, int>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::tuple<char, float>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::tuple<double, long>>())), "");
 	{
 		Map v;
 		{
-			auto r = v.insert(v.end(), std::make_tuple(1, 10.0f));
+			auto r = v.insert(v.end(), hamon::make_tuple(1, 10.0f));
 			VERIFY(r->first == Key{1});
 			VERIFY(r->second == T{10});
 		}
@@ -100,7 +104,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{2}) == 0);
 		VERIFY(v.count(Key{3}) == 0);
 		{
-			auto const p = std::make_tuple(char{2}, 20.0);
+			auto const p = hamon::make_tuple(char{2}, 20.0);
 			auto r = v.insert(v.begin(), p);
 			VERIFY(r->first == Key{2});
 			VERIFY(r->second == T{20});
@@ -111,7 +115,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{2}) == 1);
 		VERIFY(v.count(Key{3}) == 0);
 		{
-			auto r = v.insert(v.cend(), std::make_tuple(short{2}, 30.0f));
+			auto r = v.insert(v.cend(), hamon::make_tuple(short{2}, 30.0f));
 			VERIFY(r->first == Key{2});
 			VERIFY(r->second == T{30});
 		}
@@ -122,17 +126,17 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{3}) == 0);
 	}
 
-	// from std::array
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::array<int, 2>>())), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::array<char, 2>>())), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::array<double, 2>>())), Iterator>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::array<int, 2>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::array<char, 2>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<std::array<double, 2>>())), "");
+	// from hamon::array
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::array<int, 2>>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::array<char, 2>>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::array<double, 2>>())), Iterator>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::array<int, 2>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::array<char, 2>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<ConstIterator>(), hamon::declval<hamon::array<double, 2>>())), "");
 	{
 		Map v;
 		{
-			auto r = v.insert(v.begin(), std::array<int, 2>{2, 10});
+			auto r = v.insert(v.begin(), hamon::array<int, 2>{2, 10});
 			VERIFY(r->first == Key{2});
 			VERIFY(r->second == T{10});
 		}
@@ -142,7 +146,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{2}) == 1);
 		VERIFY(v.count(Key{3}) == 0);
 		{
-			auto const p = std::array<char, 2>{1, 20};
+			auto const p = hamon::array<char, 2>{1, 20};
 			auto r = v.insert(v.begin(), p);
 			VERIFY(r->first == Key{1});
 			VERIFY(r->second == T{20});
@@ -153,7 +157,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.count(Key{2}) == 1);
 		VERIFY(v.count(Key{3}) == 0);
 		{
-			auto r = v.insert(v.cbegin(), std::array<short, 2>{1, 30});
+			auto r = v.insert(v.cbegin(), hamon::array<short, 2>{1, 30});
 			VERIFY(r->first == Key{1});
 			VERIFY(r->second == T{30});
 		}
@@ -180,14 +184,14 @@ HAMON_CXX20_CONSTEXPR bool test2()
 	using Map = hamon::flat_multimap<int, int>;
 	using ConstIterator = typename Map::const_iterator;
 
-	static_assert( is_insert_invocable<Map&, ConstIterator, std::pair<int, int>>::value, "");
-	static_assert( is_insert_invocable<Map&, ConstIterator, std::pair<char, float>>::value, "");
-	static_assert(!is_insert_invocable<Map&, ConstIterator, std::pair<int, std::string>>::value, "");
-	static_assert( is_insert_invocable<Map&, ConstIterator, std::tuple<int, int>>::value, "");
-	static_assert( is_insert_invocable<Map&, ConstIterator, std::tuple<char, float>>::value, "");
-	static_assert(!is_insert_invocable<Map&, ConstIterator, std::tuple<int, int, int>>::value, "");
-	static_assert( is_insert_invocable<Map&, ConstIterator, std::array<int, 2>>::value, "");
-	static_assert(!is_insert_invocable<Map&, ConstIterator, std::array<int, 3>>::value, "");
+	static_assert( is_insert_invocable<Map&, ConstIterator, hamon::pair<int, int>>::value, "");
+	static_assert( is_insert_invocable<Map&, ConstIterator, hamon::pair<char, float>>::value, "");
+	static_assert(!is_insert_invocable<Map&, ConstIterator, hamon::pair<int, hamon::string>>::value, "");
+	static_assert( is_insert_invocable<Map&, ConstIterator, hamon::tuple<int, int>>::value, "");
+	static_assert( is_insert_invocable<Map&, ConstIterator, hamon::tuple<char, float>>::value, "");
+	static_assert(!is_insert_invocable<Map&, ConstIterator, hamon::tuple<int, int, int>>::value, "");
+	static_assert( is_insert_invocable<Map&, ConstIterator, hamon::array<int, 2>>::value, "");
+	static_assert(!is_insert_invocable<Map&, ConstIterator, hamon::array<int, 3>>::value, "");
 
 	return true;
 }
@@ -214,7 +218,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.end(), std::make_pair(1, 1)), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(v.end(), hamon::make_pair(1, 1)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -230,7 +234,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.end(), std::make_tuple(0, 0)), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(v.end(), hamon::make_tuple(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -242,7 +246,7 @@ void test_exceptions()
 		ValueContainer b{5, 6, 7, 8};
 		Map v(hamon::sorted_equivalent, hamon::move(a), hamon::move(b));
 
-		EXPECT_THROW(v.insert(v.end(), std::array<int, 2>{3, 3}), int);
+		EXPECT_THROW(v.insert(v.end(), hamon::array<int, 2>{3, 3}), int);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -254,7 +258,7 @@ void test_exceptions()
 		ValueContainer b{5, 6, 7, 8};
 		Map v(hamon::sorted_equivalent, hamon::move(a), hamon::move(b));
 
-		EXPECT_THROW(v.insert(v.end(), std::make_pair(1, 5)), int);
+		EXPECT_THROW(v.insert(v.end(), hamon::make_pair(1, 5)), int);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -270,7 +274,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.end(), std::make_tuple(0, 0)), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(v.end(), hamon::make_tuple(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -286,7 +290,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.end(), std::array<int, 2>{0, 0}), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(v.end(), hamon::array<int, 2>{0, 0}), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

@@ -7,20 +7,20 @@
  */
 
 #include <hamon/flat_map/flat_map.hpp>
+#include <hamon/array.hpp>
+#include <hamon/deque.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/new/bad_alloc.hpp>
+#include <hamon/pair.hpp>
+#include <hamon/string.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
-#include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <array>
-#include <string>
-#include <tuple>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -41,18 +41,18 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using Iterator = typename Map::iterator;
 	using Result = hamon::pair<Iterator, bool>;
 
-	// from std::pair
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::pair<int, int>>())), Result>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::pair<char, float>>())), Result>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::pair<double, long>>())), Result>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::pair<int, int>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::pair<char, float>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::pair<double, long>>())), "");
+	// from hamon::pair
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<int, int>>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<char, float>>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<double, long>>())), Result>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<int, int>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<char, float>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::pair<double, long>>())), "");
 	{
 		Map v;
 		VERIFY(check_invariant(v));
 		{
-			auto r = v.insert(std::make_pair(1, 10.0f));
+			auto r = v.insert(hamon::make_pair(1, 10.0f));
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == true);
@@ -61,7 +61,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.size() == 1);
 		VERIFY(v[Key{1}] == T{10});
 		{
-			auto const p = std::make_pair(char{2}, 20.0);
+			auto const p = hamon::make_pair(char{2}, 20.0);
 			auto r = v.insert(p);
 			VERIFY(r.first->first == Key{2});
 			VERIFY(r.first->second == T{20});
@@ -72,7 +72,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v[Key{1}] == T{10});
 		VERIFY(v[Key{2}] == T{20});
 		{
-			auto r = v.insert(std::make_pair(short{1}, 30.0f));
+			auto r = v.insert(hamon::make_pair(short{1}, 30.0f));
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == false);
@@ -83,18 +83,18 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v[Key{2}] == T{20});
 	}
 
-	// from std::tuple
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::tuple<int, int>>())), Result>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::tuple<char, float>>())), Result>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::tuple<double, long>>())), Result>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::tuple<int, int>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::tuple<char, float>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::tuple<double, long>>())), "");
+	// from hamon::tuple
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::tuple<int, int>>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::tuple<char, float>>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::tuple<double, long>>())), Result>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::tuple<int, int>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::tuple<char, float>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::tuple<double, long>>())), "");
 	{
 		Map v;
 		VERIFY(check_invariant(v));
 		{
-			auto r = v.insert(std::make_tuple(1, 10.0f));
+			auto r = v.insert(hamon::make_tuple(1, 10.0f));
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == true);
@@ -103,7 +103,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.size() == 1);
 		VERIFY(v[Key{1}] == T{10});
 		{
-			auto const p = std::make_tuple(char{2}, 20.0);
+			auto const p = hamon::make_tuple(char{2}, 20.0);
 			auto r = v.insert(p);
 			VERIFY(r.first->first == Key{2});
 			VERIFY(r.first->second == T{20});
@@ -114,7 +114,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v[Key{1}] == T{10});
 		VERIFY(v[Key{2}] == T{20});
 		{
-			auto r = v.insert(std::make_tuple(short{1}, 30.0f));
+			auto r = v.insert(hamon::make_tuple(short{1}, 30.0f));
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == false);
@@ -125,18 +125,18 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v[Key{2}] == T{20});
 	}
 
-	// from std::array
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::array<int, 2>>())), Result>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::array<char, 2>>())), Result>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::array<double, 2>>())), Result>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::array<int, 2>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::array<char, 2>>())), "");
-	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::array<double, 2>>())), "");
+	// from hamon::array
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::array<int, 2>>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::array<char, 2>>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<hamon::array<double, 2>>())), Result>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::array<int, 2>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::array<char, 2>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<hamon::array<double, 2>>())), "");
 	{
 		Map v;
 		VERIFY(check_invariant(v));
 		{
-			auto r = v.insert(std::array<int, 2>{1, 10});
+			auto r = v.insert(hamon::array<int, 2>{1, 10});
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == true);
@@ -145,7 +145,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.size() == 1);
 		VERIFY(v[Key{1}] == T{10});
 		{
-			auto const p = std::array<char, 2>{2, 20};
+			auto const p = hamon::array<char, 2>{2, 20};
 			auto r = v.insert(p);
 			VERIFY(r.first->first == Key{2});
 			VERIFY(r.first->second == T{20});
@@ -156,7 +156,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v[Key{1}] == T{10});
 		VERIFY(v[Key{2}] == T{20});
 		{
-			auto r = v.insert(std::array<short, 2>{1, 30});
+			auto r = v.insert(hamon::array<short, 2>{1, 30});
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == false);
@@ -182,14 +182,14 @@ HAMON_CXX20_CONSTEXPR bool test2()
 {
 	using Map = hamon::flat_map<int, int>;
 
-	static_assert( is_insert_invocable<Map&, std::pair<int, int>>::value, "");
-	static_assert( is_insert_invocable<Map&, std::pair<char, float>>::value, "");
-	static_assert(!is_insert_invocable<Map&, std::pair<int, std::string>>::value, "");
-	static_assert( is_insert_invocable<Map&, std::tuple<int, int>>::value, "");
-	static_assert( is_insert_invocable<Map&, std::tuple<char, float>>::value, "");
-	static_assert(!is_insert_invocable<Map&, std::tuple<int, int, int>>::value, "");
-	static_assert( is_insert_invocable<Map&, std::array<int, 2>>::value, "");
-	static_assert(!is_insert_invocable<Map&, std::array<int, 3>>::value, "");
+	static_assert( is_insert_invocable<Map&, hamon::pair<int, int>>::value, "");
+	static_assert( is_insert_invocable<Map&, hamon::pair<char, float>>::value, "");
+	static_assert(!is_insert_invocable<Map&, hamon::pair<int, hamon::string>>::value, "");
+	static_assert( is_insert_invocable<Map&, hamon::tuple<int, int>>::value, "");
+	static_assert( is_insert_invocable<Map&, hamon::tuple<char, float>>::value, "");
+	static_assert(!is_insert_invocable<Map&, hamon::tuple<int, int, int>>::value, "");
+	static_assert( is_insert_invocable<Map&, hamon::array<int, 2>>::value, "");
+	static_assert(!is_insert_invocable<Map&, hamon::array<int, 3>>::value, "");
 
 	return true;
 }
@@ -216,7 +216,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(std::make_pair(0, 0)), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::make_pair(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -232,7 +232,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(std::make_tuple(0, 0)), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::make_tuple(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -244,7 +244,7 @@ void test_exceptions()
 		ValueContainer b{5, 6, 7, 8};
 		Map v(hamon::sorted_unique, hamon::move(a), hamon::move(b));
 
-		EXPECT_THROW(v.insert(std::array<int, 2>{0, 0}), int);
+		EXPECT_THROW(v.insert(hamon::array<int, 2>{0, 0}), int);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -256,7 +256,7 @@ void test_exceptions()
 		ValueContainer b{5, 6, 7, 8};
 		Map v(hamon::sorted_unique, hamon::move(a), hamon::move(b));
 
-		EXPECT_THROW(v.insert(std::make_pair(0, 0)), int);
+		EXPECT_THROW(v.insert(hamon::make_pair(0, 0)), int);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -272,7 +272,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(std::make_tuple(0, 0)), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::make_tuple(0, 0)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
@@ -288,7 +288,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(std::array<int, 2>{0, 0}), hamon::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::array<int, 2>{0, 0}), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif
