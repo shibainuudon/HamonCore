@@ -7,6 +7,8 @@
 #include <hamon/map/map.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
+#include <hamon/pair.hpp>
 #include <gtest/gtest.h>
 #include <string>
 
@@ -31,10 +33,10 @@ GTEST_TEST(MapTest, InsertTest)
 {
 	// https://en.cppreference.com/w/cpp/container/map/insert
 
-	hamon::map<std::string, float> heights;
+	hamon::map<hamon::string, float> heights;
 
 	// Overload 3: insert from rvalue reference
-	const auto r = heights.insert({std::string("Hinata"), 162.8f});
+	const auto r = heights.insert({hamon::string("Hinata"), 162.8f});
 	EXPECT_TRUE(r.first->first == "Hinata");
 	EXPECT_TRUE(r.first->second == 162.8f);
 	EXPECT_TRUE(r.second);
@@ -49,7 +51,7 @@ GTEST_TEST(MapTest, InsertTest)
 	}
 	{
 		// Overload 2: insert via forwarding to emplace
-		const auto r2 = heights.insert(std::pair<std::string, float>{"Kageyama", 180.6f});
+		const auto r2 = heights.insert(hamon::pair<hamon::string, float>{"Kageyama", 180.6f});
 		EXPECT_TRUE(r2.first->first == "Kageyama");
 		EXPECT_TRUE(r2.first->second == 180.6f);
 		EXPECT_TRUE(r2.second);
@@ -57,7 +59,7 @@ GTEST_TEST(MapTest, InsertTest)
 	{
 		// Overload 6: insert from rvalue reference with positional hint
 		const auto n = hamon::size(heights);
-		const auto it = heights.insert(it_hinata, {std::string("Azumane"), 184.7f});
+		const auto it = heights.insert(it_hinata, {hamon::string("Azumane"), 184.7f});
 		EXPECT_TRUE(it->first == "Azumane");
 		EXPECT_TRUE(it->second == 184.7f);
 		EXPECT_TRUE(hamon::size(heights) != n);
@@ -73,20 +75,20 @@ GTEST_TEST(MapTest, InsertTest)
 	{
 		// Overload 5: insert via forwarding to emplace with positional hint
 		const auto n = hamon::size(heights);
-		const auto it = heights.insert(it_hinata, std::pair<std::string, float>{"Tsukishima", 188.3f});
+		const auto it = heights.insert(it_hinata, hamon::pair<hamon::string, float>{"Tsukishima", 188.3f});
 		EXPECT_TRUE(it->first == "Tsukishima");
 		EXPECT_TRUE(it->second == 188.3f);
 		EXPECT_TRUE(hamon::size(heights) != n);
 	}
 
 	auto node_hinata = heights.extract(it_hinata);
-	hamon::map<std::string, float> heights2;
+	hamon::map<hamon::string, float> heights2;
 
 	// Overload 7: insert from iterator range
 	heights2.insert(hamon::begin(heights), hamon::end(heights));
 
 	// Overload 8: insert from initializer_list
-	heights2.insert({{std::string("Kozume"), 169.2f}, {"Kuroo", 187.7f}});
+	heights2.insert({{hamon::string("Kozume"), 169.2f}, {"Kuroo", 187.7f}});
 
 	// Overload 9: insert node
 	const auto status = heights2.insert(hamon::move(node_hinata));

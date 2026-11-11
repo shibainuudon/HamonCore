@@ -5,9 +5,10 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/functional/greater.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <functional>
 #include <string>
 
 namespace hamon_multimap_test
@@ -31,7 +32,7 @@ GTEST_TEST(MultimapTest, InsertTest)
 {
 	// https://en.cppreference.com/w/cpp/container/multimap/insert
 
-	using Map = hamon::multimap<int, std::string, std::greater<int>>;
+	using Map = hamon::multimap<int, hamon::string, hamon::greater<int>>;
 	using Pair = typename Map::value_type;
 
 	// list-initialize

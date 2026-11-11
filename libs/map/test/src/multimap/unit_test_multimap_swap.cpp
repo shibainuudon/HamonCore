@@ -16,6 +16,7 @@
 #include <hamon/map/multimap.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -308,7 +309,7 @@ GTEST_TEST(MultimapTest, SwapTest)
 
 	// https://en.cppreference.com/w/cpp/container/multimap/swap
 	{
-		hamon::multimap<std::string, std::string>
+		hamon::multimap<hamon::string, hamon::string>
 			m1 {{"c", "gamma"}, {"b", "beta"}, {"a", "alpha"}, {"c", "gamma"}},
 			m2 {{"e", "epsilon"}, {"d", "delta"}, {"e", "epsilon"}};
 

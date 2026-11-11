@@ -63,7 +63,7 @@ GTEST_TEST(MultimapTest, TypesTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, char, hamon::less<int>, hamon::allocator>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<char, float, hamon::less<>, hamon::allocator>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int, hamon::greater<>, std::allocator>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, int, hamon::greater<>, hamon::allocator>()));
 }
 
 }	// namespace types_test

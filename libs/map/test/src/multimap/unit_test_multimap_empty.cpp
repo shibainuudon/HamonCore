@@ -7,6 +7,7 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -84,7 +85,7 @@ GTEST_TEST(MultimapTest, EmptyTest)
 		EXPECT_TRUE(numbers.empty());
 
 		numbers.emplace(42, 13);
-		numbers.insert(std::make_pair(13317, 123));
+		numbers.insert(hamon::make_pair(13317, 123));
 		EXPECT_FALSE(numbers.empty());
 	}
 }

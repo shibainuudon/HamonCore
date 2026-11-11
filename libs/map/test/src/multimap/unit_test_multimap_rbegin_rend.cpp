@@ -14,10 +14,10 @@
 #include <hamon/map/multimap.hpp>
 #include <hamon/algorithm.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <string>
 
 namespace hamon_multimap_test
 {
@@ -180,7 +180,7 @@ GTEST_TEST(MultimapTest, RBeginREndTest)
 
 	// https://en.cppreference.com/w/cpp/container/multimap/rbegin
 	{
-		hamon::multimap<std::string, int> map
+		hamon::multimap<hamon::string, int> map
 		{
 			{"a", 1},
 			{"e", 5},
@@ -192,7 +192,7 @@ GTEST_TEST(MultimapTest, RBeginREndTest)
 			{"b", 2}
 		};
 
-		using Pair = typename hamon::multimap<std::string, int>::value_type;
+		using Pair = typename hamon::multimap<hamon::string, int>::value_type;
 
 		// Print out in reverse order using const reverse iterators
 		hamon::stringstream out;

@@ -12,6 +12,7 @@
 #include <hamon/map/map.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -332,9 +333,9 @@ GTEST_TEST(MapTest, TryEmplaceTest)
 
 	// https://en.cppreference.com/w/cpp/container/map/try_emplace
 	{
-		hamon::map<std::string, std::string> m;
+		hamon::map<hamon::string, hamon::string> m;
 		{
-			auto r = m.try_emplace("a", std::string("a"));
+			auto r = m.try_emplace("a", hamon::string("a"));
 			EXPECT_EQ("a", r.first->first);
 			EXPECT_EQ("a", r.first->second);
 			EXPECT_TRUE(r.second);

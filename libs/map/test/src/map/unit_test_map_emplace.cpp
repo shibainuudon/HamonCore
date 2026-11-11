@@ -10,6 +10,7 @@
 #include <hamon/iterator.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -386,10 +387,10 @@ GTEST_TEST(MapTest, EmplaceTest)
 
 	// https://en.cppreference.com/w/cpp/container/map/emplace
 	{
-		hamon::map<std::string, std::string> m;
+		hamon::map<hamon::string, hamon::string> m;
 
 		// uses pair's move constructor
-		m.emplace(hamon::make_pair(std::string("a"), std::string("a")));
+		m.emplace(hamon::make_pair(hamon::string("a"), hamon::string("a")));
 
 		// uses pair's converting move constructor
 		m.emplace(hamon::make_pair("b", "abcd"));

@@ -10,6 +10,7 @@
 #include <hamon/iterator.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -359,13 +360,13 @@ GTEST_TEST(MultimapTest, EmplaceTest)
 
 	// https://en.cppreference.com/w/cpp/container/multimap/emplace
 	{
-		hamon::multimap<std::string, std::string> m;
+		hamon::multimap<hamon::string, hamon::string> m;
 
 		// uses pair's move constructor
-		m.emplace(std::make_pair(std::string("a"), std::string("a")));
+		m.emplace(hamon::make_pair(hamon::string("a"), hamon::string("a")));
 
 		// uses pair's converting move constructor
-		m.emplace(std::make_pair("b", "abcd"));
+		m.emplace(hamon::make_pair("b", "abcd"));
 
 		// uses pair's template constructor
 		m.emplace("d", "ddd");

@@ -20,6 +20,7 @@
 #include <hamon/map/map.hpp>
 #include <hamon/functional.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -268,9 +269,9 @@ GTEST_TEST(MultimapTest, MergeTest)
 
 	// https://en.cppreference.com/w/cpp/container/multimap/merge
 	{
-		hamon::multimap<int, std::string> ma {{1, "apple"}, {5, "pear"}, {10, "banana"}};
-		hamon::multimap<int, std::string> mb {{2, "zorro"}, {4, "batman"}, {5, "X"}, {8, "alpaca"}};
-		hamon::multimap<int, std::string> u;
+		hamon::multimap<int, hamon::string> ma {{1, "apple"}, {5, "pear"}, {10, "banana"}};
+		hamon::multimap<int, hamon::string> mb {{2, "zorro"}, {4, "batman"}, {5, "X"}, {8, "alpaca"}};
+		hamon::multimap<int, hamon::string> u;
 		u.merge(ma);
 		EXPECT_EQ("[1] = apple, [5] = pear, [10] = banana, ", ToString(u));
 		EXPECT_EQ("", ToString(ma));

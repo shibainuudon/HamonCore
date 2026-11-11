@@ -9,6 +9,7 @@
 
 #include <hamon/map/map.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -155,7 +156,7 @@ GTEST_TEST(MapTest, OpSubscriptTest)
 
 		// count the number of occurrences of each word
 		// (the first call to operator[] initialized the counter with zero)
-		hamon::map<std::string, int>  word_map;
+		hamon::map<hamon::string, int>  word_map;
 		for (const auto& w : {"this", "sentence", "is", "not", "a", "sentence",
 							  "this", "sentence", "is", "a", "hoax"})
 		{

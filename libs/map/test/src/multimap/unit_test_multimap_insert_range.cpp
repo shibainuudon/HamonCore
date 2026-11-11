@@ -8,6 +8,7 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -220,8 +221,8 @@ GTEST_TEST(MultimapTest, InsertRangeTest)
 
 	// https://en.cppreference.com/w/cpp/container/multimap/insert_range
 	{
-		auto container = hamon::multimap<int, int>{std::pair<int, int>{1, 11}, {3, 33}, {2, 22}, {4, 44}};
-		const auto rg = {std::pair<int, int>{-1, -11}, {3, -33}, {-2, -22}};
+		auto container = hamon::multimap<int, int>{hamon::pair<int, int>{1, 11}, {3, 33}, {2, 22}, {4, 44}};
+		const auto rg = {hamon::pair<int, int>{-1, -11}, {3, -33}, {-2, -22}};
 		container.insert_range(rg);
 		EXPECT_EQ("[-2] = -22, [-1] = -11, [1] = 11, [2] = 22, [3] = 33, [3] = -33, [4] = 44, ", ToString(container));
 	}

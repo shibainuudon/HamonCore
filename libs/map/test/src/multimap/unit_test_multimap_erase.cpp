@@ -6,6 +6,7 @@
 
 #include <hamon/map/multimap.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include <string>
 
@@ -30,7 +31,7 @@ GTEST_TEST(MultimapTest, EraseTest)
 {
 	// https://en.cppreference.com/w/cpp/container/multimap/erase
 
-	hamon::multimap<int, std::string> c =
+	hamon::multimap<int, hamon::string> c =
 	{
 		{1, "one"}, {2, "two"}, {3, "three"},
 		{4, "four"}, {5, "five"}, {6, "six"}

@@ -12,7 +12,9 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -190,8 +192,8 @@ GTEST_TEST(MultimapTest, BeginEndTest)
 
 	// https://en.cppreference.com/w/cpp/container/multimap/begin
 	{
-		hamon::multimap<std::size_t, std::string> mmap;
-		using Pair = typename hamon::multimap<std::size_t, std::string>::value_type;
+		hamon::multimap<hamon::size_t, hamon::string> mmap;
+		using Pair = typename hamon::multimap<hamon::size_t, hamon::string>::value_type;
 		EXPECT_TRUE(mmap.begin() == mmap.end());   // OK
 		EXPECT_TRUE(mmap.cbegin() == mmap.cend()); // OK
 

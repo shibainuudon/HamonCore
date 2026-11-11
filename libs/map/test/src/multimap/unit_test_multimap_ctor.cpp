@@ -8,6 +8,7 @@
 #include <hamon/ostream/ostream.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include <string>
 
@@ -67,12 +68,12 @@ GTEST_TEST(MultimapTest, CtorTest)
 	EXPECT_EQ("[(3, 4)] = 5, [(3, -3)] = -1, [(5, 12)] = 13, [(8, 15)] = 17, ", ToString(mag));
 
 	// Construction from a range
-	using PS = std::pair<int, std::string>;
+	using PS = hamon::pair<int, hamon::string>;
 	const auto rg = {PS {3, "Earth"}, {2, "Venus"}, {1, "Mercury"}, {3, "Moon"}};
 #if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	hamon::multimap<int, std::string> m2(hamon::from_range, rg); // overload (12)
+	hamon::multimap<int, hamon::string> m2(hamon::from_range, rg); // overload (12)
 #else
-	hamon::multimap<int, std::string> m2(rg.begin(), rg.end()); // fallback to (4)
+	hamon::multimap<int, hamon::string> m2(rg.begin(), rg.end()); // fallback to (4)
 #endif
 	EXPECT_EQ("[1] = Mercury, [2] = Venus, [3] = Earth, [3] = Moon, ", ToString(m2));
 }

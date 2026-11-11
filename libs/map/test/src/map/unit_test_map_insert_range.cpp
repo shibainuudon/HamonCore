@@ -211,8 +211,8 @@ GTEST_TEST(MapTest, InsertRangeTest)
 
 	// https://en.cppreference.com/w/cpp/container/map/insert_range
 	{
-		auto container = hamon::map<int, int> {std::pair<int, int> {1, 11}, {3, 33}, {2, 22}, {4, 44}};
-		const auto rg = {std::pair<int, int> {-1, -11}, {3, -33}, {-2, -22}};
+		auto container = hamon::map<int, int> {hamon::pair<int, int> {1, 11}, {3, 33}, {2, 22}, {4, 44}};
+		const auto rg = {hamon::pair<int, int> {-1, -11}, {3, -33}, {-2, -22}};
 		container.insert_range(rg);
 		EXPECT_EQ("[-2] = -22, [-1] = -11, [1] = 11, [2] = 22, [3] = 33, [4] = 44, ", ToString(container));
 	}
