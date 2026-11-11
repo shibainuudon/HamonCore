@@ -38,7 +38,7 @@ GTEST_TEST(UnorderedMapTest, PmrTest)
 		ss << "Key:[" << key << "] Value:[" << value << "]\n";
 	};
 
-	//std::cout << "Iterate and print key-value pairs of unordered_map, being\n"
+	//cout << "Iterate and print key-value pairs of unordered_map, being\n"
 	//	"explicit with their types:\n";
 	for (auto& n : u)
 	{
@@ -46,7 +46,7 @@ GTEST_TEST(UnorderedMapTest, PmrTest)
 	}
 
 #if defined(HAMON_HAS_CXX17_STRUCTURED_BINDINGS)
-	//std::cout << "\nIterate and print key-value pairs using C++17 structured binding:\n";
+	//cout << "\nIterate and print key-value pairs using C++17 structured binding:\n";
 	for (const auto& [key, value] : u)
 	{
 		print_key_value(key, value);
@@ -57,14 +57,14 @@ GTEST_TEST(UnorderedMapTest, PmrTest)
 	u["BLACK"] = "#000000";
 	u["WHITE"] = "#FFFFFF";
 
-	//std::cout << "\nOutput values by key:\n"
+	//cout << "\nOutput values by key:\n"
 	//	"The HEX of color RED is:[" << u["RED"] << "]\n"
 	//	"The HEX of color BLACK is:[" << u["BLACK"] << "]\n\n";
 
-	//std::cout << "Use operator[] with non-existent key to insert a new key-value pair:\n";
+	//cout << "Use operator[] with non-existent key to insert a new key-value pair:\n";
 	print_key_value("new_key", u["new_key"]);
 
-	//std::cout << "\nIterate and print key-value pairs, using `auto`;\n"
+	//cout << "\nIterate and print key-value pairs, using `auto`;\n"
 	//	"new_key is now one of the keys in the map:\n";
 	for (const auto& n : u)
 	{

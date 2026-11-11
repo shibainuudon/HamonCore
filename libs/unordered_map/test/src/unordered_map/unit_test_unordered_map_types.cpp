@@ -36,8 +36,6 @@
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <gtest/gtest.h>
-#include <memory>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "unordered_map_test_helper.hpp"
 
@@ -81,7 +79,7 @@ GTEST_TEST(UnorderedMapTest, TypesTest)
 {
 	test<int, char, hamon::hash<int>, hamon::equal_to<int>, hamon::allocator>();
 	test<char, float, hamon::hash<char>, hamon::equal_to<>, hamon::allocator>();
-	test<float, int, TransparentHash, hamon::equal_to<>, std::allocator>();
+	test<float, int, TransparentHash, hamon::equal_to<>, hamon::allocator>();
 }
 
 }	// namespace types_test
