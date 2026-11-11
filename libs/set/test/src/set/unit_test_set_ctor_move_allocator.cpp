@@ -24,7 +24,7 @@ template <typename T>
 struct MyAllocator1
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
+	using is_always_equal = hamon::false_type;
 
 	int id;
 
@@ -69,7 +69,7 @@ template <typename T>
 struct MyAllocator2
 {
 	using value_type = T;
-	using is_always_equal = std::false_type;
+	using is_always_equal = hamon::false_type;
 
 	int id;
 

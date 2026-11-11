@@ -13,12 +13,12 @@
  */
 
 #include <hamon/set/set.hpp>
+#include <hamon/functional/less.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <functional>
 #include <string>
 
 namespace hamon_set_test
@@ -303,7 +303,7 @@ GTEST_TEST(SetTest, SwapTest)
 		EXPECT_EQ(1, ref1);
 		EXPECT_EQ(4, ref2);
 
-		struct Cmp : std::less<int>
+		struct Cmp : hamon::less<int>
 		{
 			int id {};
 			Cmp(int i) : id {i} {}

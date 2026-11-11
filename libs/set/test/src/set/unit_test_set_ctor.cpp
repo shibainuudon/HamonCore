@@ -9,6 +9,7 @@
 #include <hamon/ostream/ostream.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include <string>
@@ -53,7 +54,7 @@ hamon::ostream& operator<<(hamon::ostream& os, Point pt)
 GTEST_TEST(SetTest, CtorTest)
 {
 	// (1) Default constructor
-	hamon::set<std::string> a;
+	hamon::set<hamon::string> a;
 	EXPECT_EQ("{}", ToString(a));
 
 	a.insert("horse");
@@ -62,21 +63,21 @@ GTEST_TEST(SetTest, CtorTest)
 	EXPECT_EQ("{cat, dog, horse}", ToString(a));
 
 	// (4) Range constructor
-	hamon::set<std::string> b(a.find("dog"), a.end());
+	hamon::set<hamon::string> b(a.find("dog"), a.end());
 	EXPECT_EQ("{dog, horse}", ToString(b));
 
 	// (6) Copy constructor
-	hamon::set<std::string> c(a);
+	hamon::set<hamon::string> c(a);
 	c.insert("another horse");
 	EXPECT_EQ("{another horse, cat, dog, horse}", ToString(c));
 
 	// (8) Move constructor
-	hamon::set<std::string> d(hamon::move(a));
+	hamon::set<hamon::string> d(hamon::move(a));
 	EXPECT_EQ("{cat, dog, horse}", ToString(d));
 	EXPECT_EQ("{}", ToString(a));
 
 	// (10) Initializer list constructor
-	hamon::set<std::string> e {"one", "two", "three", "five", "eight"};
+	hamon::set<hamon::string> e {"one", "two", "three", "five", "eight"};
 	EXPECT_EQ("{eight, five, one, three, two}", ToString(e));
 
 	// Custom comparison
@@ -87,9 +88,9 @@ GTEST_TEST(SetTest, CtorTest)
 	// (12) Range constructor
 	const auto w = {"Eurybia", "Theia", "Rhea", "Aura", "Mnemosyne", "Mnemosyne"};
 #if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	hamon::set<std::string> g(hamon::from_range, w); // overload (12)
+	hamon::set<hamon::string> g(hamon::from_range, w); // overload (12)
 #else
-	hamon::set<std::string> g(w.begin(), w.end()); // fallback to (4)
+	hamon::set<hamon::string> g(w.begin(), w.end()); // fallback to (4)
 #endif
 	EXPECT_EQ("{Aura, Eurybia, Mnemosyne, Rhea, Theia}", ToString(g));
 }

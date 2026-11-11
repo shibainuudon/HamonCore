@@ -13,6 +13,7 @@
  */
 
 #include <hamon/set/multiset.hpp>
+#include <hamon/functional/less.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits.hpp>
@@ -310,7 +311,7 @@ GTEST_TEST(MultisetTest, SwapTest)
 		// refers to the same element in the other container after the swap. Same is true
 		// for references.
 
-		struct Cmp : std::less<int>
+		struct Cmp : hamon::less<int>
 		{
 			int id {};
 			Cmp(int i) : id {i} {}

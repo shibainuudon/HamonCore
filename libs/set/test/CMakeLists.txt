@@ -18,9 +18,15 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
 		cmath
+		functional
 		initializer_list
 		iterator
+		memory
 		ostream
+		ranges
 		sstream
+		string
 		string_view
+		type_traits
+		utility
 		common_test)

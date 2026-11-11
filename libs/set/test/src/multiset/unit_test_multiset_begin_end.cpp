@@ -14,10 +14,10 @@
 #include <hamon/set/multiset.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <string>
 
 namespace hamon_multiset_test
 {
@@ -175,7 +175,7 @@ GTEST_TEST(MultisetTest, BeginEndTest)
 
 	// https://en.cppreference.com/w/cpp/container/multiset/begin
 	{
-		const hamon::multiset<std::string> words =
+		const hamon::multiset<hamon::string> words =
 		{
 			"some", "not", "sorted", "words",
 			"will", "come", "out", "sorted",

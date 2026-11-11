@@ -7,6 +7,7 @@
 #include <hamon/set/multiset.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include <string>
@@ -64,9 +65,9 @@ GTEST_TEST(MultisetTest, CtorTest)
 	// (12) Range constructor
 	const auto w = {"a", "b", "c", "d", "d", "c", "b", "a"};
 #if 1//(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
-	hamon::multiset<std::string> f(hamon::from_range, w); // overload (12)
+	hamon::multiset<hamon::string> f(hamon::from_range, w); // overload (12)
 #else
-	hamon::multiset<std::string> f(w.begin(), w.end()); // fallback to (4)
+	hamon::multiset<hamon::string> f(w.begin(), w.end()); // fallback to (4)
 #endif
 	EXPECT_EQ("{a, a, b, b, c, c, d, d}", ToString(f));
 }
