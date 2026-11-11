@@ -19,8 +19,6 @@
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "priority_queue_test_helper.hpp"
@@ -95,12 +93,6 @@ GTEST_TEST(PriorityQueueTest, CtorIteratorContainerMoveAllocTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::deque<float, hamon::allocator<float>>>()));
-
-	EXPECT_TRUE((test<int,   std::vector<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::vector<float, hamon::allocator<float>>>()));
 }
 
 }	// namespace ctor_iterator_container_move_alloc_test

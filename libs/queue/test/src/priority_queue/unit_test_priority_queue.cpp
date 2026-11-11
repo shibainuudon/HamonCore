@@ -5,9 +5,10 @@
  */
 
 #include <hamon/queue.hpp>
+#include <hamon/functional/greater.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 namespace hamon_priority_queue_test
 {
@@ -42,9 +43,9 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 		EXPECT_EQ("9 8 7 6 5 4 3 2 1 0 ", ss.str());
 	}
 
-	// std::greater<int> makes the max priority queue act as a min priority queue.
+	// hamon::greater<int> makes the max priority queue act as a min priority queue.
 	{
-		hamon::priority_queue<int, std::vector<int>, std::greater<int>>
+		hamon::priority_queue<int, hamon::vector<int>, hamon::greater<int>>
 			min_priority_queue1(data.begin(), data.end());
 
 		hamon::stringstream ss;
@@ -55,7 +56,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 	// Second way to define a min priority queue.
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	{
-		hamon::priority_queue min_priority_queue2(data.begin(), data.end(), std::greater<int>());
+		hamon::priority_queue min_priority_queue2(data.begin(), data.end(), hamon::greater<int>());
 
 		hamon::stringstream ss;
 		pop_println(ss, min_priority_queue2);
@@ -73,7 +74,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::priority_queue custom_priority_queue(data.begin(), data.end(), CustomLess{});
 #else
-		hamon::priority_queue<int, std::vector<int>, CustomLess>
+		hamon::priority_queue<int, hamon::vector<int>, CustomLess>
 			custom_priority_queue(data.begin(), data.end(), CustomLess{});
 #endif
 
@@ -85,7 +86,7 @@ GTEST_TEST(PriorityQueueTest, PriorityQueueTest)
 	// Using lambda to compare elements.
 	{
 		auto cmp = [](int left, int right) { return (left ^ 1) < (right ^ 1); };
-		hamon::priority_queue<int, std::vector<int>, decltype(cmp)> lambda_priority_queue(cmp);
+		hamon::priority_queue<int, hamon::vector<int>, decltype(cmp)> lambda_priority_queue(cmp);
 
 		for (int n : data)
 		{

@@ -20,8 +20,6 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/swap.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_priority_queue_test
@@ -114,12 +112,6 @@ GTEST_TEST(PriorityQueueTest, SwapTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
-
-	//EXPECT_TRUE((test<int,   std::deque<int>>()));
-	//EXPECT_TRUE((test<float, std::deque<float>>()));
-
-	//EXPECT_TRUE((test<int,   std::vector<int>>()));
-	//EXPECT_TRUE((test<float, std::vector<float>>()));
 }
 
 }	// namespace swap_test

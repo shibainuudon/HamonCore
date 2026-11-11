@@ -17,8 +17,6 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "priority_queue_test_helper.hpp"
 
@@ -78,12 +76,6 @@ GTEST_TEST(PriorityQueueTest, CtorCompContainerCopyAllocTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::deque<float, hamon::allocator<float>>>()));
-
-	EXPECT_TRUE((test<int,   std::vector<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::vector<float, hamon::allocator<float>>>()));
 }
 
 }	// namespace ctor_comp_container_copy_alloc_test

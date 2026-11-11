@@ -15,8 +15,6 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_queue_test
@@ -85,12 +83,6 @@ GTEST_TEST(QueueTest, SwapTest)
 
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::list<int>>()));
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<float, hamon::list<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int>>()));
-	EXPECT_TRUE((test<float, std::deque<float>>()));
-
-	EXPECT_TRUE((test<int,   std::list<int>>()));
-	EXPECT_TRUE((test<float, std::list<float>>()));
 }
 
 #undef QUEUE_TEST_CONSTEXPR_EXPECT_TRUE

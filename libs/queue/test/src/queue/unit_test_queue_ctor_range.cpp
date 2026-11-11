@@ -15,8 +15,6 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -83,12 +81,6 @@ GTEST_TEST(QueueTest, CtorRangeTest)
 
 	EXPECT_TRUE((test<int,   hamon::list<int>>()));
 	EXPECT_TRUE((test<float, hamon::list<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int>>()));
-	EXPECT_TRUE((test<float, std::deque<float>>()));
-
-	EXPECT_TRUE((test<int,   std::list<int>>()));
-	EXPECT_TRUE((test<float, std::list<float>>()));
 }
 
 #undef QUEUE_TEST_CONSTEXPR_EXPECT_TRUE

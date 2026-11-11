@@ -17,8 +17,6 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 
@@ -89,12 +87,6 @@ GTEST_TEST(PriorityQueueTest, CtorIteratorContainerCopyTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int>>()));
-	EXPECT_TRUE((test<float, std::deque<float>>()));
-
-	EXPECT_TRUE((test<int,   std::vector<int>>()));
-	EXPECT_TRUE((test<float, std::vector<float>>()));
 }
 
 }	// namespace ctor_iterator_container_copy_test

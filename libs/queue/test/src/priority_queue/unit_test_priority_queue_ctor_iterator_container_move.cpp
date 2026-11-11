@@ -91,12 +91,6 @@ GTEST_TEST(PriorityQueueTest, CtorIteratorContainerMoveTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::vector<int>>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<float, hamon::vector<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int>>()));
-	EXPECT_TRUE((test<float, std::deque<float>>()));
-
-	EXPECT_TRUE((test<int,   std::vector<int>>()));
-	EXPECT_TRUE((test<float, std::vector<float>>()));
 }
 
 }	// namespace ctor_iterator_container_move_test

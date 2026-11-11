@@ -15,8 +15,6 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <list>
 #include "constexpr_test.hpp"
 #include "queue_test_helper.hpp"
 
@@ -67,12 +65,6 @@ GTEST_TEST(QueueTest, CtorAllocTest)
 
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::list<int>>()));
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<float, hamon::list<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::deque<float, hamon::allocator<float>>>()));
-
-	EXPECT_TRUE((test<int,   std::list<int,   hamon::allocator<int>>>()));
-	EXPECT_TRUE((test<float, std::list<float, hamon::allocator<float>>>()));
 }
 
 #undef QUEUE_TEST_CONSTEXPR_EXPECT_TRUE

@@ -9,14 +9,11 @@
 #include <hamon/queue/queue.hpp>
 #include <hamon/deque.hpp>
 #include <hamon/list.hpp>
-#include <hamon/string.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_trivially_default_constructible.hpp>
 #include <gtest/gtest.h>
-#include <deque>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_queue_test
@@ -75,14 +72,6 @@ GTEST_TEST(QueueTest, CtorDefaultTest)
 
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<int,   hamon::list<int>>()));
 	QUEUE_TEST_CONSTEXPR_EXPECT_TRUE((test<float, hamon::list<float>>()));
-
-	EXPECT_TRUE((test<int,   std::deque<int>>()));
-	EXPECT_TRUE((test<float, std::deque<float>>()));
-
-	EXPECT_TRUE((test<int,   std::list<int>>()));
-	EXPECT_TRUE((test<float, std::list<float>>()));
-
-//	EXPECT_TRUE((test<hamon::string>()));
 }
 
 #undef QUEUE_TEST_CONSTEXPR_EXPECT_TRUE

@@ -16,12 +16,16 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
+		compare
 		deque
+		functional
 		list
 		memory
 		pair
+		ranges
 		sstream
 		string
 		type_traits
+		utility
 		vector
 		common_test)

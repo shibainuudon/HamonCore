@@ -24,7 +24,7 @@ GTEST_TEST(QueueTest, QueueTest)
 	q.pop(); // removes the front element, 0
 	EXPECT_TRUE(q.size() == 3);
 
-	// Print and remove all elements. Note that std::queue does not
+	// Print and remove all elements. Note that hamon::queue does not
 	// support begin()/end(), so a range-for-loop cannot be used.
 	hamon::stringstream ss;
 	for (; !q.empty(); q.pop())
