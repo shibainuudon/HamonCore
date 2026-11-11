@@ -9,6 +9,7 @@
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -98,7 +99,7 @@ void test_exceptions()
 
 		throw_after = 1;
 
-		EXPECT_THROW(v.insert(v.end(), 0), std::bad_alloc);
+		EXPECT_THROW(v.insert(v.end(), 0), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{

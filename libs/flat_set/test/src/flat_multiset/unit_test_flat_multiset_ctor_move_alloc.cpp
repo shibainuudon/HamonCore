@@ -9,6 +9,7 @@
 
 #include <hamon/flat_set/flat_multiset.hpp>
 #include <hamon/functional.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <hamon/type_traits.hpp>
@@ -76,7 +77,7 @@ void test_exceptions()
 		int throw_after = 1;
 		ThrowAllocator<Key> alloc{&throw_after};
 
-		EXPECT_THROW(Set v2(hamon::move(v), alloc), std::bad_alloc);
+		EXPECT_THROW(Set v2(hamon::move(v), alloc), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 #endif

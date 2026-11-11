@@ -14,6 +14,7 @@
 #include <hamon/algorithm.hpp>
 #include <hamon/deque.hpp>
 #include <hamon/functional.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -172,7 +173,7 @@ void test_exceptions()
 			Key{16},
 			Key{17},
 		};
-		EXPECT_THROW(v.insert(hamon::ranges::begin(x), hamon::ranges::end(x)), std::bad_alloc);
+		EXPECT_THROW(v.insert(hamon::ranges::begin(x), hamon::ranges::end(x)), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{

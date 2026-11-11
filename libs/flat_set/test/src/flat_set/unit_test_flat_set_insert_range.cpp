@@ -10,6 +10,7 @@
 #include <hamon/flat_set/flat_set.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/new/bad_alloc.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -135,7 +136,7 @@ void test_exceptions()
 			Key{16},
 			Key{17},
 		};
-		EXPECT_THROW(v.insert_range(x), std::bad_alloc);
+		EXPECT_THROW(v.insert_range(x), hamon::bad_alloc);
 		EXPECT_TRUE(check_invariant(v));
 	}
 	{
