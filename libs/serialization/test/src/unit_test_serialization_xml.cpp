@@ -12,6 +12,7 @@
 #include <hamon/limits.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -247,7 +248,7 @@ R"(<?xml version="1.0"?>
 }
 
 using XmlTestTypes = ::testing::Types<
-	std::tuple<hamon::stringstream, hamon::serialization::xml_oarchive, hamon::serialization::xml_iarchive>
+	hamon::tuple<hamon::stringstream, hamon::serialization::xml_oarchive, hamon::serialization::xml_iarchive>
 >;
 
 template <typename T>
@@ -257,9 +258,9 @@ TYPED_TEST_SUITE(SerializationXmlTest, XmlTestTypes);
 
 TYPED_TEST(SerializationXmlTest, XmlTest)
 {
-	using Stream   = typename std::tuple_element<0, TypeParam>::type;
-	using OArchive = typename std::tuple_element<1, TypeParam>::type;
-	using IArchive = typename std::tuple_element<2, TypeParam>::type;
+	using Stream   = typename hamon::tuple_element<0, TypeParam>::type;
+	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
+	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
 	XmlTest<Stream, OArchive, IArchive>();
 }

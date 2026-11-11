@@ -11,10 +11,10 @@
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
 #include <hamon/string.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <tuple>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -153,13 +153,13 @@ R"({
 }
 
 using ListTestTypes = ::testing::Types<
-	std::tuple<hamon::stringstream,  hamon::serialization::text_oarchive,   hamon::serialization::text_iarchive>,
-	std::tuple<hamon::wstringstream, hamon::serialization::text_oarchive,   hamon::serialization::text_iarchive>,
-	std::tuple<hamon::stringstream,  hamon::serialization::binary_oarchive, hamon::serialization::binary_iarchive>,
-	std::tuple<hamon::stringstream,  hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>,
-	std::tuple<hamon::wstringstream, hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>,
-	std::tuple<hamon::stringstream,  hamon::serialization::xml_oarchive,    hamon::serialization::xml_iarchive>,
-	std::tuple<hamon::wstringstream, hamon::serialization::xml_oarchive,    hamon::serialization::xml_iarchive>
+	hamon::tuple<hamon::stringstream,  hamon::serialization::text_oarchive,   hamon::serialization::text_iarchive>,
+	hamon::tuple<hamon::wstringstream, hamon::serialization::text_oarchive,   hamon::serialization::text_iarchive>,
+	hamon::tuple<hamon::stringstream,  hamon::serialization::binary_oarchive, hamon::serialization::binary_iarchive>,
+	hamon::tuple<hamon::stringstream,  hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>,
+	hamon::tuple<hamon::wstringstream, hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>,
+	hamon::tuple<hamon::stringstream,  hamon::serialization::xml_oarchive,    hamon::serialization::xml_iarchive>,
+	hamon::tuple<hamon::wstringstream, hamon::serialization::xml_oarchive,    hamon::serialization::xml_iarchive>
 >;
 
 template <typename T>
@@ -169,9 +169,9 @@ TYPED_TEST_SUITE(SerializationListTest, ListTestTypes);
 
 TYPED_TEST(SerializationListTest, ListTest)
 {
-	using Stream   = typename std::tuple_element<0, TypeParam>::type;
-	using OArchive = typename std::tuple_element<1, TypeParam>::type;
-	using IArchive = typename std::tuple_element<2, TypeParam>::type;
+	using Stream   = typename hamon::tuple_element<0, TypeParam>::type;
+	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
+	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
 	ListTest<Stream, OArchive, IArchive>();
 }

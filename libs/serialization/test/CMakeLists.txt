@@ -16,7 +16,10 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
+		array
 		cmath
+		config
+		cstdint
 		detail
 		limits
 		list
@@ -24,5 +27,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		random
 		sstream
 		string
+		tuple
 		type_traits
+		vector
 		common_test)
