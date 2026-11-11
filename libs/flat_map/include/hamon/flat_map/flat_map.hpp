@@ -45,11 +45,11 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
-#include <hamon/pair.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/detail/simple_allocator.hpp>
 #include <hamon/memory/make_obj_using_allocator.hpp>
 #include <hamon/memory/uses_allocator.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/ranges/adaptors/drop_view.hpp>
 #include <hamon/ranges/adaptors/zip_view.hpp>
 #include <hamon/ranges/begin.hpp>

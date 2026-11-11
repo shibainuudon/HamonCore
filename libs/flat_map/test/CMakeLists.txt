@@ -17,12 +17,24 @@ target_link_libraries(${TARGET_NAME}
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
+		array
+		compare
+		concepts
+		config
+		cstddef
 		deque
+		functional
 		initializer_list
+		iterator
+		memory
 		memory_resource
 		new
+		pair
+		ranges
 		sstream
 		string
+		tuple
 		type_traits
+		utility
 		vector
 		common_test)
