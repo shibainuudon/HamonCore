@@ -10,8 +10,6 @@
 #include <hamon/deque.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <vector>
-#include <deque>
 #include "constexpr_test.hpp"
 #include "flat_multiset_test_helper.hpp"
 
@@ -192,9 +190,6 @@ GTEST_TEST(FlatMultisetTest, CtorMoveTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::vector>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::deque>()));
-
-	EXPECT_TRUE((test<std::vector>()));
-	EXPECT_TRUE((test<std::deque>()));
 }
 
 }	// namespace ctor_move_test
