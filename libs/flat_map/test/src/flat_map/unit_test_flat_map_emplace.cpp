@@ -429,7 +429,7 @@ GTEST_TEST(FlatMapTest, EmplaceTest)
 
 		fm.emplace(
 			hamon::piecewise_construct,
-			hamon::forward_as_tuple(static_cast<hamon::size_t>(3), 'C'), // キーの型std::stringのコンストラクタ引数を渡す
+			hamon::forward_as_tuple(static_cast<hamon::size_t>(3), 'C'), // キーの型hamon::stringのコンストラクタ引数を渡す
 			hamon::forward_as_tuple(1, 2));  // 値の型Pointのコンストラクタ引数を渡す
 
 		fm.emplace(

@@ -18,7 +18,7 @@ HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wsfinae-incomplete")
 #endif
 
-// Check that std::flat_map and its iterators can be instantiated with an incomplete
+// Check that hamon::flat_map and its iterators can be instantiated with an incomplete
 // type.
 
 struct A
