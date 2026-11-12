@@ -8,6 +8,7 @@
 #include <hamon/memory/ranges/construct_at.hpp>
 #include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -107,7 +108,7 @@ template <template <typename> class RangeWrapper>
 bool test()
 {
 	{
-		constexpr std::size_t num = 3;
+		constexpr hamon::size_t num = 3;
 		hamon::allocator<S> alloc;
 		S* p = alloc.allocate(num);
 		using Range = RangeWrapper<S>;

@@ -7,6 +7,7 @@
 #include <hamon/memory/ranges/uninitialized_copy_n.hpp>
 #include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -106,7 +107,7 @@ bool test()
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		auto p = alloc.allocate(size);
 		ORange r2(p, p + size);
 
@@ -142,7 +143,7 @@ GTEST_TEST(MemoryTest, RangesUninitializedCopyNTest)
 	{
 		hamon::allocator<ThrowOnCopy> alloc;
 
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
 		const hamon::list<ThrowOnCopy> v = {10,11,12,13};

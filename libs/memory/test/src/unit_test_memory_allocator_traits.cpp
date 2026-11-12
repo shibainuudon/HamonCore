@@ -6,8 +6,9 @@
 
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/allocation_result.hpp>
-#include <hamon/type_traits/is_same.hpp>
 #include <hamon/cstddef.hpp>
+#include <hamon/limits.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -235,7 +236,7 @@ HAMON_CXX14_CONSTEXPR bool max_size_test()
 		using Allocator = MyAllocator3<int>;
 		using Traits = hamon::allocator_traits<Allocator>;
 		Allocator alloc;
-		VERIFY(Traits::max_size(alloc) == std::numeric_limits<hamon::size_t>::max() / sizeof(int));
+		VERIFY(Traits::max_size(alloc) == hamon::numeric_limits<hamon::size_t>::max() / sizeof(int));
 	}
 	{
 		using Allocator = MyAllocator4<int>;

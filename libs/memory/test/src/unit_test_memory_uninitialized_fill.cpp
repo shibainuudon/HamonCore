@@ -7,6 +7,7 @@
 #include <hamon/memory/uninitialized_fill.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_memory_test
@@ -103,7 +104,7 @@ GTEST_TEST(MemoryTest, UninitializedFillTest)
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		Z* p = alloc.allocate(size);
 
 		// 未初期化領域pを初期化しつつ、値42で埋める
@@ -124,7 +125,7 @@ GTEST_TEST(MemoryTest, UninitializedFillTest)
 	{
 		hamon::allocator<ThrowOnCopy> alloc;
 
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
 		const ThrowOnCopy x{42};

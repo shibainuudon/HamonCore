@@ -7,6 +7,7 @@
 #include <hamon/memory/ranges/destroy_n.hpp>
 #include <hamon/memory/ranges/construct_at.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -92,11 +93,11 @@ static_assert(!invocable_destroy_n<test_input_range<X>::iterator, test_input_ran
 template <template <typename> class RangeWrapper>
 MEMORY_TEST_CONSTEXPR bool constexpr_test()
 {
-	constexpr std::size_t num = 3;
+	constexpr hamon::size_t num = 3;
 	hamon::allocator<S> alloc;
 	S* p = alloc.allocate(num);
 	bool destructed[num] = {false, false, false};
-	for (std::size_t i = 0; i < num; ++i)
+	for (hamon::size_t i = 0; i < num; ++i)
 	{
 		hamon::ranges::construct_at(&p[i], &destructed[i]);
 	}

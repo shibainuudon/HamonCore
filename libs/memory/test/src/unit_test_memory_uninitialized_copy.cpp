@@ -7,6 +7,7 @@
 #include <hamon/memory/uninitialized_copy.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -89,7 +90,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyTest)
 	{
 		int a[] {1,2,3,4,5,6};
 		int b[100];
-		const std::size_t size = sizeof(a) / sizeof(a[0]);
+		const hamon::size_t size = sizeof(a) / sizeof(a[0]);
 		auto ret = hamon::uninitialized_copy(a, a + size, b);
 		EXPECT_EQ(1, b[0]);
 		EXPECT_EQ(2, b[1]);
@@ -103,7 +104,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyTest)
 		X a[100];
 		Y b[100];
 
-		const std::size_t size = 10;
+		const hamon::size_t size = 10;
 		auto ret = hamon::uninitialized_copy(a, a + size, b);
 
 		EXPECT_EQ((int)size, Y::constructed);
@@ -118,7 +119,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyTest)
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		Z* p = alloc.allocate(size);
 
 		// 未初期化領域pを初期化しつつ範囲vから要素をコピー
@@ -140,7 +141,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyTest)
 	{
 		hamon::allocator<ThrowOnCopy> alloc;
 
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
 		const ThrowOnCopy v[] = {10,11,12,13};

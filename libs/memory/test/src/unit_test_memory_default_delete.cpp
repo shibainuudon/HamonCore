@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/default_delete.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -69,7 +70,7 @@ struct S
 		VERIFY( destructed);
 	}
 	{
-		constexpr std::size_t num = 3;
+		constexpr hamon::size_t num = 3;
 		bool destructed[num] = {false, false, false};
 		auto p = new S[num]{&destructed[0], &destructed[1], &destructed[2]};
 		VERIFY(!destructed[0]);
