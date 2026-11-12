@@ -6,9 +6,9 @@
 
 #include <hamon/ranges/adaptors/join_view.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_ranges_test
 {
@@ -23,7 +23,7 @@ GTEST_TEST(RangesTest, JoinViewOverviewTest)
 	// Example 1:
 	{
 		hamon::stringstream out;
-		hamon::vector<std::string> ss {"hello", " ", "world", "!"};
+		hamon::vector<hamon::string> ss {"hello", " ", "world", "!"};
 		for (char ch : ss | hamon::views::join)
 		{
 			out << ch;                                   // prints hello world!

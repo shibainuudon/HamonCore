@@ -6,11 +6,11 @@
 
 #include <hamon/ranges/adaptors/elements_view.hpp>
 #include <hamon/algorithm/ranges/count_if.hpp>
+#include <hamon/map.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
-#include <map>
 
 namespace hamon_ranges_test
 {
@@ -25,7 +25,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 	{
 		// [range.elements.overview]/2
 		// Example 1:
-		auto historical_figures = std::map<hamon::string_view, int>
+		auto historical_figures = hamon::map<hamon::string_view, int>
 		{
 			{ hamon::string_view{"Lovelace"}, 1815 },
 			{ hamon::string_view{"Turing"},   1912 },

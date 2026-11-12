@@ -9,6 +9,7 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
+#include <hamon/ranges/factories/iota_view.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/signed_integral.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -96,14 +97,12 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 HAMON_CXX14_CONSTEXPR bool test06()
 {
-#if 0
-	auto i = std::views::iota(1ull, 5u);
+	auto i = hamon::views::iota(1ull, 5u);
 	auto s = hamon::ranges::size(i);
 	auto ss = hamon::ranges::ssize(i);
 
 	static_assert(hamon::same_as<decltype(ss), hamon::make_signed_t<decltype(s)>>, "");
 	VERIFY(s == 4);
-#endif
 
 	return true;
 }

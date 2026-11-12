@@ -13,18 +13,19 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/array.hpp>
+#include <hamon/assert.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/list.hpp>
+#include <hamon/map.hpp>
 #include <hamon/memory/allocator.hpp>
-#include <hamon/string_view.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/string.hpp>
+#include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/vector.hpp>
-#include <hamon/array.hpp>
-#include <hamon/assert.hpp>
-#include <utility>
-#include <map>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -428,22 +429,22 @@ struct Reservable
 		, m_value2(val2)
 	{}
 
-	constexpr std::size_t capacity() const
+	constexpr hamon::size_t capacity() const
 	{
 		return m_capacity;
 	}
 
-	constexpr std::size_t max_size() const
+	constexpr hamon::size_t max_size() const
 	{
 		return 10;
 	}
 	
-	constexpr std::size_t size() const
+	constexpr hamon::size_t size() const
 	{
 		return m_size;
 	}
 	
-	HAMON_CXX14_CONSTEXPR void reserve(std::size_t n)
+	HAMON_CXX14_CONSTEXPR void reserve(hamon::size_t n)
 	{
 		m_capacity = n;
 	}
@@ -741,12 +742,12 @@ struct myalloc
 	template <typename U>
 	constexpr myalloc(const myalloc<U>& that) noexcept : state {that.state} {}
 
-	HAMON_NODISCARD constexpr T* allocate(std::size_t n) const
+	HAMON_NODISCARD constexpr T* allocate(hamon::size_t n) const
 	{
 		return hamon::allocator<T>{}.allocate(n);
 	}
 
-	HAMON_CXX14_CONSTEXPR void deallocate(T* const p, const std::size_t n) const noexcept
+	HAMON_CXX14_CONSTEXPR void deallocate(T* const p, const hamon::size_t n) const noexcept
 	{
 		hamon::allocator<T>{}.deallocate(p, n);
 	}
@@ -941,14 +942,14 @@ void to_vector_test()
 void to_map_test()
 {
 	{
-		std::pair<std::string, int> a[] =
+		hamon::pair<hamon::string, int> a[] =
 		{
 			{"the",   10},
 			{"quick", 31},
 			{"brown", -1},
 			{"fox",    6},
 		};
-		using C = std::map<std::string, int>;
+		using C = hamon::map<hamon::string, int>;
 
 		auto c0 = hamon::ranges::to<C>(a);
 		static_assert(hamon::is_same<decltype(c0), C>::value, "");
@@ -964,12 +965,12 @@ void to_map_test()
 		}
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		{
-			auto c2 = hamon::ranges::to<std::map>(a);
+			auto c2 = hamon::ranges::to<hamon::map>(a);
 			static_assert(hamon::is_same<decltype(c2), C>::value, "");
 			EXPECT_TRUE(c2 == c0);
 		}
 		{
-			auto c3 = a | hamon::ranges::to<std::map>();
+			auto c3 = a | hamon::ranges::to<hamon::map>();
 			static_assert(hamon::is_same<decltype(c3), C>::value, "");
 			EXPECT_TRUE(c3 == c0);
 		}

@@ -18,16 +18,21 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
 		array
+		cctype
 		concepts
 		config
+		cstddef
 		deque
 		forward_list
+		functional
 		initializer_list
 		iterator
 		list
+		map
 		memory
 		numeric
 		ostream
+		pair
 		preprocessor
 		set
 		span

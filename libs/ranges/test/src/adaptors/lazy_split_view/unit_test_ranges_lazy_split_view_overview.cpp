@@ -9,10 +9,10 @@
 #include <hamon/list.hpp>
 #include <hamon/sstream/istringstream.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_ranges_test
 {
@@ -28,7 +28,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 		// [range.lazy.split.overview]/3
 		// Example 1:
 		hamon::stringstream out;
-		std::string str {"the quick brown fox"};
+		hamon::string str {"the quick brown fox"};
 		for (auto word : str | hamon::views::lazy_split(' '))
 		{
 			for (char ch : word)

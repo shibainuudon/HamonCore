@@ -7,15 +7,15 @@
 #include <hamon/ranges.hpp>
 #include <hamon/algorithm.hpp>
 #include <hamon/array.hpp>
+#include <hamon/cctype.hpp>
 #include <hamon/functional.hpp>
 #include <hamon/list.hpp>
+#include <hamon/map.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <cctype>
-#include <map>
 
 namespace hamon_ranges_test
 {
@@ -42,7 +42,7 @@ struct to_upper
 {
 	char operator()(char c) const
 	{
-		return static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+		return static_cast<char>(hamon::toupper(static_cast<unsigned char>(c)));
 	}
 };
 
@@ -50,7 +50,7 @@ struct is_space
 {
 	bool operator()(char c) const
 	{
-		return std::isspace(static_cast<unsigned char>(c));
+		return hamon::isspace(static_cast<unsigned char>(c));
 	}
 };
 
@@ -59,8 +59,8 @@ struct is_not_space
 	bool operator()(char x, char y) const
 	{
 		return
-			!std::isspace(static_cast<unsigned char>(x)) &&
-			!std::isspace(static_cast<unsigned char>(y));
+			!hamon::isspace(static_cast<unsigned char>(x)) &&
+			!hamon::isspace(static_cast<unsigned char>(y));
 	}
 };
 
@@ -180,7 +180,7 @@ GTEST_TEST(RangesTest, AdaptorsTest)
 		EXPECT_TRUE(ranges::equal(r, hamon::vector<int>{9,5,1}));
 	}
 	{
-		std::map<int, hamon::string> m =
+		hamon::map<int, hamon::string> m =
 		{
 			{  1, "Alice" },
 			{  3, "Bob" },

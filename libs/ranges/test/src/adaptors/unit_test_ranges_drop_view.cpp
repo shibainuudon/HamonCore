@@ -18,6 +18,7 @@
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/concepts.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/span.hpp>
 #include <hamon/sstream/stringstream.hpp>
@@ -152,7 +153,7 @@ struct SizedViewWithUnsizedSentinel : hamon::ranges::view_base
 
 	constexpr iterator begin() const { return iterator{m_first}; }
 	constexpr sentinel end() const { return sentinel{iterator{m_last}}; }
-	constexpr std::size_t size() const { return static_cast<std::size_t>(m_last - m_first); }
+	constexpr hamon::size_t size() const { return static_cast<hamon::size_t>(m_last - m_first); }
 };
 static_assert( hamon::ranges::random_access_range<SizedViewWithUnsizedSentinel<int>>, "");
 static_assert( hamon::ranges::sized_range<SizedViewWithUnsizedSentinel<int>>, "");

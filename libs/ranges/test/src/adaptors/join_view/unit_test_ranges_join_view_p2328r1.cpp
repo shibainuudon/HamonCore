@@ -7,9 +7,9 @@
 #include <hamon/ranges/adaptors/join_view.hpp>
 #include <hamon/ranges/adaptors/transform_view.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_ranges_test
 {
@@ -21,12 +21,12 @@ namespace p2328r1_test
 struct Person
 {
 	int age;
-	std::string name;
+	hamon::string name;
 };
 
 struct Fn
 {
-	std::string& operator()(Person& p) const
+	hamon::string& operator()(Person& p) const
 	{
 		return p.name;
 	}
@@ -45,7 +45,7 @@ GTEST_TEST(RangesTest, JoinViewP2328R1Test)
 	auto r = v |
 		hamon::views::transform(Fn{}) |
 		hamon::views::join;
-	std::string expected = "AliceBobCarol";
+	hamon::string expected = "AliceBobCarol";
 	EXPECT_TRUE(hamon::ranges::equal(expected, r));
 }
 
