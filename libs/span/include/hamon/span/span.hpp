@@ -10,8 +10,8 @@
 #include <hamon/span/span_fwd.hpp>
 #include <hamon/span/dynamic_extent.hpp>
 #include <hamon/span/detail/is_specialization_of_span.hpp>
+#include <hamon/array/detail/is_specialization_of_array.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/is_specialization_of_array.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/initializer_list.hpp>

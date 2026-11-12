@@ -11,12 +11,15 @@
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
+
+#if !defined(HAMON_NO_STD)
 #include <utility>
 #include <tuple>
 #include <array>
 #include <string>
 #if (HAMON_CXX_STANDARD >= 20) && HAMON_HAS_INCLUDE(<ranges>)
 #  include <ranges>
+#endif
 #endif
 
 #define HAMON_PAIR_LIKE_TEST_IMPL(B, ...)	\
@@ -30,6 +33,7 @@
 	HAMON_PAIR_LIKE_TEST_IMPL(B, __VA_ARGS__ const&);	\
 	HAMON_PAIR_LIKE_TEST_IMPL(B, __VA_ARGS__ const&&)
 
+#if !defined(HAMON_NO_STD)
 HAMON_PAIR_LIKE_TEST(true,  std::pair<int, int>);
 HAMON_PAIR_LIKE_TEST(true,  std::pair<float, char>);
 HAMON_PAIR_LIKE_TEST(false, std::tuple<>);
@@ -44,6 +48,7 @@ HAMON_PAIR_LIKE_TEST(false, std::array<int, 3>);
 HAMON_PAIR_LIKE_TEST(false, std::array<int, 10>);
 #if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911)
 HAMON_PAIR_LIKE_TEST(true, std::ranges::subrange<int*, int*, std::ranges::subrange_kind::sized>);
+#endif
 #endif
 
 HAMON_PAIR_LIKE_TEST(true,  hamon::pair<int, int>);

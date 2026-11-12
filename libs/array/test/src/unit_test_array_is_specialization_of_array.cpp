@@ -1,16 +1,18 @@
 ﻿/**
- *	@file	unit_test_concepts_is_specialization_of_array.cpp
+ *	@file	unit_test_array_is_specialization_of_array.cpp
  *
  *	@brief	is_specialization_of_array のテスト
  */
 
-#include <hamon/concepts/detail/is_specialization_of_array.hpp>
+#include <hamon/array/detail/is_specialization_of_array.hpp>
 #include <hamon/array.hpp>
 #include <hamon/complex.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
 #include <complex>
 #include <tuple>
@@ -18,16 +20,18 @@
 #if (HAMON_CXX_STANDARD >= 20) && HAMON_HAS_INCLUDE(<ranges>)
 #  include <ranges>
 #endif
+#endif
 
 #define HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(B, ...)	\
 	static_assert(B == hamon::detail::is_specialization_of_array<__VA_ARGS__>::value, "")
 
-namespace hamon_concepts_test
+namespace hamon_array_test
 {
 
 namespace is_specialization_of_array_test
 {
 
+#if !defined(HAMON_NO_STD)
 HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(true,  std::array<int, 3>);
 HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(true,  std::array<float, 10>);
 HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(false, std::complex<float>);
@@ -38,6 +42,7 @@ HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(false, std::tuple<int>);
 HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(false, std::tuple<char, float, int>);
 #if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911)
 HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(false, std::ranges::subrange<int*, int*, std::ranges::subrange_kind::sized>);
+#endif
 #endif
 
 HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(true,  hamon::array<int, 3>);
@@ -107,6 +112,6 @@ HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST(false, B);
 
 }	// namespace is_specialization_of_array_test
 
-}	// namespace hamon_concepts_test
+}	// namespace hamon_array_test
 
 #undef HAMON_IS_SPECIALIZATION_OF_ARRAY_TEST
