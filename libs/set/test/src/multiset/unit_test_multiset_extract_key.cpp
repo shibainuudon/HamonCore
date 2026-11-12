@@ -8,11 +8,11 @@
 
 #include <hamon/set/multiset.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <string>
 
 namespace hamon_multiset_test
 {
@@ -108,7 +108,7 @@ int S::s_ctor_count = 0;
 int S::s_dtor_count = 0;
 
 template <typename T, typename C>
-std::string ToString(const hamon::multiset<T, C>& set)
+hamon::string ToString(const hamon::multiset<T, C>& set)
 {
 	hamon::stringstream out;
 	auto n = set.size();

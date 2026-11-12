@@ -5,11 +5,11 @@
  */
 
 #include <hamon/set/set.hpp>
-#include <hamon/string_view.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
+#include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_set_test
 {
@@ -18,7 +18,7 @@ namespace pmr_test
 {
 
 template<typename T>
-std::string ToString(const hamon::pmr::set<T>& set)
+hamon::string ToString(const hamon::pmr::set<T>& set)
 {
 	hamon::stringstream out;
 	auto n = set.size();

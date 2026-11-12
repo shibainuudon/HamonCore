@@ -10,7 +10,6 @@
 #include <hamon/string.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_multiset_test
 {
@@ -19,7 +18,7 @@ namespace ctor_test
 {
 
 template <typename T, typename C>
-std::string ToString(const hamon::multiset<T, C>& set)
+hamon::string ToString(const hamon::multiset<T, C>& set)
 {
 	hamon::stringstream out;
 	auto n = set.size();

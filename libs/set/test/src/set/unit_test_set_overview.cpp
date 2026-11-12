@@ -6,9 +6,9 @@
 
 #include <hamon/set/set.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_set_test
 {
@@ -17,7 +17,7 @@ namespace overview_test
 {
 
 template<typename T>
-std::string ToString(const hamon::set<T>& set)
+hamon::string ToString(const hamon::set<T>& set)
 {
 	hamon::stringstream out;
 	auto n = set.size();
