@@ -505,6 +505,15 @@ public:
 		: basic_string(il.begin(), il.end(), a, hamon::detail::overload_priority<1>{})	// [string.cons]/23
 	{}
 
+	// extension
+	// std::basic_string からの変換コンストラクタ
+	// アロケータは伝播しない
+	template <typename Traits2, typename Allocator2>
+	HAMON_CXX14_CONSTEXPR
+	basic_string(std::basic_string<CharT, Traits2, Allocator2> const& str)
+		: basic_string(hamon::from_range, str)
+	{}
+
 	HAMON_CXX20_CONSTEXPR
 	~basic_string()
 	{
