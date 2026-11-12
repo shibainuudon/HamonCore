@@ -9,8 +9,8 @@
 #include <hamon/memory_resource/polymorphic_allocator.hpp>
 #include <hamon/memory_resource/get_default_resource.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 {
@@ -52,7 +52,7 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 		EXPECT_TRUE(mbr.upstream_resource() == hamon::pmr::get_default_resource());
 
 		hamon::pmr::polymorphic_allocator<int> pa{&mbr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 2000; ++i)
 		{
 			v.push_back(i);
@@ -73,7 +73,7 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 		EXPECT_FALSE(*mbr.upstream_resource() != upstream);
 
 		hamon::pmr::polymorphic_allocator<int> pa{&mbr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 2000; ++i)
 		{
 			v.push_back(i);
@@ -86,7 +86,7 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 		EXPECT_TRUE(mbr.upstream_resource() == hamon::pmr::get_default_resource());
 
 		hamon::pmr::polymorphic_allocator<int> pa{&mbr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 2000; ++i)
 		{
 			v.push_back(i);
@@ -101,7 +101,7 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 		EXPECT_TRUE(mbr.upstream_resource() != hamon::pmr::get_default_resource());
 
 		hamon::pmr::polymorphic_allocator<int> pa{&mbr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 2000; ++i)
 		{
 			v.push_back(i);
@@ -115,7 +115,7 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 		EXPECT_TRUE(mbr.upstream_resource() == hamon::pmr::get_default_resource());
 
 		hamon::pmr::polymorphic_allocator<int> pa{&mbr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 2000; ++i)
 		{
 			v.push_back(i);
@@ -131,7 +131,7 @@ GTEST_TEST(MemoryResourceTest, MonotonicBufferResourceTest)
 		EXPECT_TRUE(mbr.upstream_resource() != hamon::pmr::get_default_resource());
 
 		hamon::pmr::polymorphic_allocator<int> pa{&mbr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 2000; ++i)
 		{
 			v.push_back(i);

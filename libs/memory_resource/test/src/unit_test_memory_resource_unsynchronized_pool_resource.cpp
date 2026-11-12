@@ -11,8 +11,8 @@
 #include <hamon/memory_resource/polymorphic_allocator.hpp>
 #include <hamon/memory_resource/monotonic_buffer_resource.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 GTEST_TEST(MemoryResourceTest, UnsynchronizedPoolResourceTest)
 {
@@ -43,7 +43,7 @@ GTEST_TEST(MemoryResourceTest, UnsynchronizedPoolResourceTest)
 		EXPECT_TRUE(upr.upstream_resource() == hamon::pmr::get_default_resource());
 
 		hamon::pmr::polymorphic_allocator<int> pa{&upr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 100; ++i)
 		{
 			v.push_back(i);
@@ -64,7 +64,7 @@ GTEST_TEST(MemoryResourceTest, UnsynchronizedPoolResourceTest)
 		EXPECT_FALSE(*upr.upstream_resource() != upstream);
 
 		hamon::pmr::polymorphic_allocator<int> pa{&upr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 100; ++i)
 		{
 			v.push_back(i);
@@ -83,7 +83,7 @@ GTEST_TEST(MemoryResourceTest, UnsynchronizedPoolResourceTest)
 		EXPECT_EQ( 100u, upr.options().max_blocks_per_chunk);
 
 		hamon::pmr::polymorphic_allocator<int> pa{&upr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 100; ++i)
 		{
 			v.push_back(i);
@@ -104,7 +104,7 @@ GTEST_TEST(MemoryResourceTest, UnsynchronizedPoolResourceTest)
 		EXPECT_EQ(256u, upr.options().max_blocks_per_chunk);
 
 		hamon::pmr::polymorphic_allocator<int> pa{&upr};
-		std::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
+		hamon::vector<int, hamon::pmr::polymorphic_allocator<int>> v{pa};
 		for (int i = 0; i < 100; ++i)
 		{
 			v.push_back(i);

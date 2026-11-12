@@ -5,8 +5,10 @@
  */
 
 #include <hamon/memory_resource/memory_resource.hpp>
-#include <hamon/type_traits.hpp>
-#include <hamon/utility.hpp>
+#include <hamon/cstddef/size_t.hpp>
+#include <hamon/type_traits/is_abstract.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 
 GTEST_TEST(MemoryResourceTest, MemoryResourceTest)

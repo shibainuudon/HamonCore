@@ -172,7 +172,7 @@ GTEST_TEST(MemoryResourceTest, PolymorphicAllocatorTest)
 		EXPECT_EQ(20, *p);
 		alloc.delete_object(p);
 
-		std::string* s = alloc.new_object<std::string>(10u, 'c');
+		hamon::string* s = alloc.new_object<hamon::string>(10u, 'c');
 		EXPECT_EQ("cccccccccc", *s);
 		alloc.delete_object(s);
 	}
