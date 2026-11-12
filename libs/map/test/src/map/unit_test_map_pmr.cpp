@@ -9,7 +9,6 @@
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_map_test
 {
@@ -18,7 +17,7 @@ namespace pmr_test
 {
 
 template <typename Key, typename T, typename C, typename A>
-std::string ToString(const hamon::map<Key, T, C, A>& m)
+hamon::string ToString(const hamon::map<Key, T, C, A>& m)
 {
 	hamon::stringstream out;
 	for (const auto& n : m)

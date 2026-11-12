@@ -151,9 +151,9 @@ struct FatKey
 	int data[1000]; // a heavy blob
 };
 
-// As detailed above, the container must use std::less<> (or other transparent
+// As detailed above, the container must use hamon::less<> (or other transparent
 // Comparator) to access these overloads. This includes standard overloads,
-// such as comparison between std::string and std::string_view.
+// such as comparison between hamon::string and hamon::string_view.
 bool operator<(const FatKey& fk, const LightKey& lk) { return fk.x < lk.x; }
 bool operator<(const LightKey& lk, const FatKey& fk) { return lk.x < fk.x; }
 bool operator<(const FatKey& fk1, const FatKey& fk2) { return fk1.x < fk2.x; }

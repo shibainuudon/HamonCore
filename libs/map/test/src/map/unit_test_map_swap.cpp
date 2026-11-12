@@ -20,7 +20,6 @@
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <string>
 
 namespace hamon_map_test
 {
@@ -273,7 +272,7 @@ HAMON_CXX20_CONSTEXPR bool test2()
 #undef VERIFY
 
 template <typename Key, typename T, typename C>
-std::string ToString(const hamon::map<Key, T, C>& m)
+hamon::string ToString(const hamon::map<Key, T, C>& m)
 {
 	hamon::stringstream out;
 	for (const auto& n : m)

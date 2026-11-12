@@ -9,6 +9,7 @@
 
 #include <hamon/map/map.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -128,7 +129,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 #undef VERIFY
 
 template <typename Key, typename T, typename C>
-std::string ToString(const hamon::map<Key, T, C>& m)
+hamon::string ToString(const hamon::map<Key, T, C>& m)
 {
 	hamon::stringstream out;
 	for (const auto& n : m)

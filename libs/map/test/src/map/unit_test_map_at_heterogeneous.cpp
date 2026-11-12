@@ -124,9 +124,9 @@ HAMON_CXX20_CONSTEXPR bool test2()
 struct LightKey { int o; };
 struct HeavyKey { int o[1000]; };
 
-// The container must use std::less<> (or other transparent Comparator) to
+// The container must use hamon::less<> (or other transparent Comparator) to
 // access overloads (3,4). This includes standard overloads, such as
-// comparison between std::string and std::string_view.
+// comparison between hamon::string and hamon::string_view.
 bool operator<(const HeavyKey& x, const LightKey& y) { return x.o[0] < y.o; }
 bool operator<(const LightKey& x, const HeavyKey& y) { return x.o < y.o[0]; }
 bool operator<(const HeavyKey& x, const HeavyKey& y) { return x.o[0] < y.o[0]; }

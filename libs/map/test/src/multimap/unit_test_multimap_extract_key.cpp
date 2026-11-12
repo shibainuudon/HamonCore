@@ -8,11 +8,11 @@
 
 #include <hamon/map/multimap.hpp>
 #include <hamon/sstream/stringstream.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
-#include <string>
 
 namespace hamon_multimap_test
 {
@@ -99,7 +99,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 #undef VERIFY
 
 template <typename Key, typename T, typename C>
-std::string ToString(const hamon::multimap<Key, T, C>& m)
+hamon::string ToString(const hamon::multimap<Key, T, C>& m)
 {
 	hamon::stringstream out;
 	for (const auto& n : m)

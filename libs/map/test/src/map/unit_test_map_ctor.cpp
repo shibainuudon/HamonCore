@@ -11,7 +11,6 @@
 #include <hamon/string.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_map_test
 {
@@ -20,7 +19,7 @@ namespace ctor_test
 {
 
 template <typename Key, typename T, typename C>
-std::string ToString(const hamon::map<Key, T, C>& m)
+hamon::string ToString(const hamon::map<Key, T, C>& m)
 {
 	hamon::stringstream out;
 	for (const auto& n : m)
