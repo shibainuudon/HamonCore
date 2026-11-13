@@ -12,12 +12,12 @@
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/detail/is_uses_allocator_constructible.hpp>
 #include <hamon/memory/detail/is_implicitly_uses_allocator_constructible.hpp>
 #include <hamon/memory/detail/is_nothrow_uses_allocator_constructible.hpp>
+#include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <hamon/ranges/utility/detail/different_from.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>

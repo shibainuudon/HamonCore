@@ -9,7 +9,7 @@
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/iterator/unreachable_sentinel_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"

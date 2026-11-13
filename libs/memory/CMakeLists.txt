@@ -33,6 +33,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		new
 		ostream
 		pair
+		ranges
 		static_typeinfo
 		tuple
 		type_traits

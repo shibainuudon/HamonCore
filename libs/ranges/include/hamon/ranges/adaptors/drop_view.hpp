@@ -17,6 +17,7 @@
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/viewable_range.hpp>
+#include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/ranges/factories/iota_view.hpp>
@@ -41,7 +42,6 @@
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/iterator/ranges/next.hpp>

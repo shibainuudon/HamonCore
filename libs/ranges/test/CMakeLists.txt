@@ -19,6 +19,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		algorithm
 		array
 		cctype
+		complex
 		concepts
 		config
 		cstddef

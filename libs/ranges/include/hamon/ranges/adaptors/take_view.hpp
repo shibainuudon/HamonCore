@@ -17,6 +17,7 @@
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
+#include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/end.hpp>
@@ -40,7 +41,6 @@
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>

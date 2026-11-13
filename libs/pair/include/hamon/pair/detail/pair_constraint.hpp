@@ -9,7 +9,7 @@
 
 #include <hamon/pair/pair_fwd.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <hamon/ranges/utility/detail/different_from.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>

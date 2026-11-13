@@ -517,7 +517,7 @@ struct tuple_element<1, hamon::ranges::subrange<Iter, Sent, Kind> const>
 
 }	// namespace std
 
-#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
