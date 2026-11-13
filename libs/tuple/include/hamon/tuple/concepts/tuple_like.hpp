@@ -8,7 +8,7 @@
 #define HAMON_TUPLE_CONCEPTS_TUPLE_LIKE_HPP
 
 #include <hamon/array/detail/is_specialization_of_array.hpp>
-#include <hamon/concepts/detail/is_specialization_of_complex.hpp>
+#include <hamon/complex/detail/is_specialization_of_complex.hpp>
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>

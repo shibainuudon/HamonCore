@@ -609,7 +609,7 @@ get(hamon::complex<T> const&& z) HAMON_NOEXCEPT
 
 }	// namespace hamon
 
-#include <hamon/concepts/detail/is_specialization_of_complex.hpp>
+#include <hamon/complex/detail/is_specialization_of_complex.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
