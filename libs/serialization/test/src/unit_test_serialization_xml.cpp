@@ -9,6 +9,7 @@
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
+#include <hamon/array.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
@@ -116,7 +117,7 @@ void XmlTest()
 		bool const e = false;
 		hamon::string const f = "hello world";
 		hamon::string const g = "A\"B\'C<DE>F&G";
-		std::array<int, 5> const h = {1, 1, 2, 3, 5};
+		hamon::array<int, 5> const h = {1, 1, 2, 3, 5};
 		float const i[2][3] =
 		{
 			{ 0.5f, -0.5f,  1.5f},
@@ -208,7 +209,7 @@ R"(<?xml version="1.0"?>
 		bool e;
 		hamon::string f;
 		hamon::string g;
-		std::array<int, 5> h;
+		hamon::array<int, 5> h;
 		float i[2][3];
 		Object j;
 

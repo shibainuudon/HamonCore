@@ -11,13 +11,13 @@
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
+#include <hamon/array.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include "get_random_value.hpp"
 
 namespace hamon_serialization_test
@@ -118,7 +118,7 @@ void JsonTest()
 		bool const e = false;
 		hamon::string const f = "hello world";
 		hamon::string const g = "A\"B\\C/D\bE\fF\nG\rH\tI";
-		std::array<int, 5> const h = {1, 1, 2, 3, 5};
+		hamon::array<int, 5> const h = {1, 1, 2, 3, 5};
 		float const i[2][3] =
 		{
 			{ 0.5f, -0.5f,  1.5f},
@@ -205,7 +205,7 @@ R"({
 		bool e;
 		hamon::string f;
 		hamon::string g;
-		std::array<int, 5> h;
+		hamon::array<int, 5> h;
 		float i[2][3];
 		Object j;
 

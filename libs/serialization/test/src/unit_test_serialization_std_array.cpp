@@ -1,21 +1,25 @@
 ﻿/**
  *	@file	unit_test_serialization_std_array.cpp
  *
- *	@brief	std::arrayのシリアライズのテスト
+ *	@brief	hamon::arrayのシリアライズのテスト
  */
 
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/array.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <array>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -30,26 +34,26 @@ enum class Enum
 	Value3,
 };
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename, hamon::size_t> class Array
+>
 void StdArrayTest()
 {
-	// std::arrayとhamon::arrayはどちらもシリアライズ可能
-	// 混在も可能
 	Stream str;
 	{
-		hamon::array<int, 5> const a1 = {1, 2, 3, 4, 5};
-		std::array<hamon::array<int, 3>, 2> const a2 =
+		Array<int, 5> const a1 = {1, 2, 3, 4, 5};
+		Array<Array<int, 3>, 2> const a2 =
 		{{
 			{ 11, 12, 13 },
 			{ 21, 22, 23 },
 		}};
-		std::array<Enum, 3> const a3 =
+		Array<Enum, 3> const a3 =
 		{
 			Enum::Value2,
 			Enum::Value1,
 			Enum::Value3,
 		};
-		hamon::array<hamon::string, 3> const a4 =
+		Array<hamon::string, 3> const a4 =
 		{
 			"quick brown fox",
 			",",
@@ -64,10 +68,10 @@ void StdArrayTest()
 		oa << a4;
 	}
 	{
-		std::array<int, 5> a;
-		hamon::array<std::array<int, 3>, 2> b;
-		hamon::array<Enum, 3> c;
-		std::array<hamon::string, 3> d;
+		Array<int, 5> a;
+		Array<Array<int, 3>, 2> b;
+		Array<Enum, 3> c;
+		Array<hamon::string, 3> d;
 
 		IArchive ia(str);
 
@@ -117,7 +121,10 @@ TYPED_TEST(SerializationStdArrayTest, StdArrayTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	StdArrayTest<Stream, OArchive, IArchive>();
+	StdArrayTest<Stream, OArchive, IArchive, hamon::array>();
+#if !defined(HAMON_NO_STD)
+	StdArrayTest<Stream, OArchive, IArchive, std::array>();
+#endif
 }
 
 }	// namespace std_array_test
