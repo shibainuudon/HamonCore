@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	array.hpp
  *
- *	@brief	std::array のシリアライズの定義
+ *	@brief	hamon::array のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_TYPES_ARRAY_HPP
@@ -11,7 +11,11 @@
 #include <hamon/serialization/detail/load_array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/array.hpp>
+#include <hamon/config.hpp>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 namespace hamon
 {
@@ -31,7 +35,7 @@ void load_value(Archive& ia, hamon::array<T, N>& t)
 	hamon::serialization::detail::load_array(ia, t);
 }
 
-#if 1
+#if !defined(HAMON_NO_STD)
 template <typename Archive, typename T, hamon::size_t N>
 void save_value(Archive& oa, std::array<T, N> const& t)
 {
