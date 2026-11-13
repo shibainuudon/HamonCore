@@ -13,9 +13,12 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <array>
+#endif
 
 namespace hamon_span_test
 {
@@ -100,25 +103,27 @@ struct A{};
 
 GTEST_TEST(SpanTest, CtorStdArrayTest)
 {
-	cv_test<std::array, int>();
-	cv_test<std::array, long>();
-	cv_test<std::array, double>();
-
 	cv_test<hamon::array, int>();
 	cv_test<hamon::array, long>();
 	cv_test<hamon::array, double>();
-
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, int>()));
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, long>()));
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, double>()));
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, A>()));
-	                      EXPECT_TRUE((test<std::array, hamon::string>()));
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<hamon::array, int>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<hamon::array, long>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<hamon::array, double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<hamon::array, A>()));
-	                      EXPECT_TRUE((test<hamon::array, hamon::string>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::array, hamon::string>()));
+
+#if !defined(HAMON_NO_STD)
+	cv_test<std::array, int>();
+	cv_test<std::array, long>();
+	cv_test<std::array, double>();
+
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, int>()));
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, long>()));
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, double>()));
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, A>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<std::array, hamon::string>()));
+#endif
 }
 
 }	// namespace ctor_stdarray_test
