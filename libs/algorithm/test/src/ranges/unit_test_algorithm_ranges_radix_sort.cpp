@@ -8,6 +8,7 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/algorithm/ranges/is_sorted.hpp>
 //#include <hamon/algorithm/ranges/sort.hpp>
+//#include <hamon/chrono.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/iomanip/setw.hpp>
 #include <hamon/ios.hpp>
@@ -16,7 +17,6 @@
 #include <hamon/random.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-//#include <chrono>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -182,7 +182,7 @@ GTEST_TEST(AlgorithmTest, RangesRadixSortTest)
 #if 0
 	namespace ranges = hamon::ranges;
 	{
-		std::size_t const n_tbl[] =
+		hamon::size_t const n_tbl[] =
 		{
 			10,
 			100,
@@ -232,7 +232,7 @@ GTEST_TEST(AlgorithmTest, RangesRadixSortTest)
 					hamon::vector<unsigned int> tmp(n);
 
 					{
-						auto t1 = std::chrono::high_resolution_clock::now();
+						auto t1 = hamon::chrono::high_resolution_clock::now();
 
 						if (algo == StdSort)
 						{
@@ -243,8 +243,8 @@ GTEST_TEST(AlgorithmTest, RangesRadixSortTest)
 							ranges::radix_sort(v, tmp.begin());
 						}
 
-						auto t2 = std::chrono::high_resolution_clock::now();
-						auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+						auto t2 = hamon::chrono::high_resolution_clock::now();
+						auto elapsed_time = hamon::chrono::duration_cast<hamon::chrono::milliseconds>(t2 - t1);
 						std::cout << hamon::right << hamon::setw(10);
 						std::cout << n << ": " << elapsed_time.count() << " ms"<< std::endl;
 					}
