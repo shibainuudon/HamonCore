@@ -13,7 +13,10 @@
 #include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 #define ASSERT_SAME_TYPE(...) \
     static_assert((hamon::is_same<__VA_ARGS__>::value), \
@@ -87,6 +90,7 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
 
+#if !defined(HAMON_NO_STD)
 	// std::array<T, N>&
 	{
 		std::array<double, 4> arr = { 1.0, 2.0, 3.0, 4.0 };
@@ -104,6 +108,7 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		ASSERT_SAME_TYPE(S, hamon::span<long const, 5>);
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
+#endif
 
 	// Range&&
 	{

@@ -42,7 +42,10 @@
 #include <hamon/array.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 namespace hamon
 {
@@ -240,7 +243,7 @@ public:
 		: m_impl(hamon::data(arr), N)		// [span.cons]/12, 13
 	{}
 
-#if 1
+#if !defined(HAMON_NO_STD)
 	template <typename T, hamon::size_t N,
 		typename U = hamon::remove_pointer_t<decltype(hamon::data(hamon::declval<std::array<T, N>&>()))>,	// [span.cons]/11
 		typename = hamon::enable_if_t<extent == hamon::dynamic_extent || N == extent>,			// [span.cons]/11.1
@@ -592,7 +595,7 @@ template <typename T, hamon::size_t N>
 span(hamon::array<T, N> const&)
 -> span<T const, N>;
 
-#if 1
+#if !defined(HAMON_NO_STD)
 template <typename T, hamon::size_t N>
 span(std::array<T, N>&)
 -> span<T, N>;
@@ -641,7 +644,10 @@ bool enable_view<hamon::span<T, Extent>> = true;
 #include <hamon/utility/forward.hpp>
 #include <hamon/array.hpp>
 #include <hamon/config.hpp>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 namespace hamon
 {
@@ -675,7 +681,7 @@ HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_span(hamon::array<T, N> const& a)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T const, N>(a))
 
-#if 1
+#if !defined(HAMON_NO_STD)
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_span(std::array<T, N>& a)

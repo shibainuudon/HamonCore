@@ -14,7 +14,10 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 namespace hamon_span_test
 {
@@ -81,6 +84,7 @@ GTEST_TEST(SpanTest, MakeSpanTest)
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
 
+#if !defined(HAMON_NO_STD)
 	// std::array<T, N>&
 	{
 		std::array<double, 4> arr = { 1.0, 2.0, 3.0, 4.0 };
@@ -96,6 +100,7 @@ GTEST_TEST(SpanTest, MakeSpanTest)
 		ASSERT_SAME_TYPE(decltype(s), hamon::span<long const, 5>);
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
+#endif
 
 	// Range&&
 	{
