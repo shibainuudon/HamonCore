@@ -25,8 +25,8 @@
 
 //#define PERFORMANCE_TEST
 #if defined(PERFORMANCE_TEST)
+//#include <hamon/chrono.hpp>
 #include <random>
-#include <chrono>
 #include <vector>
 #include <string>
 #endif
@@ -3779,7 +3779,7 @@ inline void performance_test_sub(int integer_part_length, int fraction_part_leng
 	}
 
 	{
-		auto t0 = std::chrono::high_resolution_clock::now();
+		auto t0 = hamon::chrono::high_resolution_clock::now();
 
 		for (int i = 0; i < loop_count; ++i)
 		{
@@ -3790,8 +3790,8 @@ inline void performance_test_sub(int integer_part_length, int fraction_part_leng
 			}
 		}
 
-		auto t1 = std::chrono::high_resolution_clock::now();
-		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
+		auto t1 = hamon::chrono::high_resolution_clock::now();
+		auto elapsed = hamon::chrono::duration_cast<hamon::chrono::milliseconds>(t1 - t0);
 		std::cout <<
 			"from_chars<" << (hamon::is_same<T, float>::value ? "float" : "double") << ">" <<
 			"(" << hamon::setw(3) << integer_part_length <<
