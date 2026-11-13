@@ -17,12 +17,12 @@
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/unique_ptr.hpp>
+#include <hamon/stack.hpp>
+#include <hamon/string.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <hamon/string.hpp>
-#include <stack>
 
 namespace hamon
 {
@@ -234,10 +234,10 @@ private:
 	}
 
 private:
-	hamon::unique_ptr<detail::xml_oarchive_impl_base>	m_impl;
-	hamon::string			  m_indent_string_element = "    ";
-	std::stack<int>		      m_value_index_stack;
-	std::stack<hamon::string> m_tag_name_stack;
+	hamon::unique_ptr<detail::xml_oarchive_impl_base> m_impl;
+	hamon::string               m_indent_string_element = "    ";
+	hamon::stack<int>           m_value_index_stack;
+	hamon::stack<hamon::string> m_tag_name_stack;
 };
 
 }	// namespace serialization
