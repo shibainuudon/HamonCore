@@ -8,8 +8,12 @@
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
-#include <string>
+#include <hamon/config.hpp>
 #include "string_test_helper.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <string>
+#endif
 
 namespace hamon_test
 {
@@ -19,7 +23,9 @@ namespace string_test
 TYPED_TEST(StringTest, IsSpecializationOfTest)
 {
 	static_assert(hamon::detail::is_specialization_of_basic_string<hamon::basic_string<TypeParam>>::value, "");
+#if !defined(HAMON_NO_STD)
 	static_assert(hamon::detail::is_specialization_of_basic_string<std::basic_string<TypeParam>>::value, "");
+#endif
 
 	static_assert(!hamon::detail::is_specialization_of_basic_string<hamon::basic_string_view<TypeParam>>::value, "");
 	static_assert(!hamon::detail::is_specialization_of_basic_string<hamon::vector<TypeParam>>::value, "");
