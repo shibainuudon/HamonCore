@@ -18,6 +18,10 @@
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
+#if !defined(HAMON_NO_STD)
+#include <list>
+#endif
+
 namespace hamon_serialization_test
 {
 
@@ -50,18 +54,20 @@ struct Point
 	}
 };
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class List
+>
 void ListTest()
 {
-	hamon::list<int> const v1;
-	hamon::list<int> const v2{ 1, 2, 3 };
-	hamon::list<hamon::string> const v3 { "The", "quick brown", "fox" };
-	hamon::list<hamon::vector<float>> const v4
+	List<int> const v1;
+	List<int> const v2{ 1, 2, 3 };
+	List<hamon::string> const v3 { "The", "quick brown", "fox" };
+	List<hamon::vector<float>> const v4
 	{
 		{ 10, 11, 12, 13 },
 		{ 20, 21, 22 },
 	};
-	hamon::list<Point> const v5
+	List<Point> const v5
 	{
 		{ 1, 2 },
 		{ 3, 4 },
@@ -130,11 +136,11 @@ R"({
 #endif
 
 	{
-		hamon::list<int> a{ 10, 11, 12 };
-		hamon::list<int> b{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-		hamon::list<hamon::string> c;
-		hamon::list<hamon::vector<float>> d;
-		hamon::list<Point> e;
+		List<int> a{ 10, 11, 12 };
+		List<int> b{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		List<hamon::string> c;
+		List<hamon::vector<float>> d;
+		List<Point> e;
 
 		IArchive ia(str);
 
@@ -173,7 +179,10 @@ TYPED_TEST(SerializationListTest, ListTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	ListTest<Stream, OArchive, IArchive>();
+	ListTest<Stream, OArchive, IArchive, hamon::list>();
+#if !defined(HAMON_NO_STD)
+	ListTest<Stream, OArchive, IArchive, std::list>();
+#endif
 }
 
 }	// namespace list_test

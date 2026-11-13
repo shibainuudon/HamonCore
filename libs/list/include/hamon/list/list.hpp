@@ -919,27 +919,4 @@ erase(hamon::list<T, Allocator>& c, U const& value)
 
 }	// namespace hamon
 
-// シリアライズ対応
-
-#include <hamon/serialization/detail/save_vector.hpp>
-#include <hamon/serialization/detail/load_vector.hpp>
-
-namespace hamon
-{
-
-template <typename Archive, typename T, typename Allocator>
-void save_value(Archive& oa, hamon::list<T, Allocator> const& t)
-{
-	hamon::serialization::detail::save_vector(oa, t);
-}
-
-template <typename Archive, typename T, typename Allocator>
-void load_value(Archive& ia, hamon::list<T, Allocator>& t)
-{
-	t.clear();
-	hamon::serialization::detail::load_vector(ia, t);
-}
-
-}	// namespace hamon
-
 #endif // HAMON_LIST_LIST_HPP
