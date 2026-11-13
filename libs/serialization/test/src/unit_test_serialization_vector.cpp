@@ -16,22 +16,28 @@
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
+#if !defined(HAMON_NO_STD)
+#include <vector>
+#endif
+
 namespace hamon_serialization_test
 {
 
 namespace vector_test
 {
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class Vector
+>
 void VectorTest()
 {
 	Stream str;
 	{
-		hamon::vector<int>   const v1;
-		hamon::vector<int>   const v2{1, 2, 3};
-		hamon::vector<float> const v3;
-		hamon::vector<float> const v4{0.5f, -0.5f, 1.5f, -2.5f};
-		hamon::vector<hamon::vector<hamon::string>> const v5
+		Vector<int>   const v1;
+		Vector<int>   const v2{1, 2, 3};
+		Vector<float> const v3;
+		Vector<float> const v4{0.5f, -0.5f, 1.5f, -2.5f};
+		Vector<Vector<hamon::string>> const v5
 		{
 			{ "A1", "A2" },
 			{ "B1", "B2", "B3" },
@@ -48,11 +54,11 @@ void VectorTest()
 		oa << v5;
 	}
 	{
-		hamon::vector<int> a;
-		hamon::vector<int> b;
-		hamon::vector<float> c;
-		hamon::vector<float> d;
-		hamon::vector<hamon::vector<hamon::string>> e;
+		Vector<int> a;
+		Vector<int> b;
+		Vector<float> c;
+		Vector<float> d;
+		Vector<Vector<hamon::string>> e;
 
 		IArchive ia(str);
 
@@ -111,7 +117,10 @@ TYPED_TEST(SerializationVectorTest, VectorTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	VectorTest<Stream, OArchive, IArchive>();
+	VectorTest<Stream, OArchive, IArchive, hamon::vector>();
+#if !defined(HAMON_NO_STD)
+	VectorTest<Stream, OArchive, IArchive, std::vector>();
+#endif
 }
 
 }	// namespace vector_test
