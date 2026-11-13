@@ -9,7 +9,7 @@
 
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/adl_get.hpp>
-#include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
+#include <hamon/tuple/detail/is_specialization_of_tuple.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>

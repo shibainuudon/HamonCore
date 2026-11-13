@@ -10,7 +10,7 @@
 #include <hamon/array/detail/is_specialization_of_array.hpp>
 #include <hamon/complex/detail/is_specialization_of_complex.hpp>
 #include <hamon/pair/detail/is_specialization_of_pair.hpp>
-#include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
+#include <hamon/tuple/detail/is_specialization_of_tuple.hpp>
 #include <hamon/ranges/detail/is_specialization_of_subrange.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>

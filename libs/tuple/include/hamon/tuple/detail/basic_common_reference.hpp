@@ -11,8 +11,8 @@
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
+#include <hamon/tuple/detail/is_specialization_of_tuple.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/decay.hpp>

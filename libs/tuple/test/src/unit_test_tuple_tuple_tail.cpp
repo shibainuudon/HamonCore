@@ -10,7 +10,10 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+
+#if !defined(HAMON_NO_STD)
 #include <tuple>
+#endif
 
 namespace hamon_tuple_test
 {
@@ -76,8 +79,10 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(TupleTest, TupleTailTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<std::tuple>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<hamon::tuple>());
+#if !defined(HAMON_NO_STD)
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<std::tuple>());
+#endif
 }
 
 }	// namespace tuple_tail_test
