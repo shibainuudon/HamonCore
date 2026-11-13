@@ -127,10 +127,10 @@ private:
 		return s;
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> escape(hamon::basic_string<CharT> const& str)
+	template <typename String>
+	static String escape(String const& str)
 	{
-		hamon::basic_string<CharT> result;
+		String result;
 		for (auto const& c : str)
 		{
 			switch (c)
@@ -149,13 +149,14 @@ private:
 		return result;
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> quote(hamon::basic_string<CharT> const& str)
+	template <typename String>
+	static String quote(String const& str)
 	{
+		using CharT = typename String::value_type;
 		return
-			hamon::basic_string<CharT>(1, CharT('"')) +
+			String(1, CharT('"')) +
 			str +
-			hamon::basic_string<CharT>(1, CharT('"'));
+			String(1, CharT('"'));
 	}
 
 private:
@@ -190,7 +191,8 @@ private:
 	template <typename T>
 	friend void save_string(json_oarchive& oa, T const& t)
 	{
-		oa.m_impl->save_string(quote(escape(t)));
+		auto tmp = quote(escape(t));
+		oa.m_impl->save_string(tmp.data(), tmp.length());
 	}
 
 	template <typename T>

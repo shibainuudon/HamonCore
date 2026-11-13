@@ -82,11 +82,11 @@ private:
 		m_impl->get_one_char();	// "}"
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> unescape(hamon::basic_string<CharT> const& str)
+	template <typename String>
+	static String unescape(String const& str)
 	{
 		bool escaping = false;
-		hamon::basic_string<CharT> result;
+		String result;
 		for (auto c : str)
 		{
 			if (escaping)
@@ -155,7 +155,7 @@ private:
 	{
 		T tmp;
 		ia.m_impl->load_quoted_string(tmp);
-		t = unescape(tmp);
+		t = tmp;//unescape(tmp);
 	}
 
 	template <typename T>

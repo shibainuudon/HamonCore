@@ -14,6 +14,10 @@
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
+#if !defined(HAMON_NO_STD)
+#include <string>
+#endif
+
 namespace hamon_serialization_test
 {
 
@@ -38,35 +42,37 @@ void StringTestSub(TString const& s)
 	}
 }
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class BasicString
+>
 void StringTest()
 {
-	StringTestSub<Stream, OArchive, IArchive>(hamon::string{});
-	StringTestSub<Stream, OArchive, IArchive>(hamon::string("Hello World"));
-	StringTestSub<Stream, OArchive, IArchive>(hamon::string(
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char>{});
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char>("Hello World"));
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char>(
 		"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b"));
 
-	StringTestSub<Stream, OArchive, IArchive>(hamon::wstring{});
-	StringTestSub<Stream, OArchive, IArchive>(hamon::wstring(L"Hello World"));
-	StringTestSub<Stream, OArchive, IArchive>(hamon::wstring(
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<wchar_t>{});
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<wchar_t>(L"Hello World"));
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<wchar_t>(
 		L"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b漢字\u3042\u3044\u3046"));
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u8string{});
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u8string(u8"Hello World"));
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u8string(
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char8_t>{});
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char8_t>(u8"Hello World"));
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char8_t>(
 		u8"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b漢字\u3042\u3044\u3046"));
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u16string{});
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u16string(u"Hello World"));
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u16string(
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char16_t>{});
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char16_t>(u"Hello World"));
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char16_t>(
 		u"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b漢字\u3042\u3044\u3046"));
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u32string{});
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u32string(U"Hello World"));
-	StringTestSub<Stream, OArchive, IArchive>(hamon::u32string(
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char32_t>{});
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char32_t>(U"Hello World"));
+	StringTestSub<Stream, OArchive, IArchive>(BasicString<char32_t>(
 		U"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b漢字\u3042\u3044\u3046"));
 #endif
 }
@@ -92,7 +98,10 @@ TYPED_TEST(SerializationStringTest, StringTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	StringTest<Stream, OArchive, IArchive>();
+	StringTest<Stream, OArchive, IArchive, hamon::basic_string>();
+#if !defined(HAMON_NO_STD)
+//	StringTest<Stream, OArchive, IArchive, std::basic_string>();
+#endif
 }
 
 }	// namespace string_test

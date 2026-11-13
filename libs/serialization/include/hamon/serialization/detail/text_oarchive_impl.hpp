@@ -43,16 +43,16 @@ public:
 	virtual void save(double) = 0;
 	virtual void save(long double) = 0;
 
-	virtual void save_string(hamon::string const&) = 0;
-	virtual void save_string(hamon::wstring const&) = 0;
+	virtual void save_string(char const*, hamon::size_t) = 0;
+	virtual void save_string(wchar_t const*, hamon::size_t) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void save_string(hamon::u8string const&) = 0;
+	virtual void save_string(char8_t const*, hamon::size_t) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void save_string(hamon::u16string const&) = 0;
+	virtual void save_string(char16_t const*, hamon::size_t) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void save_string(hamon::u32string const&) = 0;
+	virtual void save_string(char32_t const*, hamon::size_t) = 0;
 #endif
 
 	virtual void put(const char*) = 0;
@@ -103,62 +103,62 @@ public:
 private:
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2,
+		typename CharT2,
 		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
 	>
 	static void save_string_impl(
 		hamon::basic_ostream<CharT1, Traits1>& os,
-		hamon::basic_string<CharT2, Traits2> const& s)
+		CharT2 const* str, hamon::size_t length)
 	{
 		hamon::basic_string<CharT1> tmp;
-		tmp.resize(s.size());
-		hamon::transform(s.begin(), s.end(), tmp.begin(),
+		tmp.resize(length);
+		hamon::transform(str, str + length, tmp.begin(),
 			[](CharT2 c){return static_cast<CharT1>(c);});
 		os.write(tmp.c_str(), static_cast<hamon::streamsize>(tmp.size()));
 	}
 
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2,
+		typename CharT2,
 		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
 	>
 	static void save_string_impl(
 		hamon::basic_ostream<CharT1, Traits1>& os,
-		hamon::basic_string<CharT2, Traits2> const& s)
+		CharT2 const* str, hamon::size_t length)
 	{
-		auto const count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
-		os.write(reinterpret_cast<CharT1 const*>(s.data()), static_cast<hamon::streamsize>(count));
+		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
+		os.write(reinterpret_cast<CharT1 const*>(str), static_cast<hamon::streamsize>(count));
 	}
 
 public:
-	void save_string(hamon::string const& str) override
+	void save_string(char const* str, hamon::size_t length) override
 	{
-		save_string_impl(m_os, str);
+		save_string_impl(m_os, str, length);
 	}
 
-	void save_string(hamon::wstring const& str) override
+	void save_string(wchar_t const* str, hamon::size_t length) override
 	{
-		save_string_impl(m_os, str);
+		save_string_impl(m_os, str, length);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void save_string(hamon::u8string const& str) override
+	void save_string(char8_t const* str, hamon::size_t length) override
 	{
-		save_string_impl(m_os, str);
+		save_string_impl(m_os, str, length);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void save_string(hamon::u16string const& str) override
+	void save_string(char16_t const* str, hamon::size_t length) override
 	{
-		save_string_impl(m_os, str);
+		save_string_impl(m_os, str, length);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void save_string(hamon::u32string const& str) override
+	void save_string(char32_t const* str, hamon::size_t length) override
 	{
-		save_string_impl(m_os, str);
+		save_string_impl(m_os, str, length);
 	}
 #endif
 	

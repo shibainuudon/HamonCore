@@ -80,7 +80,8 @@ private:
 	{
 		hamon::size_t length;
 		ia >> length;
-		ia.m_impl->load_string(t, length);
+		t.resize(length);
+		ia.m_impl->load_string(t.data(), length);
 	}
 
 private:

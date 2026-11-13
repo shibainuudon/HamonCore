@@ -17,7 +17,7 @@
 #include <hamon/ios/ios_base.hpp>
 #include <hamon/ios/streamsize.hpp>
 #include <hamon/istream/basic_istream.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 
@@ -45,16 +45,16 @@ public:
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
 
-	virtual void load_string(hamon::string&, hamon::size_t length) = 0;
-	virtual void load_string(hamon::wstring&, hamon::size_t length) = 0;
+	virtual void load_string(char*, hamon::size_t length) = 0;
+	virtual void load_string(wchar_t*, hamon::size_t length) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void load_string(hamon::u8string&, hamon::size_t length) = 0;
+	virtual void load_string(char8_t*, hamon::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void load_string(hamon::u16string&, hamon::size_t length) = 0;
+	virtual void load_string(char16_t*, hamon::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void load_string(hamon::u32string&, hamon::size_t length) = 0;
+	virtual void load_string(char32_t*, hamon::size_t length) = 0;
 #endif
 
 public:
@@ -144,44 +144,40 @@ public:
 private:
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
+		typename CharT2,
+		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
 	>
 	static void load_string_impl_2(
 		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		hamon::size_t length,
-		hamon::true_type)
+		CharT2* str, hamon::size_t length)
 	{
 		hamon::basic_string<CharT1> tmp;
 		tmp.resize(length);
 		is.read(&tmp[0], static_cast<hamon::streamsize>(tmp.size()));
-		s.resize(length);
-		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
+		hamon::transform(tmp.begin(), tmp.end(), str,
 			[](CharT1 c){return static_cast<CharT2>(c);});
 	}
 
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
+		typename CharT2,
+		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
 	>
 	static void load_string_impl_2(
 		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		hamon::size_t length,
-		hamon::false_type)
+		CharT2* str, hamon::size_t length)
 	{
 		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
-		s.resize(length);
-		is.read(reinterpret_cast<CharT1*>(&s[0]), static_cast<hamon::streamsize>(count));
+		is.read(reinterpret_cast<CharT1*>(str), static_cast<hamon::streamsize>(count));
 	}
 
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
+		typename CharT2
 	>
 	static void load_string_impl(
 		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
+		CharT2* str,
 		hamon::size_t length,
 		bool skip_whitespace)
 	{
@@ -190,12 +186,24 @@ private:
 
 		if (ok)
 		{
-			load_string_impl_2(is, s, length,
-				hamon::bool_constant<(sizeof(CharT1) > sizeof(CharT2))>{});
+			load_string_impl_2(is, str, length);
 		}
 	}
 
 private:
+	//template <
+	//	typename CharT, typename Traits1,
+	//	typename Traits2
+	//>
+	//static void load_quoted_string_impl(
+	//	hamon::basic_istream<CharT, Traits1>& is,
+	//	hamon::basic_string<CharT, Traits2>& s,
+	//	CharT leading_delim,
+	//	CharT /*trailing_delim*/)
+	//{
+	//	is >> hamon::quoted(s, leading_delim);
+	//}
+
 	template <
 		typename CharT1, typename Traits1,
 		typename CharT2, typename Traits2
@@ -209,34 +217,29 @@ private:
 #if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
 		is >> hamon::quoted(s);
 #else
-		using String = hamon::basic_string<CharT2, Traits2>;
-		auto const leading_delim_str  = String(1, leading_delim);
-		auto const trailing_delim_str = String(1, trailing_delim);
-		auto const escape = String(1, '\\');
+		auto const escape = CharT2('\\');
 
-		String tmp;
-		load_string_impl(is, tmp, 1, true);
+		CharT2 tmp;
+		load_string_impl(is, &tmp, 1, true);
 
-		if (tmp != leading_delim_str)
+		if (tmp != leading_delim)
 		{
 			return;
 		}
 
 		for (;;)
 		{
-			load_string_impl(is, tmp, 1, false);
-			if (tmp == trailing_delim_str)
+			load_string_impl(is, &tmp, 1, false);
+			if (tmp == escape)
+			{
+				load_string_impl(is, &tmp, 1, false);
+			}
+			else if (tmp == trailing_delim)
 			{
 				break;
 			}
 
 			s += tmp;
-
-			if (tmp == escape)
-			{
-				load_string_impl(is, tmp, 1, false);
-				s += tmp;
-			}
 		}
 #endif
 	}
@@ -287,32 +290,32 @@ public:
 #endif
 
 public:
-	void load_string(hamon::string& str, hamon::size_t length) override
+	void load_string(char* str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 
-	void load_string(hamon::wstring& str, hamon::size_t length) override
+	void load_string(wchar_t* str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void load_string(hamon::u8string& str, hamon::size_t length) override
+	void load_string(char8_t* str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void load_string(hamon::u16string& str, hamon::size_t length) override
+	void load_string(char16_t* str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void load_string(hamon::u32string& str, hamon::size_t length) override
+	void load_string(char32_t* str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
