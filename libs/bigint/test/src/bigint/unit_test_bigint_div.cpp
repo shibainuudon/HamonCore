@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-//#include <chrono>
+//#include <hamon/chrono.hpp>
 
 namespace hamon_bigint_test
 {
@@ -230,7 +230,7 @@ GTEST_TEST(BigIntTest, DivTest)
 
 #if 0
 	{
-		auto t0 = std::chrono::high_resolution_clock::now();
+		auto t0 = hamon::chrono::high_resolution_clock::now();
 		{
 			using BigInt = hamon::inplace_bigint<4000>;
 
@@ -257,8 +257,8 @@ GTEST_TEST(BigIntTest, DivTest)
 			}
 		}
 
-		auto t1 = std::chrono::high_resolution_clock::now();
-		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
+		auto t1 = hamon::chrono::high_resolution_clock::now();
+		auto elapsed = hamon::chrono::duration_cast<hamon::chrono::milliseconds>(t1 - t0);
 		std::cout << elapsed.count() << " ms" << std::endl;
 	}
 	// 最適化前
