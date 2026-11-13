@@ -5,16 +5,18 @@
  */
 
 #include <hamon/functional/ranges/hash.hpp>
+#include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstdint/int64_t.hpp>
 #include <hamon/cstdint/uint64_t.hpp>
-#include <hamon/type_traits/is_nothrow_invocable.hpp>
-#include <hamon/utility/move.hpp>
-#include <hamon/array.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/list.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/string.hpp>
+#include <hamon/tuple.hpp>
+#include <hamon/type_traits/is_nothrow_invocable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -456,6 +458,23 @@ GTEST_TEST(FunctionalTest, RangesHashPairTest)
 GTEST_TEST(FunctionalTest, RangesHashTupleTest)
 {
 	{
+		HAMON_CXX14_CONSTEXPR hamon::tuple<> t;
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0), hamon::ranges::hash(t));
+	}
+	{
+		HAMON_CXX14_CONSTEXPR hamon::tuple<int> t{2};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 2), hamon::ranges::hash(t));
+	}
+	{
+		HAMON_CXX14_CONSTEXPR hamon::tuple<int, int> t{3, 4};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 3, 4), hamon::ranges::hash(t));
+	}
+	{
+		HAMON_CXX14_CONSTEXPR hamon::tuple<S1, float, S1, int> t{S1{4}, 5.5f, S1{6}, 7};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::ranges::hash(t));
+	}
+#if !defined(HAMON_NO_STD)
+	{
 		HAMON_CXX14_CONSTEXPR std::tuple<> t;
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0), hamon::ranges::hash(t));
 	}
@@ -471,6 +490,7 @@ GTEST_TEST(FunctionalTest, RangesHashTupleTest)
 		HAMON_CXX14_CONSTEXPR std::tuple<S1, float, S1, int> t{S1{4}, 5.5f, S1{6}, 7};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::ranges::hash(t));
 	}
+#endif
 }
 
 GTEST_TEST(FunctionalTest, RangesHashBitsetTest)
