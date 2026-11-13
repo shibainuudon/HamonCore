@@ -38,5 +38,4 @@ struct is_specialization_of_basic_string_view<std::basic_string_view<CharT, Trai
 }	// namespace detail
 }	// namespace hamon
 
-
 #endif // HAMON_STRING_VIEW_DETAIL_IS_SPECIALIZATION_OF_BASIC_STRING_VIEW_HPP
