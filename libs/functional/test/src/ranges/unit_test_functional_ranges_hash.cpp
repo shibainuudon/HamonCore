@@ -434,6 +434,15 @@ GTEST_TEST(FunctionalTest, RangesHashStringTest)
 GTEST_TEST(FunctionalTest, RangesHashPairTest)
 {
 	{
+		HAMON_CXX14_CONSTEXPR hamon::pair<int, float> p {1, 2.5f};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 1, 2.5f), hamon::ranges::hash(p));
+	}
+	{
+		HAMON_CXX14_CONSTEXPR hamon::pair<S1, S1> p{S1{3}, S1{4}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 3*2, 4*2), hamon::ranges::hash(p));
+	}
+#if !defined(HAMON_NO_STD)
+	{
 		HAMON_CXX14_CONSTEXPR std::pair<int, float> p {1, 2.5f};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 1, 2.5f), hamon::ranges::hash(p));
 	}
@@ -441,6 +450,7 @@ GTEST_TEST(FunctionalTest, RangesHashPairTest)
 		HAMON_CXX14_CONSTEXPR std::pair<S1, S1> p{S1{3}, S1{4}};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 3*2, 4*2), hamon::ranges::hash(p));
 	}
+#endif
 }
 
 GTEST_TEST(FunctionalTest, RangesHashTupleTest)

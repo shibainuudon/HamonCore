@@ -9,7 +9,7 @@
 
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/detail/uses_allocator_construction_type.hpp>
-#include <hamon/concepts/detail/is_specialization_of_pair.hpp>
+#include <hamon/pair/detail/is_specialization_of_pair.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/pair/pair.hpp>

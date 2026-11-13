@@ -896,7 +896,7 @@ T2 const&& get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 
 }	// namespace hamon
 
-#include <hamon/concepts/detail/is_specialization_of_pair.hpp>
+#include <hamon/pair/detail/is_specialization_of_pair.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
