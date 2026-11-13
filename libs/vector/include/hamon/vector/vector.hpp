@@ -896,25 +896,4 @@ erase_if(hamon::vector<T, Allocator>& c, Predicate pred)
 
 }	// namespace hamon
 
-#include <hamon/serialization/detail/save_vector.hpp>
-#include <hamon/serialization/detail/load_vector.hpp>
-
-namespace hamon
-{
-
-template <typename Archive, typename T>
-void save_value(Archive& oa, hamon::vector<T> const& t)
-{
-	hamon::serialization::detail::save_vector(oa, t);
-}
-
-template <typename Archive, typename T>
-void load_value(Archive& ia, hamon::vector<T>& t)
-{
-	t.clear();
-	hamon::serialization::detail::load_vector(ia, t);
-}
-
-}	// namespace hamon
-
 #endif // HAMON_VECTOR_VECTOR_HPP
