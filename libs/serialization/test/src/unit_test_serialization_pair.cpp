@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_serialization_pair.cpp
  *
- *	@brief	std::pair のシリアライズのテスト
+ *	@brief	hamon::pair のシリアライズのテスト
  */
 
 #include <hamon/serialization/types/pair.hpp>
@@ -9,14 +9,18 @@
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/string.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <utility>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -39,18 +43,20 @@ struct Object
 	}
 };
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename, typename> class Pair
+>
 void PairTest()
 {
 	Stream str;
 	{
-		std::pair<int, float> const p1{2, 3.5f};
-		std::pair<hamon::string, Object> const p2
+		Pair<int, float> const p1{2, 3.5f};
+		Pair<hamon::string, Object> const p2
 		{
 			"Hello World!",
 			{ 10, -2.5f, {1, 2, 3} },
 		};
-		hamon::vector<std::pair<float, int>> const p3
+		hamon::vector<Pair<float, int>> const p3
 		{
 			{0.5f, 1},
 			{1.5f, 2},
@@ -103,9 +109,9 @@ R"({
 #endif
 
 	{
-		std::pair<int, float> a;
-		std::pair<hamon::string, Object> b;
-		hamon::vector<std::pair<float, int>> c;
+		Pair<int, float> a;
+		Pair<hamon::string, Object> b;
+		hamon::vector<Pair<float, int>> c;
 
 		IArchive ia(str);
 
@@ -151,7 +157,10 @@ TYPED_TEST(SerializationPairTest, PairTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	PairTest<Stream, OArchive, IArchive>();
+	PairTest<Stream, OArchive, IArchive, hamon::pair>();
+#if !defined(HAMON_NO_STD)
+	PairTest<Stream, OArchive, IArchive, std::pair>();
+#endif
 }
 
 }	// namespace pair_test

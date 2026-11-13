@@ -32,9 +32,11 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		iomanip
 		istream
 		limits
+		list
 		map
 		memory
 		ostream
+		pair
 		preprocessor
 		stack
 		string
