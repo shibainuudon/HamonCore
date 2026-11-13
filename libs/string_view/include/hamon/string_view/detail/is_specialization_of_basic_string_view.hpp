@@ -10,8 +10,10 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
+#if !defined(HAMON_NO_STD)
 #if (HAMON_CXX_STANDARD >= 17) && HAMON_HAS_INCLUDE(<string_view>)
 #  include <string_view>
+#endif
 #endif
 
 namespace hamon
@@ -23,12 +25,14 @@ template <typename T>
 struct is_specialization_of_basic_string_view
 	: public hamon::false_type {};
 
+#if !defined(HAMON_NO_STD)
 #if defined(__cpp_lib_string_view) && (__cpp_lib_string_view >= 201606L)
 
 template <typename CharT, typename Traits>
 struct is_specialization_of_basic_string_view<std::basic_string_view<CharT, Traits>>
 	: public hamon::true_type {};
 
+#endif
 #endif
 
 }	// namespace detail
