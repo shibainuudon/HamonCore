@@ -82,42 +82,6 @@ private:
 		m_impl->get_one_char();	// "}"
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> unescape(hamon::basic_string<CharT> const& str)
-	{
-		bool escaping = false;
-		hamon::basic_string<CharT> result;
-		for (auto c : str)
-		{
-			if (escaping)
-			{
-				switch (c)
-				{
-				case '"':  c = '"';  break;
-				case '\\': c = '\\'; break;
-				case '/':  c = '/';  break;
-				case 'b':  c = '\b'; break;
-				case 'f':  c = '\f'; break;
-				case 'n':  c = '\n'; break;
-				case 'r':  c = '\r'; break;
-				case 't':  c = '\t'; break;
-				}
-				escaping = false;
-			}
-			else
-			{
-				if (c == '\\')
-				{
-					escaping = true;
-					continue;
-				}
-			}
-
-			result += c;
-		}
-		return result;
-	}
-
 private:
 	template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
 	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<2>)
@@ -153,9 +117,11 @@ private:
 	template <typename T>
 	friend void load_string(json_iarchive& ia, T& t)
 	{
-		T tmp;
-		ia.m_impl->load_quoted_string(tmp);
-		t = unescape(tmp);
+		using char_type = typename T::value_type;
+
+		hamon::basic_string<char_type> tmp;
+		ia.m_impl->load_string(tmp);
+		t = T(tmp.data(), tmp.length());
 	}
 
 	template <typename T>
@@ -174,7 +140,7 @@ private:
 		}
 		ia.m_impl->get_one_char();	// "]"
 	}
-	
+
 	template <typename T>
 	friend void load_vector(json_iarchive& ia, T& t)
 	{

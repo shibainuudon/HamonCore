@@ -7,17 +7,14 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_JSON_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_JSON_IARCHIVE_IMPL_HPP
 
-#include <hamon/algorithm/transform.hpp>
-#include <hamon/charconv/from_chars.hpp>
-#include <hamon/cstddef/size_t.hpp>
+#include <hamon/serialization/detail/read_float_from_string.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
-#include <hamon/iomanip/quoted.hpp>
 #include <hamon/ios/boolalpha.hpp>
-#include <hamon/ios/ios_base.hpp>
 #include <hamon/ios/streamsize.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
 #include <hamon/istream/basic_istream.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 
@@ -42,35 +39,18 @@ public:
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
 
-public:
-	template <typename CharT, typename Traits>
-	void load_quoted_string(
-		hamon::basic_string<CharT, Traits>& s,
-		CharT leading_delim  = CharT('"'),
-		CharT trailing_delim = CharT('"'))
-	{
-		vload_quoted_string(s, leading_delim, trailing_delim);
-	}
-
-private:
-	virtual void vload_quoted_string(
-		hamon::string&, char, char) = 0;
-	virtual void vload_quoted_string(
-		hamon::wstring&, wchar_t, wchar_t) = 0;
+	virtual void load_string(hamon::string&) = 0;
+	virtual void load_string(hamon::wstring&) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void vload_quoted_string(
-		hamon::u8string&, char8_t, char8_t) = 0;
+	virtual void load_string(hamon::u8string&) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void vload_quoted_string(
-		hamon::u16string&, char16_t, char16_t) = 0;
+	virtual void load_string(hamon::u16string&) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void vload_quoted_string(
-		hamon::u32string&, char32_t, char32_t) = 0;
+	virtual void load_string(hamon::u32string&) = 0;
 #endif
 
-public:
 	virtual char get_one_char() = 0;
 	virtual void unget_one_char() = 0;
 };
@@ -86,9 +66,8 @@ public:
 
 	void load(bool& t) override
 	{
-		auto const old_flags = m_is.flags();
+		hamon::detail::flags_saver fs(m_is);
 		m_is >> hamon::boolalpha >> t;
-		m_is.flags(old_flags);
 	}
 
 	void load(hamon::intmax_t& t) override
@@ -103,206 +82,141 @@ public:
 
 	void load(float& t) override
 	{
-		load_float(t);
+		hamon::serialization::detail::read_float_from_string(m_is, t);
 	}
 
 	void load(double& t) override
 	{
-		load_float(t);
+		hamon::serialization::detail::read_float_from_string(m_is, t);
 	}
 
 	void load(long double& t) override
 	{
-		load_float(t);
+		hamon::serialization::detail::read_float_from_string(m_is, t);
 	}
 
 private:
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
+		typename CharT2,
+		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
 	>
-	static void load_string_impl_2(
+	static void read_one_char(
 		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		hamon::size_t length,
-		hamon::true_type)
+		CharT2* c)
 	{
-		hamon::basic_string<CharT1> tmp;
-		tmp.resize(length);
-		is.read(&tmp[0], static_cast<hamon::streamsize>(tmp.size()));
-		s.resize(length);
-		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
-			[](CharT1 c){return static_cast<CharT2>(c);});
+		CharT1 tmp;
+		is.read(&tmp, 1);
+		*c = static_cast<CharT2>(tmp);
 	}
 
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
+		typename CharT2,
+		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
 	>
-	static void load_string_impl_2(
+	static void read_one_char(
 		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		hamon::size_t length,
-		hamon::false_type)
+		CharT2* c)
 	{
-		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
-		s.resize(length);
-		is.read(reinterpret_cast<CharT1*>(&s[0]), static_cast<hamon::streamsize>(count));
+		auto const count = sizeof(CharT2) / sizeof(CharT1);
+		is.read(reinterpret_cast<CharT1*>(c), static_cast<hamon::streamsize>(count));
 	}
 
+private:
 	template <
 		typename CharT1, typename Traits1,
 		typename CharT2, typename Traits2
 	>
 	static void load_string_impl(
 		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		hamon::size_t length,
-		bool skip_whitespace)
+		hamon::basic_string<CharT2, Traits2>& s)
 	{
 		using istream_type = hamon::basic_istream<CharT1, Traits1>;
-		const typename istream_type::sentry ok(is, !skip_whitespace);
+		const typename istream_type::sentry ok(is);
 
-		if (ok)
+		if (!ok)
 		{
-			load_string_impl_2(is, s, length,
-				hamon::bool_constant<(sizeof(CharT1) > sizeof(CharT2))>{});
+			return;
 		}
-	}
 
-private:
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
-	>
-	static void load_quoted_string_impl(
-		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		CharT2 leading_delim,
-		CharT2 trailing_delim)
-	{
-#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-		is >> hamon::quoted(s);
-#else
-		using String = hamon::basic_string<CharT2, Traits2>;
-		auto const leading_delim_str  = String(1, leading_delim);
-		auto const trailing_delim_str = String(1, trailing_delim);
-		auto const escape = String(1, '\\');
+		auto const delim = CharT2('"');
+		auto const escape = CharT2('\\');
 
-		String tmp;
-		load_string_impl(is, tmp, 1, true);
+		CharT2 c;
+		read_one_char(is, &c);
 
-		if (tmp != leading_delim_str)
+		if (c != delim)
 		{
 			return;
 		}
 
 		for (;;)
 		{
-			load_string_impl(is, tmp, 1, false);
-			if (tmp == trailing_delim_str)
+			read_one_char(is, &c);
+			if (c == delim)
 			{
 				break;
 			}
 
-			s += tmp;
-
-			if (tmp == escape)
+			if (c == escape)
 			{
-				load_string_impl(is, tmp, 1, false);
-				s += tmp;
+				read_one_char(is, &c);
+				switch (c)
+				{
+				case 'b': c = '\b'; break;
+				case 'f': c = '\f'; break;
+				case 'n': c = '\n'; break;
+				case 'r': c = '\r'; break;
+				case 't': c = '\t'; break;
+				}
 			}
+
+			s += c;
 		}
-#endif
 	}
 
 public:
-	void vload_quoted_string(
-		hamon::string& t,
-		char leading_delim,
-		char trailing_delim) override
+	void load_string(hamon::string& str) override
 	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+		load_string_impl(m_is, str);
 	}
 
-	void vload_quoted_string(
-		hamon::wstring& t,
-		wchar_t leading_delim,
-		wchar_t trailing_delim) override
+	void load_string(hamon::wstring& str) override
 	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+		load_string_impl(m_is, str);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void vload_quoted_string(
-		hamon::u8string& t,
-		char8_t leading_delim,
-		char8_t trailing_delim) override
+	void load_string(hamon::u8string& str) override
 	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+		load_string_impl(m_is, str);
 	}
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void vload_quoted_string(
-		hamon::u16string& t,
-		char16_t leading_delim,
-		char16_t trailing_delim) override
+	void load_string(hamon::u16string& str) override
 	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+		load_string_impl(m_is, str);
 	}
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void vload_quoted_string(
-		hamon::u32string& t,
-		char32_t leading_delim,
-		char32_t trailing_delim) override
+	void load_string(hamon::u32string& str) override
 	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+		load_string_impl(m_is, str);
 	}
 #endif
 
-public:
 	char get_one_char() override
 	{
 		return static_cast<char>(get_one_char_impl(m_is));
 	}
 
-private:
-	template <typename CharT1, typename Traits1>
-	static void unget_one_char_impl(
-		hamon::basic_istream<CharT1, Traits1>& is)
-	{
-		is.rdbuf()->sungetc();
-	}
-
-public:
 	void unget_one_char() override
 	{
-		unget_one_char_impl(m_is);
+		m_is.rdbuf()->sungetc();
 	}
 
 private:
-	template <typename T>
-	void load_float(T& t)
-	{
-		// m_is >> t;
-		// だとinfとnanのときに正常にパースされない。
-		// これは標準ライブラリの不具合で、将来的に修正される予定。
-		// https://cplusplus.github.io/LWG/issue2381
-
-		using char_type = typename IStream::char_type;
-		hamon::basic_string<char_type> tmp;
-		m_is >> tmp;
-		hamon::string s;
-		s.resize(tmp.size());
-		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
-			[](char_type c){return static_cast<char>(c);});
-		auto first = s.data();
-		auto last  = s.data() + s.length();
-		auto result = hamon::from_chars(first, last, t);
-		m_is.seekg(result.ptr - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
-	}
-
 	template <typename CharT, typename Traits>
 	static CharT get_one_char_impl(
 		hamon::basic_istream<CharT, Traits>& is)
@@ -319,7 +233,8 @@ private:
 private:
 	json_iarchive_impl& operator=(json_iarchive_impl const&) = delete;
 
-	IStream&	m_is;
+private:
+	IStream& m_is;
 };
 
 }	// namespace detail

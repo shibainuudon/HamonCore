@@ -7,25 +7,20 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_XML_OARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_XML_OARCHIVE_IMPL_HPP
 
+#include <hamon/serialization/detail/write_float_as_string.hpp>
 #include <hamon/base64/base64_xml_name.hpp>
-#include <hamon/charconv/to_chars.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
-#include <hamon/ios.hpp>
+#include <hamon/ios/boolalpha.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
-#include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/is_same.hpp>
-#include <hamon/array.hpp>
 #include <hamon/string.hpp>
-#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
-
 namespace serialization
 {
-
 namespace detail
 {
 
@@ -68,9 +63,8 @@ public:
 
 	void save(bool t) override
 	{
-		auto const old_flags = m_os.flags();
+		hamon::detail::flags_saver fs(m_os);
 		m_os << hamon::boolalpha << t;
-		m_os.flags(old_flags);
 	}
 
 	void save(hamon::intmax_t t) override
@@ -82,45 +76,22 @@ public:
 	{
 		m_os << t;
 	}
-	
+
 	void save(float t) override
 	{
-		save_float_impl(t);
+		hamon::serialization::detail::write_float_as_string(m_os, t);
 	}
 
 	void save(double t) override
 	{
-		save_float_impl(t);
+		hamon::serialization::detail::write_float_as_string(m_os, t);
 	}
 
 	void save(long double t) override
 	{
-		save_float_impl(t);
+		hamon::serialization::detail::write_float_as_string(m_os, t);
 	}
 
-private:
-	template <typename CharT, typename Traits>
-	static void save_string_impl(
-		hamon::basic_ostream<CharT, Traits>& os,
-		hamon::basic_string<CharT, Traits> const& s)
-	{
-		os << s;
-	}
-
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
-	>
-	static void save_string_impl(
-		hamon::basic_ostream<CharT1, Traits1>& os,
-		hamon::basic_string<CharT2, Traits2> const& s)
-	{
-		using String = hamon::basic_string<CharT1, Traits1>;
-		auto tmp = hamon::base64_xml_name::encode<String>(s);
-		os << tmp;
-	}
-
-public:
 	void save_string(hamon::string const& str) override
 	{
 		save_string_impl(m_os, str);
@@ -151,41 +122,48 @@ public:
 		save_string_impl(m_os, str);
 	}
 #endif
-	
+
 	void put(const char* s) override
 	{
 		m_os << s;
 	}
-	
+
 	void put(hamon::string const& s) override
 	{
 		m_os << s.c_str();
 	}
 
 private:
-	template <typename T>
-	void save_float_impl(T t)
+	template <typename CharT, typename Traits>
+	static void save_string_impl(
+		hamon::basic_ostream<CharT, Traits>& os,
+		hamon::basic_string<CharT, Traits> const& s)
 	{
-		auto constexpr digits =
-			4 +	// sign, decimal point, "e+" or "e-"
-			hamon::numeric_limits<T>::max_digits10 +
-			4;	// log10(max_exponent10)
-		hamon::array<char, digits + 1> buf{};
-		auto result = hamon::to_chars(buf.data(), buf.data() + buf.size(), t);
-		m_os << buf.data();
-		(void)result;
+		os << s;
+	}
+
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2
+	>
+	static void save_string_impl(
+		hamon::basic_ostream<CharT1, Traits1>& os,
+		hamon::basic_string<CharT2, Traits2> const& s)
+	{
+		using String = hamon::basic_string<CharT1, Traits1>;
+		auto tmp = hamon::base64_xml_name::encode<String>(s);
+		os << tmp;
 	}
 
 private:
 	xml_oarchive_impl& operator=(xml_oarchive_impl const&) = delete;
 
-	OStream&	m_os;
+private:
+	OStream& m_os;
 };
 
 }	// namespace detail
-
 }	// namespace serialization
-
 }	// namespace hamon
 
 #endif // HAMON_SERIALIZATION_DETAIL_XML_OARCHIVE_IMPL_HPP

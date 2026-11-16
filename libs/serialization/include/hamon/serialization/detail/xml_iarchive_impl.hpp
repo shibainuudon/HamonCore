@@ -7,15 +7,14 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_XML_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_XML_IARCHIVE_IMPL_HPP
 
+#include <hamon/serialization/detail/read_float_from_string.hpp>
 #include <hamon/algorithm/transform.hpp>
 #include <hamon/base64/base64_xml_name.hpp>
-#include <hamon/charconv/from_chars.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/ios/boolalpha.hpp>
-#include <hamon/ios/ios_base.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
 #include <hamon/istream/basic_istream.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <iosfwd>	// std::streampos
@@ -70,7 +69,7 @@ public:
 	explicit xml_iarchive_impl(IStream& is)
 		: m_is(is)
 	{}
-	
+
 	std::streampos tellg(void) override
 	{
 		return m_is.tellg();
@@ -83,9 +82,8 @@ public:
 
 	void load(bool& t) override
 	{
-		auto const old_flags = m_is.flags();
+		hamon::detail::flags_saver fs(m_is);
 		m_is >> hamon::boolalpha >> t;
-		m_is.flags(old_flags);
 	}
 
 	void load(hamon::intmax_t& t) override
@@ -97,22 +95,22 @@ public:
 	{
 		m_is >> t;
 	}
-	
+
 	void load(float& t) override
 	{
-		load_float(t);
+		hamon::serialization::detail::read_float_from_string(m_is, t);
 	}
 
 	void load(double& t) override
 	{
-		load_float(t);
+		hamon::serialization::detail::read_float_from_string(m_is, t);
 	}
 
 	void load(long double& t) override
 	{
-		load_float(t);
+		hamon::serialization::detail::read_float_from_string(m_is, t);
 	}
-	
+
 private:
 	template <typename CharT, typename Traits>
 	static void load_string_until_impl(
@@ -251,27 +249,6 @@ public:
 	}
 
 private:
-	template <typename T>
-	void load_float(T& t)
-	{
-		// m_is >> t;
-		// だとinfとnanのときに正常にパースされない。
-		// これは標準ライブラリの不具合で、将来的に修正される予定。
-		// https://cplusplus.github.io/LWG/issue2381
-
-		using char_type = typename IStream::char_type;
-		hamon::basic_string<char_type> tmp;
-		m_is >> tmp;
-		hamon::string s;
-		s.resize(tmp.size());
-		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
-			[](char_type c){return static_cast<char>(c);});
-		auto first = s.data();
-		auto last  = s.data() + s.length();
-		auto result = hamon::from_chars(first, last, t);
-		m_is.seekg(result.ptr - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
-	}
-
 	template <typename CharT, typename Traits>
 	static CharT get_one_char_impl(
 		hamon::basic_istream<CharT, Traits>& is)
@@ -288,7 +265,8 @@ private:
 private:
 	xml_iarchive_impl& operator=(xml_iarchive_impl const&) = delete;
 
-	IStream&	m_is;
+private:
+	IStream& m_is;
 };
 
 }	// namespace detail

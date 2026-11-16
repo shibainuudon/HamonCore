@@ -125,35 +125,28 @@ private:
 		}
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> escape(hamon::basic_string<CharT> const& str)
+	template <typename String>
+	static String escape(String const& str)
 	{
-		hamon::basic_string<CharT> result;
+		String result;
+		result.append(1, '"');
 		for (auto const& c : str)
 		{
 			switch (c)
 			{
-			case '"':  result.append({'\\', '"'});  break;
-			case '\\': result.append({'\\', '\\'}); break;
-			case '/':  result.append({'\\', '/'});  break;
-			case '\b': result.append({'\\', 'b'});  break;
-			case '\f': result.append({'\\', 'f'});  break;
-			case '\n': result.append({'\\', 'n'});  break;
-			case '\r': result.append({'\\', 'r'});  break;
-			case '\t': result.append({'\\', 't'});  break;
+			case '"':  result.append({ '\\', '"' });  break;
+			case '\\': result.append({ '\\', '\\' }); break;
+			case '/':  result.append({ '\\', '/' });  break;
+			case '\b': result.append({ '\\', 'b' });  break;
+			case '\f': result.append({ '\\', 'f' });  break;
+			case '\n': result.append({ '\\', 'n' });  break;
+			case '\r': result.append({ '\\', 'r' });  break;
+			case '\t': result.append({ '\\', 't' });  break;
 			default:   result.append(1, c); break;
 			}
 		}
+		result.append(1, '"');
 		return result;
-	}
-
-	template <typename CharT>
-	static hamon::basic_string<CharT> quote(hamon::basic_string<CharT> const& str)
-	{
-		return
-			hamon::basic_string<CharT>(1, CharT('"')) +
-			str +
-			hamon::basic_string<CharT>(1, CharT('"'));
 	}
 
 private:
@@ -188,7 +181,7 @@ private:
 	template <typename T>
 	friend void save_string(json_oarchive& oa, T const& t)
 	{
-		oa.m_impl->save_string(quote(escape(t)));
+		oa.m_impl->save_string(escape(t));
 	}
 
 	template <typename T>

@@ -9,10 +9,8 @@
 
 namespace hamon
 {
-
 namespace serialization
 {
-
 namespace detail
 {
 
@@ -23,9 +21,7 @@ struct always_false
 };
 
 }	// namespace detail
-
 }	// namespace serialization
-
 }	// namespace hamon
 
 #endif // HAMON_SERIALIZATION_DETAIL_ALWAYS_FALSE_HPP

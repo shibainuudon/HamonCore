@@ -41,7 +41,7 @@ public:
 		start_tag("serialization");
 		start_object();
 	}
-	
+
 	~xml_oarchive()
 	{
 		end_object();
@@ -96,7 +96,7 @@ private:
 		m_impl->put(quote_end_tag(m_tag_name_stack.top()));
 		m_tag_name_stack.pop();
 	}
-	
+
 	void start_object(void)
 	{
 		increment_indent_level();
@@ -134,10 +134,10 @@ private:
 		return s;
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> escape(hamon::basic_string<CharT> const& str)
+	template <typename String>
+	static String escape(String const& str)
 	{
-		hamon::basic_string<CharT> result;
+		String result;
 		for (auto const& c : str)
 		{
 			switch (c)
@@ -216,7 +216,7 @@ private:
 		}
 		oa.end_object();
 	}
-	
+
 	template <typename T>
 	friend void save_vector(xml_oarchive& oa, T const& t)
 	{

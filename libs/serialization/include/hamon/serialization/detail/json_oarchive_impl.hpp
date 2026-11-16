@@ -7,27 +7,19 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_JSON_OARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_JSON_OARCHIVE_IMPL_HPP
 
-#include <hamon/algorithm/transform.hpp>
-#include <hamon/charconv/to_chars.hpp>
+#include <hamon/serialization/detail/write_float_as_string.hpp>
+#include <hamon/serialization/detail/write_string.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/ios/boolalpha.hpp>
-#include <hamon/ios/scientific.hpp>
-#include <hamon/ios/streamsize.hpp>
-#include <hamon/ostream/basic_ostream.hpp>
-#include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/is_same.hpp>
-#include <hamon/array.hpp>
+#include <hamon/ios/detail/flags_saver.hpp>
 #include <hamon/string.hpp>
-#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
-
 namespace serialization
 {
-
 namespace detail
 {
 
@@ -69,9 +61,8 @@ public:
 
 	void save(bool t) override
 	{
-		auto const old_flags = m_os.flags();
+		hamon::detail::flags_saver fs(m_os);
 		m_os << hamon::boolalpha << t;
-		m_os.flags(old_flags);
 	}
 
 	void save(hamon::intmax_t t) override
@@ -86,78 +77,47 @@ public:
 
 	void save(float t) override
 	{
-		save_float_impl(t);
+		hamon::serialization::detail::write_float_as_string(m_os, t);
 	}
 
 	void save(double t) override
 	{
-		save_float_impl(t);
+		hamon::serialization::detail::write_float_as_string(m_os, t);
 	}
 
 	void save(long double t) override
 	{
-		save_float_impl(t);
+		hamon::serialization::detail::write_float_as_string(m_os, t);
 	}
 
-private:
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2,
-		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
-	>
-	static void save_string_impl(
-		hamon::basic_ostream<CharT1, Traits1>& os,
-		hamon::basic_string<CharT2, Traits2> const& s)
-	{
-		hamon::basic_string<CharT1> tmp;
-		tmp.resize(s.size());
-		hamon::transform(s.begin(), s.end(), tmp.begin(),
-			[](CharT2 c){return static_cast<CharT1>(c);});
-		os.write(tmp.c_str(), static_cast<hamon::streamsize>(tmp.size()));
-	}
-
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2,
-		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
-	>
-	static void save_string_impl(
-		hamon::basic_ostream<CharT1, Traits1>& os,
-		hamon::basic_string<CharT2, Traits2> const& s)
-	{
-		auto const count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
-		os.write(reinterpret_cast<CharT1 const*>(s.data()), static_cast<hamon::streamsize>(count));
-	}
-
-public:
 	void save_string(hamon::string const& str) override
 	{
-		save_string_impl(m_os, str);
+		hamon::serialization::detail::write_string(m_os, str.data(), str.length());
 	}
 
 	void save_string(hamon::wstring const& str) override
 	{
-		save_string_impl(m_os, str);
+		hamon::serialization::detail::write_string(m_os, str.data(), str.length());
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 	void save_string(hamon::u8string const& str) override
 	{
-		save_string_impl(m_os, str);
+		hamon::serialization::detail::write_string(m_os, str.data(), str.length());
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
 	void save_string(hamon::u16string const& str) override
 	{
-		save_string_impl(m_os, str);
+		hamon::serialization::detail::write_string(m_os, str.data(), str.length());
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 	void save_string(hamon::u32string const& str) override
 	{
-		save_string_impl(m_os, str);
+		hamon::serialization::detail::write_string(m_os, str.data(), str.length());
 	}
 #endif
 
@@ -167,29 +127,14 @@ public:
 	}
 
 private:
-	template <typename T>
-	void save_float_impl(T t)
-	{
-		auto constexpr digits =
-			4 +	// sign, decimal point, "e+" or "e-"
-			hamon::numeric_limits<T>::max_digits10 +
-			4;	// log10(max_exponent10)
-		hamon::array<char, digits + 1> buf{};
-		auto result = hamon::to_chars(buf.data(), buf.data() + buf.size(), t);
-		m_os << buf.data();
-		(void)result;
-	}
-
-private:
 	json_oarchive_impl& operator=(json_oarchive_impl const&) = delete;
 
-	OStream&	m_os;
+private:
+	OStream& m_os;
 };
 
 }	// namespace detail
-
 }	// namespace serialization
-
 }	// namespace hamon
 
 #endif // HAMON_SERIALIZATION_DETAIL_JSON_OARCHIVE_IMPL_HPP

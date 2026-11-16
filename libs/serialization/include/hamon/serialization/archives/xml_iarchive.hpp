@@ -70,11 +70,11 @@ private:
 		return m_impl->read_tag();
 	}
 
-	template <typename CharT>
-	static hamon::basic_string<CharT> unescape(hamon::basic_string<CharT> const& str)
+	template <typename OutputString, typename InputString>
+	static OutputString unescape(InputString const& str)
 	{
 		bool escaping = false;
-		hamon::basic_string<CharT> result;
+		OutputString result;
 		for (hamon::size_t i = 0; i < str.size(); ++i)
 		{
 			auto c = str[i];
@@ -82,21 +82,21 @@ private:
 			{
 				switch (c)
 				{
-				case 'q': c = '"'; i+=4; break;
+				case 'q': c = '"'; i += 4; break;
 				case 'a':
 					if (str[i+1] == 'p')
 					{
 						c = '\'';
-						i+=4;
+						i += 4;
 					}
 					else
 					{
 						c = '&';
-						i+=3;
+						i += 3;
 					}
 					break;
-				case 'l': c = '<'; i+=2; break;
-				case 'g': c = '>'; i+=2; break;
+				case 'l': c = '<'; i += 2; break;
+				case 'g': c = '>'; i += 2; break;
 				}
 				escaping = false;
 			}
@@ -149,10 +149,12 @@ private:
 	template <typename T>
 	friend void load_string(xml_iarchive& ia, T& t)
 	{
-		T tmp;
+		using char_type = typename T::value_type;
+
+		hamon::basic_string<char_type> tmp;
 		ia.m_impl->load_string_until(tmp, '<');	// 次のタグ開始まで読む
 		ia.m_impl->unget_one_char();			// 1文字戻す
-		t = unescape(tmp);
+		t = unescape<T>(tmp);
 	}
 
 	//template <typename T>

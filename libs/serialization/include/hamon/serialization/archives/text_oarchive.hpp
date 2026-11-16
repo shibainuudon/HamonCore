@@ -75,7 +75,7 @@ private:
 	friend void save_string(text_oarchive& oa, T const& t)
 	{
 		oa << t.length();
-		oa.m_impl->save_string(t);
+		oa.m_impl->save_string(t.data(), t.length());
 	}
 
 private:
