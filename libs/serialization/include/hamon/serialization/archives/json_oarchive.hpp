@@ -8,7 +8,7 @@
 #define HAMON_SERIALIZATION_ARCHIVES_JSON_OARCHIVE_HPP
 
 #include <hamon/serialization/detail/archive_base.hpp>
-#include <hamon/serialization/detail/text_oarchive_impl.hpp>
+#include <hamon/serialization/detail/json_oarchive_impl.hpp>
 #include <hamon/serialization/detail/save_value.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/nvp.hpp>
@@ -35,11 +35,11 @@ class json_oarchive : public detail::archive_base
 public:
 	template <typename OStream>
 	explicit json_oarchive(OStream& os)
-		: m_impl(new detail::text_oarchive_impl<OStream>(os))
+		: m_impl(new detail::json_oarchive_impl<OStream>(os))
 	{
 		start_object();
 	}
-	
+
 	~json_oarchive()
 	{
 		end_object();
@@ -54,7 +54,7 @@ public:
 		}
 		m_first_value = false;
 
-		m_impl->put(get_indent_string());
+		put_indent_string();
 		hamon::serialization::detail::save_value(*this, t.name());
 		m_impl->put(": ");
 		hamon::serialization::detail::save_value(*this, t.value());
@@ -98,7 +98,7 @@ private:
 	{
 		m_impl->put("\n");
 		decrement_indent_level();
-		m_impl->put(get_indent_string());
+		put_indent_string();
 		m_impl->put("}");
 	}
 
@@ -117,14 +117,12 @@ private:
 		return m_value_index_stack.size();
 	}
 
-	hamon::string get_indent_string(void) const
+	void put_indent_string(void) const
 	{
-		hamon::string s;
 		for (hamon::size_t i = 0; i < get_indent_level(); ++i)
 		{
-			s += m_indent_string_element;
+			m_impl->put(m_indent_string_element.c_str());
 		}
-		return s;
 	}
 
 	template <typename CharT>
@@ -205,13 +203,13 @@ private:
 			{
 				oa.m_impl->put(",\n");
 			}
-			oa.m_impl->put(oa.get_indent_string());
+			oa.put_indent_string();
 			hamon::serialization::detail::save_value(oa, x);
 			++i;
 		}
 		oa.m_impl->put("\n");
 		oa.decrement_indent_level();
-		oa.m_impl->put(oa.get_indent_string());
+		oa.put_indent_string();
 		oa.m_impl->put("]");
 	}
 
@@ -232,7 +230,7 @@ private:
 	}
 
 private:
-	hamon::unique_ptr<detail::text_oarchive_impl_base> m_impl;
+	hamon::unique_ptr<detail::json_oarchive_impl_base> m_impl;
 	hamon::string     m_indent_string_element = "    ";
 	hamon::stack<int> m_value_index_stack;
 	bool              m_first_value = true;

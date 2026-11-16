@@ -36,7 +36,6 @@ class text_oarchive_impl_base
 public:
 	virtual ~text_oarchive_impl_base() {}
 
-	virtual void save(bool) = 0;
 	virtual void save(hamon::intmax_t) = 0;
 	virtual void save(hamon::uintmax_t) = 0;
 	virtual void save(float) = 0;
@@ -56,7 +55,6 @@ public:
 #endif
 
 	virtual void put(const char*) = 0;
-	virtual void put(hamon::string const&) = 0;
 };
 
 template <typename OStream>
@@ -68,13 +66,6 @@ public:
 		: m_os(os)
 	{}
 
-	void save(bool t) override
-	{
-		auto const old_flags = m_os.flags();
-		m_os << hamon::boolalpha << t;
-		m_os.flags(old_flags);
-	}
-
 	void save(hamon::intmax_t t) override
 	{
 		m_os << t;
@@ -84,7 +75,7 @@ public:
 	{
 		m_os << t;
 	}
-	
+
 	void save(float t) override
 	{
 		save_float_impl(t);
@@ -161,15 +152,10 @@ public:
 		save_string_impl(m_os, str);
 	}
 #endif
-	
+
 	void put(const char* s) override
 	{
 		m_os << s;
-	}
-	
-	void put(hamon::string const& s) override
-	{
-		m_os << s.c_str();
 	}
 
 private:

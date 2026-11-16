@@ -8,7 +8,7 @@
 #define HAMON_SERIALIZATION_ARCHIVES_JSON_IARCHIVE_HPP
 
 #include <hamon/serialization/detail/archive_base.hpp>
-#include <hamon/serialization/detail/text_iarchive_impl.hpp>
+#include <hamon/serialization/detail/json_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
@@ -32,7 +32,7 @@ class json_iarchive : public detail::archive_base
 public:
 	template <typename IStream>
 	explicit json_iarchive(IStream& is)
-		: m_impl(new detail::text_iarchive_impl<IStream>(is))
+		: m_impl(new detail::json_iarchive_impl<IStream>(is))
 	{
 		start_object();
 	}
@@ -211,7 +211,7 @@ private:
 	}
 
 private:
-	hamon::unique_ptr<detail::text_iarchive_impl_base>	m_impl;
+	hamon::unique_ptr<detail::json_iarchive_impl_base>	m_impl;
 	bool	m_first_value = true;
 };
 

@@ -35,10 +35,6 @@ class text_iarchive_impl_base
 public:
 	virtual ~text_iarchive_impl_base() {}
 
-	virtual std::streampos tellg(void) = 0;
-	virtual void seekg(std::streampos pos) = 0;
-
-	virtual void load(bool&) = 0;
 	virtual void load(hamon::intmax_t&) = 0;
 	virtual void load(hamon::uintmax_t&) = 0;
 	virtual void load(float&) = 0;
@@ -56,38 +52,6 @@ public:
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 	virtual void load_string(hamon::u32string&, hamon::size_t length) = 0;
 #endif
-
-public:
-	template <typename CharT, typename Traits>
-	void load_quoted_string(
-		hamon::basic_string<CharT, Traits>& s,
-		CharT leading_delim  = CharT('"'),
-		CharT trailing_delim = CharT('"'))
-	{
-		vload_quoted_string(s, leading_delim, trailing_delim);
-	}
-
-private:
-	virtual void vload_quoted_string(
-		hamon::string&, char, char) = 0;
-	virtual void vload_quoted_string(
-		hamon::wstring&, wchar_t, wchar_t) = 0;
-#if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void vload_quoted_string(
-		hamon::u8string&, char8_t, char8_t) = 0;
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void vload_quoted_string(
-		hamon::u16string&, char16_t, char16_t) = 0;
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void vload_quoted_string(
-		hamon::u32string&, char32_t, char32_t) = 0;
-#endif
-
-public:
-	virtual char get_one_char() = 0;
-	virtual void unget_one_char() = 0;
 };
 
 template <typename IStream>
@@ -99,23 +63,6 @@ public:
 		: m_is(is)
 	{}
 	
-	std::streampos tellg(void) override
-	{
-		return m_is.tellg();
-	}
-
-	void seekg(std::streampos pos) override
-	{
-		m_is.seekg(pos);
-	}
-
-	void load(bool& t) override
-	{
-		auto const old_flags = m_is.flags();
-		m_is >> hamon::boolalpha >> t;
-		m_is.flags(old_flags);
-	}
-
 	void load(hamon::intmax_t& t) override
 	{
 		m_is >> t;
@@ -125,7 +72,7 @@ public:
 	{
 		m_is >> t;
 	}
-	
+
 	void load(float& t) override
 	{
 		load_float(t);
@@ -140,7 +87,7 @@ public:
 	{
 		load_float(t);
 	}
-	
+
 private:
 	template <
 		typename CharT1, typename Traits1,
@@ -195,97 +142,6 @@ private:
 		}
 	}
 
-private:
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
-	>
-	static void load_quoted_string_impl(
-		hamon::basic_istream<CharT1, Traits1>& is,
-		hamon::basic_string<CharT2, Traits2>& s,
-		CharT2 leading_delim,
-		CharT2 trailing_delim)
-	{
-#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-		is >> hamon::quoted(s);
-#else
-		using String = hamon::basic_string<CharT2, Traits2>;
-		auto const leading_delim_str  = String(1, leading_delim);
-		auto const trailing_delim_str = String(1, trailing_delim);
-		auto const escape = String(1, '\\');
-
-		String tmp;
-		load_string_impl(is, tmp, 1, true);
-
-		if (tmp != leading_delim_str)
-		{
-			return;
-		}
-
-		for (;;)
-		{
-			load_string_impl(is, tmp, 1, false);
-			if (tmp == trailing_delim_str)
-			{
-				break;
-			}
-
-			s += tmp;
-
-			if (tmp == escape)
-			{
-				load_string_impl(is, tmp, 1, false);
-				s += tmp;
-			}
-		}
-#endif
-	}
-
-public:
-	void vload_quoted_string(
-		hamon::string& t,
-		char leading_delim,
-		char trailing_delim) override
-	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
-	}
-
-	void vload_quoted_string(
-		hamon::wstring& t,
-		wchar_t leading_delim,
-		wchar_t trailing_delim) override
-	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
-	}
-
-#if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void vload_quoted_string(
-		hamon::u8string& t,
-		char8_t leading_delim,
-		char8_t trailing_delim) override
-	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
-	}
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void vload_quoted_string(
-		hamon::u16string& t,
-		char16_t leading_delim,
-		char16_t trailing_delim) override
-	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
-	}
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void vload_quoted_string(
-		hamon::u32string& t,
-		char32_t leading_delim,
-		char32_t trailing_delim) override
-	{
-		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
-	}
-#endif
-
 public:
 	void load_string(hamon::string& str, hamon::size_t length) override
 	{
@@ -318,26 +174,6 @@ public:
 	}
 #endif
 
-public:
-	char get_one_char() override
-	{
-		return static_cast<char>(get_one_char_impl(m_is));
-	}
-
-private:
-	template <typename CharT1, typename Traits1>
-	static void unget_one_char_impl(
-		hamon::basic_istream<CharT1, Traits1>& is)
-	{
-		is.rdbuf()->sungetc();
-	}
-
-public:
-	void unget_one_char() override
-	{
-		unget_one_char_impl(m_is);
-	}
-
 private:
 	template <typename T>
 	void load_float(T& t)
@@ -358,19 +194,6 @@ private:
 		auto last  = s.data() + s.length();
 		auto result = hamon::from_chars(first, last, t);
 		m_is.seekg(result.ptr - last, hamon::ios_base::cur);	// 変換できなかったぶん戻す
-	}
-
-	template <typename CharT, typename Traits>
-	static CharT get_one_char_impl(
-		hamon::basic_istream<CharT, Traits>& is)
-	{
-		const typename hamon::basic_istream<CharT, Traits>::sentry ok(is);
-		if (ok)
-		{
-			auto const rdbuf = is.rdbuf();
-			return static_cast<CharT>(rdbuf->sbumpc());
-		}
-		return 0;
 	}
 
 private:
