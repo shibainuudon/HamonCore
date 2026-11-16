@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_serialization_weak_ptr_polymorphic_version.cpp
  *
- *	@brief	std::weak_ptr のシリアライズ(バージョンあり)のテスト
+ *	@brief	hamon::weak_ptr のシリアライズ(バージョンあり)のテスト
  */
 
 #include <hamon/serialization/types/weak_ptr.hpp>
@@ -11,12 +11,17 @@
 #include <hamon/serialization/register_polymorphic_class.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
+#include <hamon/memory/shared_ptr.hpp>
+#include <hamon/memory/weak_ptr.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <memory>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -96,20 +101,23 @@ int Derived::instance_count = 0;
 
 HAMON_SERIALIZATION_REGISTER_POLYMORPHIC_CLASS(Derived)
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class WeakPtr,
+	template <typename...> class SharedPtr
+>
 void WeakPtrPolymorphicVersionTest()
 {
 	EXPECT_EQ(0, Base::instance_count);
 	EXPECT_EQ(0, Derived::instance_count);
 
 	{
-		std::weak_ptr<Base>      p0;
-		std::shared_ptr<Base>    p1(new Base());
-		std::shared_ptr<Base>    p2(new Derived());
-		std::shared_ptr<Derived> p3(new Derived());
-		std::weak_ptr<Base>      p4(p2);
-		std::weak_ptr<Base>      p5(p3);
-		std::weak_ptr<Derived>   p6(p3);
+		WeakPtr<Base>      p0;
+		SharedPtr<Base>    p1(new Base());
+		SharedPtr<Base>    p2(new Derived());
+		SharedPtr<Derived> p3(new Derived());
+		WeakPtr<Base>      p4(p2);
+		WeakPtr<Base>      p5(p3);
+		WeakPtr<Derived>   p6(p3);
 
 		EXPECT_EQ(3, Base::instance_count);
 		EXPECT_EQ(2, Derived::instance_count);
@@ -133,13 +141,13 @@ void WeakPtrPolymorphicVersionTest()
 		EXPECT_EQ(2, Derived::instance_count);
 
 		{
-			std::weak_ptr<Base>      a;
-			std::shared_ptr<Base>    b;
-			std::shared_ptr<Base>    c;
-			std::shared_ptr<Derived> d;
-			std::weak_ptr<Base>      e;
-			std::weak_ptr<Base>      f;
-			std::weak_ptr<Derived>   g;
+			WeakPtr<Base>      a;
+			SharedPtr<Base>    b;
+			SharedPtr<Base>    c;
+			SharedPtr<Derived> d;
+			WeakPtr<Base>      e;
+			WeakPtr<Base>      f;
+			WeakPtr<Derived>   g;
 
 			IArchive ia(str);
 
@@ -211,7 +219,10 @@ TYPED_TEST(SerializationWeakPtrPolymorphicVersionTest, WeakPtrPolymorphicVersion
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	WeakPtrPolymorphicVersionTest<Stream, OArchive, IArchive>();
+	WeakPtrPolymorphicVersionTest<Stream, OArchive, IArchive, hamon::weak_ptr, hamon::shared_ptr>();
+#if !defined(HAMON_NO_STD)
+	WeakPtrPolymorphicVersionTest<Stream, OArchive, IArchive, std::weak_ptr, std::shared_ptr>();
+#endif
 }
 
 }	// namespace weak_ptr_polymorphic_version_test

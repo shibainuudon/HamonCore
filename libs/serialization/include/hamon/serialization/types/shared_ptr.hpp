@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	shared_ptr.hpp
  *
- *	@brief	std::shared_ptr のシリアライズの定義
+ *	@brief	hamon::shared_ptr のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_TYPES_SHARED_PTR_HPP
@@ -11,8 +11,13 @@
 #include <hamon/serialization/detail/load_pointer.hpp>
 #include <hamon/serialization/detail/has_class_version.hpp>
 #include <hamon/serialization/nvp.hpp>
+#include <hamon/memory/shared_ptr.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
+
+#if !defined(HAMON_NO_STD)
 #include <memory>
+#endif
 
 namespace hamon
 {
@@ -20,26 +25,29 @@ namespace hamon
 namespace serialization
 {
 
-template <typename Archive, typename T>
-void save(Archive& oa, std::shared_ptr<T> const& t)
+namespace detail
 {
-	auto const has_value = bool(t);
+
+template <typename Archive, typename SharedPtr>
+void save_shared_ptr(Archive& oa, SharedPtr const& sp)
+{
+	auto const has_value = bool(sp);
 	oa << make_nvp("has_value", has_value);
 	if (has_value)
 	{
-		int index = oa.get_shared_ptr_index(t);
+		int index = oa.get_shared_ptr_index(sp);
 		oa << make_nvp("shared_index", index);
 		if (index < 0)
 		{
-			hamon::serialization::detail::save_pointer(oa, t.get());
+			hamon::serialization::detail::save_pointer(oa, sp.get());
 
-			oa.register_shared_ptr(t);
+			oa.register_shared_ptr(sp);
 		}
 	}
 }
 
-template <typename Archive, typename T>
-void load(Archive& ia, std::shared_ptr<T>& t)
+template <typename Archive, typename SharedPtr>
+void load_shared_ptr(Archive& ia, SharedPtr& sp)
 {
 	bool has_value;
 	ia >> make_nvp("has_value", has_value);
@@ -49,25 +57,68 @@ void load(Archive& ia, std::shared_ptr<T>& t)
 		ia >> make_nvp("shared_index", index);
 		if (index < 0)
 		{
-			T* tmp;
+			typename SharedPtr::element_type* tmp;
 			hamon::serialization::detail::load_pointer(ia, tmp);
-			t.reset(tmp);
+			sp.reset(tmp);
 
-			ia.register_shared_ptr(t);
+			ia.register_shared_ptr(sp);
 		}
 		else
 		{
-			t = ia.template get_shared_ptr<T>(index);
+			ia.get_shared_ptr(sp, index);
 		}
 	}
 }
 
-// shared_ptr<T[]>は、要素数がわからないのでserialize不可。
-template <typename Archive, typename T>
-void save(Archive& oa, std::shared_ptr<T[]> const& t) = delete;
+}	// namespace detail
 
 template <typename Archive, typename T>
-void load(Archive& ia, std::shared_ptr<T[]>& t) = delete;
+void save(Archive& oa, hamon::shared_ptr<T> const& sp)
+{
+	detail::save_shared_ptr(oa, sp);
+}
+
+template <typename Archive, typename T>
+void load(Archive& ia, hamon::shared_ptr<T>& sp)
+{
+	detail::load_shared_ptr(ia, sp);
+}
+
+// shared_ptr<T[]>は、要素数がわからないのでserialize不可。
+template <typename Archive, typename T>
+void save(Archive& oa, hamon::shared_ptr<T[]> const& sp) = delete;
+
+template <typename Archive, typename T>
+void load(Archive& ia, hamon::shared_ptr<T[]>& sp) = delete;
+
+namespace detail
+{
+
+template <typename T>
+struct has_class_version<hamon::shared_ptr<T>>
+	: public hamon::false_type {};
+
+}	// namespace detail
+
+#if !defined(HAMON_NO_STD)
+template <typename Archive, typename T>
+void save(Archive& oa, std::shared_ptr<T> const& sp)
+{
+	detail::save_shared_ptr(oa, sp);
+}
+
+template <typename Archive, typename T>
+void load(Archive& ia, std::shared_ptr<T>& sp)
+{
+	detail::load_shared_ptr(ia, sp);
+}
+
+// shared_ptr<T[]>は、要素数がわからないのでserialize不可。
+template <typename Archive, typename T>
+void save(Archive& oa, std::shared_ptr<T[]> const& sp) = delete;
+
+template <typename Archive, typename T>
+void load(Archive& ia, std::shared_ptr<T[]>& sp) = delete;
 
 namespace detail
 {
@@ -77,6 +128,7 @@ struct has_class_version<std::shared_ptr<T>>
 	: public hamon::false_type {};
 
 }	// namespace detail
+#endif
 
 }	// namespace serialization
 

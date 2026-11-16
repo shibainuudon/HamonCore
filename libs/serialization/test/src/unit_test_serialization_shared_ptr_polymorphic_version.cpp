@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_serialization_shared_ptr_polymorphic_version.cpp
  *
- *	@brief	std::shared_ptr のシリアライズ(バージョンあり)のテスト
+ *	@brief	hamon::shared_ptr のシリアライズ(バージョンあり)のテスト
  */
 
 #include <hamon/serialization/types/shared_ptr.hpp>
@@ -12,12 +12,16 @@
 #include <hamon/serialization/version.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
+#include <hamon/memory/shared_ptr.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <memory>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -101,20 +105,22 @@ int Derived::instance_count = 0;
 
 HAMON_SERIALIZATION_REGISTER_POLYMORPHIC_CLASS(Derived)
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class SharedPtr
+>
 void SharedPtrPolymorphicVersionTest()
 {
 	EXPECT_EQ(0, Base::instance_count);
 	EXPECT_EQ(0, Derived::instance_count);
 
 	{
-		std::shared_ptr<Base>    p0;
-		std::shared_ptr<Base>    p1(new Base());
-		std::shared_ptr<Base>    p2(new Derived());
-		std::shared_ptr<Derived> p3(new Derived());
-		std::shared_ptr<Base>    p4(p2);
-		std::shared_ptr<Base>    p5(p3);
-		std::shared_ptr<Derived> p6(p3);
+		SharedPtr<Base>    p0;
+		SharedPtr<Base>    p1(new Base());
+		SharedPtr<Base>    p2(new Derived());
+		SharedPtr<Derived> p3(new Derived());
+		SharedPtr<Base>    p4(p2);
+		SharedPtr<Base>    p5(p3);
+		SharedPtr<Derived> p6(p3);
 
 		EXPECT_EQ(3, Base::instance_count);
 		EXPECT_EQ(2, Derived::instance_count);
@@ -138,13 +144,13 @@ void SharedPtrPolymorphicVersionTest()
 		EXPECT_EQ(2, Derived::instance_count);
 
 		{
-			std::shared_ptr<Base>    a;
-			std::shared_ptr<Base>    b;
-			std::shared_ptr<Base>    c;
-			std::shared_ptr<Derived> d;
-			std::shared_ptr<Base>    e;
-			std::shared_ptr<Base>    f;
-			std::shared_ptr<Derived> g;
+			SharedPtr<Base>    a;
+			SharedPtr<Base>    b;
+			SharedPtr<Base>    c;
+			SharedPtr<Derived> d;
+			SharedPtr<Base>    e;
+			SharedPtr<Base>    f;
+			SharedPtr<Derived> g;
 
 			IArchive ia(str);
 
@@ -216,7 +222,10 @@ TYPED_TEST(SerializationSharedPtrPolymorphicVersionTest, SharedPtrPolymorphicVer
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	SharedPtrPolymorphicVersionTest<Stream, OArchive, IArchive>();
+	SharedPtrPolymorphicVersionTest<Stream, OArchive, IArchive, hamon::shared_ptr>();
+#if !defined(HAMON_NO_STD)
+	SharedPtrPolymorphicVersionTest<Stream, OArchive, IArchive, std::shared_ptr>();
+#endif
 }
 
 }	// namespace shared_ptr_polymorphic_version_test

@@ -7,14 +7,13 @@
 #include <hamon/serialization/types/unique_ptr.hpp>
 #include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/serialization/types/weak_ptr.hpp>
-#include <hamon/memory/construct_at.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -64,12 +63,12 @@ void load_construct_data(Archive& ar, Object* p)
 template <typename Stream, typename OArchive, typename IArchive>
 void NoDefaultCtorTest()
 {
-	std::unique_ptr<Object> p0;
-	std::unique_ptr<Object> p1(new Object(42));
-	std::unique_ptr<Object> p2(new Object(2, 3.5f));
-	std::shared_ptr<Object> p3(new Object(56));
-	std::shared_ptr<Object> p4(new Object(3, 4.5f));
-	std::weak_ptr<Object>   p5(p4);
+	hamon::unique_ptr<Object> p0;
+	hamon::unique_ptr<Object> p1(new Object(42));
+	hamon::unique_ptr<Object> p2(new Object(2, 3.5f));
+	hamon::shared_ptr<Object> p3(new Object(56));
+	hamon::shared_ptr<Object> p4(new Object(3, 4.5f));
+	hamon::weak_ptr<Object>   p5(p4);
 
 	Stream str;
 	{
@@ -137,12 +136,12 @@ R"({
 #endif
 
     {
-		std::unique_ptr<Object> a;
-		std::unique_ptr<Object> b;
-		std::unique_ptr<Object> c;
-		std::shared_ptr<Object> d;
-		std::shared_ptr<Object> e;
-		std::weak_ptr<Object>   f;
+		hamon::unique_ptr<Object> a;
+		hamon::unique_ptr<Object> b;
+		hamon::unique_ptr<Object> c;
+		hamon::shared_ptr<Object> d;
+		hamon::shared_ptr<Object> e;
+		hamon::weak_ptr<Object>   f;
 
 		IArchive ia(str);
 

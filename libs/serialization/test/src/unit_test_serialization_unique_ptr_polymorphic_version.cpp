@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_serialization_unique_ptr_polymorphic_version.cpp
  *
- *	@brief	std::unique_ptr のシリアライズ(バージョンあり)のテスト
+ *	@brief	hamon::unique_ptr のシリアライズ(バージョンあり)のテスト
  */
 
 #include <hamon/serialization/types/unique_ptr.hpp>
@@ -11,12 +11,16 @@
 #include <hamon/serialization/version.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
+#include <hamon/memory/unique_ptr.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <memory>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -96,16 +100,18 @@ int Derived::instance_count = 0;
 
 HAMON_SERIALIZATION_REGISTER_POLYMORPHIC_CLASS(Derived)
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class UniquePtr
+>
 void UniquePtrPolymorphicVersionTest()
 {
 	EXPECT_EQ(0, Base::instance_count);
 	EXPECT_EQ(0, Derived::instance_count);
 
 	{
-		std::unique_ptr<Base>    p1(new Base());
-		std::unique_ptr<Base>    p2(new Derived());
-		std::unique_ptr<Derived> p3(new Derived());
+		UniquePtr<Base>    p1(new Base());
+		UniquePtr<Base>    p2(new Derived());
+		UniquePtr<Derived> p3(new Derived());
 
 		EXPECT_EQ(3, Base::instance_count);
 		EXPECT_EQ(2, Derived::instance_count);
@@ -125,9 +131,9 @@ void UniquePtrPolymorphicVersionTest()
 		EXPECT_EQ(2, Derived::instance_count);
 
 		{
-			std::unique_ptr<Base>    a;
-			std::unique_ptr<Base>    b;
-			std::unique_ptr<Derived> c;
+			UniquePtr<Base>    a;
+			UniquePtr<Base>    b;
+			UniquePtr<Derived> c;
 
 			IArchive ia(str);
 
@@ -178,7 +184,10 @@ TYPED_TEST(SerializationUniquePtrPolymorphicVersionTest, UniquePtrPolymorphicVer
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	UniquePtrPolymorphicVersionTest<Stream, OArchive, IArchive>();
+	UniquePtrPolymorphicVersionTest<Stream, OArchive, IArchive, hamon::unique_ptr>();
+#if !defined(HAMON_NO_STD)
+	UniquePtrPolymorphicVersionTest<Stream, OArchive, IArchive, std::unique_ptr>();
+#endif
 }
 
 }	// namespace unique_ptr_polymorphic_version_test

@@ -1,18 +1,22 @@
 ﻿/**
  *	@file	unit_test_serialization_shared_ptr.cpp
  *
- *	@brief	std::shared_ptr のシリアライズのテスト
+ *	@brief	hamon::shared_ptr のシリアライズのテスト
  */
 
 #include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
+#include <hamon/memory/shared_ptr.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <memory>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -20,17 +24,19 @@ namespace hamon_serialization_test
 namespace shared_ptr_test
 {
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class SharedPtr
+>
 void SharedPtrTest()
 {
-	std::shared_ptr<int> p1;
-	std::shared_ptr<int> p2(new int(1));
-	std::shared_ptr<int> p3(new int(2));
-	std::shared_ptr<int> p4(p3);
-	std::shared_ptr<int> p5(new int(3));
-	std::shared_ptr<int> p6(p5);
-	std::shared_ptr<int> p7(p5);
-	std::shared_ptr<int> p8(new int(3));
+	SharedPtr<int> p1;
+	SharedPtr<int> p2(new int(1));
+	SharedPtr<int> p3(new int(2));
+	SharedPtr<int> p4(p3);
+	SharedPtr<int> p5(new int(3));
+	SharedPtr<int> p6(p5);
+	SharedPtr<int> p7(p5);
+	SharedPtr<int> p8(new int(3));
 
 	Stream str;
 	{
@@ -47,14 +53,14 @@ void SharedPtrTest()
 		oa << p8;
 	}
 	{
-		std::shared_ptr<int> a;
-		std::shared_ptr<int> b;
-		std::shared_ptr<int> c;
-		std::shared_ptr<int> d;
-		std::shared_ptr<int> e;
-		std::shared_ptr<int> f;
-		std::shared_ptr<int> g;
-		std::shared_ptr<int> h;
+		SharedPtr<int> a;
+		SharedPtr<int> b;
+		SharedPtr<int> c;
+		SharedPtr<int> d;
+		SharedPtr<int> e;
+		SharedPtr<int> f;
+		SharedPtr<int> g;
+		SharedPtr<int> h;
 
 		IArchive ia(str);
 
@@ -112,7 +118,10 @@ TYPED_TEST(SerializationSharedPtrTest, SharedPtrTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	SharedPtrTest<Stream, OArchive, IArchive>();
+	SharedPtrTest<Stream, OArchive, IArchive, hamon::shared_ptr>();
+#if !defined(HAMON_NO_STD)
+	SharedPtrTest<Stream, OArchive, IArchive, std::shared_ptr>();
+#endif
 }
 
 }	// namespace shared_ptr_test

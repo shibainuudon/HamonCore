@@ -1,18 +1,22 @@
 ﻿/**
  *	@file	unit_test_serialization_unique_ptr.cpp
  *
- *	@brief	std::unique_ptr のシリアライズのテスト
+ *	@brief	hamon::unique_ptr のシリアライズのテスト
  */
 
 #include <hamon/serialization/types/unique_ptr.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/sstream/wstringstream.hpp>
+#include <hamon/memory/unique_ptr.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
+
+#if !defined(HAMON_NO_STD)
+#include <memory>
+#endif
 
 namespace hamon_serialization_test
 {
@@ -46,12 +50,14 @@ private:
 	}
 };
 
-template <typename Stream, typename OArchive, typename IArchive>
+template <typename Stream, typename OArchive, typename IArchive,
+	template <typename...> class UniquePtr
+>
 void UniquePtrTest()
 {
-	std::unique_ptr<int> p1;
-	std::unique_ptr<int> p2(new int(42));
-	std::unique_ptr<Object> p3(new Object());
+	UniquePtr<int> p1;
+	UniquePtr<int> p2(new int(42));
+	UniquePtr<Object> p3(new Object());
 
 	Stream str;
 	{
@@ -63,9 +69,9 @@ void UniquePtrTest()
 		oa << p3;
 	}
 	{
-		std::unique_ptr<int> a;
-		std::unique_ptr<int> b;
-		std::unique_ptr<Object> c;
+		UniquePtr<int> a;
+		UniquePtr<int> b;
+		UniquePtr<Object> c;
 
 		IArchive ia(str);
 
@@ -105,7 +111,10 @@ TYPED_TEST(SerializationUniquePtrTest, UniquePtrTest)
 	using OArchive = typename hamon::tuple_element<1, TypeParam>::type;
 	using IArchive = typename hamon::tuple_element<2, TypeParam>::type;
 
-	UniquePtrTest<Stream, OArchive, IArchive>();
+	UniquePtrTest<Stream, OArchive, IArchive, hamon::unique_ptr>();
+#if !defined(HAMON_NO_STD)
+	UniquePtrTest<Stream, OArchive, IArchive, std::unique_ptr>();
+#endif
 }
 
 }	// namespace unique_ptr_test
