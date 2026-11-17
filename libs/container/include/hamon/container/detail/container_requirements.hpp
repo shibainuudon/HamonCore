@@ -7,6 +7,7 @@
 #ifndef HAMON_CONTAINER_DETAIL_CONTAINER_REQUIREMENTS_HPP
 #define HAMON_CONTAINER_DETAIL_CONTAINER_REQUIREMENTS_HPP
 
+#include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/detail/cpp17_forward_iterator.hpp>
@@ -120,7 +121,7 @@ void container_requirements()
 	{
 		//X a{};
 		//a.~X();
-		// 上記だと実行時エラーに場合がある
+		// 上記だと実行時エラーになる場合がある
 
 		HAMON_STATIC_ASSERT(hamon::is_destructible<X>::value);
 	}
@@ -143,12 +144,12 @@ void container_requirements()
 		{
 			auto i = b.begin();
 			auto j = b.end();
-			HAMON_STATIC_ASSERT(hamon::is_same<hamon::strong_ordering, decltype(i <=> j)>::value);
+			HAMON_STATIC_ASSERT(hamon::is_same<hamon::strong_ordering, hamon::common_comparison_category_t<decltype(i <=> j)>>::value);
 		}
 		{
 			auto i = b.cbegin();
 			auto j = b.cend();
-			HAMON_STATIC_ASSERT(hamon::is_same<hamon::strong_ordering, decltype(i <=> j)>::value);
+			HAMON_STATIC_ASSERT(hamon::is_same<hamon::strong_ordering, hamon::common_comparison_category_t<decltype(i <=> j)>>::value);
 		}
 	}
 #endif

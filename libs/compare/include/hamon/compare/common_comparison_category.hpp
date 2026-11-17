@@ -8,21 +8,6 @@
 #define HAMON_COMPARE_COMMON_COMPARISON_CATEGORY_HPP
 
 #include <hamon/compare/config.hpp>
-
-#if defined(HAMON_USE_STD_COMPARE)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::common_comparison_category;
-using std::common_comparison_category_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/weak_ordering.hpp>
 #include <hamon/compare/strong_ordering.hpp>
@@ -100,6 +85,27 @@ struct common_comparison_category<hamon::strong_ordering>
 	using type = hamon::strong_ordering;
 };
 
+#if defined(HAMON_HAS_STD_COMPARE) && defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+// * extension *
+template <>
+struct common_comparison_category<std::partial_ordering>
+{
+	using type = hamon::partial_ordering;
+};
+
+template <>
+struct common_comparison_category<std::weak_ordering>
+{
+	using type = hamon::weak_ordering;
+};
+
+template <>
+struct common_comparison_category<std::strong_ordering>
+{
+	using type = hamon::strong_ordering;
+};
+#endif
+
 template <>
 struct common_comparison_category<>
 {
@@ -110,9 +116,6 @@ template <typename... Ts>
 using common_comparison_category_t =
 	typename common_comparison_category<Ts...>::type;
 
-
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_COMPARE_COMMON_COMPARISON_CATEGORY_HPP

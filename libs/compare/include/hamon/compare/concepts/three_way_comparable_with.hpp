@@ -11,19 +11,6 @@
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-#if defined(HAMON_USE_STD_COMPARE) && defined(HAMON_HAS_CXX20_CONCEPTS)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::three_way_comparable_with;
-
-}	// namespace hamon
-
-#else	// defined(HAMON_USE_STD_COMPARE)
-
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/compare/detail/compares_as.hpp>
@@ -109,8 +96,6 @@ HAMON_CONCEPT_OR_BOOL three_way_comparable_with =
 #endif	// defined(HAMON_HAS_CXX20_CONCEPTS)
 
 }	// namespace hamon
-
-#endif	// defined(HAMON_USE_STD_COMPARE)
 
 #endif	// defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 

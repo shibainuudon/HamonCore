@@ -11,19 +11,6 @@
 
 #if defined(HAMON_HAS_STD_COMPARE) && defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-#if defined(HAMON_USE_STD_COMPARE)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::compare_three_way;
-
-}	// namespace hamon
-
-#else	// defined(HAMON_USE_STD_COMPARE)
-
 #include <hamon/compare/detail/builtin_ptr_three_way.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/cstdint/uintptr_t.hpp>
@@ -65,8 +52,6 @@ struct compare_three_way
 };
 
 }	// namespace hamon
-
-#endif	// defined(HAMON_USE_STD_COMPARE)
 
 #endif	// defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 

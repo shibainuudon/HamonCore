@@ -8,20 +8,6 @@
 #define HAMON_COMPARE_WEAK_ORDERING_HPP
 
 #include <hamon/compare/config.hpp>
-
-#if defined(HAMON_USE_STD_COMPARE)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::weak_ordering;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/detail/cmp_cat.hpp>
 #include <hamon/config.hpp>
@@ -198,7 +184,5 @@ template <typename T> weak_ordering_t<T> const weak_ordering_t<T>::greater(cmp_c
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_COMPARE_WEAK_ORDERING_HPP

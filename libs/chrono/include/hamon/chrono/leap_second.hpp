@@ -58,7 +58,7 @@ private:
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	template <typename Duration>
 	requires hamon::three_way_comparable_with<sys_seconds, sys_time<Duration>>
-	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto
+	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR hamon::strong_ordering
 	operator<=>(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
 	{
 		// [time.zone.leap.nonmembers]/12

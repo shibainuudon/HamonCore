@@ -15,12 +15,6 @@
 
 #define HAMON_HAS_STD_COMPARE
 
-#if defined(__cpp_lib_three_way_comparison) && (__cpp_lib_three_way_comparison >= 201907L)
-
-#define HAMON_USE_STD_COMPARE
-
-#endif
-
 #endif
 
 // Visual Studio 2017 はinline変数に対応しているのに変数の多重定義でリンクエラーになる

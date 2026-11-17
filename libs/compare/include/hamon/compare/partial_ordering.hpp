@@ -8,20 +8,6 @@
 #define HAMON_COMPARE_PARTIAL_ORDERING_HPP
 
 #include <hamon/compare/config.hpp>
-
-#if defined(HAMON_USE_STD_COMPARE)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::partial_ordering;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/detail/cmp_cat.hpp>
 #include <hamon/config.hpp>
 
@@ -212,7 +198,5 @@ template <typename T> partial_ordering_t<T> const partial_ordering_t<T>::unorder
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_COMPARE_PARTIAL_ORDERING_HPP

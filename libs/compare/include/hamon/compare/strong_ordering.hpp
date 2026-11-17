@@ -8,20 +8,6 @@
 #define HAMON_COMPARE_STRONG_ORDERING_HPP
 
 #include <hamon/compare/config.hpp>
-
-#if defined(HAMON_USE_STD_COMPARE)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::strong_ordering;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/weak_ordering.hpp>
 #include <hamon/compare/detail/cmp_cat.hpp>
@@ -202,7 +188,5 @@ template <typename T> strong_ordering_t<T> const strong_ordering_t<T>::greater(c
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_COMPARE_STRONG_ORDERING_HPP

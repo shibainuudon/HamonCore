@@ -11,20 +11,6 @@
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-#if defined(HAMON_USE_STD_COMPARE)
-
-#include <compare>
-
-namespace hamon
-{
-
-using std::compare_three_way_result;
-using std::compare_three_way_result_t;
-
-}	// namespace hamon
-
-#else	// defined(HAMON_USE_STD_COMPARE)
-
 #include <hamon/compare/detail/compare_three_way_result_impl.hpp>
 #include <hamon/config.hpp>
 
@@ -41,8 +27,6 @@ using compare_three_way_result_t =
 	typename detail::compare_three_way_result_impl<T, U>::type;
 
 }	// namespace hamon
-
-#endif	// defined(HAMON_USE_STD_COMPARE)
 
 #endif	// defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
