@@ -9,6 +9,7 @@
 
 #include <hamon/atomic/detail/wait_on_address_native.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/new/hardware_destructive_interference_size.hpp>
 #include <hamon/config.hpp>
 
@@ -35,7 +36,7 @@ inline atomic_wait_state* get_atomic_wait_state(void const* ptr)
 {
 	constexpr hamon::size_t table_size = 1 << 8;
 	static atomic_wait_state tbl[table_size] {};
-	auto hasher = std::hash<void const*>{};
+	auto hasher = hamon::hash<void const*>{};
 	return &tbl[hasher(ptr) & (table_size - 1)];
 }
 
