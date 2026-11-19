@@ -7,15 +7,34 @@
 #ifndef HAMON_MEMORY_USES_ALLOCATOR_HPP
 #define HAMON_MEMORY_USES_ALLOCATOR_HPP
 
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/type_traits/void_t.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 namespace hamon
 {
 
+namespace detail
+{
+
+template <typename T, typename Alloc, typename = void>
+struct has_allocator_type
+	: public hamon::false_type
+{};
+
+template <typename T, typename Alloc>
+struct has_allocator_type<T, Alloc, hamon::void_t<typename T::allocator_type>>
+    : public hamon::is_convertible<Alloc, typename T::allocator_type>
+{};
+
+}	// namespace detail
+
 // [allocator.uses], uses_allocator
 template <typename T, typename Alloc>
-struct uses_allocator : public std::uses_allocator<T, Alloc> {};	// TODO std::uses_allocator を使わないようにする？
+struct uses_allocator
+	: public hamon::detail::has_allocator_type<T, Alloc>
+{};
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

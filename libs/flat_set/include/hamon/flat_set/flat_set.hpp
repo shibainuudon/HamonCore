@@ -1332,20 +1332,12 @@ erase_if(flat_set<Key, Compare, KeyContainer>& c, Predicate pred)
 
 HAMON_WARNING_POP()
 
-}	// namespace hamon
-
-#include <memory>
-#include <type_traits>
-
-namespace std
-{
-
+// uses_allocator の特殊化
 template <typename Key, typename Compare, typename KeyContainer, typename Allocator>
 struct uses_allocator<hamon::flat_set<Key, Compare, KeyContainer>, Allocator>
-	: public std::integral_constant<bool,
-		std::uses_allocator<KeyContainer, Allocator>::value>
+	: public hamon::uses_allocator<KeyContainer, Allocator>
 {};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif // HAMON_FLAT_SET_FLAT_SET_HPP

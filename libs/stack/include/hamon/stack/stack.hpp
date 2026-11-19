@@ -394,15 +394,12 @@ struct formatter<stack<T, Container>, charT>;
 
 #endif
 
-}	// namespace hamon
-
-namespace std
-{
-
+// uses_allocator の特殊化
 template <typename T, typename Container, typename Alloc>
 struct uses_allocator<hamon::stack<T, Container>, Alloc>
-	: uses_allocator<Container, Alloc>::type {};
+	: public hamon::uses_allocator<Container, Alloc>
+{};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif // HAMON_STACK_STACK_HPP

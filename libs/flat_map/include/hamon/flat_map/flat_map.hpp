@@ -59,6 +59,7 @@
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
@@ -1889,21 +1890,15 @@ erase_if(flat_map<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate 
 
 HAMON_WARNING_POP()
 
-}	// namespace hamon
-
-#include <memory>
-#include <type_traits>
-
-namespace std
-{
-
+// uses_allocator の特殊化
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Allocator>
 struct uses_allocator<hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>, Allocator>
-	: public std::integral_constant<bool,
-		std::uses_allocator<KeyContainer, Allocator>::value &&
-		std::uses_allocator<MappedContainer, Allocator>::value>
+	: public hamon::bool_constant<
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::uses_allocator_v<MappedContainer, Allocator>
+	>
 {};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif // HAMON_FLAT_MAP_FLAT_MAP_HPP

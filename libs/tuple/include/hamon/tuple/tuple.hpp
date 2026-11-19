@@ -1569,16 +1569,17 @@ struct is_specialization_of_tuple<hamon::tuple<Types...>>
 // common_type の特殊化
 #include <hamon/tuple/detail/common_type.hpp>
 
-// uses_allocator の特殊化
-#include <memory>
-
-namespace std
+namespace hamon
 {
+
+// uses_allocator の特殊化
 
 // Tuple traits	[tuple.traits]
 template <typename... Types, typename Alloc>
-struct uses_allocator<hamon::tuple<Types...>, Alloc> : std::true_type {};
+struct uses_allocator<hamon::tuple<Types...>, Alloc>
+	: public hamon::true_type
+{};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif // HAMON_TUPLE_TUPLE_HPP

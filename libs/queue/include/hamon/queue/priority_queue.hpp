@@ -491,15 +491,12 @@ struct formatter<priority_queue<T, Container, Compare>, charT>;
 
 #endif
 
-}	// namespace hamon
-
-namespace std
-{
-
+// uses_allocator の特殊化
 template <typename T, typename Container, typename Compare, typename Alloc>
 struct uses_allocator<hamon::priority_queue<T, Container, Compare>, Alloc>
-	: uses_allocator<Container, Alloc>::type {};
+	: public hamon::uses_allocator<Container, Alloc>
+{};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif // HAMON_QUEUE_PRIORITY_QUEUE_HPP
