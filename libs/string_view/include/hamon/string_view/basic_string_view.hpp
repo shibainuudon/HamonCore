@@ -60,6 +60,9 @@ class basic_string_view;
 namespace detail
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4864)	// 依存テンプレート名の前に 'template' キーワードが必要です
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename CharT, typename Traits>
@@ -82,6 +85,8 @@ template <typename T, typename CharT, typename Traits>
 HAMON_CONCEPT_OR_BOOL has_operator_string_view = has_operator_string_view_impl<T, CharT, Traits>::value;
 
 #endif
+
+HAMON_WARNING_POP()
 
 }	// namespace detail
 
