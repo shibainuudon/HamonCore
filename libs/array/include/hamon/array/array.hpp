@@ -426,4 +426,22 @@ struct tuple_element<I, hamon::array<T, N>>
 
 }	// namespace std
 
+#include <hamon/array/detail/hash_impl.hpp>
+#include <hamon/type_traits/remove_const.hpp>
+#include <hamon/functional/hash_fwd.hpp>
+
+namespace hamon
+{
+
+// * extension *
+// hash の特殊化
+template <typename T, hamon::size_t N>
+struct hash<hamon::array<T, N>>
+	: public hamon::array_detail::hash_impl<T, N, hamon::remove_const_t<T>>
+{};
+
+}	// namespace hamon
+
+#include <hamon/functional/hash.hpp>
+
 #endif // HAMON_ARRAY_ARRAY_HPP

@@ -7,6 +7,7 @@
 #ifndef HAMON_FUNCTIONAL_HASH_HPP
 #define HAMON_FUNCTIONAL_HASH_HPP
 
+#include <hamon/functional/hash_fwd.hpp>
 #include <hamon/functional/detail/disabled_hash.hpp>
 #include <hamon/functional/hash_combine.hpp>
 #include <hamon/array.hpp>
@@ -30,9 +31,6 @@ namespace hamon
 {
 
 // 22.10.19 Class template hash[unord.hash]
-
-template <typename T>
-struct hash;
 
 namespace detail
 {
