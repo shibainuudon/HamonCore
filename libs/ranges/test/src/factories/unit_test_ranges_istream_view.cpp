@@ -21,8 +21,9 @@
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <fstream>
-#include <iterator>
+#include <fstream>	// ifstream, ofstream, fstream
+#include <istream>	// basic_istream, wistream, iostream
+#include <iterator>	// ostream_iterator
 #include "constexpr_test.hpp"
 #include "range_test_helper.hpp"
 

@@ -18,7 +18,7 @@
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 
-#include <functional>	// std::function
+#include <functional>	// function
 
 namespace hamon_stop_callback_test
 {

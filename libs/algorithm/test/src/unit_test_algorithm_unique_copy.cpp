@@ -14,7 +14,7 @@
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
+#include <iterator>	// istream_iterator
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test

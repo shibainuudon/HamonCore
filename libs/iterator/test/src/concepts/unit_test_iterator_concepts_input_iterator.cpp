@@ -13,7 +13,7 @@
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
+//#include <iterator>	// istreambuf_iterator, ostreambuf_iterator
 #include "iterator_test.hpp"
 
 #define HAMON_INPUT_ITERATOR_TEST(B, ...)	\

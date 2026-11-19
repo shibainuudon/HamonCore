@@ -10,7 +10,7 @@
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
+#include <iterator>	// ostream_iterator
 
 namespace hamon_ranges_test
 {

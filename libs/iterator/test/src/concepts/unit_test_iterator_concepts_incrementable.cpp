@@ -8,7 +8,7 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
+#include <iterator>	// istream_iterator, ostream_iterator
 #include "iterator_test.hpp"
 
 #define HAMON_INCREMENTABLE_TEST(B, ...)	\

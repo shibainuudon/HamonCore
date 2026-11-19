@@ -7,8 +7,12 @@
 #include <hamon/array/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/tuple.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 namespace hamon_array_test
 {
@@ -38,7 +42,9 @@ void TupleSizeTest()
 GTEST_TEST(ArrayTest, TupleSizeTest)
 {
 	TupleSizeTest<hamon::array>();
+#if !defined(HAMON_NO_STD)
 	TupleSizeTest<std::array>();
+#endif
 }
 
 }	// namespace tuple_size_test

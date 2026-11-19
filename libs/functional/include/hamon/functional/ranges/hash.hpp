@@ -28,7 +28,7 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/config.hpp>
-#include <functional>	// std::hash
+#include <functional>	// hash
 
 namespace hamon
 {

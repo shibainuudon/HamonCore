@@ -17,10 +17,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
-#include <array>
-#include <string>
-#include <tuple>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "flat_set_test_helper.hpp"
 

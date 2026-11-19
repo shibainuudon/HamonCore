@@ -44,7 +44,7 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <functional>	// std::hash
+#include <functional>	// hash
 
 // 20.3.2 Shared-ownership pointers[util.sharedptr]
 

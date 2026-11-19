@@ -8,8 +8,12 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
+
+#if !defined(HAMON_NO_STD)
 #include <array>
+#endif
 
 namespace hamon_array_test
 {
@@ -42,7 +46,9 @@ void TupleElementTest()
 GTEST_TEST(ArrayTest, TupleElementTest)
 {
 	TupleElementTest<hamon::array>();
+#if !defined(HAMON_NO_STD)
 	TupleElementTest<std::array>();
+#endif
 }
 
 }	// namespace tuple_element_test

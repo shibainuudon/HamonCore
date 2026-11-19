@@ -14,7 +14,7 @@
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/map.hpp>
 #include <hamon/string.hpp>
-#include <functional>
+#include <functional>	// function
 
 namespace hamon
 {

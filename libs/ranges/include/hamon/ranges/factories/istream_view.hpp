@@ -23,7 +23,7 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <string>
+#include <string>	// char_traits
 
 namespace hamon {
 namespace ranges {

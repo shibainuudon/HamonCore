@@ -14,7 +14,7 @@
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
+#include <iterator>	// istreambuf_iterator, ostreambuf_iterator
 
 #define HAMON_SORTABLE_TEST(B, ...)	\
 	static_assert(B == hamon::sortable<__VA_ARGS__>, "")

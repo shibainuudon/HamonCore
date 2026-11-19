@@ -7,7 +7,7 @@
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/vector.hpp>
-//#include <iterator>
+//#include <iterator>	// istreambuf_iterator, ostreambuf_iterator
 
 namespace hamon_iterator_test
 {

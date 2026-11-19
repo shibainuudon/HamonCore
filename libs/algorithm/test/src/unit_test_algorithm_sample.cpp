@@ -15,7 +15,7 @@
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
+#include <iterator>	// istream_iterator
 
 namespace hamon_algorithm_test
 {

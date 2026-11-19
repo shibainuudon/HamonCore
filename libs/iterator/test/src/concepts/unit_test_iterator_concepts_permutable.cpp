@@ -14,8 +14,7 @@
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <streambuf>
-#include <iterator>
+#include <iterator>	// istreambuf_iterator, ostreambuf_iterator
 
 #define HAMON_PERMUTABLE_TEST(B, ...)	\
 	static_assert(B == hamon::permutable<__VA_ARGS__>, "")

@@ -34,8 +34,6 @@
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <gtest/gtest.h>
-#include <memory>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "unordered_multiset_test_helper.hpp"
 

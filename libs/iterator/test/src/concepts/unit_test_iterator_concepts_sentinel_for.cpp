@@ -8,7 +8,7 @@
 #include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
+#include <iterator>	// istream_iterator, ostream_iterator
 
 #define HAMON_SENTINEL_FOR_TEST(B, ...)	\
 	static_assert(B == hamon::sentinel_for<__VA_ARGS__>, "")
