@@ -7,6 +7,8 @@
 #ifndef HAMON_LOCK_GUARD_TEST_HELPER_HPP
 #define HAMON_LOCK_GUARD_TEST_HELPER_HPP
 
+#include <gtest/gtest.h>
+
 namespace hamon_lock_guard_test
 {
 

@@ -8,6 +8,7 @@
 #define HAMON_CHECKING_MUTEX_HPP
 
 #include <hamon/chrono.hpp>
+#include <gtest/gtest.h>
 
 namespace hamon_unique_lock_test
 {
