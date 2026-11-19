@@ -431,10 +431,12 @@ inline void DerivedFromVariantTest()
 		hamon::visit<void>(Doubling{}, v);
 		EXPECT_EQ(4, hamon::adl_get<int>(v));
 
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC >= 1950))	// Visual Studio 2026 で内部コンパイラエラー
 		v = "Hello";
 		EXPECT_EQ(hamon::string("Hello"), hamon::adl_get<hamon::string>(v));
 		hamon::visit<void>(Doubling{}, v);
 		EXPECT_EQ(hamon::string("HelloHello"), hamon::adl_get<hamon::string>(v));
+#endif
 	}
 }
 
