@@ -1494,7 +1494,7 @@
 #if (_MSC_FULL_VER >= 195136260)
 #endif
 
-// Visual Studio 2026 Version: 18.12.0
+// Visual Studio 2026 Version: 18.12.(0-1)
 #if (_MSC_FULL_VER >= 195237029)
 #endif
 
