@@ -9,6 +9,7 @@
 
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -35,14 +36,9 @@ HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool operator!=(monostate, monostat
 
 #endif
 
-}	// namespace hamon
+// 22.6.12 Hash support[variant.hash]
 
-#include <functional>
-
-namespace std
-{
-
-// [variant.hash] hash support
+// [variant.hash]/2
 template <>
 struct hash<hamon::monostate>
 {
@@ -53,6 +49,6 @@ struct hash<hamon::monostate>
 	}
 };
 
-}	// namespace std
+}	// namespace hamon
 
 #endif // HAMON_VARIANT_MONOSTATE_HPP
