@@ -14,6 +14,8 @@
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/hash.hpp>
+#include <hamon/functional/detail/enable_hash_helper.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
@@ -827,14 +829,19 @@ operator<<(hamon::basic_ostream<E, T>& os, unique_ptr<Y, D> const& p)
 	return os;
 }
 
-#if 0
+// 20.4.3 Smart pointer hash support[util.smartptr.hash]
 
-// 20.3.3 Smart pointer hash support[util.smartptr.hash]
-
+// [util.smartptr.hash]/1
 template <typename T, typename D>
-struct hash<unique_ptr<T, D>>;
-
-#endif
+struct hash<hamon::detail::enable_hash_helper<unique_ptr<T, D>, typename unique_ptr<T, D>::pointer>>
+{
+	HAMON_NODISCARD	HAMON_CXX14_CONSTEXPR // nodiscard as an extension
+	hamon::size_t operator()(unique_ptr<T, D> const& p) const
+	{
+		using UP = unique_ptr<T, D>;
+		return hash<typename UP::pointer>()(p.get());
+	}
+};
 
 }	// namespace hamon
 
