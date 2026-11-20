@@ -21,7 +21,7 @@
 #include <hamon/cstdint/uint32_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/cstring/strlen.hpp>
-#include <hamon/functional/ranges/hash.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/ios/ios_base.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/iterator/begin.hpp>
@@ -377,7 +377,7 @@ public:
 	HAMON_CXX11_CONSTEXPR hamon::size_t
 	hash() const HAMON_NOEXCEPT
 	{
-		return hamon::ranges::hash(m_value);
+		return hamon::hash<hamon::array<T, NWords>>{}(m_value);
 	}
 
 private:
@@ -1187,13 +1187,6 @@ operator<<(hamon::basic_ostream<CharT, Traits>& os, bitset<N> const& x)
 		 std::use_facet<std::ctype<CharT>>(os.getloc()).widen('1'));
 }
 
-}	// namespace hamon
-
-#include <functional>
-
-namespace std
-{
-
 // [bitset.hash], hash support
 template <hamon::size_t N>
 struct hash<hamon::bitset<N>>
@@ -1205,7 +1198,7 @@ struct hash<hamon::bitset<N>>
 	}
 };
 
-}	// namespace std
+}	// namespace hamon
 
 HAMON_WARNING_POP()
 

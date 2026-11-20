@@ -20,7 +20,7 @@ GTEST_TEST(BitsetTest, HashTest)
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b1.hash(), b2.hash());
 
-		using Hash = std::hash<Bitset>;
+		using Hash = hamon::hash<Bitset>;
 		Hash h;
 		EXPECT_EQ(h(b1), h(b2));
 	}
@@ -39,7 +39,7 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b3.hash(), b4.hash());
 
-		using Hash = std::hash<Bitset>;
+		using Hash = hamon::hash<Bitset>;
 		Hash h;
 		EXPECT_EQ(h(b1), h(b2));
 		EXPECT_NE(h(b1), h(b3));
@@ -63,7 +63,7 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b2.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b3.hash(), b4.hash());
 
-		using Hash = std::hash<Bitset>;
+		using Hash = hamon::hash<Bitset>;
 		Hash h;
 		EXPECT_NE(h(b1), h(b2));
 		EXPECT_EQ(h(b1), h(b3));
@@ -87,7 +87,7 @@ GTEST_TEST(BitsetTest, HashTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b2.hash(), b4.hash());
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(b3.hash(), b4.hash());
 
-		using Hash = std::hash<Bitset>;
+		using Hash = hamon::hash<Bitset>;
 		Hash h;
 		EXPECT_NE(h(b1), h(b2));
 		EXPECT_NE(h(b1), h(b3));
