@@ -7,12 +7,11 @@
 #ifndef HAMON_CSTDDEF_NULLPTR_T_HPP
 #define HAMON_CSTDDEF_NULLPTR_T_HPP
 
-#include <cstddef>
-
 namespace hamon
 {
 
-using std::nullptr_t;
+// 17.2.1 Header <cstddef> synopsis[cstddef.syn]
+using nullptr_t = decltype(nullptr);
 
 }	// namespace hamon
 
