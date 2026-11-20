@@ -426,19 +426,37 @@ struct tuple_element<I, hamon::array<T, N>>
 
 }	// namespace std
 
-#include <hamon/array/detail/hash_impl.hpp>
-#include <hamon/type_traits/remove_const.hpp>
 #include <hamon/functional/hash_fwd.hpp>
+#include <hamon/functional/hash_combine.hpp>
+#include <hamon/functional/detail/enable_hash_helper.hpp>
+#include <hamon/type_traits/remove_const.hpp>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
 
 // * extension *
 // hash の特殊化
+
 template <typename T, hamon::size_t N>
-struct hash<hamon::array<T, N>>
-	: public hamon::array_detail::hash_impl<T, N, hamon::remove_const_t<T>>
-{};
+struct hash<hamon::detail::enable_hash_helper<hamon::array<T, N>, hamon::remove_const_t<T>>>
+{
+private:
+	using U = hamon::remove_const_t<T>;
+
+public:
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
+	hamon::size_t operator()(hamon::array<T, N> const& arr) const
+	HAMON_NOEXCEPT_IF_EXPR((hamon::hash<U>{}(hamon::declval<T>())))
+	{
+		hamon::size_t result = 0;
+		for (auto& t : arr)
+		{
+			result = hamon::hash_combine(result, hamon::hash<U>{}(t));
+		}
+		return result;
+	}
+};
 
 }	// namespace hamon
 
