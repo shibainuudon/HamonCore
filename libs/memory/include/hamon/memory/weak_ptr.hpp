@@ -12,6 +12,7 @@
 #include <hamon/memory/detail/sp_compatible.hpp>
 #include <hamon/memory/detail/sp_ref_count.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/remove_extent.hpp>
@@ -238,7 +239,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	hamon::size_t owner_hash() const noexcept
 	{
-		return std::hash<void*>{}(m_ref_count);
+		return hamon::hash<void*>{}(m_ref_count);
 	}
 
 	template <typename U>

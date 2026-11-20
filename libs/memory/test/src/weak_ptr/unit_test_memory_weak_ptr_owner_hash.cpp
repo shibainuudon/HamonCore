@@ -85,7 +85,7 @@ bool test()
 
 GTEST_TEST(WeakPtrTest, OwnerHashTest)
 {
-	// std::hash が constexpr に対応していない TODO
+	// ポインタのhashはconstexprにできない
 	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test());
 }
 

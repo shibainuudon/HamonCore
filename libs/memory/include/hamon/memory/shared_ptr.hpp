@@ -24,6 +24,7 @@
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/ref.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
@@ -44,7 +45,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <functional>	// hash
 
 // 20.3.2 Shared-ownership pointers[util.sharedptr]
 
@@ -563,7 +563,7 @@ public:
 	hamon::size_t owner_hash() const noexcept
 	{
 		// [util.smartptr.shared.obs]/19
-		return std::hash<void*>{}(m_ref_count);
+		return hamon::hash<void*>{}(m_ref_count);
 	}
 
 	template <typename U>
