@@ -9,7 +9,6 @@
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
-#include <climits>	// CHAR_BIT
 
 // ptrdiff_t は符号付き整数型
 static_assert(hamon::is_integral<hamon::ptrdiff_t>::value, "");
@@ -20,4 +19,4 @@ static_assert(hamon::is_same<hamon::ptrdiff_t, decltype(hamon::declval<int*>() -
 static_assert(hamon::is_same<hamon::ptrdiff_t, decltype(hamon::declval<char*>() - hamon::declval<char*>())>::value, "");
 
 // ptrdiff_t のビット幅は17以上(C++11から)
-static_assert((sizeof(hamon::ptrdiff_t) * CHAR_BIT) >= 17, "");
+static_assert((sizeof(hamon::ptrdiff_t) * 8) >= 17, "");
