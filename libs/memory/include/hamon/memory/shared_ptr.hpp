@@ -788,11 +788,19 @@ operator<<(hamon::basic_ostream<E, T>& os, shared_ptr<Y> const& p)
 	return os;
 }
 
+// 20.4.3 Smart pointer hash support[util.smartptr.hash]
+template <typename T>
+struct hash<shared_ptr<T>>
+{
+	HAMON_NODISCARD	HAMON_CXX14_CONSTEXPR // nodiscard as an extension
+	hamon::size_t operator()(shared_ptr<T> const& p) const
+	{
+		// [util.smartptr.hash]/2
+		return hash<typename shared_ptr<T>::element_type*>()(p.get());
+	}
+};
 
-// 20.3.3 Smart pointer hash support[util.smartptr.hash]
-//template <typename T> struct hash<shared_ptr<T>>;
-
-
+// TODO
 //// [util.smartptr.atomic], atomic smart pointers
 //template <typename T> struct atomic;
 //template <typename T> struct atomic<shared_ptr<T>>;
