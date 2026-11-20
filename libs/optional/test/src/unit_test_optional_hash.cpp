@@ -20,7 +20,7 @@ namespace hash_test
 {
 
 template <typename T>
-using invoke_hash = decltype(std::hash<T>{}(hamon::declval<T const&>()));
+using invoke_hash = decltype(hamon::hash<T>{}(hamon::declval<T const&>()));
 
 struct S1 {};
 struct S2 {};
@@ -29,19 +29,14 @@ struct S2 {};
 
 }	// namespace hamon_optional_test
 
-namespace std
-{
-
 template <>
-struct hash<hamon_optional_test::hash_test::S1>
+struct hamon::hash<hamon_optional_test::hash_test::S1>
 {
-	hamon::size_t operator()(hamon_optional_test::hash_test::S1 const&) const
+	constexpr hamon::size_t operator()(hamon_optional_test::hash_test::S1 const&) const
 	{
 		return 42;
 	}
 };
-
-}	// namespace std
 
 namespace hamon_optional_test
 {
@@ -59,36 +54,46 @@ static_assert( hamon::is_detected<invoke_hash, hamon::optional<float>>::value, "
 static_assert( hamon::is_detected<invoke_hash, hamon::optional<S1>>::value, "");
 static_assert(!hamon::is_detected<invoke_hash, hamon::optional<S2>>::value, "");
 
-static_assert( hamon::is_default_constructible<std::hash<hamon::optional<S1>>>::value, "");
-static_assert( hamon::is_copy_constructible<std::hash<hamon::optional<S1>>>::value, "");
-static_assert( hamon::is_move_constructible<std::hash<hamon::optional<S1>>>::value, "");
-static_assert( hamon::is_copy_assignable<std::hash<hamon::optional<S1>>>::value, "");
-static_assert( hamon::is_move_assignable<std::hash<hamon::optional<S1>>>::value, "");
+static_assert( hamon::is_default_constructible<hamon::hash<hamon::optional<S1>>>::value, "");
+static_assert( hamon::is_copy_constructible<hamon::hash<hamon::optional<S1>>>::value, "");
+static_assert( hamon::is_move_constructible<hamon::hash<hamon::optional<S1>>>::value, "");
+static_assert( hamon::is_copy_assignable<hamon::hash<hamon::optional<S1>>>::value, "");
+static_assert( hamon::is_move_assignable<hamon::hash<hamon::optional<S1>>>::value, "");
 
-static_assert(!hamon::is_default_constructible<std::hash<hamon::optional<S2>>>::value, "");
-static_assert(!hamon::is_copy_constructible<std::hash<hamon::optional<S2>>>::value, "");
-static_assert(!hamon::is_move_constructible<std::hash<hamon::optional<S2>>>::value, "");
-static_assert(!hamon::is_copy_assignable<std::hash<hamon::optional<S2>>>::value, "");
-static_assert(!hamon::is_move_assignable<std::hash<hamon::optional<S2>>>::value, "");
+static_assert(!hamon::is_default_constructible<hamon::hash<hamon::optional<S2>>>::value, "");
+static_assert(!hamon::is_copy_constructible<hamon::hash<hamon::optional<S2>>>::value, "");
+static_assert(!hamon::is_move_constructible<hamon::hash<hamon::optional<S2>>>::value, "");
+static_assert(!hamon::is_copy_assignable<hamon::hash<hamon::optional<S2>>>::value, "");
+static_assert(!hamon::is_move_assignable<hamon::hash<hamon::optional<S2>>>::value, "");
 
-GTEST_TEST(OptionalTest, HashTest)
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	{
 		int i = 13;
 		hamon::optional<int> o(i);
-		EXPECT_EQ(std::hash<int>{}(i), std::hash<hamon::optional<int>>{}(o));
+		VERIFY(hamon::hash<hamon::optional<int>>{}(o) == hamon::hash<int>{}(i));
 	}
 	{
 		float f = 2.5f;
 		hamon::optional<float> o(f);
-		EXPECT_EQ(std::hash<float>{}(f), std::hash<hamon::optional<float>>{}(o));
+		VERIFY(hamon::hash<hamon::optional<float>>{}(o) == hamon::hash<float>{}(f));
 	}
 	{
 		S1 x;
 		hamon::optional<S1> o(x);
-		EXPECT_EQ(std::hash<S1>{}(x), std::hash<hamon::optional<S1>>{}(o));
-		EXPECT_EQ(42u, std::hash<hamon::optional<S1>>{}(o));
+		VERIFY(hamon::hash<hamon::optional<S1>>{}(o) == hamon::hash<S1>{}(x));
+		VERIFY(hamon::hash<hamon::optional<S1>>{}(o) == 42);
 	}
+	return true;
+}
+
+#undef VERIFY
+
+GTEST_TEST(OptionalTest, HashTest)
+{
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test());
 }
 
 }	// namespace hash_test
