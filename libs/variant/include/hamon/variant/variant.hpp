@@ -20,6 +20,9 @@
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/detail/enable_hash_helper.hpp>
+#include <hamon/functional/hash.hpp>
+#include <hamon/functional/hash_combine.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/ranges/not_equal_to.hpp>
 #include <hamon/functional/ranges/less.hpp>
@@ -43,6 +46,7 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/nth.hpp>
+#include <hamon/type_traits/remove_const.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/in_place_type_t.hpp>
@@ -409,20 +413,43 @@ swap(variant<Types...>& lhs, variant<Types...>& rhs)
 	lhs.swap(rhs);
 }
 
-}	// namespace hamon
+// 22.6.12 Hash support[variant.hash]
 
-#include <hamon/variant/detail/hash_impl.hpp>
-#include <functional>
-
-namespace std
+namespace variant_detail
 {
 
-// [variant.hash] hash support
-template <typename... Types>
-struct hash<hamon::variant<Types...>>
-	: public hamon::variant_detail::hash_impl<hamon::variant<Types...>>
-{};
+struct hash_visitor
+{
+	template <typename T>
+	HAMON_CXX14_CONSTEXPR
+	hamon::size_t operator()(T const& v) const
+	{
+		return hamon::hash<T>{}(v);
+	}
+};
 
-}	// namespace std
+}	// namespace variant_detail
+
+// [variant.hash]/1
+template <typename... Types>
+struct hash<hamon::detail::enable_hash_helper<hamon::variant<Types...>, hamon::remove_const_t<Types>...>>
+{
+	HAMON_NODISCARD	HAMON_CXX14_CONSTEXPR // nodiscard as an extension
+	hamon::size_t operator()(hamon::variant<Types...> const& var) const
+	{
+		if (var.valueless_by_exception())
+		{
+			return 0xaa7ac8cd;
+		}
+
+		return hamon::hash_combine(
+			variant_detail::visit_at::invoke<hamon::size_t>(
+				var.index(), variant_detail::hash_visitor{}, var),
+			hamon::hash<hamon::size_t>{}(var.index())
+		);
+	}
+};
+
+}	// namespace hamon
 
 #endif // HAMON_VARIANT_VARIANT_HPP

@@ -57,7 +57,7 @@ GTEST_TEST(VariantTest, MonostateTest)
 	}
 #endif
 
-	EXPECT_EQ(
-		std::hash<hamon::monostate>{}(m1),
-		std::hash<hamon::monostate>{}(m2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(
+		hamon::hash<hamon::monostate>{}(m1),
+		hamon::hash<hamon::monostate>{}(m2));
 }
