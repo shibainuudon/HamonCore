@@ -7,20 +7,17 @@
 #ifndef HAMON_CSTDINT_UINT8_T_HPP
 #define HAMON_CSTDINT_UINT8_T_HPP
 
-#if !defined(__STDC_CONSTANT_MACROS)
-#define __STDC_CONSTANT_MACROS
-#endif
-
-#if !defined(__STDC_LIMIT_MACROS)
-#define __STDC_LIMIT_MACROS
-#endif
-
-#include <cstdint>
+#include <hamon/cstdint/detail/exact_width_type.hpp>
 
 namespace hamon
 {
 
-using std::uint8_t;
+using uint8_t = hamon::detail::exact_width_type_t<1,
+	unsigned char,
+	unsigned short,
+	unsigned int,
+	unsigned long,
+	unsigned long long>;
 
 }	// namespace hamon
 
