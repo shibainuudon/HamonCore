@@ -8,7 +8,6 @@
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <climits>	// CHAR_BIT
 
 // size_t は符号なし整数型
 static_assert(hamon::is_integral<hamon::size_t>::value, "");
@@ -19,4 +18,4 @@ static_assert(hamon::is_same<hamon::size_t, decltype(sizeof(int))>::value, "");
 static_assert(hamon::is_same<hamon::size_t, decltype(sizeof(void*))>::value, "");
 
 // size_t のビット幅は16以上(C++11から)
-static_assert((sizeof(hamon::size_t) * CHAR_BIT) >= 16, "");
+static_assert((sizeof(hamon::size_t) * 8) >= 16, "");

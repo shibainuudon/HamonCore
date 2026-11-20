@@ -7,12 +7,12 @@
 #ifndef HAMON_CSTDDEF_SIZE_T_HPP
 #define HAMON_CSTDDEF_SIZE_T_HPP
 
-#include <cstddef>
-
 namespace hamon
 {
 
-using std::size_t;
+// [support.types.layout]/3
+// [support.types.layout]/4
+using size_t = decltype(sizeof(int));
 
 }	// namespace hamon
 
