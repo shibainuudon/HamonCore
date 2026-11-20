@@ -8,7 +8,7 @@
 #define HAMON_FUNCTIONAL_DETAIL_ENABLE_HASH_HELPER_HPP
 
 #include <hamon/concepts/detail/cpp17_hash.hpp>
-#include <hamon/functional/hash.hpp>
+#include <hamon/functional/hash_fwd.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/detail/all.hpp>
 
