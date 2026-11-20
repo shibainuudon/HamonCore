@@ -6,8 +6,8 @@
 
 #include <hamon/concepts/detail/cpp17_hash.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/config.hpp>
-#include <functional>
 
 #define HAMON_CPP17_HASH_TEST(B, ...)	\
 	static_assert(B == hamon::detail::cpp17_hash<__VA_ARGS__>, "")
@@ -42,10 +42,10 @@ struct H3
 HAMON_CPP17_HASH_TEST(false, H3, int);
 HAMON_CPP17_HASH_TEST(false, H3, int*);
 
-HAMON_CPP17_HASH_TEST(true, std::hash<bool>,  bool);
-HAMON_CPP17_HASH_TEST(true, std::hash<char>,  char);
-HAMON_CPP17_HASH_TEST(true, std::hash<int>,   int);
-HAMON_CPP17_HASH_TEST(true, std::hash<float>, float);
+HAMON_CPP17_HASH_TEST(true, hamon::hash<bool>,  bool);
+HAMON_CPP17_HASH_TEST(true, hamon::hash<char>,  char);
+HAMON_CPP17_HASH_TEST(true, hamon::hash<int>,   int);
+HAMON_CPP17_HASH_TEST(true, hamon::hash<float>, float);
 
 }	// namespace cpp17_hash_test
 
