@@ -18,8 +18,11 @@
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/invocable.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/detail/converts_from_any_cvref.hpp>
+#include <hamon/functional/detail/enable_hash_helper.hpp>
+#include <hamon/functional/hash.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -35,9 +38,11 @@
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_scalar.hpp>
+#include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/remove_const.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/adl_swap.hpp>
@@ -1044,16 +1049,6 @@ operator<=>(optional<T> const& x, U const& v)
 
 #endif
 
-}	// namespace hamon
-
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_move_constructible.hpp>
-#include <hamon/type_traits/is_swappable.hpp>
-
-namespace hamon
-{
-
 // [optional.specalg], specialized algorithms
 template <typename T,
 	typename = hamon::enable_if_t<hamon::conjunction<	// [optional.specalg]/1
@@ -1069,21 +1064,22 @@ HAMON_NOEXCEPT_IF_EXPR((x.swap(y)))
 	x.swap(y);
 }
 
-}	// namespace hamon
-
-#include <hamon/optional/detail/hash_impl.hpp>
-#include <hamon/type_traits/remove_const.hpp>
-#include <functional>
-
-namespace std
-{
-
 // [optional.hash], hash support
 template <typename T>
-struct hash<hamon::optional<T>>
-	: public hamon::optional_detail::hash_impl<T, hamon::remove_const_t<T>>
-{};
+struct hash<hamon::detail::enable_hash_helper<hamon::optional<T>, hamon::remove_const_t<T>>>
+{
+private:
+	using U = hamon::remove_const_t<T>;
 
-}	// namespace std
+public:
+	HAMON_NODISCARD	HAMON_CXX14_CONSTEXPR // nodiscard as an extension
+	hamon::size_t operator()(hamon::optional<T> const& opt) const
+	HAMON_NOEXCEPT_IF_EXPR((hamon::hash<U>{}(*opt)))
+	{
+		return opt.has_value() ? hamon::hash<U>{}(*opt) : 0;
+	}
+};
+
+}	// namespace hamon
 
 #endif // HAMON_OPTIONAL_OPTIONAL_HPP
