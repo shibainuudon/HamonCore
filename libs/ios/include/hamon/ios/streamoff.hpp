@@ -7,17 +7,13 @@
 #ifndef HAMON_IOS_STREAMOFF_HPP
 #define HAMON_IOS_STREAMOFF_HPP
 
-#include <ios>
-
 namespace hamon
 {
 
-using std::streamoff;
+// 31.2.2 Types[stream.types]
 
-#if 0	// TODO
-// [stream.types], types
-using streamoff = implementation-defined;
-#endif
+// [stream.types]/1
+using streamoff = long long;
 
 }	// namespace hamon
 
