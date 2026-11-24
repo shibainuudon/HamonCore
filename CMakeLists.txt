@@ -81,6 +81,7 @@ set(SUBDIRECTORIES
 	static_typeinfo
 	stdexcept
 	stop_token
+	streambuf
 	string
 	string_view
 	system_error

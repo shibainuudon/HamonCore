@@ -1,0 +1,16 @@
+name: streambuf
+
+on:
+  push:
+    paths:
+      - libs/streambuf/**
+      - .github/workflows/streambuf.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/streambuf
