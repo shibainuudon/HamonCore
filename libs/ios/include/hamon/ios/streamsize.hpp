@@ -7,17 +7,13 @@
 #ifndef HAMON_IOS_STREAMSIZE_HPP
 #define HAMON_IOS_STREAMSIZE_HPP
 
-#include <ios>
-
 namespace hamon
 {
 
-using std::streamsize;
+// 31.2.2 Types[stream.types]
 
-#if 0	// TODO
-// [stream.types], types
-using streamsize = implementation-defined;
-#endif
+// [stream.types]/2
+using streamsize = long long;
 
 }	// namespace hamon
 

@@ -1072,7 +1072,7 @@ operator<<(
 			// [string.view.io]/1
 
 			auto const str_n = static_cast<hamon::streamsize>(str.size());
-			auto const n = hamon::max(os.width(), str_n);
+			auto const n = hamon::max<hamon::streamsize>(os.width(), str_n);
 			auto const fill_n = n - str_n;
 			auto const fill_c = os.fill();
 
