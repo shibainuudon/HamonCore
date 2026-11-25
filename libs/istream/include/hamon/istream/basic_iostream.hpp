@@ -7,12 +7,11 @@
 #ifndef HAMON_ISTREAM_BASIC_IOSTREAM_HPP
 #define HAMON_ISTREAM_BASIC_IOSTREAM_HPP
 
-#include <istream>
+#include <hamon/istream/basic_iostream_fwd.hpp>
+#include <hamon/string/char_traits.hpp>
 
 namespace hamon
 {
-
-using std::basic_iostream;
 
 #if 0	// TODO
 // [iostreamclass], class template basic_iostream
