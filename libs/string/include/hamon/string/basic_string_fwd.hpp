@@ -8,7 +8,7 @@
 #define HAMON_STRING_BASIC_STRING_FWD_HPP
 
 #include <hamon/string/char_traits_fwd.hpp>
-#include <hamon/memory/allocator.hpp>
+#include <hamon/memory/allocator_fwd.hpp>
 #include <hamon/memory_resource/polymorphic_allocator.hpp>
 
 namespace hamon

@@ -7,6 +7,7 @@
 #ifndef HAMON_MEMORY_ALLOCATOR_HPP
 #define HAMON_MEMORY_ALLOCATOR_HPP
 
+#include <hamon/memory/allocator_fwd.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/memory/allocation_result.hpp>
