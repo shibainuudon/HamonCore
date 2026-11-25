@@ -7,6 +7,7 @@
 #ifndef HAMON_MEMORY_RESOURCE_POLYMORPHIC_ALLOCATOR_HPP
 #define HAMON_MEMORY_RESOURCE_POLYMORPHIC_ALLOCATOR_HPP
 
+#include <hamon/memory_resource/polymorphic_allocator_fwd.hpp>
 #include <hamon/memory_resource/memory_resource.hpp>
 #include <hamon/memory_resource/get_default_resource.hpp>
 #include <hamon/memory/uninitialized_construct_using_allocator.hpp>
@@ -26,7 +27,7 @@ namespace pmr
 
 // 20.4.3 Class template polymorphic_allocator[mem.poly.allocator.class]
 
-template <typename Tp = hamon::byte>
+template <typename Tp/* = hamon::byte*/>
 class polymorphic_allocator
 {
 	memory_resource* memory_rsrc;       // exposition only

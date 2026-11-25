@@ -36,6 +36,7 @@
 #include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
+#include <hamon/memory_resource/polymorphic_allocator.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/begin.hpp>

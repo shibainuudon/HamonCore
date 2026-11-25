@@ -9,7 +9,7 @@
 
 #include <hamon/string/char_traits_fwd.hpp>
 #include <hamon/memory/allocator_fwd.hpp>
-#include <hamon/memory_resource/polymorphic_allocator.hpp>
+#include <hamon/memory_resource/polymorphic_allocator_fwd.hpp>
 
 namespace hamon
 {
