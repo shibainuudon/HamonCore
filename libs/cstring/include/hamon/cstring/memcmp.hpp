@@ -7,10 +7,10 @@
 #ifndef HAMON_CSTRING_MEMCMP_HPP
 #define HAMON_CSTRING_MEMCMP_HPP
 
-#include <hamon/array.hpp>
 #include <hamon/bit/bit_cast.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/detail/simple_array.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -62,7 +62,7 @@ int memcmp_impl(const T* s1, const T* s2, hamon::size_t n, hamon::detail::overlo
 	// constexprにするため、unsigned charの配列にbit_castしてから比較する
 	for (hamon::size_t i = 0; i < n; i += sizeof(T))
 	{
-		using Array = hamon::array<unsigned char, sizeof(T)>;
+		using Array = hamon::detail::simple_array<unsigned char, sizeof(T)>;
 		auto x = hamon::bit_cast<Array>(*s1);
 		auto y = hamon::bit_cast<Array>(*s2);
 		if (x < y)
