@@ -7,12 +7,12 @@
 #ifndef HAMON_SSTREAM_BASIC_STRINGBUF_HPP
 #define HAMON_SSTREAM_BASIC_STRINGBUF_HPP
 
-#include <sstream>
+#include <hamon/sstream/basic_stringbuf_fwd.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/string/char_traits.hpp>
 
 namespace hamon
 {
-
-using std::basic_stringbuf;
 
 #if 0	// TODO
 // [stringbuf], class template basic_stringbuf

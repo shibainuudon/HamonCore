@@ -7,12 +7,12 @@
 #ifndef HAMON_SSTREAM_BASIC_STRINGSTREAM_HPP
 #define HAMON_SSTREAM_BASIC_STRINGSTREAM_HPP
 
-#include <sstream>
+#include <hamon/sstream/basic_stringstream_fwd.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/string/char_traits.hpp>
 
 namespace hamon
 {
-
-using std::basic_stringstream;
 
 #if 0	// TODO
 // [stringstream], class template basic_stringstream

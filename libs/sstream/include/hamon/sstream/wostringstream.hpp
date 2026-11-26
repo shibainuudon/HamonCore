@@ -7,15 +7,7 @@
 #ifndef HAMON_SSTREAM_WOSTRINGSTREAM_HPP
 #define HAMON_SSTREAM_WOSTRINGSTREAM_HPP
 
+#include <hamon/sstream/wostringstream_fwd.hpp>
 #include <hamon/sstream/basic_ostringstream.hpp>
-
-namespace hamon
-{
-
-// [ostringstream], class template basic_ostringstream
-
-using wostringstream = hamon::basic_ostringstream<wchar_t>;
-
-}	// namespace hamon
 
 #endif // HAMON_SSTREAM_WOSTRINGSTREAM_HPP
