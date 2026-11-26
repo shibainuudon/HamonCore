@@ -13,7 +13,7 @@
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
+//#include <hamon/assert.hpp>	// この関数から外部への依存を減らすためにコメントアウト
 #include <cstring>
 
 namespace hamon
@@ -27,7 +27,7 @@ template <typename T, typename = hamon::enable_if_t<hamon::is_trivially_copyable
 HAMON_CXX14_CONSTEXPR
 T* memmove_impl(T* s1, T const* s2, hamon::size_t n, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
-	HAMON_ASSERT((n % sizeof(T)) == 0u);
+	//HAMON_ASSERT((n % sizeof(T)) == 0u);
 	n /= sizeof(T);
 
 	if (s2 < s1 && s1 < s2 + n)
