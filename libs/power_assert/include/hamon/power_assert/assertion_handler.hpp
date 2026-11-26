@@ -4,18 +4,17 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_ASSERTION_HANDLER_HPP
-#define HAMON_DEBUG_ASSERTION_HANDLER_HPP
+#ifndef HAMON_POWER_ASSERT_ASSERTION_HANDLER_HPP
+#define HAMON_POWER_ASSERT_ASSERTION_HANDLER_HPP
 
-#include <hamon/debug/assertion_info.hpp>
+#include <hamon/power_assert/assertion_info.hpp>
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/ostream/endl.hpp>
 #include <iostream>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
 
 /**
@@ -63,8 +62,7 @@ inline void set_assertion_handler(assertion_handler const& handler)
 	detail::assertion_handler_instance() = handler;
 }
 
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_ASSERTION_HANDLER_HPP
+#endif // HAMON_POWER_ASSERT_ASSERTION_HANDLER_HPP

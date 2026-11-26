@@ -22,6 +22,7 @@
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/initializer_list.hpp>

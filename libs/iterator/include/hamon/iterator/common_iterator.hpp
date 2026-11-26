@@ -36,6 +36,7 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -56,7 +57,6 @@
 #include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/variant.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

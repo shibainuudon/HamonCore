@@ -31,6 +31,7 @@
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -48,7 +49,6 @@
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 HAMON_WARNING_PUSH()

@@ -17,6 +17,7 @@
 #include <hamon/expected/unexpect.hpp>
 #include <hamon/expected/unexpected.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/converts_from_any_cvref.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/initializer_list.hpp>
@@ -49,7 +50,6 @@
 #include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 HAMON_WARNING_PUSH()

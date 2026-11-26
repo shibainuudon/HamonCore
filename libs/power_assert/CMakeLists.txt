@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(TARGET_NAME_BASE debug)
+set(TARGET_NAME_BASE power_assert)
 
 set(TARGET_NAME hamon_${TARGET_NAME_BASE})
 set(TARGET_ALIAS_NAME Hamon::${TARGET_NAME_BASE})

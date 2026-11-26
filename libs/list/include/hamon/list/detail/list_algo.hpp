@@ -8,10 +8,10 @@
 #define HAMON_LIST_DETAIL_LIST_ALGO_HPP
 
 #include <hamon/list/detail/list_node.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

@@ -4,19 +4,17 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_SEED_HPP
-#define HAMON_DEBUG_DETAIL_SEED_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_SEED_HPP
+#define HAMON_POWER_ASSERT_DETAIL_SEED_HPP
 
-#include <hamon/debug/detail/value_expression.hpp>
+#include <hamon/power_assert/detail/value_expression.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -33,9 +31,7 @@ public:
 };
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_SEED_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_SEED_HPP

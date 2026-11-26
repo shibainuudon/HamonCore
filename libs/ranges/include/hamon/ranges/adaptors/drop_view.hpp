@@ -42,6 +42,7 @@
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/iterator/ranges/next.hpp>
@@ -58,7 +59,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon {
 namespace ranges {

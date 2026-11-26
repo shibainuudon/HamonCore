@@ -26,6 +26,7 @@
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/functional/cref.hpp>
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>

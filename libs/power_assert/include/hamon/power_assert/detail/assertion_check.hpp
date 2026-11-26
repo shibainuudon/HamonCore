@@ -4,18 +4,16 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_ASSERTION_CHECK_HPP
-#define HAMON_DEBUG_DETAIL_ASSERTION_CHECK_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_ASSERTION_CHECK_HPP
+#define HAMON_POWER_ASSERT_DETAIL_ASSERTION_CHECK_HPP
 
-#include <hamon/debug/detail/assertion_failed.hpp>
+#include <hamon/power_assert/detail/assertion_failed.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -31,7 +29,7 @@ assertion_check(
 	char const* msg)
 {
 	return cond ? true :
-		hamon::debug::detail::assertion_failed(
+		hamon::power_assert::detail::assertion_failed(
 			file_name,
 			line_number,
 			function_name,
@@ -41,9 +39,7 @@ assertion_check(
 }
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_ASSERTION_CHECK_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_ASSERTION_CHECK_HPP

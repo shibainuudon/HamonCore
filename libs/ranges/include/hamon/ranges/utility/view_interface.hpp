@@ -27,6 +27,7 @@
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -37,7 +38,6 @@
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

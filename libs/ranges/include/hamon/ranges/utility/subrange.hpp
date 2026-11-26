@@ -27,6 +27,7 @@
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
@@ -40,7 +41,6 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

@@ -38,6 +38,7 @@
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
@@ -48,7 +49,6 @@
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

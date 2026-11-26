@@ -7,12 +7,12 @@
 #ifndef HAMON_CONTAINER_DETAIL_RED_BLACK_TREE_ALGO_HPP
 #define HAMON_CONTAINER_DETAIL_RED_BLACK_TREE_ALGO_HPP
 
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/prev.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

@@ -4,18 +4,16 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_ASSERTION_FAILED_HPP
-#define HAMON_DEBUG_DETAIL_ASSERTION_FAILED_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_ASSERTION_FAILED_HPP
+#define HAMON_POWER_ASSERT_DETAIL_ASSERTION_FAILED_HPP
 
-#include <hamon/debug/assertion_handler.hpp>
+#include <hamon/power_assert/assertion_handler.hpp>
 #include <hamon/sstream/stringstream.hpp>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -32,7 +30,7 @@ assertion_failed(
 	hamon::stringstream ss;
 	ss << expr;
 
-	hamon::debug::get_assertion_handler()(
+	hamon::power_assert::get_assertion_handler()(
 		assertion_info(
 			file_name,
 			line_number,
@@ -45,9 +43,7 @@ assertion_failed(
 }
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_ASSERTION_FAILED_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_ASSERTION_FAILED_HPP

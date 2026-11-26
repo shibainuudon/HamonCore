@@ -22,7 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		algorithm
 		config
 		cstddef
-		debug
+		detail
 		functional
 		initializer_list
 		memory

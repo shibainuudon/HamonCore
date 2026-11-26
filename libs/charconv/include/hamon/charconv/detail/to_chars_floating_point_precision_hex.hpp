@@ -10,9 +10,9 @@
 #include <hamon/charconv/to_chars_result.hpp>
 #include <hamon/charconv/detail/to_chars_integer.hpp>
 #include <hamon/cstring/memset.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/ieee754/binary.hpp>
 #include <hamon/type_traits/remove_const.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

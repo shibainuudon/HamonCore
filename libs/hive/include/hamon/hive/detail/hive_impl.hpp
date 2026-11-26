@@ -14,6 +14,7 @@
 #include <hamon/algorithm/clamp.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/limits.hpp>
@@ -27,7 +28,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

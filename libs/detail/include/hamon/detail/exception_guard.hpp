@@ -7,9 +7,9 @@
 #ifndef HAMON_DETAIL_EXCEPTION_GUARD_HPP
 #define HAMON_DETAIL_EXCEPTION_GUARD_HPP
 
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

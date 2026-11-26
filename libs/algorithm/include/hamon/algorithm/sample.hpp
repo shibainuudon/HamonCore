@@ -8,6 +8,7 @@
 #define HAMON_ALGORITHM_SAMPLE_HPP
 
 #include <hamon/algorithm/min.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

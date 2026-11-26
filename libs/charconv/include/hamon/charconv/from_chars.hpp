@@ -11,10 +11,10 @@
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/detail/from_chars_integer.hpp>
 #include <hamon/charconv/detail/from_chars_floating_point.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

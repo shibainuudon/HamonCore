@@ -10,12 +10,12 @@
 #include <hamon/list/list_fwd.hpp>
 #include <hamon/list/detail/list_node.hpp>
 #include <hamon/list/detail/list_algo.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

@@ -24,8 +24,8 @@
 #include <hamon/atomic/detail/atomic_store_min.hpp>
 #include <hamon/atomic/detail/atomic_store_sub.hpp>
 #include <hamon/atomic/detail/atomic_is_always_lock_free.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

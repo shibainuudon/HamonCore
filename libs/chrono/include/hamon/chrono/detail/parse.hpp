@@ -20,12 +20,12 @@
 #include <hamon/cctype/isdigit.hpp>
 #include <hamon/cctype/islower.hpp>
 #include <hamon/cctype/tolower.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/istream/istream.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/stdexcept/runtime_error.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

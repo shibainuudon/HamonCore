@@ -14,6 +14,7 @@
 #include <hamon/bit/bit_ceil.hpp>
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/next.hpp>
@@ -31,7 +32,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

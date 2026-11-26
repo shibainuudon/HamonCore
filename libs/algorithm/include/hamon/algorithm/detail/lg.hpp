@@ -10,9 +10,9 @@
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

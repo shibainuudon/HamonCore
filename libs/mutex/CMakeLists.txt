@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		condition_variable
 		config
 		cstddef
+		detail
 		limits
 		system_error
 		thread

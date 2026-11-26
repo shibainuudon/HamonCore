@@ -8,13 +8,13 @@
 #define HAMON_ALGORITHM_RANGES_CLAMP_HPP
 
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

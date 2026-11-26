@@ -18,8 +18,8 @@
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uintptr_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/limits.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

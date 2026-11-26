@@ -4,20 +4,18 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_BINARY_EXPRESSION_HPP
-#define HAMON_DEBUG_DETAIL_BINARY_EXPRESSION_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_BINARY_EXPRESSION_HPP
+#define HAMON_POWER_ASSERT_DETAIL_BINARY_EXPRESSION_HPP
 
-#include <hamon/debug/detail/binary_expression_fwd.hpp>
-#include <hamon/debug/detail/expression_base.hpp>
+#include <hamon/power_assert/detail/binary_expression_fwd.hpp>
+#include <hamon/power_assert/detail/expression_base.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -58,9 +56,7 @@ operator<<(hamon::basic_ostream<CharT, Traits>& os, binary_expression<Lhs, Rhs, 
 }
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_BINARY_EXPRESSION_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_BINARY_EXPRESSION_HPP

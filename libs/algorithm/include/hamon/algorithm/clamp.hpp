@@ -7,8 +7,8 @@
 #ifndef HAMON_ALGORITHM_CLAMP_HPP
 #define HAMON_ALGORITHM_CLAMP_HPP
 
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/less.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

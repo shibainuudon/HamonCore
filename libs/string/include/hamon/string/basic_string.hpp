@@ -17,6 +17,7 @@
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/ios/ios_base.hpp>
@@ -54,7 +55,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <locale>	// isspace
 

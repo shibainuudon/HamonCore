@@ -20,6 +20,7 @@
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdlib/abort.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/converts_from_any_cvref.hpp>
 #include <hamon/functional/detail/enable_hash_helper.hpp>
 #include <hamon/functional/hash.hpp>
@@ -49,7 +50,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

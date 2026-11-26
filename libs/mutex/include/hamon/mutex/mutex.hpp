@@ -8,8 +8,8 @@
 #define HAMON_MUTEX_MUTEX_HPP
 
 #include <hamon/mutex/detail/mutex_impl.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/system_error.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

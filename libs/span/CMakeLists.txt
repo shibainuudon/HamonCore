@@ -23,7 +23,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		concepts
 		config
 		cstddef
-		debug
+		detail
 		initializer_list
 		iterator
 		limits

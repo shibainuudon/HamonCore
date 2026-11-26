@@ -4,15 +4,13 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_BINARY_EXPRESSION_FWD_HPP
-#define HAMON_DEBUG_DETAIL_BINARY_EXPRESSION_FWD_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_BINARY_EXPRESSION_FWD_HPP
+#define HAMON_POWER_ASSERT_DETAIL_BINARY_EXPRESSION_FWD_HPP
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -20,9 +18,7 @@ template <typename Lhs, typename Rhs, typename OP>
 class binary_expression;
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_BINARY_EXPRESSION_FWD_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_BINARY_EXPRESSION_FWD_HPP

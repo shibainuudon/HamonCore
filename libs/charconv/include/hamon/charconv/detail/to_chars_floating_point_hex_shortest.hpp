@@ -9,9 +9,9 @@
 
 #include <hamon/charconv/detail/to_chars_integer.hpp>
 #include <hamon/cmath/round_up.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/ieee754/binary.hpp>
 #include <hamon/type_traits/remove_const.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

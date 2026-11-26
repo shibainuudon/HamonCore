@@ -21,9 +21,9 @@
 #include <hamon/atomic/detail/atomic_store_fminimum.hpp>
 #include <hamon/atomic/detail/atomic_store_fminimum_num.hpp>
 #include <hamon/atomic/detail/atomic_store_sub.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

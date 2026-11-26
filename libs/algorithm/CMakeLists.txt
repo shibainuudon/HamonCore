@@ -25,7 +25,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		config
 		cstddef
 		cstring
-		debug
 		detail
 		functional
 		initializer_list

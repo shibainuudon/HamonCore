@@ -38,7 +38,6 @@ set(SUBDIRECTORIES
 	cstdint
 	cstdlib
 	cstring
-	debug
 	deque
 	expected
 	flat_map
@@ -65,6 +64,7 @@ set(SUBDIRECTORIES
 	optional
 	ostream
 	pair
+	power_assert
 	preprocessor
 	queue
 	qvm

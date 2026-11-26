@@ -20,6 +20,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		charconv
 		cmath
 		cstddef
+		detail
 		initializer_list
 		memory
 		numeric

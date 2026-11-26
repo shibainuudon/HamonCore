@@ -9,10 +9,10 @@
 
 #include <hamon/hive/detail/hive_active_flags.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

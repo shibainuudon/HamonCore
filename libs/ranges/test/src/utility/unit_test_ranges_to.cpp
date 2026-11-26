@@ -14,8 +14,8 @@
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/array.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/list.hpp>
 #include <hamon/map.hpp>

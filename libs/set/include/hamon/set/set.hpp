@@ -30,6 +30,7 @@
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -61,7 +62,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

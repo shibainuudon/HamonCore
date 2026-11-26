@@ -1,54 +1,54 @@
 ﻿/**
- *	@file	unit_test_debug_assert.cpp
+ *	@file	unit_test_power_assert.cpp
  *
- *	@brief	HAMON_ASSERT のテスト
+ *	@brief	HAMON_POWER_ASSERT のテスト
  */
 
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <string>
 
-#include <hamon/assert.hpp>
+#include <hamon/power_assert.hpp>
 
-namespace hamon_debug_assert_test
+namespace hamon_power_assert_test
 {
 
 inline int func(void) { return 1; }
 
-GTEST_TEST(DebugAssertTest, SuccessTest)
+GTEST_TEST(PowerAssertTest, SuccessTest)
 {
 	int x = 3;
 	int y = 7;
 	int z = 2;
-	HAMON_ASSERT(x == 3);
-	HAMON_ASSERT(3 == x);
-	HAMON_ASSERT_MSG(x != y, "x equal y");
-	HAMON_ASSERT(x < 4);
-	HAMON_ASSERT(8 > y);
-	HAMON_ASSERT_MSG(x <= 3, "x less than 3");
-	HAMON_ASSERT(8 >= y);
-	HAMON_ASSERT(x + y == 10);
-	HAMON_ASSERT(x * 2 == 6);
-	HAMON_ASSERT(x * y - z == 19);
-	HAMON_ASSERT(x / func() == 3);
+	HAMON_POWER_ASSERT(x == 3);
+	HAMON_POWER_ASSERT(3 == x);
+	HAMON_POWER_ASSERT_MSG(x != y, "x equal y");
+	HAMON_POWER_ASSERT(x < 4);
+	HAMON_POWER_ASSERT(8 > y);
+	HAMON_POWER_ASSERT_MSG(x <= 3, "x less than 3");
+	HAMON_POWER_ASSERT(8 >= y);
+	HAMON_POWER_ASSERT(x + y == 10);
+	HAMON_POWER_ASSERT(x * 2 == 6);
+	HAMON_POWER_ASSERT(x * y - z == 19);
+	HAMON_POWER_ASSERT(x / func() == 3);
 
-	HAMON_ASSERT(x == 3 && y == 7);
-	HAMON_ASSERT(x > 0 && y < 8 && z == 2);
+	HAMON_POWER_ASSERT(x == 3 && y == 7);
+	HAMON_POWER_ASSERT(x > 0 && y < 8 && z == 2);
 
-	HAMON_ASSERT(x == 3 || y == 7);
-	HAMON_ASSERT(x == 2 || y == 7);
-	HAMON_ASSERT(x == 3 || y == 6);
+	HAMON_POWER_ASSERT(x == 3 || y == 7);
+	HAMON_POWER_ASSERT(x == 2 || y == 7);
+	HAMON_POWER_ASSERT(x == 3 || y == 6);
 }
 
 HAMON_CXX14_CONSTEXPR int add(int x, int y)
 {
 	return
-		HAMON_ASSERT(x != 0),
-		HAMON_ASSERT(y != 0),
+		HAMON_POWER_ASSERT(x != 0),
+		HAMON_POWER_ASSERT(y != 0),
 		(x + y);
 }
 
-GTEST_TEST(DebugAssertTest, ConstexprTest)
+GTEST_TEST(PowerAssertTest, ConstexprTest)
 {
 #if defined(_MSC_VER) && _MSC_VER >= 1920 && _MSC_FULL_VER <= 192127702
 	// Visual Studio Version 16.(0-1)だとconstexprにできない
@@ -56,14 +56,14 @@ GTEST_TEST(DebugAssertTest, ConstexprTest)
 #else
 	HAMON_CXX14_CONSTEXPR int x = add(2, 1);
 #endif
-	HAMON_ASSERT(x == 3);
-	HAMON_ASSERT_MSG(x == 3, "foo");
+	HAMON_POWER_ASSERT(x == 3);
+	HAMON_POWER_ASSERT_MSG(x == 3, "foo");
 
 	int y = add(3, 1);
-	HAMON_ASSERT(y == 4);
+	HAMON_POWER_ASSERT(y == 4);
 }
 
-struct DebugAssertInfo
+struct AssertInfo
 {
 	int         invoke_count{};
 	std::string file_name{};
@@ -74,9 +74,9 @@ struct DebugAssertInfo
 	std::string msg{};
 };
 
-static DebugAssertInfo* s_info = nullptr;
+static AssertInfo* s_info = nullptr;
 
-static void MyAssertionHandler(const hamon::debug::assertion_info& info)
+static void MyAssertionHandler(const hamon::power_assert::assertion_info& info)
 {
 	s_info->invoke_count++;
 	s_info->file_name          = info.file_name;
@@ -87,13 +87,13 @@ static void MyAssertionHandler(const hamon::debug::assertion_info& info)
 	s_info->msg                = info.msg;
 }
 
-GTEST_TEST(DebugAssertTest, FailureTest)
+GTEST_TEST(PowerAssertTest, FailureTest)
 {
-	DebugAssertInfo info;
+	AssertInfo info;
 	s_info = &info;
 
-	auto handler_old = hamon::debug::get_assertion_handler();
-	hamon::debug::set_assertion_handler(MyAssertionHandler);
+	auto handler_old = hamon::power_assert::get_assertion_handler();
+	hamon::power_assert::set_assertion_handler(MyAssertionHandler);
 
 	int x = 3;
 	int y = 7;
@@ -101,7 +101,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	int line_num = 0;
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x == 4);
+	HAMON_POWER_ASSERT(x == 4);
 	EXPECT_EQ(1, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -111,7 +111,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT_MSG(5 == x, "hoge");
+	HAMON_POWER_ASSERT_MSG(5 == x, "hoge");
 	EXPECT_EQ(2, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -121,7 +121,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("hoge", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT_MSG(x != 3, "foo");
+	HAMON_POWER_ASSERT_MSG(x != 3, "foo");
 	EXPECT_EQ(3, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -131,7 +131,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("foo", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x < 2);
+	HAMON_POWER_ASSERT(x < 2);
 	EXPECT_EQ(4, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -141,7 +141,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(6 > y);
+	HAMON_POWER_ASSERT(6 > y);
 	EXPECT_EQ(5, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -151,7 +151,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x <= 1);
+	HAMON_POWER_ASSERT(x <= 1);
 	EXPECT_EQ(6, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -161,7 +161,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(5 >= y);
+	HAMON_POWER_ASSERT(5 >= y);
 	EXPECT_EQ(7, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -171,7 +171,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x + y == 11);
+	HAMON_POWER_ASSERT(x + y == 11);
 	EXPECT_EQ(8, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -181,7 +181,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x * 2 != 6);
+	HAMON_POWER_ASSERT(x * 2 != 6);
 	EXPECT_EQ(9, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -191,7 +191,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT_MSG(x * y + z == 24, "bar");
+	HAMON_POWER_ASSERT_MSG(x * y + z == 24, "bar");
 	EXPECT_EQ(10, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -201,7 +201,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("bar", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x + func() != 4);
+	HAMON_POWER_ASSERT(x + func() != 4);
 	EXPECT_EQ(11, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -223,7 +223,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	}
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x == 3 && y == 8);
+	HAMON_POWER_ASSERT(x == 3 && y == 8);
 	EXPECT_EQ(13, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -233,7 +233,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x == 2 && y == 7);
+	HAMON_POWER_ASSERT(x == 2 && y == 7);
 	EXPECT_EQ(14, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -243,7 +243,7 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("", info.msg);
 
 	line_num = __LINE__ + 1;
-	HAMON_ASSERT(x == 4 || y == 8);
+	HAMON_POWER_ASSERT(x == 4 || y == 8);
 	EXPECT_EQ(15, info.invoke_count);
 	EXPECT_EQ(__FILE__, info.file_name);
 	EXPECT_EQ(line_num, info.line_number);
@@ -252,70 +252,70 @@ GTEST_TEST(DebugAssertTest, FailureTest)
 	EXPECT_EQ("((3 == 4) || 0)", info.evaluated_expr_str);
 	EXPECT_EQ("", info.msg);
 
-	hamon::debug::set_assertion_handler(handler_old);
+	hamon::power_assert::set_assertion_handler(handler_old);
 	s_info = nullptr;
 }
 
-}	// namespace hamon_debug_assert_test
+}	// namespace hamon_power_assert_test
 
-#define HAMON_DISABLE_ASSERTS
-#include <hamon/assert.hpp>
+#define HAMON_DISABLE_POWER_ASSERTS
+#include <hamon/power_assert.hpp>
 
-namespace hamon_debug_assert_test
+namespace hamon_power_assert_test
 {
 
-GTEST_TEST(DebugAssertTest, DisableTest)
+GTEST_TEST(PowerAssertTest, DisableTest)
 {
-	DebugAssertInfo info;
+	AssertInfo info;
 	s_info = &info;
 
-	auto handler_old = hamon::debug::get_assertion_handler();
-	hamon::debug::set_assertion_handler(MyAssertionHandler);
+	auto handler_old = hamon::power_assert::get_assertion_handler();
+	hamon::power_assert::set_assertion_handler(MyAssertionHandler);
 
 	int x = 3;
-	HAMON_ASSERT(x == 0);
-	HAMON_ASSERT(x != 3);
-	HAMON_ASSERT_MSG(x < 0, "");
-	HAMON_ASSERT(x > 3);
-	HAMON_ASSERT(x <= 2);
-	HAMON_ASSERT(x >= 4);
+	HAMON_POWER_ASSERT(x == 0);
+	HAMON_POWER_ASSERT(x != 3);
+	HAMON_POWER_ASSERT_MSG(x < 0, "");
+	HAMON_POWER_ASSERT(x > 3);
+	HAMON_POWER_ASSERT(x <= 2);
+	HAMON_POWER_ASSERT(x >= 4);
 	(void)x;
 
 	EXPECT_EQ(0, info.invoke_count);
 
-	hamon::debug::set_assertion_handler(handler_old);
+	hamon::power_assert::set_assertion_handler(handler_old);
 	s_info = nullptr;
 }
 
-}	// namespace hamon_debug_assert_test
+}	// namespace hamon_power_assert_test
 
-#undef HAMON_DISABLE_ASSERTS
-#include <hamon/assert.hpp>
+#undef HAMON_DISABLE_POWER_ASSERTS
+#include <hamon/power_assert.hpp>
 
-namespace hamon_debug_assert_test
+namespace hamon_power_assert_test
 {
 
-GTEST_TEST(DebugAssertTest, EnableTest)
+GTEST_TEST(PowerAssertTest, EnableTest)
 {
-	DebugAssertInfo info;
+	AssertInfo info;
 	s_info = &info;
 
-	auto handler_old = hamon::debug::get_assertion_handler();
-	hamon::debug::set_assertion_handler(MyAssertionHandler);
+	auto handler_old = hamon::power_assert::get_assertion_handler();
+	hamon::power_assert::set_assertion_handler(MyAssertionHandler);
 
 	int x = 3;
-	HAMON_ASSERT(x == 0);
-	HAMON_ASSERT(x != 3);
-	HAMON_ASSERT_MSG(x < 0, "");
-	HAMON_ASSERT(x > 3);
-	HAMON_ASSERT(x <= 2);
-	HAMON_ASSERT(x >= 4);
+	HAMON_POWER_ASSERT(x == 0);
+	HAMON_POWER_ASSERT(x != 3);
+	HAMON_POWER_ASSERT_MSG(x < 0, "");
+	HAMON_POWER_ASSERT(x > 3);
+	HAMON_POWER_ASSERT(x <= 2);
+	HAMON_POWER_ASSERT(x >= 4);
 	(void)x;
 
 	EXPECT_EQ(6, info.invoke_count);
 
-	hamon::debug::set_assertion_handler(handler_old);
+	hamon::power_assert::set_assertion_handler(handler_old);
 	s_info = nullptr;
 }
 
-}	// namespace hamon_debug_assert_test
+}	// namespace hamon_power_assert_test

@@ -12,6 +12,7 @@
 #include <hamon/charconv/detail/make_floating_point_value.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/limits.hpp>

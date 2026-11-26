@@ -9,6 +9,7 @@
 
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
@@ -32,7 +33,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

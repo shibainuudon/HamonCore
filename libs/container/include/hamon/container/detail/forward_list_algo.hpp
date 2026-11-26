@@ -10,13 +10,13 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/container/detail/forward_list_node.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

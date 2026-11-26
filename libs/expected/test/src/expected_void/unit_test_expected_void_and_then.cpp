@@ -12,6 +12,7 @@
 #include <hamon/expected/expected.hpp>
 #include <hamon/expected/unexpect.hpp>
 #include <hamon/expected/unexpected.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -21,7 +22,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/string.hpp>
-#include <hamon/assert.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 

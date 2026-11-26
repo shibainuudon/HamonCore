@@ -8,13 +8,13 @@
  */
 
 #include <hamon/expected/unexpected.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 

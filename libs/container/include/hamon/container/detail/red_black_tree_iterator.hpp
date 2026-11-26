@@ -7,12 +7,12 @@
 #ifndef HAMON_CONTAINER_DETAIL_RED_BLACK_TREE_ITERATOR_HPP
 #define HAMON_CONTAINER_DETAIL_RED_BLACK_TREE_ITERATOR_HPP
 
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

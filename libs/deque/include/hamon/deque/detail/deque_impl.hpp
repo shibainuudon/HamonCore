@@ -11,6 +11,7 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/memory/allocator_traits.hpp>
@@ -21,7 +22,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

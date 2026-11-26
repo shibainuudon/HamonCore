@@ -20,6 +20,7 @@
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/detail/is_signed_integer_like.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
@@ -34,7 +35,6 @@
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

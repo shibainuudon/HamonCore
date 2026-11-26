@@ -14,11 +14,11 @@
 #include <hamon/cstddef/byte.hpp>
 #include <hamon/cstddef/max_align_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/new/bad_array_new_length.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

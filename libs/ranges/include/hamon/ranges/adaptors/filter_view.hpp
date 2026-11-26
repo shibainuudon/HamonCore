@@ -34,6 +34,7 @@
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/ref.hpp>
@@ -58,7 +59,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon {
 namespace ranges {

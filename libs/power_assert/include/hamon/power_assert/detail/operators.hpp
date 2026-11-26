@@ -4,21 +4,18 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_OPERATORS_HPP
-#define HAMON_DEBUG_DETAIL_OPERATORS_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_OPERATORS_HPP
+#define HAMON_POWER_ASSERT_DETAIL_OPERATORS_HPP
 
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
-
 namespace op
 {
 
@@ -70,11 +67,8 @@ HAMON_ASSERT_DETAIL_FOR_EACH_CONST_OP(HAMON_ASSERT_DETAIL_DEFINE_CONST_OPER)
 #undef HAMON_ASSERT_DETAIL_DEFINE_CONST_OPER
 
 }	// namespace op
-
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_OPERATORS_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_OPERATORS_HPP

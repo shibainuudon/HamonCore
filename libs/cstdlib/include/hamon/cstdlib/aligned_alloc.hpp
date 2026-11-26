@@ -9,8 +9,8 @@
 
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 #include <cstdlib>
 
 namespace hamon

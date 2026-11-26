@@ -16,6 +16,7 @@
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/ios/ios_base.hpp>
 #include <hamon/ios/streamsize.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -43,7 +44,6 @@
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 

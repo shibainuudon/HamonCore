@@ -14,7 +14,7 @@
 #include <hamon/atomic/detail/atomic_wait.hpp>
 #include <hamon/atomic/detail/atomic_notify_one.hpp>
 #include <hamon/atomic/detail/atomic_notify_all.hpp>
-#include <hamon/assert.hpp>
+#include <hamon/detail/assert.hpp>
 
 namespace hamon
 {

@@ -14,10 +14,10 @@
 #include <hamon/algorithm/lower_bound.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cstring/memcpy.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/ieee754/binary.hpp>
 #include <hamon/iterator/end.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

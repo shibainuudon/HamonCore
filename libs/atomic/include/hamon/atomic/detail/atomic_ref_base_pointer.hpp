@@ -18,11 +18,11 @@
 #include <hamon/atomic/detail/atomic_store_min.hpp>
 #include <hamon/atomic/detail/atomic_store_sub.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

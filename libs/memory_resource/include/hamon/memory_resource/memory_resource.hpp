@@ -10,7 +10,7 @@
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/cstddef/max_align_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/assert.hpp>
+#include <hamon/detail/assert.hpp>
 
 namespace hamon
 {

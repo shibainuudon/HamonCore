@@ -42,6 +42,7 @@
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
@@ -65,7 +66,6 @@
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \

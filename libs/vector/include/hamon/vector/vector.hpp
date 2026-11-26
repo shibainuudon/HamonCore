@@ -28,6 +28,7 @@
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/cref.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_forward_iterator.hpp>
@@ -54,7 +55,6 @@
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

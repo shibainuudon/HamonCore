@@ -29,6 +29,7 @@
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/container/detail/reserve_append_size.hpp>
 #include <hamon/container/sorted_equivalent.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/exception_guard.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/detail/scope_guard.hpp>
@@ -64,7 +65,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

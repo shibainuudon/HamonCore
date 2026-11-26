@@ -18,6 +18,7 @@
 #include <hamon/atomic/detail/atomic_wait.hpp>
 #include <hamon/atomic/detail/atomic_notify_one.hpp>
 #include <hamon/atomic/detail/atomic_notify_all.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
@@ -29,7 +30,6 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

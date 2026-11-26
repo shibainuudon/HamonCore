@@ -4,13 +4,12 @@
  *	@brief	assertion_infoの定義
  */
 
-#ifndef HAMON_DEBUG_ASSERTION_INFO_HPP
-#define HAMON_DEBUG_ASSERTION_INFO_HPP
+#ifndef HAMON_POWER_ASSERT_ASSERTION_INFO_HPP
+#define HAMON_POWER_ASSERT_ASSERTION_INFO_HPP
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
 
 struct assertion_info
@@ -38,8 +37,7 @@ struct assertion_info
 	{}
 };
 
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_ASSERTION_INFO_HPP
+#endif // HAMON_POWER_ASSERT_ASSERTION_INFO_HPP

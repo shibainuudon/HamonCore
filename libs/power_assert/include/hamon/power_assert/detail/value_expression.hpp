@@ -4,11 +4,11 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_VALUE_EXPRESSION_HPP
-#define HAMON_DEBUG_DETAIL_VALUE_EXPRESSION_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_VALUE_EXPRESSION_HPP
+#define HAMON_POWER_ASSERT_DETAIL_VALUE_EXPRESSION_HPP
 
-#include <hamon/debug/detail/value_expression_fwd.hpp>
-#include <hamon/debug/detail/expression_base.hpp>
+#include <hamon/power_assert/detail/value_expression_fwd.hpp>
+#include <hamon/power_assert/detail/expression_base.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -20,10 +20,8 @@
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -81,9 +79,7 @@ operator<<(hamon::basic_ostream<CharT, Traits>& os, value_expression<hamon::null
 }
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_VALUE_EXPRESSION_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_VALUE_EXPRESSION_HPP

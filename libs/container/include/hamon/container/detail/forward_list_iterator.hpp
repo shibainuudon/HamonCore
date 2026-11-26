@@ -9,11 +9,11 @@
 
 #include <hamon/container/detail/forward_list_node.hpp>
 #include <hamon/container/detail/forward_list_algo.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

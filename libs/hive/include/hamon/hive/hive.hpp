@@ -23,6 +23,7 @@
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/cref.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
@@ -50,7 +51,6 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

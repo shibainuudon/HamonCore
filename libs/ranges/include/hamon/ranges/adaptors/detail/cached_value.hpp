@@ -7,8 +7,8 @@
 #ifndef HAMON_RANGES_ADAPTORS_DETAIL_CACHED_VALUE_HPP
 #define HAMON_RANGES_ADAPTORS_DETAIL_CACHED_VALUE_HPP
 
+#include <hamon/detail/assert.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon {
 namespace ranges {

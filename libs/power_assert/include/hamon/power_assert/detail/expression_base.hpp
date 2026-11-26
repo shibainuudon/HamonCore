@@ -4,22 +4,20 @@
  *	@brief
  */
 
-#ifndef HAMON_DEBUG_DETAIL_EXPRESSION_BASE_HPP
-#define HAMON_DEBUG_DETAIL_EXPRESSION_BASE_HPP
+#ifndef HAMON_POWER_ASSERT_DETAIL_EXPRESSION_BASE_HPP
+#define HAMON_POWER_ASSERT_DETAIL_EXPRESSION_BASE_HPP
 
-#include <hamon/debug/detail/binary_expression_fwd.hpp>
-#include <hamon/debug/detail/value_expression_fwd.hpp>
-#include <hamon/debug/detail/operators.hpp>
+#include <hamon/power_assert/detail/binary_expression_fwd.hpp>
+#include <hamon/power_assert/detail/value_expression_fwd.hpp>
+#include <hamon/power_assert/detail/operators.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
-
-namespace debug
+namespace power_assert
 {
-
 namespace detail
 {
 
@@ -45,9 +43,7 @@ public:
 };
 
 }	// namespace detail
-
-}	// namespace debug
-
+}	// namespace power_assert
 }	// namespace hamon
 
-#endif // HAMON_DEBUG_DETAIL_EXPRESSION_BASE_HPP
+#endif // HAMON_POWER_ASSERT_DETAIL_EXPRESSION_BASE_HPP

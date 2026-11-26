@@ -14,6 +14,7 @@
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -40,7 +41,6 @@
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/array.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_NO_STD)

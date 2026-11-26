@@ -6,4 +6,4 @@
 
 // NO INCLUDE GUARD
 
-#include <hamon/debug/assert.hpp>
+#include <hamon/power_assert/macro.hpp>

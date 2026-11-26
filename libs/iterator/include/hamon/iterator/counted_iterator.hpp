@@ -33,6 +33,7 @@
 #include <hamon/concepts/common_with.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
@@ -48,7 +49,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

@@ -10,6 +10,7 @@
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/detail/negate_unsigned.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/limits.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

@@ -38,6 +38,7 @@
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/concepts/indirectly_swappable.hpp>
@@ -61,7 +62,6 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \

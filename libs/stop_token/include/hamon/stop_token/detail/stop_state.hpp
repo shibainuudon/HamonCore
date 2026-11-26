@@ -12,10 +12,10 @@
 #include <hamon/atomic/atomic.hpp>
 #include <hamon/atomic/memory_order.hpp>
 #include <hamon/cstdint/uint32_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/list.hpp>
 #include <hamon/thread/thread.hpp>
 #include <hamon/thread/this_thread.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

@@ -10,6 +10,7 @@
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -25,7 +26,6 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {
@@ -76,7 +76,7 @@ struct min_fn
 	{
 		auto first = ranges::begin(r);
 		auto last = ranges::end(r);
-		HAMON_ASSERT(bool(first != last));
+		HAMON_ASSERT(first != last);
 		auto result = *first;
 		while (++first != last)
 		{

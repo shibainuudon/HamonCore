@@ -11,13 +11,13 @@
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/integral_constant.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

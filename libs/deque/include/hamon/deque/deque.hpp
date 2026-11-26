@@ -25,6 +25,7 @@
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>

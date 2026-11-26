@@ -12,7 +12,7 @@
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
-#include <hamon/assert.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

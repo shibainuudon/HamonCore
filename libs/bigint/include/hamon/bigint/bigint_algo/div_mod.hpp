@@ -27,10 +27,10 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 

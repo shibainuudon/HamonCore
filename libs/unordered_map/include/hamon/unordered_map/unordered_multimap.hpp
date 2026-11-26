@@ -34,6 +34,7 @@
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_erasable.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/hash.hpp>
 #include <hamon/initializer_list.hpp>
@@ -68,7 +69,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

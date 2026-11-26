@@ -17,6 +17,7 @@
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/detail/assert.hpp>
 #include <hamon/initializer_list.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/allocator.hpp>
@@ -27,7 +28,6 @@
 #include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
