@@ -12,7 +12,7 @@
 #include <hamon/chrono/detail/parse.hpp>
 #include <hamon/algorithm/ranges/find.hpp>
 #include <hamon/cctype/tolower.hpp>
-#include <hamon/istream/istream.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 
@@ -20,7 +20,8 @@ namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline chrono::year parse_to(hamon::istream& input, chrono::year only)
+template <typename Traits>
+inline chrono::year parse_to(hamon::basic_istream<char, Traits>& input, chrono::year only)
 {
 	if (hamon::tolower(input.peek()) != 'o')
 	{
@@ -32,7 +33,8 @@ inline chrono::year parse_to(hamon::istream& input, chrono::year only)
 	return only;
 }
 
-inline hamon::string parse_letters(hamon::istream& input)
+template <typename Traits>
+inline hamon::string parse_letters(hamon::basic_istream<char, Traits>& input)
 {
 	hamon::string result = detail::parse_string(input);
 	// Canonicalize "-" to "" since they are equivalent in the specification.
@@ -68,7 +70,8 @@ inline tz::rule_t& create_rule_entry(tz::rules_storage_type& rules, hamon::strin
 	return result();
 }
 
-inline void parse_rule(tz::rules_storage_type& rules, hamon::istream& input)
+template <typename Traits>
+inline void parse_rule(tz::rules_storage_type& rules, hamon::basic_istream<char, Traits>& input)
 {
 	detail::skip_mandatory_whitespace(input);
 	hamon::string name = detail::parse_string(input);

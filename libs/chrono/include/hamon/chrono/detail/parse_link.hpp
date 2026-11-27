@@ -9,7 +9,7 @@
 
 #include <hamon/chrono/tzdb.hpp>
 #include <hamon/chrono/detail/parse.hpp>
-#include <hamon/istream/istream.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/string.hpp>
 #include <hamon/utility/move.hpp>
 
@@ -17,7 +17,8 @@ namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline void parse_link(chrono::tzdb& db, hamon::istream& input)
+template <typename Traits>
+inline void parse_link(chrono::tzdb& db, hamon::basic_istream<char, Traits>& input)
 {
 	detail::skip_mandatory_whitespace(input);
 	hamon::string target = detail::parse_string(input);

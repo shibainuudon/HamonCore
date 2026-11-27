@@ -14,14 +14,15 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/algorithm/ranges/adjacent_find.hpp>
-#include <hamon/istream/istream.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/vector.hpp>
 
 namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline void parse_leap_seconds(hamon::vector<chrono::leap_second>& leap_seconds, hamon::istream& input)
+template <typename Traits>
+inline void parse_leap_seconds(hamon::vector<chrono::leap_second>& leap_seconds, hamon::basic_istream<char, Traits>& input)
 {
 	// The file stores dates since 1 January 1900, 00:00:00, we want
 	// seconds since 1 January 1970.
@@ -43,7 +44,7 @@ inline void parse_leap_seconds(hamon::vector<chrono::leap_second>& leap_seconds,
 		{
 			switch (input.peek())
 			{
-			case hamon::istream::traits_type::eof():
+			case Traits::eof():
 				return;
 
 			case ' ':

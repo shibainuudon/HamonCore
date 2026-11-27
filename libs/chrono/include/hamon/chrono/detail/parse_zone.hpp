@@ -11,7 +11,7 @@
 #include <hamon/chrono/detail/tz.hpp>
 #include <hamon/chrono/detail/parse.hpp>
 #include <hamon/cctype/isdigit.hpp>
-#include <hamon/istream/istream.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
@@ -20,7 +20,8 @@ namespace hamon {
 namespace chrono {
 namespace detail {
 
-inline tz::continuation_t::rules_t parse_rules(hamon::istream& input)
+template <typename Traits>
+inline tz::continuation_t::rules_t parse_rules(hamon::basic_istream<char, Traits>& input)
 {
 	int c = input.peek();
 	// A single -  is not a SAVE but a special case.
@@ -43,7 +44,8 @@ inline tz::continuation_t::rules_t parse_rules(hamon::istream& input)
 	return detail::parse_string(input);
 }
 
-inline tz::continuation_t parse_continuation(tz::rules_storage_type& rules, hamon::istream& input)
+template <typename Traits>
+inline tz::continuation_t parse_continuation(tz::rules_storage_type& rules, hamon::basic_istream<char, Traits>& input)
 {
 	tz::continuation_t result;
 
@@ -91,7 +93,8 @@ inline tz::continuation_t parse_continuation(tz::rules_storage_type& rules, hamo
 	return result;
 }
 
-inline void parse_zone(chrono::tzdb& db, tz::rules_storage_type& rules, hamon::istream& input)
+template <typename Traits>
+inline void parse_zone(chrono::tzdb& db, tz::rules_storage_type& rules, hamon::basic_istream<char, Traits>& input)
 {
 	detail::skip_mandatory_whitespace(input);
 	hamon::string name = detail::parse_string(input);

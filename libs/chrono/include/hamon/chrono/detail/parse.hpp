@@ -21,7 +21,7 @@
 #include <hamon/cctype/islower.hpp>
 #include <hamon/cctype/tolower.hpp>
 #include <hamon/detail/assert.hpp>
-#include <hamon/istream/istream.hpp>
+#include <hamon/istream/basic_istream.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/stdexcept/runtime_error.hpp>
 #include <hamon/string.hpp>
@@ -36,7 +36,8 @@ namespace detail {
 //                           Details
 //===----------------------------------------------------------------------===//
 
-inline void skip_optional_whitespace(hamon::istream& input)
+template <typename Traits>
+inline void skip_optional_whitespace(hamon::basic_istream<char, Traits>& input)
 {
 	while (hamon::isblank(input.peek()))
 	{
@@ -44,7 +45,8 @@ inline void skip_optional_whitespace(hamon::istream& input)
 	}
 }
 
-inline void skip_mandatory_whitespace(hamon::istream& input)
+template <typename Traits>
+inline void skip_mandatory_whitespace(hamon::basic_istream<char, Traits>& input)
 {
 	if (!hamon::isblank(input.get()))
 	{
@@ -59,7 +61,8 @@ inline bool is_eol(int c)
 	return c == '\n' || c == hamon::char_traits<char>::eof();
 }
 
-inline void skip_line(hamon::istream& input)
+template <typename Traits>
+inline void skip_line(hamon::basic_istream<char, Traits>& input)
 {
 	while (!detail::is_eol(input.peek()))
 	{
@@ -68,7 +71,8 @@ inline void skip_line(hamon::istream& input)
 	input.get();
 }
 
-inline void skip(hamon::istream& input, char suffix)
+template <typename Traits>
+inline void skip(hamon::basic_istream<char, Traits>& input, char suffix)
 {
 	if (hamon::tolower(input.peek()) == suffix)
 	{
@@ -76,7 +80,8 @@ inline void skip(hamon::istream& input, char suffix)
 	}
 }
 
-inline void skip(hamon::istream& input, hamon::string_view suffix)
+template <typename Traits>
+inline void skip(hamon::basic_istream<char, Traits>& input, hamon::string_view suffix)
 {
 	for (auto c : suffix)
 	{
@@ -87,7 +92,8 @@ inline void skip(hamon::istream& input, hamon::string_view suffix)
 	}
 }
 
-inline void matches(hamon::istream& input, char expected)
+template <typename Traits>
+inline void matches(hamon::basic_istream<char, Traits>& input, char expected)
 {
 	HAMON_ASSERT(!hamon::isalpha(expected) || hamon::islower(expected));
 	int c = input.get();
@@ -100,7 +106,8 @@ inline void matches(hamon::istream& input, char expected)
 	}
 }
 
-inline void matches(hamon::istream& input, hamon::string_view expected)
+template <typename Traits>
+inline void matches(hamon::basic_istream<char, Traits>& input, hamon::string_view expected)
 {
 	for (auto c : expected)
 	{
@@ -117,7 +124,8 @@ inline void matches(hamon::istream& input, hamon::string_view expected)
 	}
 }
 
-inline hamon::string parse_string(hamon::istream& input)
+template <typename Traits>
+inline hamon::string parse_string(hamon::basic_istream<char, Traits>& input)
 {
 	hamon::string result;
 	while (true)
@@ -130,7 +138,7 @@ inline hamon::string parse_string(hamon::istream& input)
 		case '\n':
 			input.unget();
 			HAMON_FALLTHROUGH();
-		case hamon::istream::traits_type::eof():
+		case Traits::eof():
 			if (result.empty())
 			{
 				hamon::detail::throw_runtime_error("corrupt tzdb: expected a string");
@@ -144,7 +152,8 @@ inline hamon::string parse_string(hamon::istream& input)
 	}
 }
 
-inline hamon::int64_t parse_integral(hamon::istream& input, bool leading_zero_allowed)
+template <typename Traits>
+inline hamon::int64_t parse_integral(hamon::basic_istream<char, Traits>& input, bool leading_zero_allowed)
 {
 	hamon::int64_t result = input.get();
 	if (leading_zero_allowed)
@@ -194,7 +203,8 @@ inline hamon::int64_t parse_integral(hamon::istream& input, bool leading_zero_al
 //                          Calendar
 //===----------------------------------------------------------------------===//
 
-inline chrono::day parse_day(hamon::istream& input)
+template <typename Traits>
+inline chrono::day parse_day(hamon::basic_istream<char, Traits>& input)
 {
 	auto result = detail::parse_integral(input, false);
 	if (result > 31)
@@ -204,7 +214,8 @@ inline chrono::day parse_day(hamon::istream& input)
 	return chrono::day{ static_cast<unsigned>(result) };
 }
 
-inline chrono::weekday parse_weekday(hamon::istream& input)
+template <typename Traits>
+inline chrono::weekday parse_weekday(hamon::basic_istream<char, Traits>& input)
 {
 	// TZDB allows the shortest unique name.
 	switch (hamon::tolower(input.get()))
@@ -250,7 +261,8 @@ inline chrono::weekday parse_weekday(hamon::istream& input)
 	hamon::detail::throw_runtime_error("corrupt tzdb weekday: invalid name");
 }
 
-inline chrono::month parse_month(hamon::istream& input)
+template <typename Traits>
+inline chrono::month parse_month(hamon::basic_istream<char, Traits>& input)
 {
 	// TZDB allows the shortest unique name.
 	switch (hamon::tolower(input.get()))
@@ -327,7 +339,8 @@ inline chrono::month parse_month(hamon::istream& input)
 	hamon::detail::throw_runtime_error("corrupt tzdb month: invalid name");
 }
 
-inline chrono::year parse_year_value(hamon::istream& input)
+template <typename Traits>
+inline chrono::year parse_year_value(hamon::basic_istream<char, Traits>& input)
 {
 	bool negative = (input.peek() == '-');
 	if (negative) /*[[unlikely]]*/
@@ -349,7 +362,8 @@ inline chrono::year parse_year_value(hamon::istream& input)
 	return chrono::year{ static_cast<int>(negative ? -result : result) };
 }
 
-inline chrono::year parse_year(hamon::istream& input)
+template <typename Traits>
+inline chrono::year parse_year(hamon::basic_istream<char, Traits>& input)
 {
 	if (hamon::tolower(input.peek()) != 'm') /*[[likely]]*/
 	{
@@ -381,7 +395,8 @@ inline chrono::year parse_year(hamon::istream& input)
 //                        TZDB fields
 //===----------------------------------------------------------------------===//
 
-inline tz::constrained_weekday_t::comparison_t parse_comparison(hamon::istream& input)
+template <typename Traits>
+inline tz::constrained_weekday_t::comparison_t parse_comparison(hamon::basic_istream<char, Traits>& input)
 {
 	switch (input.get())
 	{
@@ -396,7 +411,8 @@ inline tz::constrained_weekday_t::comparison_t parse_comparison(hamon::istream& 
 	hamon::detail::throw_runtime_error("corrupt tzdb on: expected '>=' or '<='");
 }
 
-inline tz::on_t parse_on(hamon::istream& input)
+template <typename Traits>
+inline tz::on_t parse_on(hamon::basic_istream<char, Traits>& input)
 {
 	if (hamon::isdigit(input.peek()))
 	{
@@ -413,7 +429,8 @@ inline tz::on_t parse_on(hamon::istream& input)
 		detail::parse_weekday(input), detail::parse_comparison(input), detail::parse_day(input) };
 }
 
-inline chrono::seconds parse_duration(hamon::istream& input)
+template <typename Traits>
+inline chrono::seconds parse_duration(hamon::basic_istream<char, Traits>& input)
 {
 	chrono::seconds result{ 0 };
 	int c = input.peek();
@@ -455,7 +472,8 @@ inline chrono::seconds parse_duration(hamon::istream& input)
 	return negative ? -result : result;
 }
 
-inline tz::clock_t parse_clock(hamon::istream& input)
+template <typename Traits>
+inline tz::clock_t parse_clock(hamon::basic_istream<char, Traits>& input)
 {
 	switch (input.get())
 	{
@@ -475,7 +493,8 @@ inline tz::clock_t parse_clock(hamon::istream& input)
 	return tz::clock_t::local;
 }
 
-inline bool parse_dst(hamon::istream& input, chrono::seconds offset)
+template <typename Traits>
+inline bool parse_dst(hamon::basic_istream<char, Traits>& input, chrono::seconds offset)
 {
 	switch (input.get())
 	{
@@ -491,12 +510,14 @@ inline bool parse_dst(hamon::istream& input, chrono::seconds offset)
 	return offset != 0_s;
 }
 
-inline tz::at_t parse_at(hamon::istream& input)
+template <typename Traits>
+inline tz::at_t parse_at(hamon::basic_istream<char, Traits>& input)
 {
 	return { detail::parse_duration(input), detail::parse_clock(input) };
 }
 
-inline tz::save_t parse_save(hamon::istream& input)
+template <typename Traits>
+inline tz::save_t parse_save(hamon::basic_istream<char, Traits>& input)
 {
 	chrono::seconds time = detail::parse_duration(input);
 	return { time, detail::parse_dst(input, time) };

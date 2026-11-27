@@ -9,19 +9,23 @@
 
 #include <hamon/memory/allocator_fwd.hpp>
 #include <hamon/string/char_traits_fwd.hpp>
-#include <sstream>
 
+#if 0
+#include <sstream>
+namespace hamon
+{
+using std::basic_istringstream;
+}	// namespace hamon
+
+#else
 namespace hamon
 {
 
-using std::basic_istringstream;
-
-#if 0	// TODO
 // [istringstream], class template basic_istringstream
-template <typename charT, typename traits = char_traits<charT>, typename Allocator = allocator<charT>>
+template <typename charT, typename traits = hamon::char_traits<charT>, typename Allocator = hamon::allocator<charT>>
 class basic_istringstream;
-#endif
 
 }	// namespace hamon
+#endif
 
 #endif // HAMON_SSTREAM_BASIC_ISTRINGSTREAM_FWD_HPP
