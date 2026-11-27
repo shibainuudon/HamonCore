@@ -9,7 +9,7 @@
 #include <hamon/algorithm.hpp>
 #include <hamon/concepts.hpp>
 #include <hamon/cstddef.hpp>
-#include <hamon/istream/istream.hpp>
+#include <hamon/istream.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/ostream/ostream.hpp>
 #include <hamon/sstream/istringstream.hpp>
@@ -22,7 +22,6 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <fstream>	// ifstream, ofstream, fstream
-#include <istream>	// basic_istream, wistream, iostream
 #include <iterator>	// ostream_iterator
 #include "constexpr_test.hpp"
 #include "range_test_helper.hpp"
@@ -37,24 +36,26 @@ struct NotStreamExtratable {};
 struct StreamExtratable {};
 
 template <typename CharT, typename Traits>
-std::basic_istream<CharT, Traits>&
-operator>>(std::basic_istream<CharT, Traits>& is, StreamExtratable&)
+hamon::basic_istream<CharT, Traits>&
+operator>>(hamon::basic_istream<CharT, Traits>& is, StreamExtratable&)
 {
 	return is;
 }
 
 struct CharStreamExtratable {};
 
-hamon::istream&
-operator>>(hamon::istream& is, CharStreamExtratable&)
+template <typename Traits>
+hamon::basic_istream<char, Traits>&
+operator>>(hamon::basic_istream<char, Traits>& is, CharStreamExtratable&)
 {
 	return is;
 }
 
 struct WCharStreamExtratable {};
 
-std::wistream&
-operator>>(std::wistream& is, WCharStreamExtratable&)
+template <typename Traits>
+hamon::basic_istream<wchar_t, Traits>&
+operator>>(hamon::basic_istream<wchar_t, Traits>& is, WCharStreamExtratable&)
 {
 	return is;
 }
@@ -71,8 +72,8 @@ static_assert( hamon::default_initializable<NonMovable>, "");
 static_assert(!hamon::movable<NonMovable>, "");
 
 template <typename CharT, typename Traits>
-std::basic_istream<CharT, Traits>&
-operator>>(std::basic_istream<CharT, Traits>& is, NonMovable&)
+hamon::basic_istream<CharT, Traits>&
+operator>>(hamon::basic_istream<CharT, Traits>& is, NonMovable&)
 {
 	return is;
 }
@@ -89,8 +90,8 @@ static_assert(!hamon::default_initializable<NoDefaultCtor>, "");
 static_assert( hamon::movable<NoDefaultCtor>, "");
 
 template <typename CharT, typename Traits>
-std::basic_istream<CharT, Traits>&
-operator>>(std::basic_istream<CharT, Traits>& is, NoDefaultCtor&)
+hamon::basic_istream<CharT, Traits>&
+operator>>(hamon::basic_istream<CharT, Traits>& is, NoDefaultCtor&)
 {
 	return is;
 }
@@ -123,7 +124,7 @@ static_assert(!CanInstantiateIstreamView<NoDefaultCtor, wchar_t>::value, "");
 
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::istream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::ostream&>, "");
-static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::iostream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::iostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::istringstream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), hamon::ostringstream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), hamon::stringstream&>, "");
@@ -160,7 +161,7 @@ template <typename Val, typename CharT>
 HAMON_CXX14_CONSTEXPR bool test00()
 {
 	using V = hamon::ranges::basic_istream_view<Val, CharT>;
-	using IStream = std::basic_istream<CharT>;
+	using IStream = hamon::basic_istream<CharT>;
 
 	static_assert( hamon::ranges::range<V>, "");
 	static_assert(!hamon::ranges::borrowed_range<V>, "");

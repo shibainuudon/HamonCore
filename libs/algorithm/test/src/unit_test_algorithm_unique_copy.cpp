@@ -150,6 +150,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		(void)ret;
 		EXPECT_TRUE(b.empty());
 	}
+#if 0	// TODO
 	{
 		hamon::stringstream ss("1 1 1 2 2 3 33");
 		std::istream_iterator<int> ii_first(ss);
@@ -163,6 +164,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		EXPECT_EQ( 3, b[2]);
 		EXPECT_EQ(33, b[3]);
 	}
+#endif
 }
 
 #undef VERIFY

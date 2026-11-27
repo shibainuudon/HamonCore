@@ -6,7 +6,7 @@
 
 #include <hamon/set/set.hpp>
 #include <hamon/cmath/hypot.hpp>
-#include <hamon/ostream/ostream.hpp>
+#include <hamon/ostream/basic_ostream.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/sstream/stringstream.hpp>
 #include <hamon/string.hpp>
@@ -45,7 +45,9 @@ struct PointCmp
     }
 };
 
-hamon::ostream& operator<<(hamon::ostream& os, Point pt)
+template <typename CharT, typename Traits>
+hamon::basic_ostream<CharT, Traits>&
+operator<<(hamon::basic_ostream<CharT, Traits>& os, Point pt)
 {
     return os << '(' << pt.x << ',' << pt.x << ')';
 }

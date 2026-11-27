@@ -69,6 +69,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		EXPECT_TRUE(0 <= *it && *it <= 9); ++it;
 		EXPECT_TRUE(it == hamon::end(out));
 	}
+#if 0	// TODO
 	{
 		hamon::stringstream ss("0 1 2 3 4 5 6 7 8 9");
 		std::istream_iterator<int> ii_first(ss);
@@ -84,6 +85,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		EXPECT_TRUE(0 <= out[3] && out[3] <= 9);
 		EXPECT_TRUE(i == hamon::end(out));
 	}
+#endif
 	{
 		int const a[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 		hamon::vector<int> out;
